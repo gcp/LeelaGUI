@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+	<object class="wxFrame" name="TMainFrame">
+		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
+		<size>575,362</size>
+		<title>Leela</title>
+		<object class="wxSplitterWindow" name="m_splitter1">
+			<style>wxSP_BORDER</style>
+			<sashpos>0</sashpos>
+			<minsize>0</minsize>
+			<orientation>vertical</orientation>
+			<object class="wxPanel" name="m_panel61">
+				<style>wxTAB_TRAVERSAL</style>
+				<object class="wxBoxSizer">
+					<orient>wxHORIZONTAL</orient>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxEXPAND | wxALL</flag>
+						<border>5</border>
+						<object class="wxPanel" name="m_panel7">
+							<style>wxTAB_TRAVERSAL</style>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALIGN_RIGHT|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxStaticLine" name="m_staticline1">
+							<style>wxLI_VERTICAL</style>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="wxPanel" name="m_panel6">
+				<style>wxTAB_TRAVERSAL</style>
+				<object class="wxBoxSizer">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxEXPAND | wxALL</flag>
+						<border>5</border>
+						<object class="wxNotebook" name="m_notebook1">
+							<object class="notebookpage">
+								<label>Console</label>
+								<selected>1</selected>
+								<object class="wxPanel" name="m_panel4">
+									<style>wxTAB_TRAVERSAL</style>
+									<object class="wxBoxSizer">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<option>1</option>
+											<flag>wxALL|wxEXPAND</flag>
+											<border>5</border>
+											<object class="wxTextCtrl" name="m_logText">
+												<style>wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY</style>
+												<value></value>
+											</object>
+										</object>
+									</object>
+								</object>
+							</object>
+							<object class="notebookpage">
+								<label>UCT</label>
+								<selected>0</selected>
+								<object class="wxPanel" name="m_panel5">
+									<style>wxTAB_TRAVERSAL</style>
+									<object class="wxBoxSizer">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<option>1</option>
+											<flag>wxALL|wxEXPAND</flag>
+											<border>5</border>
+											<object class="wxTreeCtrl" name="m_UCTTree">
+												<style>wxTR_DEFAULT_STYLE</style>
+											</object>
+										</object>
+									</object>
+								</object>
+							</object>
+							<object class="notebookpage">
+								<label>Moves</label>
+								<selected>0</selected>
+								<object class="wxPanel" name="m_panel51">
+									<style>wxTAB_TRAVERSAL</style>
+									<object class="wxBoxSizer">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<option>1</option>
+											<flag>wxALL|wxEXPAND</flag>
+											<border>5</border>
+											<object class="wxListCtrl" name="m_moveList">
+												<style>wxLC_LIST|wxLC_VRULES</style>
+											</object>
+										</object>
+									</object>
+								</object>
+							</object>
+							<object class="notebookpage">
+								<label>Notation</label>
+								<selected>0</selected>
+								<object class="wxPanel" name="m_panel71">
+									<style>wxTAB_TRAVERSAL</style>
+									<object class="wxBoxSizer">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<option>1</option>
+											<flag>wxALL|wxEXPAND</flag>
+											<border>5</border>
+											<object class="wxHtmlWindow" name="m_htmlWin1">
+												<style>wxHW_SCROLLBAR_AUTO|wxSUNKEN_BORDER</style>
+											</object>
+										</object>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+		<object class="wxStatusBar" name="m_statusBar">
+			<style>wxST_SIZEGRIP</style>
+			<fields>3</fields>
+		</object>
+		<object class="wxMenuBar" name="m_menubar1">
+			<label>MyMenuBar</label>
+			<object class="wxMenu" name="m_menu1">
+				<label>File</label>
+				<object class="wxMenuItem" name="menuItemExit">
+					<label>Exit</label>
+					<help></help>
+				</object>
+			</object>
+		</object>
+	</object>
+</resource>
