@@ -85,13 +85,13 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer71->Fit( m_panel71 );
 	m_notebook1->AddPage( m_panel71, _("Notation"), false );
 	
-	bSizer8->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
+	bSizer8->Add( m_notebook1, 1, wxEXPAND, 0 );
 	
 	m_panel6->SetSizer( bSizer8 );
 	m_panel6->Layout();
 	bSizer8->Fit( m_panel6 );
 	m_splitter1->SplitVertically( m_panelBoard, m_panel6, 378 );
-	bSizer2->Add( m_splitter1, 1, wxALL|wxEXPAND, 1 );
+	bSizer2->Add( m_splitter1, 1, wxALL|wxEXPAND, 0 );
 	
 	this->SetSizer( bSizer2 );
 	this->Layout();

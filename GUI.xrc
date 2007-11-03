@@ -25,8 +25,8 @@
 					</object>
 					<object class="sizeritem">
 						<option>1</option>
-						<flag>wxEXPAND | wxALL</flag>
-						<border>5</border>
+						<flag>wxEXPAND</flag>
+						<border>0</border>
 						<object class="wxNotebook" name="m_notebook1">
 							<object class="notebookpage">
 								<label>Console</label>

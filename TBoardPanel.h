@@ -7,10 +7,13 @@ public:
                const wxPoint& pos = wxDefaultPosition,
                const wxSize& size = wxDefaultSize,
                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-               const wxString& name = wxPanelNameStr)
-               : wxPanel(parent, winid, pos, size, style, name){};
+               const wxString& name = wxPanelNameStr);
+                                  
 private:
-    DECLARE_EVENT_TABLE()    
+    DECLARE_EVENT_TABLE()
     
-    void doPaint(wxPaintEvent& event);
+    void doPaint(wxPaintEvent& event);    
+    
+    int m_boardSize;
+    wxBitmap m_tileFull;        
 };
