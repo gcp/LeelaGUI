@@ -12,7 +12,8 @@
 #include <wx/regex.h>  
 #include <wx/config.h>
 #include <wx/listctrl.h>
-#include <wx/calctrl.h>       
+#include <wx/calctrl.h>     
+#include <wx/dcbuffer.h>
 
 // STD headers
 #include <utility>

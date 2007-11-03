@@ -12,8 +12,12 @@ public:
 private:
     DECLARE_EVENT_TABLE()
     
-    void doPaint(wxPaintEvent& event);    
+    void doPaint(wxPaintEvent& event);
+    void doErase(wxEraseEvent& event);
+    void doLeftMouse(wxMouseEvent& event);
     
+    std::vector<int> m_Board;
     int m_boardSize;
     wxBitmap m_tileFull;        
+    int m_cellDim;
 };

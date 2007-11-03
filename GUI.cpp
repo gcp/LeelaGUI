@@ -31,7 +31,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_splitter1->SetSashGravity( 0.65 );
 	m_splitter1->SetMinimumPaneSize( 1 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
-	m_panelBoard = new TBoardPanel( m_splitter1, ID_BOARDPANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelBoard = new TBoardPanel( m_splitter1, ID_BOARDPANEL, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL );
 	m_panel6 = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
@@ -85,7 +85,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer71->Fit( m_panel71 );
 	m_notebook1->AddPage( m_panel71, _("Notation"), false );
 	
-	bSizer8->Add( m_notebook1, 1, wxEXPAND, 0 );
+	bSizer8->Add( m_notebook1, 1, wxALL|wxEXPAND, 2 );
 	
 	m_panel6->SetSizer( bSizer8 );
 	m_panel6->Layout();

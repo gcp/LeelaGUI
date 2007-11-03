@@ -9,7 +9,7 @@
 			<minsize>1</minsize>
 			<orientation>vertical</orientation>
 			<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
-				<style>wxTAB_TRAVERSAL</style>
+				<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
 			</object>
 			<object class="wxPanel" name="m_panel6">
 				<style>wxTAB_TRAVERSAL</style>
@@ -25,8 +25,8 @@
 					</object>
 					<object class="sizeritem">
 						<option>1</option>
-						<flag>wxEXPAND</flag>
-						<border>0</border>
+						<flag>wxALL|wxEXPAND</flag>
+						<border>2</border>
 						<object class="wxNotebook" name="m_notebook1">
 							<object class="notebookpage">
 								<label>Console</label>

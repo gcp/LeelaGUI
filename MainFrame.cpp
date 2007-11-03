@@ -25,6 +25,7 @@ void MainFrame::doPaint(wxPaintEvent& event) {
 }
 
 void MainFrame::doActivate(wxActivateEvent& event) {                       
+    event.Skip();
 }
 
 void MainFrame::doResize(wxSizeEvent& event) { 
