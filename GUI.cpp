@@ -10,35 +10,34 @@
 #include "GUI.h"
 
 ///////////////////////////////////////////////////////////////////////////
+BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
+	EVT_ACTIVATE( TMainFrame::_wxFB_doActivate )
+	EVT_PAINT( TMainFrame::_wxFB_doPaint )
+	EVT_SIZE( TMainFrame::_wxFB_doResize )
+	EVT_MENU( ID_NEWGAME, TMainFrame::_wxFB_doNewGame )
+	EVT_MENU( ID_EXIT, TMainFrame::_wxFB_doExit )
+END_EVENT_TABLE()
 
-TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxFrame( parent, id, title, pos, size, style, name )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 	
-	m_splitter1 = new wxSplitterWindow( this, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxSP_BORDER );
+	m_splitter1 = new wxSplitterWindow( this, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, 0 );
 	m_splitter1->SetSashGravity( 0.650000 );
+	m_splitter1->SetMinimumPaneSize( 1 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
-	m_panel61 = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer7;
-	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_panel7 = new wxPanel( m_panel61, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	bSizer7->Add( m_panel7, 1, wxEXPAND | wxALL, 5 );
-	
-	m_staticline1 = new wxStaticLine( m_panel61, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
-	bSizer7->Add( m_staticline1, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
-	
-	m_panel61->SetSizer( bSizer7 );
-	m_panel61->Layout();
-	bSizer7->Fit( m_panel61 );
+	m_panelBoard = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_panel6 = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer8;
-	bSizer8 = new wxBoxSizer( wxVERTICAL );
+	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_notebook1 = new wxNotebook( m_panel6, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticline1 = new wxStaticLine( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
+	bSizer8->Add( m_staticline1, 0, wxEXPAND | wxALL, 0 );
+	
+	m_notebook1 = new wxNotebook( m_panel6, ID_DEFAULT, wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_panel4 = new wxPanel( m_notebook1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer5;
 	bSizer5 = new wxBoxSizer( wxVERTICAL );
@@ -89,7 +88,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_panel6->SetSizer( bSizer8 );
 	m_panel6->Layout();
 	bSizer8->Fit( m_panel6 );
-	m_splitter1->SplitVertically( m_panel61, m_panel6, 0 );
+	m_splitter1->SplitVertically( m_panelBoard, m_panel6, 373 );
 	bSizer2->Add( m_splitter1, 1, wxALL|wxEXPAND, 1 );
 	
 	this->SetSizer( bSizer2 );
@@ -97,13 +96,14 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_statusBar = this->CreateStatusBar( 3, wxST_SIZEGRIP, ID_DEFAULT );
 	m_menubar1 = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
-	wxMenuItem* menuItemExit = new wxMenuItem( m_menu1, ID_DEFAULT, wxString( _("Exit") ) , wxEmptyString, wxITEM_NORMAL );
+	wxMenuItem* menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("New game") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu1->Append( menuItemNewGame );
+	
+	m_menu1->AppendSeparator();
+	wxMenuItem* menuItemExit = new wxMenuItem( m_menu1, ID_EXIT, wxString( _("Exit") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( menuItemExit );
 	m_menubar1->Append( m_menu1, _("File") );
 	
 	this->SetMenuBar( m_menubar1 );
 	
-	
-	// Connect Events
-	this->Connect( menuItemExit->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( TMainFrame::doExit ) );
 }

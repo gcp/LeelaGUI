@@ -2,39 +2,27 @@
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxFrame" name="TMainFrame">
 		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
-		<size>575,362</size>
+		<size>700,450</size>
 		<title>Leela</title>
 		<object class="wxSplitterWindow" name="m_splitter1">
-			<style>wxSP_BORDER</style>
-			<sashpos>0</sashpos>
-			<minsize>0</minsize>
+			<sashpos>373</sashpos>
+			<minsize>1</minsize>
 			<orientation>vertical</orientation>
-			<object class="wxPanel" name="m_panel61">
+			<object class="wxPanel" name="m_panelBoard">
 				<style>wxTAB_TRAVERSAL</style>
-				<object class="wxBoxSizer">
-					<orient>wxHORIZONTAL</orient>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxEXPAND | wxALL</flag>
-						<border>5</border>
-						<object class="wxPanel" name="m_panel7">
-							<style>wxTAB_TRAVERSAL</style>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>0</option>
-						<flag>wxALIGN_RIGHT|wxEXPAND</flag>
-						<border>5</border>
-						<object class="wxStaticLine" name="m_staticline1">
-							<style>wxLI_VERTICAL</style>
-						</object>
-					</object>
-				</object>
 			</object>
 			<object class="wxPanel" name="m_panel6">
 				<style>wxTAB_TRAVERSAL</style>
 				<object class="wxBoxSizer">
-					<orient>wxVERTICAL</orient>
+					<orient>wxHORIZONTAL</orient>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxEXPAND | wxALL</flag>
+						<border>0</border>
+						<object class="wxStaticLine" name="m_staticline1">
+							<style>wxLI_VERTICAL</style>
+						</object>
+					</object>
 					<object class="sizeritem">
 						<option>1</option>
 						<flag>wxEXPAND | wxALL</flag>
@@ -126,6 +114,11 @@
 			<label>MyMenuBar</label>
 			<object class="wxMenu" name="m_menu1">
 				<label>File</label>
+				<object class="wxMenuItem" name="menuItemNewGame">
+					<label>New game</label>
+					<help></help>
+				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="menuItemExit">
 					<label>Exit</label>
 					<help></help>

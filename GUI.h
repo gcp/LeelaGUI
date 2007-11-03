@@ -15,8 +15,8 @@
 #include <wx/settings.h>
 #include <wx/string.h>
 #include <wx/statline.h>
-#include <wx/sizer.h>
 #include <wx/textctrl.h>
+#include <wx/sizer.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/treectrl.h>
@@ -35,19 +35,29 @@
 ///////////////////////////////////////////////////////////////////////////////
 class TMainFrame : public wxFrame 
 {
+	DECLARE_EVENT_TABLE()
 	private:
+		
+		// Private event handlers
+		void _wxFB_doActivate( wxActivateEvent& event ){ doActivate( event ); }
+		void _wxFB_doPaint( wxPaintEvent& event ){ doPaint( event ); }
+		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
+		void _wxFB_doNewGame( wxCommandEvent& event ){ doNewGame( event ); }
+		void _wxFB_doExit( wxCommandEvent& event ){ doExit( event ); }
+		
 	
 	protected:
 		enum
 		{
 			ID_DEFAULT = wxID_ANY, // Default
+			ID_NEWGAME = 1000,
+			ID_EXIT,
 		};
 		
 		wxSplitterWindow* m_splitter1;
-		wxPanel* m_panel61;
-		wxPanel* m_panel7;
-		wxStaticLine* m_staticline1;
+		wxPanel* m_panelBoard;
 		wxPanel* m_panel6;
+		wxStaticLine* m_staticline1;
 		wxNotebook* m_notebook1;
 		wxPanel* m_panel4;
 		wxTextCtrl* m_logText;
@@ -62,14 +72,18 @@ class TMainFrame : public wxFrame
 		wxMenu* m_menu1;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void doActivate( wxActivateEvent& event ){ event.Skip(); }
+		virtual void doPaint( wxPaintEvent& event ){ event.Skip(); }
+		virtual void doResize( wxSizeEvent& event ){ event.Skip(); }
+		virtual void doNewGame( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doExit( wxCommandEvent& event ){ event.Skip(); }
 		
 	
 	public:
-		TMainFrame( wxWindow* parent, wxWindowID id = ID_DEFAULT, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 575,362 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		TMainFrame( wxWindow* parent, wxWindowID id = ID_DEFAULT, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 700,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
 		void m_splitter1OnIdle( wxIdleEvent& )
 		{
-		m_splitter1->SetSashPosition( 0 );
+		m_splitter1->SetSashPosition( 373 );
 		m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
 		}
 		

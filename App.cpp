@@ -6,7 +6,7 @@ IMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {   
-    MainFrame* frame = new MainFrame(NULL, wxT("Leela"));
+    MainFrame* frame = new MainFrame(NULL, wxT("Leela"));    
     frame->Show();
     
     SetTopWindow(frame);
