@@ -5,10 +5,10 @@
 		<size>700,450</size>
 		<title>Leela</title>
 		<object class="wxSplitterWindow" name="m_splitter1">
-			<sashpos>373</sashpos>
+			<sashpos>378</sashpos>
 			<minsize>1</minsize>
 			<orientation>vertical</orientation>
-			<object class="wxPanel" name="m_panelBoard">
+			<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
 				<style>wxTAB_TRAVERSAL</style>
 			</object>
 			<object class="wxPanel" name="m_panel6">

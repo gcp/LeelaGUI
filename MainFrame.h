@@ -12,5 +12,6 @@ class MainFrame : public TMainFrame
 	virtual void doPaint(wxPaintEvent& event);	
 	virtual void doNewGame(wxCommandEvent& event);
 	virtual void doExit(wxCommandEvent& event);
-	virtual void doResize(wxSizeEvent& event);		
+	virtual void doResize(wxSizeEvent& event);
+	virtual void doBoardResize(wxSizeEvent& event);		
 };

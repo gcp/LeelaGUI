@@ -8,6 +8,8 @@
 #ifndef __GUI__
 #define __GUI__
 
+class TBoardPanel;
+
 #include <wx/panel.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
@@ -50,12 +52,14 @@ class TMainFrame : public wxFrame
 		enum
 		{
 			ID_DEFAULT = wxID_ANY, // Default
-			ID_NEWGAME = 1000,
+			ID_BOARDSASH = 1000,
+			ID_BOARDPANEL,
+			ID_NEWGAME,
 			ID_EXIT,
 		};
 		
 		wxSplitterWindow* m_splitter1;
-		wxPanel* m_panelBoard;
+		TBoardPanel* m_panelBoard;
 		wxPanel* m_panel6;
 		wxStaticLine* m_staticline1;
 		wxNotebook* m_notebook1;
@@ -83,7 +87,7 @@ class TMainFrame : public wxFrame
 		TMainFrame( wxWindow* parent, wxWindowID id = ID_DEFAULT, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 700,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
 		void m_splitter1OnIdle( wxIdleEvent& )
 		{
-		m_splitter1->SetSashPosition( 373 );
+		m_splitter1->SetSashPosition( 378 );
 		m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
 		}
 		

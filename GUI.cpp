@@ -7,6 +7,8 @@
 
 #include "stdafx.h"
 
+#include "TBoardPanel.h"
+
 #include "GUI.h"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -25,11 +27,11 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 	
-	m_splitter1 = new wxSplitterWindow( this, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, 0 );
-	m_splitter1->SetSashGravity( 0.650000 );
+	m_splitter1 = new wxSplitterWindow( this, ID_BOARDSASH, wxDefaultPosition, wxDefaultSize, 0 );
+	m_splitter1->SetSashGravity( 0.65 );
 	m_splitter1->SetMinimumPaneSize( 1 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
-	m_panelBoard = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelBoard = new TBoardPanel( m_splitter1, ID_BOARDPANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_panel6 = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
@@ -88,7 +90,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_panel6->SetSizer( bSizer8 );
 	m_panel6->Layout();
 	bSizer8->Fit( m_panel6 );
-	m_splitter1->SplitVertically( m_panelBoard, m_panel6, 373 );
+	m_splitter1->SplitVertically( m_panelBoard, m_panel6, 378 );
 	bSizer2->Add( m_splitter1, 1, wxALL|wxEXPAND, 1 );
 	
 	this->SetSizer( bSizer2 );
