@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "GameState.h"
+
 class TBoardPanel : public wxPanel {    
 public:
     TBoardPanel(wxWindow *parent,
@@ -8,6 +10,7 @@ public:
                const wxSize& size = wxDefaultSize,
                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
                const wxString& name = wxPanelNameStr);
+    void setState(GameState * brd);               
                                   
 private:
     DECLARE_EVENT_TABLE()
@@ -16,8 +19,7 @@ private:
     void doErase(wxEraseEvent& event);
     void doLeftMouse(wxMouseEvent& event);
     
-    std::vector<int> m_Board;
-    int m_boardSize;
+    GameState * m_State;
     wxBitmap m_tileFull;        
     int m_cellDim;
 };

@@ -46,14 +46,13 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     dcTile.SelectObject(wxNullBitmap);
     dcSrc.SelectObject(wxNullBitmap);
     
-    m_cellDim = 0;
-    m_boardSize = 9;
-    m_Board.resize(m_boardSize * m_boardSize);
-    std::fill(m_Board.begin(), m_Board.end(), 2);
-    m_Board[10] = 0;
-    m_Board[11] = 0;
-    m_Board[20] = 1;
-    m_Board[21] = 1;
+    m_cellDim = 0;    
+    
+    m_State = NULL;
+}
+
+void TBoardPanel::setState(GameState * state) {
+    m_State = state;
 }
 
 void TBoardPanel::doPaint(wxPaintEvent& event) {
@@ -76,8 +75,15 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         }
     }      
     
+    if (m_State == NULL) {
+        ::wxLogDebug("Paint on empty state");
+        return;
+    }
+    
+    int boardSize = m_State->board.get_boardsize();
+    
     int minDim = std::min(sz.GetWidth(), sz.GetHeight());
-    int cellDim = minDim / ((m_boardSize - 1) + 2);
+    int cellDim = minDim / ((boardSize - 1) + 2);
     
     m_cellDim = cellDim;
     
@@ -91,12 +97,12 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     dc.SetBrush(brush);
     dc.SetPen(penThick);
     dc.DrawRectangle(cellDim, cellDim, 
-                     cellDim * (m_boardSize - 1), cellDim * (m_boardSize - 1));            
+                     cellDim * (boardSize - 1), cellDim * (boardSize - 1));            
 
     // board lines        
     dc.SetPen(penThin);
-    for (int y = 0; y < m_boardSize - 1; y++) {
-        for (int x = 0; x < m_boardSize - 1; x++) {
+    for (int y = 0; y < boardSize - 1; y++) {
+        for (int x = 0; x < boardSize - 1; x++) {
             int xoff = cellDim + x * cellDim;
             int yoff = cellDim + y * cellDim;
             dc.DrawRectangle(xoff - 1, yoff - 1, cellDim + 1, cellDim + 1);
@@ -110,18 +116,17 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     
     dc.SetPen(penThin);    
     
-    for (int y = 0; y < m_boardSize; y++) {
-        for (int x = 0; x < m_boardSize; x++) {
-            int idx = y * m_boardSize + x;
-            int cell = m_Board[idx];
+    for (int y = 0; y < boardSize; y++) {
+        for (int x = 0; x < boardSize; x++) {            
+            int cell = m_State->board.get_square(x, y);
             
-            if (cell == 0) {                                
+            if (cell == FastBoard::BLACK) {            
                 dc.SetBrush(bbrush);            
-            } else if (cell == 1) {                
+            } else if (cell == FastBoard::WHITE) {                
                 dc.SetBrush(wbrush);
             }
         
-            if (cell != 2) {
+            if (cell != FastBoard::EMPTY) {
                 int xoff = cellDim + x * cellDim;
                 int yoff = cellDim + y * cellDim;
                 dc.DrawCircle(xoff, yoff, stoneSize);
@@ -143,16 +148,27 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
     
     ::wxLogDebug("Left down at %d %d", startX, startY);
     
+    if (m_State == NULL) {
+        ::wxLogDebug("Click on empty board");
+        return;
+    }
+    
+    int boardSize = m_State->board.get_boardsize();
+    
     int corrX = startX - (m_cellDim / 2);
     int corrY = startY - (m_cellDim / 2);
  
     int cellX = corrX / m_cellDim;
     int cellY = corrY / m_cellDim;
     
-    if (cellX >= m_boardSize) cellX = m_boardSize - 1;
-    if (cellY >= m_boardSize) cellY = m_boardSize - 1;
+    if (cellX >= boardSize) cellX = boardSize - 1;
+    if (cellY >= boardSize) cellY = boardSize - 1;
  
-    m_Board[cellY * m_boardSize + cellX] = 0;      
+    int vtx = m_State->board.get_vertex(cellX, cellY);
+    
+    if (m_State->legal_move(vtx)) {
+        m_State->play_move(vtx);
+    }
        
     Refresh();       
     

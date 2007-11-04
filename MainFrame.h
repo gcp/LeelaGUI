@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GUI.h"
+#include "GameState.h"
 
 class MainFrame : public TMainFrame
 {
@@ -14,4 +15,6 @@ class MainFrame : public TMainFrame
 	virtual void doExit(wxCommandEvent& event);
 	virtual void doResize(wxSizeEvent& event);
 	virtual void doBoardResize(wxSizeEvent& event);		
+	
+	GameState m_State;
 };
