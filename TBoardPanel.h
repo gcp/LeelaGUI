@@ -1,5 +1,9 @@
+#ifndef TBOARDPANEL_H
+#define TBOARDPANEL_H
+
 #include "stdafx.h"
 
+#include "FastBoard.h"
 #include "GameState.h"
 
 class TBoardPanel : public wxPanel {    
@@ -10,8 +14,10 @@ public:
                const wxSize& size = wxDefaultSize,
                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
                const wxString& name = wxPanelNameStr);
+               
     void setState(GameState * brd);               
-                                  
+    void setPlayerColor(FastBoard::square_t color);
+                                      
 private:
     DECLARE_EVENT_TABLE()
     
@@ -22,4 +28,7 @@ private:
     GameState * m_State;
     wxBitmap m_tileFull;        
     int m_cellDim;
+    FastBoard::square_t m_playerColor;
 };
+
+#endif

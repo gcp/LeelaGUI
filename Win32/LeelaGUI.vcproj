@@ -121,6 +121,7 @@
 				AdditionalIncludeDirectories="../../Leela"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0400;wxUSE_GUI=1"
 				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -184,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\EngineThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\GUI.cpp"
 				>
 			</File>
@@ -223,6 +228,10 @@
 			>
 			<File
 				RelativePath="..\App.h"
+				>
+			</File>
+			<File
+				RelativePath="..\EngineThread.h"
 				>
 			</File>
 			<File

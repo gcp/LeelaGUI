@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TBoardPanel.h"
+#include "MainFrame.h"
 
 BEGIN_EVENT_TABLE(TBoardPanel, wxPanel)	
     EVT_PAINT(TBoardPanel::doPaint)
@@ -49,10 +50,15 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_cellDim = 0;    
     
     m_State = NULL;
+    m_playerColor = FastBoard::BLACK;
 }
 
 void TBoardPanel::setState(GameState * state) {
     m_State = state;
+}
+
+void TBoardPanel::setPlayerColor(FastBoard::square_t color) {
+    m_playerColor = color;
 }
 
 void TBoardPanel::doPaint(wxPaintEvent& event) {
@@ -91,28 +97,37 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     
     wxPen penThick(*wxBLACK, 2, wxSOLID);
     wxPen penThin(*wxBLACK, 1, wxSOLID);
-    wxBrush brush(*wxBLACK, wxTRANSPARENT);
-    
-    // board outline
-    dc.SetBrush(brush);
-    dc.SetPen(penThick);
-    dc.DrawRectangle(cellDim, cellDim, 
-                     cellDim * (boardSize - 1), cellDim * (boardSize - 1));            
-
-    // board lines        
-    dc.SetPen(penThin);
-    for (int y = 0; y < boardSize - 1; y++) {
-        for (int x = 0; x < boardSize - 1; x++) {
-            int xoff = cellDim + x * cellDim;
-            int yoff = cellDim + y * cellDim;
-            dc.DrawRectangle(xoff - 1, yoff - 1, cellDim + 1, cellDim + 1);
-        }
-    }    
+    wxPen penEmpty(*wxBLACK, 0, wxTRANSPARENT);    
     
     // stones
     wxBrush wbrush(*wxWHITE, wxSOLID);
     wxBrush bbrush(*wxBLACK, wxSOLID);
     int stoneSize = ((cellDim * 19)/ 40);
+    
+    // emtpy fill
+    wxBrush ebrush(*wxBLACK, wxTRANSPARENT);
+    
+    // board outline
+    dc.SetBrush(ebrush);
+    dc.SetPen(penThick);
+    dc.DrawRectangle(cellDim, cellDim, 
+                     cellDim * (boardSize - 1), cellDim * (boardSize - 1));                
+
+    // board lines            
+    for (int y = 0; y < boardSize - 1; y++) {
+        for (int x = 0; x < boardSize - 1; x++) {
+            int xoff = cellDim + x * cellDim;
+            int yoff = cellDim + y * cellDim;
+            dc.SetPen(penThin);
+            dc.SetBrush(ebrush);
+            dc.DrawRectangle(xoff - 1, yoff - 1, cellDim + 1, cellDim + 1);
+            if (m_State->board.starpoint(boardSize, x, y)) {
+                dc.SetPen(penEmpty);
+                dc.SetBrush(bbrush);
+                dc.DrawCircle(xoff, yoff, (stoneSize/8)+1);
+            }
+        }
+    }            
     
     dc.SetPen(penThin);    
     
@@ -153,24 +168,32 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         return;
     }
     
-    int boardSize = m_State->board.get_boardsize();
-    
-    int corrX = startX - (m_cellDim / 2);
-    int corrY = startY - (m_cellDim / 2);
- 
-    int cellX = corrX / m_cellDim;
-    int cellY = corrY / m_cellDim;
-    
-    if (cellX >= boardSize) cellX = boardSize - 1;
-    if (cellY >= boardSize) cellY = boardSize - 1;
- 
-    int vtx = m_State->board.get_vertex(cellX, cellY);
-    
-    if (m_State->legal_move(vtx)) {
-        m_State->play_move(vtx);
+    if (m_State->get_to_move() == m_playerColor) {    
+        int boardSize = m_State->board.get_boardsize();
+        
+        int corrX = startX - (m_cellDim / 2);
+        int corrY = startY - (m_cellDim / 2);
+     
+        int cellX = corrX / m_cellDim;
+        int cellY = corrY / m_cellDim;
+        
+        if (cellX >= boardSize) cellX = boardSize - 1;
+        if (cellY >= boardSize) cellY = boardSize - 1;
+     
+        int vtx = m_State->board.get_vertex(cellX, cellY);
+        
+        if (m_State->legal_move(vtx)) {
+            m_State->play_move(vtx);
+        }
+           
+        Refresh();  
+        
+        wxCommandEvent event(EVT_NEW_MOVE, GetId());
+        event.SetEventObject(this);                        
+        ::wxPostEvent(GetEventHandler(), event);
+    } else {
+        ::wxLogMessage("It's not your move!");
     }
-       
-    Refresh();       
     
     event.Skip();
 }
