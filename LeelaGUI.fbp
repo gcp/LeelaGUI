@@ -435,7 +435,7 @@
                                             </object>
                                             <object class="notebookpage" expanded="1">
                                                 <property name="bitmap"></property>
-                                                <property name="label">UCT</property>
+                                                <property name="label">Tree</property>
                                                 <property name="select">0</property>
                                                 <object class="wxPanel" expanded="1">
                                                     <property name="bg"></property>
@@ -892,13 +892,41 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">ID_NEWGAME</property>
+                        <property name="id">ID_NEWGAME9</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">New game</property>
+                        <property name="label">New game 9x9</property>
                         <property name="name">menuItemNewGame</property>
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">doNewGame</event>
+                        <event name="OnMenuSelection">doNewGame9x9</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_NEWGAME13</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">New game 13x13</property>
+                        <property name="name">menuItem3</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doNewGame13x13</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_NEWGAME19</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">New game 19x19</property>
+                        <property name="name">menuItem4</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doNewGame19x19</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                     <object class="separator" expanded="1" />
@@ -914,6 +942,39 @@
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doExit</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                </object>
+                <object class="wxMenu" expanded="1">
+                    <property name="label">Score</property>
+                    <property name="name">m_menu2</property>
+                    <property name="permission">protected</property>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_PASS</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Pass</property>
+                        <property name="name">menuItem6</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doPass</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_SCORE</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Score</property>
+                        <property name="name">menuItem5</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doScore</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>

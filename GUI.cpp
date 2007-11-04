@@ -16,8 +16,12 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_ACTIVATE( TMainFrame::_wxFB_doActivate )
 	EVT_PAINT( TMainFrame::_wxFB_doPaint )
 	EVT_SIZE( TMainFrame::_wxFB_doResize )
-	EVT_MENU( ID_NEWGAME, TMainFrame::_wxFB_doNewGame )
+	EVT_MENU( ID_NEWGAME9, TMainFrame::_wxFB_doNewGame9x9 )
+	EVT_MENU( ID_NEWGAME13, TMainFrame::_wxFB_doNewGame13x13 )
+	EVT_MENU( ID_NEWGAME19, TMainFrame::_wxFB_doNewGame19x19 )
 	EVT_MENU( ID_EXIT, TMainFrame::_wxFB_doExit )
+	EVT_MENU( ID_PASS, TMainFrame::_wxFB_doPass )
+	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 END_EVENT_TABLE()
 
 TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxFrame( parent, id, title, pos, size, style, name )
@@ -61,7 +65,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_panel5->SetSizer( bSizer4 );
 	m_panel5->Layout();
 	bSizer4->Fit( m_panel5 );
-	m_notebook1->AddPage( m_panel5, _("UCT"), false );
+	m_notebook1->AddPage( m_panel5, _("Tree"), false );
 	m_panel51 = new wxPanel( m_notebook1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer51;
 	bSizer51 = new wxBoxSizer( wxVERTICAL );
@@ -98,13 +102,24 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_statusBar = this->CreateStatusBar( 3, wxST_SIZEGRIP, ID_DEFAULT );
 	m_menubar1 = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
-	wxMenuItem* menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("New game") ) , wxEmptyString, wxITEM_NORMAL );
+	wxMenuItem* menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME9, wxString( _("New game 9x9") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( menuItemNewGame );
+	wxMenuItem* menuItem3 = new wxMenuItem( m_menu1, ID_NEWGAME13, wxString( _("New game 13x13") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu1->Append( menuItem3 );
+	wxMenuItem* menuItem4 = new wxMenuItem( m_menu1, ID_NEWGAME19, wxString( _("New game 19x19") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu1->Append( menuItem4 );
 	
 	m_menu1->AppendSeparator();
 	wxMenuItem* menuItemExit = new wxMenuItem( m_menu1, ID_EXIT, wxString( _("Exit") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( menuItemExit );
 	m_menubar1->Append( m_menu1, _("File") );
+	
+	m_menu2 = new wxMenu();
+	wxMenuItem* menuItem6 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("Pass") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( menuItem6 );
+	wxMenuItem* menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("Score") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( menuItem5 );
+	m_menubar1->Append( m_menu2, _("Score") );
 	
 	this->SetMenuBar( m_menubar1 );
 	

@@ -48,7 +48,7 @@
 								</object>
 							</object>
 							<object class="notebookpage">
-								<label>UCT</label>
+								<label>Tree</label>
 								<selected>0</selected>
 								<object class="wxPanel" name="m_panel5">
 									<style>wxTAB_TRAVERSAL</style>
@@ -115,12 +115,31 @@
 			<object class="wxMenu" name="m_menu1">
 				<label>File</label>
 				<object class="wxMenuItem" name="menuItemNewGame">
-					<label>New game</label>
+					<label>New game 9x9</label>
+					<help></help>
+				</object>
+				<object class="wxMenuItem" name="menuItem3">
+					<label>New game 13x13</label>
+					<help></help>
+				</object>
+				<object class="wxMenuItem" name="menuItem4">
+					<label>New game 19x19</label>
 					<help></help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItemExit">
 					<label>Exit</label>
+					<help></help>
+				</object>
+			</object>
+			<object class="wxMenu" name="m_menu2">
+				<label>Score</label>
+				<object class="wxMenuItem" name="menuItem6">
+					<label>Pass</label>
+					<help></help>
+				</object>
+				<object class="wxMenuItem" name="menuItem5">
+					<label>Score</label>
 					<help></help>
 				</object>
 			</object>

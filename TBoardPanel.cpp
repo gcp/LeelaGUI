@@ -102,6 +102,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     // stones
     wxBrush wbrush(*wxWHITE, wxSOLID);
     wxBrush bbrush(*wxBLACK, wxSOLID);
+    wxBrush rbrush(*wxRED, wxSOLID);
     int stoneSize = ((cellDim * 19)/ 40);
     
     // emtpy fill
@@ -132,8 +133,10 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     dc.SetPen(penThin);    
     
     for (int y = 0; y < boardSize; y++) {
-        for (int x = 0; x < boardSize; x++) {            
-            int cell = m_State->board.get_square(x, y);
+        for (int x = 0; x < boardSize; x++) {           
+            // engine board is inverted 
+            int vtx = m_State->board.get_vertex(boardSize - x - 1, boardSize - y - 1);
+            int cell = m_State->board.get_square(vtx);
             
             if (cell == FastBoard::BLACK) {            
                 dc.SetBrush(bbrush);            
@@ -145,6 +148,11 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                 int xoff = cellDim + x * cellDim;
                 int yoff = cellDim + y * cellDim;
                 dc.DrawCircle(xoff, yoff, stoneSize);
+                
+                if (m_State->get_last_move() == vtx) {
+                    dc.SetBrush(rbrush);
+                    dc.DrawCircle(xoff, yoff, stoneSize/3);
+                }
             }
         }
     }              
@@ -179,6 +187,10 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         
         if (cellX >= boardSize) cellX = boardSize - 1;
         if (cellY >= boardSize) cellY = boardSize - 1;
+        
+        // engine board is inverted
+        cellX = boardSize - cellX - 1;
+        cellY = boardSize - cellY - 1;
      
         int vtx = m_State->board.get_vertex(cellX, cellY);
         

@@ -4,7 +4,8 @@
 #include "stdafx.h"
 
 #include "GameState.h"
-#include "MainFrame.h"
+
+class TMainFrame;
 
 class TEngineThread : public wxThread {
     public:
