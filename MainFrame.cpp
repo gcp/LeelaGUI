@@ -64,9 +64,9 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         float score = m_State.final_score();
         
         if (score > 0.0f) {
-            ::wxLogMessage("Final score: BLACK wins by %5.2f", score);
+            ::wxLogMessage("Final score: BLACK wins by %4.1f", score);
         } else {
-            ::wxLogMessage("Final score: WHITE wins by %5.2f", -score);
+            ::wxLogMessage("Final score: WHITE wins by %4.1f", -score);
         }     
     }
     Refresh();
@@ -131,9 +131,9 @@ void MainFrame::doScore( wxCommandEvent& event ) {
     float score = m_State.final_score();
     
     if (score > 0.0f) {
-        ::wxLogMessage("Final score: BLACK wins by %5.2f", score);
+        ::wxLogMessage("Final score: BLACK wins by %4.1f", score);
     } else {
-        ::wxLogMessage("Final score: WHITE wins by %5.2f", -score);
+        ::wxLogMessage("Final score: WHITE wins by %4.1f", -score);
     }        
     
     m_engineRunning.Post();

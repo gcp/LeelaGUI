@@ -134,8 +134,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     
     for (int y = 0; y < boardSize; y++) {
         for (int x = 0; x < boardSize; x++) {           
-            // engine board is inverted 
-            int vtx = m_State->board.get_vertex(boardSize - x - 1, boardSize - y - 1);
+            // engine board is inverted vertically
+            int vtx = m_State->board.get_vertex(x, boardSize - y - 1);
             int cell = m_State->board.get_square(vtx);
             
             if (cell == FastBoard::BLACK) {            
@@ -188,8 +188,7 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         if (cellX >= boardSize) cellX = boardSize - 1;
         if (cellY >= boardSize) cellY = boardSize - 1;
         
-        // engine board is inverted
-        cellX = boardSize - cellX - 1;
+        // engine board is inverted vertically        
         cellY = boardSize - cellY - 1;
      
         int vtx = m_State->board.get_vertex(cellX, cellY);
