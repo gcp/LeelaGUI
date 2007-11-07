@@ -83,24 +83,6 @@
 									</object>
 								</object>
 							</object>
-							<object class="notebookpage">
-								<label>Notation</label>
-								<selected>0</selected>
-								<object class="wxPanel" name="m_panel71">
-									<style>wxTAB_TRAVERSAL</style>
-									<object class="wxBoxSizer">
-										<orient>wxVERTICAL</orient>
-										<object class="sizeritem">
-											<option>1</option>
-											<flag>wxALL|wxEXPAND</flag>
-											<border>5</border>
-											<object class="wxHtmlWindow" name="m_htmlWin1">
-												<style>wxHW_SCROLLBAR_AUTO|wxSUNKEN_BORDER</style>
-											</object>
-										</object>
-									</object>
-								</object>
-							</object>
 						</object>
 					</object>
 				</object>
@@ -113,35 +95,106 @@
 		<object class="wxMenuBar" name="m_menubar1">
 			<label>MyMenuBar</label>
 			<object class="wxMenu" name="m_menu1">
-				<label>File</label>
+				<label>_File</label>
 				<object class="wxMenuItem" name="menuItemNewGame">
-					<label>New game 9x9</label>
-					<help></help>
+					<label>New game &amp;9x9</label>
+					<help>Start a new 9x9 game</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem3">
-					<label>New game 13x13</label>
-					<help></help>
+					<label>New game 1&amp;3x13</label>
+					<help>Start a new 13x13 game</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem4">
-					<label>New game 19x19</label>
-					<help></help>
+					<label>New game &amp;19x19</label>
+					<help>Start a new 19x19 game</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItemExit">
-					<label>Exit</label>
-					<help></help>
+					<label>E&amp;xit\tAlt-F4</label>
+					<help>Exit the program</help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menu2">
-				<label>Score</label>
+				<label>_Score</label>
 				<object class="wxMenuItem" name="menuItem6">
-					<label>Pass</label>
-					<help></help>
+					<label>&amp;Pass\tAlt-P</label>
+					<help>Pass</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem5">
-					<label>Score</label>
-					<help></help>
+					<label>&amp;Score\tAlt-S</label>
+					<help>Score the position</help>
 				</object>
+			</object>
+			<object class="wxMenu" name="m_menu3">
+				<label>_Help</label>
+				<object class="wxMenuItem" name="menuItem7">
+					<label>&amp;About</label>
+					<help>Information about the program</help>
+				</object>
+			</object>
+		</object>
+		<object class="wxToolBar" name="m_toolBar1">
+			<style>wxTB_FLAT|wxTB_HORIZONTAL</style>
+			<bitmapsize>-1,-1</bitmapsize>
+			<margins>-1,-1</margins>
+			<packing>1</packing>
+			<separation>5</separation>
+			<object class="tool" name="m_tool1">
+				<label>New Game</label>
+				<tooltip>Start a new game</tooltip>
+				<longhelp>Start a new game</longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool4">
+				<label>Load Game</label>
+				<tooltip>Load a game from a file</tooltip>
+				<longhelp></longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool6">
+				<label>Save</label>
+				<tooltip>Save game to a file</tooltip>
+				<longhelp></longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool5">
+				<label>Save As</label>
+				<tooltip>Save game under a different name</tooltip>
+				<longhelp></longhelp>
+				<bitmap />
+			</object>
+			<object class="separator" />
+			<object class="tool" name="m_tool13">
+				<label>Undo</label>
+				<tooltip>Take back a mve</tooltip>
+				<longhelp></longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool15">
+				<label>Forward</label>
+				<tooltip>Go forward one move</tooltip>
+				<longhelp></longhelp>
+				<bitmap />
+			</object>
+			<object class="separator" />
+			<object class="tool" name="m_tool2">
+				<label>tool</label>
+				<tooltip>Pass</tooltip>
+				<longhelp>Pass</longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool3">
+				<label>tool</label>
+				<tooltip>Score the game</tooltip>
+				<longhelp>Score the game</longhelp>
+				<bitmap />
+			</object>
+			<object class="separator" />
+			<object class="tool" name="m_tool11">
+				<label>Exit</label>
+				<tooltip>Exits the program</tooltip>
+				<longhelp></longhelp>
+				<bitmap />
 			</object>
 		</object>
 	</object>

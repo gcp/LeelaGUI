@@ -37,4 +37,14 @@ BEGIN
     END
 END
 
-IDB_BITMAPWOOD             BITMAP                  "C:\\Projects\\LeelaGUI\\img\\wood.bmp"
+IDB_BITMAPWOOD          BITMAP                "C:\\Projects\\LeelaGUI\\img\\wood.bmp"
+IDB_NEWGAME             BITMAP                "C:\\Projects\\LeelaGUI\\img\\new.bmp"
+IDB_PASS                BITMAP                "C:\\Projects\\LeelaGUI\\img\\delete.bmp"
+IDB_SCORE               BITMAP                "C:\\Projects\\LeelaGUI\\img\\find.bmp"
+
+IDB_OPEN               BITMAP                "C:\\Projects\\LeelaGUI\\img\\fileopen.bmp"
+IDB_SAVE               BITMAP                "C:\\Projects\\LeelaGUI\\img\\filesave.bmp"
+IDB_SAVEAS             BITMAP                "C:\\Projects\\LeelaGUI\\img\\filesaveas.bmp"
+IDB_QUIT               BITMAP                "C:\\Projects\\LeelaGUI\\img\\quit.bmp"
+IDB_UNDO               BITMAP                "C:\\Projects\\LeelaGUI\\img\\undo.bmp"
+IDB_REDO               BITMAP                "C:\\Projects\\LeelaGUI\\img\\redo.bmp"

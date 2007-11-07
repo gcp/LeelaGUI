@@ -23,11 +23,11 @@ class TBoardPanel;
 #include <wx/image.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
-#include <wx/html/htmlwin.h>
 #include <wx/notebook.h>
 #include <wx/splitter.h>
 #include <wx/statusbr.h>
 #include <wx/menu.h>
+#include <wx/toolbar.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -77,12 +77,12 @@ class TMainFrame : public wxFrame
 		wxTreeCtrl* m_UCTTree;
 		wxPanel* m_panel51;
 		wxListCtrl* m_moveList;
-		wxPanel* m_panel71;
-		wxHtmlWindow* m_htmlWin1;
 		wxStatusBar* m_statusBar;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
 		wxMenu* m_menu2;
+		wxMenu* m_menu3;
+		wxToolBar* m_toolBar1;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void doActivate( wxActivateEvent& event ){ event.Skip(); }
