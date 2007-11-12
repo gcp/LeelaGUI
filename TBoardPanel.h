@@ -16,7 +16,7 @@ public:
                const wxString& name = wxPanelNameStr);
                
     void setState(GameState * brd);               
-    void setPlayerColor(FastBoard::square_t color);
+    void setPlayerColor(int color);
                                       
 private:
     DECLARE_EVENT_TABLE()
@@ -28,7 +28,7 @@ private:
     GameState * m_State;
     wxBitmap m_tileFull;        
     int m_cellDim;
-    FastBoard::square_t m_playerColor;
+    int m_playerColor;
 };
 
 #endif

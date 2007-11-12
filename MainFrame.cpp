@@ -5,6 +5,7 @@
 #include "Zobrist.h"
 #include "Random.h"
 #include "EngineThread.h"
+#include "AboutDialog.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 
@@ -15,7 +16,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     wxLog::SetTimestamp(NULL);            
     
-    Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
+    Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));    
     
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);    
@@ -28,6 +29,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     // allow one engine running
     m_engineRunning.Post();
+    
+    SetIcon(wxICON(aaaa));
 
     Center();          
 }
@@ -89,7 +92,7 @@ void MainFrame::doBoardResize(wxSizeEvent& event) {
     event.Skip();
 }
 
-void MainFrame::doNewGame9x9( wxCommandEvent& event ) {
+void MainFrame::doNewGame(wxCommandEvent& event) {
     m_engineRunning.Wait();
     
     m_State.init_game(9, 6.5f);    
@@ -101,31 +104,7 @@ void MainFrame::doNewGame9x9( wxCommandEvent& event ) {
     m_panelBoard->Refresh();
 }
 
-void MainFrame::doNewGame13x13( wxCommandEvent& event ) {
-    m_engineRunning.Wait();
-    
-    m_State.init_game(13, 6.5f);    
-    m_State.set_timecontrol(10 * 60 * 100, 0, 0);
-    
-    ::wxLogMessage("New game with 10 minutes thinking time and komi 6.5");
-    
-    m_engineRunning.Post();
-    m_panelBoard->Refresh();
-}
-
-void MainFrame::doNewGame19x19( wxCommandEvent& event ) {
-    m_engineRunning.Wait();
-    
-    m_State.init_game(19, 6.5f);    
-    m_State.set_timecontrol(20 * 60 * 100, 0, 0);
-    
-    ::wxLogMessage("New game with 20 minutes thinking time and komi 6.5");
-    
-    m_engineRunning.Post();
-    m_panelBoard->Refresh();
-}
-
-void MainFrame::doScore( wxCommandEvent& event ) {
+void MainFrame::doScore(wxCommandEvent& event) {
     m_engineRunning.Wait();
     
     float score = m_State.final_score();
@@ -139,7 +118,7 @@ void MainFrame::doScore( wxCommandEvent& event ) {
     m_engineRunning.Post();
 }
 
-void MainFrame::doPass( wxCommandEvent& event ) {
+void MainFrame::doPass(wxCommandEvent& event) {
     m_engineRunning.Wait();
 
     m_State.play_pass();
@@ -150,4 +129,62 @@ void MainFrame::doPass( wxCommandEvent& event ) {
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 
     m_engineRunning.Post();
+}
+
+void MainFrame::doUndo(wxCommandEvent& event) {
+    m_engineRunning.Wait();
+
+    if (m_State.undo_move()) {
+        ::wxLogMessage("Undoing one move");
+    }
+    m_playerColor = m_State.get_to_move();
+    m_panelBoard->setPlayerColor(m_playerColor);        
+    
+    wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+    myevent.SetEventObject(this);                        
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+
+    m_engineRunning.Post();
+}
+
+void MainFrame::doForward(wxCommandEvent& event) {
+    m_engineRunning.Wait();
+
+    if (m_State.forward_move()) {
+        ::wxLogMessage("Forward one move");
+    }
+    m_playerColor = m_State.get_to_move();
+    m_panelBoard->setPlayerColor(m_playerColor);
+        
+    wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+    myevent.SetEventObject(this);                        
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+
+    m_engineRunning.Post();
+}
+
+void MainFrame::doGoRules(wxCommandEvent& event) {
+    ::wxLaunchDefaultBrowser("http://senseis.xmp.net/?RulesOfGoIntroductory");
+}
+
+void MainFrame::doHomePage(wxCommandEvent& event) {
+   ::wxLaunchDefaultBrowser("http://www.sjeng.org/leela");
+}
+
+void MainFrame::doHelpAbout(wxCommandEvent& event) {
+    TAboutDialog myabout(this);
+    
+    myabout.ShowModal();    
+}
+
+void MainFrame::doNewRatedGame(wxCommandEvent& event) {
+    TNewGameDialog mydialog(this);
+    
+    mydialog.ShowModal();
+}
+
+void MainFrame::doOpenSGF(wxCommandEvent& event) {
+}
+
+void MainFrame::doSaveSGF(wxCommandEvent& event) {
 }

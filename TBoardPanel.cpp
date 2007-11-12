@@ -57,7 +57,7 @@ void TBoardPanel::setState(GameState * state) {
     m_State = state;
 }
 
-void TBoardPanel::setPlayerColor(FastBoard::square_t color) {
+void TBoardPanel::setPlayerColor(int color) {
     m_playerColor = color;
 }
 

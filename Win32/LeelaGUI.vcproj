@@ -187,6 +187,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\AboutDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\App.cpp"
 				>
 			</File>
@@ -200,6 +204,14 @@
 			</File>
 			<File
 				RelativePath="..\MainFrame.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\NagDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\NewGameDialog.cpp"
 				>
 			</File>
 			<File
@@ -233,6 +245,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\AboutDialog.h"
+				>
+			</File>
+			<File
 				RelativePath="..\App.h"
 				>
 			</File>
@@ -246,6 +262,14 @@
 			</File>
 			<File
 				RelativePath="..\MainFrame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\NagDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\NewGameDialog.h"
 				>
 			</File>
 			<File

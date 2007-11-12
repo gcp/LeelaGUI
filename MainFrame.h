@@ -21,14 +21,20 @@ class MainFrame : public TMainFrame {
 	virtual void doExit(wxCommandEvent& event);
 	virtual void doResize(wxSizeEvent& event);
 	virtual void doBoardResize(wxSizeEvent& event);		
-	virtual void doNewGame9x9( wxCommandEvent& event );
-	virtual void doNewGame13x13( wxCommandEvent& event );
-	virtual void doNewGame19x19( wxCommandEvent& event );
-	virtual void doScore( wxCommandEvent& event );
-	virtual void doPass( wxCommandEvent& event );
+	virtual void doNewGame(wxCommandEvent& event);
+	virtual void doScore(wxCommandEvent& event);
+	virtual void doPass(wxCommandEvent& event);	
+	virtual void doNewRatedGame(wxCommandEvent& event);
+	virtual void doUndo(wxCommandEvent& event);
+	virtual void doForward(wxCommandEvent& event);
+	virtual void doGoRules(wxCommandEvent& event);
+	virtual void doHelpAbout(wxCommandEvent& event);	
+	virtual void doHomePage(wxCommandEvent& event);
+	virtual void doOpenSGF(wxCommandEvent& event);
+        virtual void doSaveSGF(wxCommandEvent& event);		
 	
 	GameState m_State;
-	FastBoard::square_t m_playerColor;
+	int m_playerColor;
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;
 };

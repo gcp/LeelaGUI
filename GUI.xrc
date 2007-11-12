@@ -97,16 +97,21 @@
 			<object class="wxMenu" name="m_menu1">
 				<label>_File</label>
 				<object class="wxMenuItem" name="menuItemNewGame">
-					<label>New game &amp;9x9</label>
-					<help>Start a new 9x9 game</help>
+					<label>&amp;New game...\tCtrl-N</label>
+					<help>Start a new game</help>
 				</object>
-				<object class="wxMenuItem" name="menuItem3">
-					<label>New game 1&amp;3x13</label>
-					<help>Start a new 13x13 game</help>
+				<object class="wxMenuItem" name="menuItem14">
+					<label>New &amp;rated game\tCtrl-R</label>
+					<help></help>
 				</object>
-				<object class="wxMenuItem" name="menuItem4">
-					<label>New game &amp;19x19</label>
-					<help>Start a new 19x19 game</help>
+				<object class="separator" />
+				<object class="wxMenuItem" name="menuItem11">
+					<label>Open game...\tCtrl-O</label>
+					<help>Opens a game from disk</help>
+				</object>
+				<object class="wxMenuItem" name="menuItem12">
+					<label>Save...\tCtrl-S</label>
+					<help>Save a game to disk</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItemExit">
@@ -115,7 +120,16 @@
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menu2">
-				<label>_Score</label>
+				<label>_Game</label>
+				<object class="wxMenuItem" name="menuItem9">
+					<label>&amp;Undo\tCtrl-Z</label>
+					<help></help>
+				</object>
+				<object class="wxMenuItem" name="menuItem8">
+					<label>&amp;Forward\tCtrl-Y</label>
+					<help></help>
+				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem6">
 					<label>&amp;Pass\tAlt-P</label>
 					<help>Pass</help>
@@ -127,8 +141,16 @@
 			</object>
 			<object class="wxMenu" name="m_menu3">
 				<label>_Help</label>
+				<object class="wxMenuItem" name="menuItem13">
+					<label>&amp;Go Rules\tF1</label>
+					<help>Explanation of the rules of Go</help>
+				</object>
+				<object class="wxMenuItem" name="menuItem10">
+					<label>Leela Homepage\tCtrl-H</label>
+					<help></help>
+				</object>
 				<object class="wxMenuItem" name="menuItem7">
-					<label>&amp;About</label>
+					<label>&amp;About...</label>
 					<help>Information about the program</help>
 				</object>
 			</object>
@@ -147,26 +169,20 @@
 			</object>
 			<object class="tool" name="m_tool4">
 				<label>Load Game</label>
-				<tooltip>Load a game from a file</tooltip>
-				<longhelp></longhelp>
-				<bitmap />
-			</object>
-			<object class="tool" name="m_tool6">
-				<label>Save</label>
-				<tooltip>Save game to a file</tooltip>
+				<tooltip>Load a game</tooltip>
 				<longhelp></longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_tool5">
-				<label>Save As</label>
-				<tooltip>Save game under a different name</tooltip>
+				<label>Save</label>
+				<tooltip>Save the game</tooltip>
 				<longhelp></longhelp>
 				<bitmap />
 			</object>
 			<object class="separator" />
 			<object class="tool" name="m_tool13">
 				<label>Undo</label>
-				<tooltip>Take back a mve</tooltip>
+				<tooltip>Take back a move</tooltip>
 				<longhelp></longhelp>
 				<bitmap />
 			</object>
@@ -195,6 +211,275 @@
 				<tooltip>Exits the program</tooltip>
 				<longhelp></longhelp>
 				<bitmap />
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TNewGameDialog">
+		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
+		<size>225,474</size>
+		<title>New Game</title>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxRadioBox" name="m_radioBox2">
+					<style>wxRA_SPECIFY_ROWS</style>
+					<label>Board size</label>
+					<selection>0</selection>
+					<content>
+						<item> 9 x 9 </item>
+						<item> 13 x 13 </item>
+						<item> 19 x 19 </item>
+					</content>
+					<dimension>1</dimension>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxRadioBox" name="m_radioBox5">
+					<style>wxRA_SPECIFY_ROWS</style>
+					<label>Ruleset</label>
+					<selection>0</selection>
+					<content>
+						<item>Chinese</item>
+						<item>Japanese</item>
+					</content>
+					<dimension>1</dimension>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStaticBoxSizer">
+					<orient>wxHORIZONTAL</orient>
+					<label>Komi</label>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER</flag>
+						<border>5</border>
+						<object class="wxStaticText" name="m_staticText2">
+							<style>wxALIGN_CENTRE</style>
+							<label>Komi</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER</flag>
+						<border>5</border>
+						<object class="wxSpinCtrl" name="m_spinCtrl2">
+							<style>wxSP_ARROW_KEYS</style>
+							<value>0</value>
+							<min>0</min>
+							<max>15</max>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStaticBoxSizer">
+					<orient>wxHORIZONTAL</orient>
+					<label>Handicap</label>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER</flag>
+						<border>5</border>
+						<object class="wxStaticText" name="m_staticText3">
+							<style>wxALIGN_CENTRE</style>
+							<label>Handicap</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER</flag>
+						<border>5</border>
+						<object class="wxSpinCtrl" name="m_spinCtrl3">
+							<style>wxSP_ARROW_KEYS</style>
+							<value>0</value>
+							<min>0</min>
+							<max>9</max>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxRadioBox" name="m_radioBox3">
+					<style>wxRA_SPECIFY_ROWS</style>
+					<label>Your Color</label>
+					<selection>0</selection>
+					<content>
+						<item>White</item>
+						<item>Black</item>
+						<item>Both</item>
+					</content>
+					<dimension>1</dimension>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxRadioBox" name="m_radioBox4">
+					<style>wxRA_SPECIFY_COLS</style>
+					<label>Engine Max Level</label>
+					<selection>0</selection>
+					<content>
+						<item>100 simulations</item>
+						<item>500 simulations</item>
+						<item>1000 simulations</item>
+						<item>5000 simulations</item>
+						<item>10000 simulations</item>
+						<item>50000 simulations</item>
+					</content>
+					<dimension>1</dimension>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStdDialogButtonSizer">
+					<object class="button">
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxButton" name="wxID_OK">
+							<label>&amp;OK</label>
+						</object>
+					</object>
+					<object class="button">
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxButton" name="wxID_CANCEL">
+							<label>&amp;Cancel</label>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TAboutDialog">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>237,138</size>
+		<title>About</title>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText4">
+					<style>wxALIGN_CENTRE</style>
+					<label>Leela lite version 0.2.7</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText5">
+					<label>Copyright (C) 2007 Gian-Carlo Pascutto</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText6">
+					<label>http://www.sjeng.org</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxButton" name="m_button1">
+					<label>OK</label>
+					<default>0</default>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TNagDialog">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>245,178</size>
+		<title>Support Leela!</title>
+		<centered>1</centered>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText8">
+					<label>If you like Leela, you might also like:</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText9">
+					<font>
+						<family>default</family>
+						<style>normal</style>
+						<weight>bold</weight>
+						<underlined>0</underlined>
+					</font>
+					<label>Leela, Full Version</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxHyperlinkCtrl" name="m_hyperlink1">
+					<label></label>
+					<url>http://www.sjeng.org/leela</url>
+					<style>wxHL_DEFAULT_STYLE</style>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText10">
+					<font>
+						<family>default</family>
+						<style>normal</style>
+						<weight>bold</weight>
+						<underlined>0</underlined>
+					</font>
+					<label>Deep Sjeng, the chess program</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxHyperlinkCtrl" name="m_hyperlink2">
+					<label></label>
+					<url>http://www.sjeng.org/deepsjeng2</url>
+					<style>wxHL_DEFAULT_STYLE</style>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxButton" name="m_button2">
+					<label>OK</label>
+					<default>0</default>
+				</object>
 			</object>
 		</object>
 	</object>

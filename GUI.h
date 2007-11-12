@@ -29,6 +29,13 @@ class TBoardPanel;
 #include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/frame.h>
+#include <wx/radiobox.h>
+#include <wx/stattext.h>
+#include <wx/spinctrl.h>
+#include <wx/statbox.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/hyperlink.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -44,12 +51,18 @@ class TMainFrame : public wxFrame
 		void _wxFB_doActivate( wxActivateEvent& event ){ doActivate( event ); }
 		void _wxFB_doPaint( wxPaintEvent& event ){ doPaint( event ); }
 		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
-		void _wxFB_doNewGame9x9( wxCommandEvent& event ){ doNewGame9x9( event ); }
-		void _wxFB_doNewGame13x13( wxCommandEvent& event ){ doNewGame13x13( event ); }
-		void _wxFB_doNewGame19x19( wxCommandEvent& event ){ doNewGame19x19( event ); }
+		void _wxFB_doNewGame( wxCommandEvent& event ){ doNewGame( event ); }
+		void _wxFB_doNewRatedGame( wxCommandEvent& event ){ doNewRatedGame( event ); }
+		void _wxFB_doOpenSGF( wxCommandEvent& event ){ doOpenSGF( event ); }
+		void _wxFB_doSaveSGF( wxCommandEvent& event ){ doSaveSGF( event ); }
 		void _wxFB_doExit( wxCommandEvent& event ){ doExit( event ); }
+		void _wxFB_doUndo( wxCommandEvent& event ){ doUndo( event ); }
+		void _wxFB_doForward( wxCommandEvent& event ){ doForward( event ); }
 		void _wxFB_doPass( wxCommandEvent& event ){ doPass( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
+		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
+		void _wxFB_doHomePage( wxCommandEvent& event ){ doHomePage( event ); }
+		void _wxFB_doHelpAbout( wxCommandEvent& event ){ doHelpAbout( event ); }
 		
 	
 	protected:
@@ -58,12 +71,19 @@ class TMainFrame : public wxFrame
 			ID_DEFAULT = wxID_ANY, // Default
 			ID_BOARDSASH = 1000,
 			ID_BOARDPANEL,
-			ID_NEWGAME9,
-			ID_NEWGAME13,
-			ID_NEWGAME19,
+			ID_NEWGAME,
+			ID_NEWRATED,
+			ID_OPEN,
+			ID_SAVE,
 			ID_EXIT,
+			ID_UNDO,
+			ID_REDO,
 			ID_PASS,
 			ID_SCORE,
+			ID_HELPRULES,
+			ID_HOMEPAGE,
+			ID_HELPABOUT,
+			ID_NEWGAME9,
 		};
 		
 		wxSplitterWindow* m_splitter1;
@@ -88,12 +108,18 @@ class TMainFrame : public wxFrame
 		virtual void doActivate( wxActivateEvent& event ){ event.Skip(); }
 		virtual void doPaint( wxPaintEvent& event ){ event.Skip(); }
 		virtual void doResize( wxSizeEvent& event ){ event.Skip(); }
-		virtual void doNewGame9x9( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doNewGame13x13( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doNewGame19x19( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doNewGame( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doNewRatedGame( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doOpenSGF( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doSaveSGF( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doExit( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doUndo( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doForward( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doPass( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doGoRules( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doHomePage( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doHelpAbout( wxCommandEvent& event ){ event.Skip(); }
 		
 	
 	public:
@@ -104,6 +130,100 @@ class TMainFrame : public wxFrame
 		m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
 		}
 		
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TNewGameDialog
+///////////////////////////////////////////////////////////////////////////////
+class TNewGameDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doCancel( wxCommandEvent& event ){ doCancel( event ); }
+		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		
+	
+	protected:
+		wxRadioBox* m_radioBox2;
+		wxRadioBox* m_radioBox5;
+		wxStaticText* m_staticText2;
+		wxSpinCtrl* m_spinCtrl2;
+		wxStaticText* m_staticText3;
+		wxSpinCtrl* m_spinCtrl3;
+		wxRadioBox* m_radioBox3;
+		wxRadioBox* m_radioBox4;
+		wxStdDialogButtonSizer* m_sdbSizer1;
+		wxButton* m_sdbSizer1OK;
+		wxButton* m_sdbSizer1Cancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doCancel( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		
+	
+	public:
+		TNewGameDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 225,474 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TAboutDialog
+///////////////////////////////////////////////////////////////////////////////
+class TAboutDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		
+	
+	protected:
+		wxStaticText* m_staticText4;
+		wxStaticText* m_staticText5;
+		wxStaticText* m_staticText6;
+		wxButton* m_button1;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		
+	
+	public:
+		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 237,138 ), long style = wxDEFAULT_DIALOG_STYLE );
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TNagDialog
+///////////////////////////////////////////////////////////////////////////////
+class TNagDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doInit( wxInitDialogEvent& event ){ doInit( event ); }
+		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		
+	
+	protected:
+		wxStaticText* m_staticText8;
+		wxStaticText* m_staticText9;
+		wxHyperlinkCtrl* m_hyperlink1;
+		wxStaticText* m_staticText10;
+		wxHyperlinkCtrl* m_hyperlink2;
+		wxButton* m_button2;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		
+	
+	public:
+		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 245,178 ), long style = wxDEFAULT_DIALOG_STYLE );
 	
 };
 

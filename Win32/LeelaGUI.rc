@@ -37,10 +37,12 @@ BEGIN
     END
 END
 
-IDB_BITMAPWOOD          BITMAP                "C:\\Projects\\LeelaGUI\\img\\wood.bmp"
-IDB_NEWGAME             BITMAP                "C:\\Projects\\LeelaGUI\\img\\new.bmp"
-IDB_PASS                BITMAP                "C:\\Projects\\LeelaGUI\\img\\delete.bmp"
-IDB_SCORE               BITMAP                "C:\\Projects\\LeelaGUI\\img\\find.bmp"
+aaaa                   ICON                  "C:\\Projects\\LeelaGUI\\img\\leela_mock.ico"
+
+IDB_BITMAPWOOD         BITMAP                "C:\\Projects\\LeelaGUI\\img\\wood.bmp"
+IDB_NEWGAME            BITMAP                "C:\\Projects\\LeelaGUI\\img\\new.bmp"
+IDB_PASS               BITMAP                "C:\\Projects\\LeelaGUI\\img\\delete.bmp"
+IDB_SCORE              BITMAP                "C:\\Projects\\LeelaGUI\\img\\find.bmp"
 
 IDB_OPEN               BITMAP                "C:\\Projects\\LeelaGUI\\img\\fileopen.bmp"
 IDB_SAVE               BITMAP                "C:\\Projects\\LeelaGUI\\img\\filesave.bmp"
