@@ -23,6 +23,8 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_EXIT, TMainFrame::_wxFB_doExit )
 	EVT_MENU( ID_UNDO, TMainFrame::_wxFB_doUndo )
 	EVT_MENU( ID_REDO, TMainFrame::_wxFB_doForward )
+	EVT_MENU( ID_BACK10, TMainFrame::_wxFB_doBack10 )
+	EVT_MENU( ID_FWD10, TMainFrame::_wxFB_doForward10 )
 	EVT_MENU( ID_PASS, TMainFrame::_wxFB_doPass )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
@@ -103,9 +105,9 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu1->Append( menuItem14 );
 	
 	m_menu1->AppendSeparator();
-	wxMenuItem* menuItem11 = new wxMenuItem( m_menu1, ID_OPEN, wxString( _("Open game...") ) + wxT('\t') + wxT("Ctrl-O"), _("Opens a game from disk"), wxITEM_NORMAL );
+	wxMenuItem* menuItem11 = new wxMenuItem( m_menu1, ID_OPEN, wxString( _("&Open game...") ) + wxT('\t') + wxT("Ctrl-O"), _("Opens a game from disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem11 );
-	wxMenuItem* menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("Save...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
+	wxMenuItem* menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("&Save...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem12 );
 	
 	m_menu1->AppendSeparator();
@@ -118,6 +120,12 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu2->Append( menuItem9 );
 	wxMenuItem* menuItem8 = new wxMenuItem( m_menu2, ID_REDO, wxString( _("&Forward") ) + wxT('\t') + wxT("Ctrl-Y"), wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( menuItem8 );
+	
+	m_menu2->AppendSeparator();
+	wxMenuItem* menuItem131 = new wxMenuItem( m_menu2, ID_BACK10, wxString( _("Go &back 10 moves") ) + wxT('\t') + wxT("Alt-B"), _("Undo 10 moves"), wxITEM_NORMAL );
+	m_menu2->Append( menuItem131 );
+	wxMenuItem* menuItem141 = new wxMenuItem( m_menu2, ID_FWD10, wxString( _("Go for&ward 10 moves") ) + wxT('\t') + wxT("Alt-F"), _("Forward 10 moves"), wxITEM_NORMAL );
+	m_menu2->Append( menuItem141 );
 	
 	m_menu2->AppendSeparator();
 	wxMenuItem* menuItem6 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("&Pass") ) + wxT('\t') + wxT("Alt-P"), _("Pass"), wxITEM_NORMAL );
@@ -138,12 +146,14 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->SetMenuBar( m_menubar1 );
 	
 	m_toolBar1 = this->CreateToolBar( wxTB_FLAT|wxTB_HORIZONTAL, wxID_ANY ); 
-	m_toolBar1->AddTool( ID_NEWGAME9, _("New Game"), wxBitmap( wxT("IDB_NEWGAME"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new game"), _("Start a new game") );
-	m_toolBar1->AddTool( ID_OPEN, _("Load Game"), wxBitmap( wxT("IDB_OPEN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Load a game"), wxEmptyString );
-	m_toolBar1->AddTool( ID_SAVE, _("Save"), wxBitmap( wxT("IDB_SAVEAS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Save the game"), wxEmptyString );
+	m_toolBar1->AddTool( ID_NEWGAME, _("New Game"), wxBitmap( wxT("IDB_NEWGAME"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new game"), _("Start a new game") );
+	m_toolBar1->AddTool( ID_OPEN, _("Load Game"), wxBitmap( wxT("IDB_OPEN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Load a game"), _("Load a game") );
+	m_toolBar1->AddTool( ID_SAVE, _("Save"), wxBitmap( wxT("IDB_SAVEAS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Save the game"), _("Save the game") );
 	m_toolBar1->AddSeparator();
-	m_toolBar1->AddTool( ID_UNDO, _("Undo"), wxBitmap( wxT("IDB_UNDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Take back a move"), wxEmptyString );
-	m_toolBar1->AddTool( ID_REDO, _("Forward"), wxBitmap( wxT("IDB_REDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward one move"), wxEmptyString );
+	m_toolBar1->AddTool( ID_BACK10, _("Go back 10 moves"), wxBitmap( wxT("IDB_BACKWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go back 10 moves"), _("Go back 10 moves") );
+	m_toolBar1->AddTool( ID_UNDO, _("Undo"), wxBitmap( wxT("IDB_UNDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Take back one move"), _("Take back one move") );
+	m_toolBar1->AddTool( ID_REDO, _("Forward"), wxBitmap( wxT("IDB_REDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward one move"), _("Go forward one move") );
+	m_toolBar1->AddTool( ID_FWD10, _("Forward 10"), wxBitmap( wxT("IDB_FORWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward 10 moves"), _("Go forward 10 moves") );
 	m_toolBar1->AddSeparator();
 	m_toolBar1->AddTool( ID_PASS, _("tool"), wxBitmap( wxT("IDB_PASS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Pass"), _("Pass") );
 	m_toolBar1->AddTool( ID_SCORE, _("tool"), wxBitmap( wxT("IDB_SCORE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game") );
@@ -224,7 +234,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	this->Layout();
 }
 BEGIN_EVENT_TABLE( TAboutDialog, wxDialog )
-	EVT_BUTTON( wxID_OK, TAboutDialog::_wxFB_doOK )
+	EVT_INIT_DIALOG( TAboutDialog::_wxFB_doInit )
 END_EVENT_TABLE()
 
 TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -234,17 +244,16 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Leela lite version 0.2.7"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	m_staticText4->Wrap( -1 );
-	bSizer9->Add( m_staticText4, 0, wxALL|wxEXPAND, 5 );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela lite version 0.2.7"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion->Wrap( -1 );
+	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	bSizer9->Add( m_staticText5, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	m_staticText6 = new wxStaticText( this, wxID_ANY, _("http://www.sjeng.org"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText6->Wrap( -1 );
-	bSizer9->Add( m_staticText6, 0, wxALIGN_CENTER|wxALL, 5 );
+	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("http://www.sjeng.org"), wxT("http://www.sjeng.org"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	bSizer9->Add( m_hyperlink3, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	m_button1 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer9->Add( m_button1, 0, wxALIGN_CENTER|wxALL, 5 );
@@ -254,7 +263,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 }
 BEGIN_EVENT_TABLE( TNagDialog, wxDialog )
 	EVT_INIT_DIALOG( TNagDialog::_wxFB_doInit )
-	EVT_BUTTON( wxID_ANY, TNagDialog::_wxFB_doOK )
+	EVT_BUTTON( wxID_OK, TNagDialog::_wxFB_doOK )
 END_EVENT_TABLE()
 
 TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -287,7 +296,7 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_hyperlink2 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/deepsjeng2"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	bSizer10->Add( m_hyperlink2, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	m_button2 = new wxButton( this, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_button2 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer10->Add( m_button2, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	this->SetSizer( bSizer10 );

@@ -4,8 +4,11 @@
 #include "TBoardPanel.h"
 #include "Zobrist.h"
 #include "Random.h"
+#include "SGFTree.h"
 #include "EngineThread.h"
 #include "AboutDialog.h"
+#include "NewGameDialog.h"
+#include "NagDialog.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 
@@ -44,6 +47,12 @@ MainFrame::~MainFrame() {
     m_panelBoard->setState(NULL); 
     
     Disconnect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
+    
+    Hide();
+    
+    NagDialog dialog(this);
+    
+    dialog.ShowModal();
 }
 
 void MainFrame::doExit(wxCommandEvent & event) {
@@ -62,6 +71,8 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             } else {            
                 m_engineThread->Run();
             }
+        } else {
+            ::wxLogDebug("Engine already running");
         }
     } else if (m_State.get_passes() == 2) {
         float score = m_State.final_score();
@@ -101,6 +112,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
     ::wxLogMessage("New game with 3 minutes thinking time and komi 6.5");
     
     m_engineRunning.Post();
+    
     m_panelBoard->Refresh();
 }
 
@@ -124,43 +136,55 @@ void MainFrame::doPass(wxCommandEvent& event) {
     m_State.play_pass();
     ::wxLogMessage("User passes");
     
+    m_engineRunning.Post();
+    
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
-
-    m_engineRunning.Post();
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);    
 }
 
 void MainFrame::doUndo(wxCommandEvent& event) {
     m_engineRunning.Wait();
 
     if (m_State.undo_move()) {
-        ::wxLogMessage("Undoing one move");
+        ::wxLogDebug("Undoing one move");
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);        
     
+    m_engineRunning.Post();
+    
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
-
-    m_engineRunning.Post();
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);    
 }
 
 void MainFrame::doForward(wxCommandEvent& event) {
     m_engineRunning.Wait();
 
     if (m_State.forward_move()) {
-        ::wxLogMessage("Forward one move");
+        ::wxLogDebug("Forward one move");
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
+    
+    m_engineRunning.Post();
         
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);                        
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+}
 
-    m_engineRunning.Post();
+void MainFrame::doBack10(wxCommandEvent& event) {
+    for (int i = 0; i < 10; i++) {
+        doUndo(event);
+    }
+}
+
+void MainFrame::doForward10(wxCommandEvent& event) {
+    for (int i = 0; i < 10; i++) {
+        doForward(event);
+    }
 }
 
 void MainFrame::doGoRules(wxCommandEvent& event) {
@@ -172,19 +196,72 @@ void MainFrame::doHomePage(wxCommandEvent& event) {
 }
 
 void MainFrame::doHelpAbout(wxCommandEvent& event) {
-    TAboutDialog myabout(this);
+    AboutDialog myabout(this);
     
     myabout.ShowModal();    
 }
 
 void MainFrame::doNewRatedGame(wxCommandEvent& event) {
-    TNewGameDialog mydialog(this);
+    NewGameDialog mydialog(this);
     
     mydialog.ShowModal();
 }
 
-void MainFrame::doOpenSGF(wxCommandEvent& event) {
+void MainFrame::doOpenSGF(wxCommandEvent& event) {    
+    m_engineRunning.Wait();    
+    
+    wxString caption = wxT("Choose a file");
+    wxString wildcard = wxT("Go games (*.sgf)|*.sgf");
+    wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
+                        wxFD_OPEN | wxFD_CHANGE_DIR | wxFD_FILE_MUST_EXIST);
+    
+    if (dialog.ShowModal() == wxID_OK) {
+        wxString path = dialog.GetPath();
+        
+        ::wxLogDebug("Opening: " + path);
+        
+        std::auto_ptr<SGFTree> tree(new SGFTree);
+        tree->load_from_file(path);  
+        
+        ::wxLogDebug("Read %d moves", tree->count_mainline_moves());
+        
+        m_State = tree->get_mainline();
+        
+        m_playerColor = m_State.get_to_move();
+        m_panelBoard->setPlayerColor(m_playerColor);
+        
+        m_engineRunning.Post();
+        
+        //signal board change
+        wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+        myevent.SetEventObject(this);                        
+        ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    } else {
+        m_engineRunning.Post();
+    }        
 }
 
 void MainFrame::doSaveSGF(wxCommandEvent& event) {
+    m_engineRunning.Wait();
+    
+    std::string sgfgame = SGFTree::state_to_string(&m_State, !m_playerColor);
+    
+    wxString caption = wxT("Choose a file");
+    wxString wildcard = wxT("Go games (*.sgf)|*.sgf");
+    wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
+                        wxFD_SAVE | wxFD_CHANGE_DIR | wxFD_OVERWRITE_PROMPT);
+                        
+    if (dialog.ShowModal() == wxID_OK) {
+        wxString path = dialog.GetPath();
+        
+        ::wxLogDebug("Saving: " + path);
+                
+        wxFileOutputStream file(path);
+        
+        if (file.IsOk()) {
+            file.Write(sgfgame.c_str(), sgfgame.size());  
+        }        
+    }        
+    
+    m_engineRunning.Post();
 }

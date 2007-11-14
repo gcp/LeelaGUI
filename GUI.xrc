@@ -106,11 +106,11 @@
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem11">
-					<label>Open game...\tCtrl-O</label>
+					<label>&amp;Open game...\tCtrl-O</label>
 					<help>Opens a game from disk</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem12">
-					<label>Save...\tCtrl-S</label>
+					<label>&amp;Save...\tCtrl-S</label>
 					<help>Save a game to disk</help>
 				</object>
 				<object class="separator" />
@@ -128,6 +128,15 @@
 				<object class="wxMenuItem" name="menuItem8">
 					<label>&amp;Forward\tCtrl-Y</label>
 					<help></help>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="menuItem131">
+					<label>Go &amp;back 10 moves\tAlt-B</label>
+					<help>Undo 10 moves</help>
+				</object>
+				<object class="wxMenuItem" name="menuItem141">
+					<label>Go for&amp;ward 10 moves\tAlt-F</label>
+					<help>Forward 10 moves</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem6">
@@ -170,26 +179,38 @@
 			<object class="tool" name="m_tool4">
 				<label>Load Game</label>
 				<tooltip>Load a game</tooltip>
-				<longhelp></longhelp>
+				<longhelp>Load a game</longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_tool5">
 				<label>Save</label>
 				<tooltip>Save the game</tooltip>
-				<longhelp></longhelp>
+				<longhelp>Save the game</longhelp>
 				<bitmap />
 			</object>
 			<object class="separator" />
+			<object class="tool" name="m_tool10">
+				<label>Go back 10 moves</label>
+				<tooltip>Go back 10 moves</tooltip>
+				<longhelp>Go back 10 moves</longhelp>
+				<bitmap />
+			</object>
 			<object class="tool" name="m_tool13">
 				<label>Undo</label>
-				<tooltip>Take back a move</tooltip>
-				<longhelp></longhelp>
+				<tooltip>Take back one move</tooltip>
+				<longhelp>Take back one move</longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_tool15">
 				<label>Forward</label>
 				<tooltip>Go forward one move</tooltip>
-				<longhelp></longhelp>
+				<longhelp>Go forward one move</longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool9">
+				<label>Forward 10</label>
+				<tooltip>Go forward 10 moves</tooltip>
+				<longhelp>Go forward 10 moves</longhelp>
 				<bitmap />
 			</object>
 			<object class="separator" />
@@ -377,7 +398,7 @@
 				<option>0</option>
 				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
-				<object class="wxStaticText" name="m_staticText4">
+				<object class="wxStaticText" name="m_staticTextVersion">
 					<style>wxALIGN_CENTRE</style>
 					<label>Leela lite version 0.2.7</label>
 				</object>
@@ -394,8 +415,10 @@
 				<option>0</option>
 				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
-				<object class="wxStaticText" name="m_staticText6">
+				<object class="wxHyperlinkCtrl" name="m_hyperlink3">
 					<label>http://www.sjeng.org</label>
+					<url>http://www.sjeng.org</url>
+					<style>wxHL_DEFAULT_STYLE</style>
 				</object>
 			</object>
 			<object class="sizeritem">

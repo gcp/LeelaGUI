@@ -733,7 +733,7 @@
                 <event name="OnSize"></event>
                 <event name="OnUpdateUI"></event>
             </object>
-            <object class="wxMenuBar" expanded="0">
+            <object class="wxMenuBar" expanded="1">
                 <property name="bg"></property>
                 <property name="context_help"></property>
                 <property name="enabled">1</property>
@@ -817,7 +817,7 @@
                         <property name="help">Opens a game from disk</property>
                         <property name="id">ID_OPEN</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Open game...</property>
+                        <property name="label">&amp;Open game...</property>
                         <property name="name">menuItem11</property>
                         <property name="shortcut">Ctrl-O</property>
                         <property name="unchecked_bitmap"></property>
@@ -831,7 +831,7 @@
                         <property name="help">Save a game to disk</property>
                         <property name="id">ID_SAVE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Save...</property>
+                        <property name="label">&amp;Save...</property>
                         <property name="name">menuItem12</property>
                         <property name="shortcut">Ctrl-S</property>
                         <property name="unchecked_bitmap"></property>
@@ -884,6 +884,35 @@
                         <property name="shortcut">Ctrl-Y</property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doForward</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="separator" expanded="1" />
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Undo 10 moves</property>
+                        <property name="id">ID_BACK10</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Go &amp;back 10 moves</property>
+                        <property name="name">menuItem131</property>
+                        <property name="shortcut">Alt-B</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doBack10</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Forward 10 moves</property>
+                        <property name="id">ID_FWD10</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Go for&amp;ward 10 moves</property>
+                        <property name="name">menuItem141</property>
+                        <property name="shortcut">Alt-F</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doForward10</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                     <object class="separator" expanded="1" />
@@ -964,7 +993,7 @@
                     </object>
                 </object>
             </object>
-            <object class="wxToolBar" expanded="0">
+            <object class="wxToolBar" expanded="1">
                 <property name="bg"></property>
                 <property name="bitmapsize">-1,-1</property>
                 <property name="context_help"></property>
@@ -1013,7 +1042,7 @@
                 <event name="OnUpdateUI"></event>
                 <object class="tool" expanded="1">
                     <property name="bitmap">IDB_NEWGAME; Load From Resource</property>
-                    <property name="id">ID_NEWGAME9</property>
+                    <property name="id">ID_NEWGAME</property>
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">New Game</property>
                     <property name="name">m_tool1</property>
@@ -1031,7 +1060,7 @@
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">Load Game</property>
                     <property name="name">m_tool4</property>
-                    <property name="statusbar"></property>
+                    <property name="statusbar">Load a game</property>
                     <property name="tooltip">Load a game</property>
                     <event name="OnMenuSelection"></event>
                     <event name="OnToolClicked"></event>
@@ -1045,7 +1074,7 @@
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">Save</property>
                     <property name="name">m_tool5</property>
-                    <property name="statusbar"></property>
+                    <property name="statusbar">Save the game</property>
                     <property name="tooltip">Save the game</property>
                     <event name="OnMenuSelection"></event>
                     <event name="OnToolClicked"></event>
@@ -1055,13 +1084,27 @@
                 </object>
                 <object class="toolSeparator" expanded="1" />
                 <object class="tool" expanded="1">
+                    <property name="bitmap">IDB_BACKWARD; Load From Resource</property>
+                    <property name="id">ID_BACK10</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">Go back 10 moves</property>
+                    <property name="name">m_tool10</property>
+                    <property name="statusbar">Go back 10 moves</property>
+                    <property name="tooltip">Go back 10 moves</property>
+                    <event name="OnMenuSelection"></event>
+                    <event name="OnToolClicked"></event>
+                    <event name="OnToolEnter"></event>
+                    <event name="OnToolRClicked"></event>
+                    <event name="OnUpdateUI"></event>
+                </object>
+                <object class="tool" expanded="1">
                     <property name="bitmap">IDB_UNDO; Load From Resource</property>
                     <property name="id">ID_UNDO</property>
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">Undo</property>
                     <property name="name">m_tool13</property>
-                    <property name="statusbar"></property>
-                    <property name="tooltip">Take back a move</property>
+                    <property name="statusbar">Take back one move</property>
+                    <property name="tooltip">Take back one move</property>
                     <event name="OnMenuSelection"></event>
                     <event name="OnToolClicked"></event>
                     <event name="OnToolEnter"></event>
@@ -1074,8 +1117,22 @@
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">Forward</property>
                     <property name="name">m_tool15</property>
-                    <property name="statusbar"></property>
+                    <property name="statusbar">Go forward one move</property>
                     <property name="tooltip">Go forward one move</property>
+                    <event name="OnMenuSelection"></event>
+                    <event name="OnToolClicked"></event>
+                    <event name="OnToolEnter"></event>
+                    <event name="OnToolRClicked"></event>
+                    <event name="OnUpdateUI"></event>
+                </object>
+                <object class="tool" expanded="1">
+                    <property name="bitmap">IDB_FORWARD; Load From Resource</property>
+                    <property name="id">ID_FWD10</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">Forward 10</property>
+                    <property name="name">m_tool9</property>
+                    <property name="statusbar">Go forward 10 moves</property>
+                    <property name="tooltip">Go forward 10 moves</property>
                     <event name="OnMenuSelection"></event>
                     <event name="OnToolClicked"></event>
                     <event name="OnToolEnter"></event>
@@ -1665,7 +1722,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="bg"></property>
             <property name="center"></property>
             <property name="context_help"></property>
@@ -1696,7 +1753,7 @@
             <event name="OnHibernate"></event>
             <event name="OnIconize"></event>
             <event name="OnIdle"></event>
-            <event name="OnInitDialog"></event>
+            <event name="OnInitDialog">doInit</event>
             <event name="OnKeyDown"></event>
             <event name="OnKeyUp"></event>
             <event name="OnKillFocus"></event>
@@ -1737,7 +1794,7 @@
                         <property name="label">Leela lite version 0.2.7</property>
                         <property name="maximum_size"></property>
                         <property name="minimum_size"></property>
-                        <property name="name">m_staticText4</property>
+                        <property name="name">m_staticTextVersion</property>
                         <property name="permission">protected</property>
                         <property name="pos"></property>
                         <property name="size"></property>
@@ -1828,31 +1885,35 @@
                     <property name="border">5</property>
                     <property name="flag">wxALIGN_CENTER|wxALL</property>
                     <property name="proportion">0</property>
-                    <object class="wxStaticText" expanded="1">
+                    <object class="wxHyperlinkCtrl" expanded="1">
                         <property name="bg"></property>
                         <property name="context_help"></property>
                         <property name="enabled">1</property>
                         <property name="fg"></property>
                         <property name="font"></property>
                         <property name="hidden">0</property>
+                        <property name="hover_color"></property>
                         <property name="id">wxID_ANY</property>
                         <property name="label">http://www.sjeng.org</property>
                         <property name="maximum_size"></property>
                         <property name="minimum_size"></property>
-                        <property name="name">m_staticText6</property>
+                        <property name="name">m_hyperlink3</property>
+                        <property name="normal_color"></property>
                         <property name="permission">protected</property>
                         <property name="pos"></property>
                         <property name="size"></property>
-                        <property name="style"></property>
+                        <property name="style">wxHL_DEFAULT_STYLE</property>
                         <property name="subclass"></property>
                         <property name="tooltip"></property>
+                        <property name="url">http://www.sjeng.org</property>
+                        <property name="visited_color"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
-                        <property name="wrap">-1</property>
                         <event name="OnChar"></event>
                         <event name="OnEnterWindow"></event>
                         <event name="OnEraseBackground"></event>
+                        <event name="OnHyperlink"></event>
                         <event name="OnKeyDown"></event>
                         <event name="OnKeyUp"></event>
                         <event name="OnKillFocus"></event>
@@ -1901,7 +1962,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
-                        <event name="OnButtonClick">doOK</event>
+                        <event name="OnButtonClick"></event>
                         <event name="OnChar"></event>
                         <event name="OnEnterWindow"></event>
                         <event name="OnEraseBackground"></event>
@@ -1929,7 +1990,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
@@ -2261,7 +2322,7 @@
                         <property name="fg"></property>
                         <property name="font"></property>
                         <property name="hidden">0</property>
-                        <property name="id">wxID_ANY</property>
+                        <property name="id">wxID_OK</property>
                         <property name="label">OK</property>
                         <property name="maximum_size"></property>
                         <property name="minimum_size"></property>

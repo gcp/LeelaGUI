@@ -20,10 +20,10 @@ void * TEngineThread::Entry() {
         int move = search->think(who);
         m_state->play_move(who, move);                
         
-        wxCommandEvent event(EVT_NEW_MOVE);                               
-        ::wxPostEvent(m_frame->GetEventHandler(), event);
-        
         m_sema->Post();
+        
+        wxCommandEvent event(EVT_NEW_MOVE);                               
+        ::wxPostEvent(m_frame->GetEventHandler(), event);                
     }
 
     return NULL;

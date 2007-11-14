@@ -31,7 +31,9 @@ class MainFrame : public TMainFrame {
 	virtual void doHelpAbout(wxCommandEvent& event);	
 	virtual void doHomePage(wxCommandEvent& event);
 	virtual void doOpenSGF(wxCommandEvent& event);
-        virtual void doSaveSGF(wxCommandEvent& event);		
+        virtual void doSaveSGF(wxCommandEvent& event);
+        virtual void doBack10(wxCommandEvent& event);
+	virtual void doForward10(wxCommandEvent& event);
 	
 	GameState m_State;
 	int m_playerColor;

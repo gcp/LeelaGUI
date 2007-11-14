@@ -58,6 +58,8 @@ class TMainFrame : public wxFrame
 		void _wxFB_doExit( wxCommandEvent& event ){ doExit( event ); }
 		void _wxFB_doUndo( wxCommandEvent& event ){ doUndo( event ); }
 		void _wxFB_doForward( wxCommandEvent& event ){ doForward( event ); }
+		void _wxFB_doBack10( wxCommandEvent& event ){ doBack10( event ); }
+		void _wxFB_doForward10( wxCommandEvent& event ){ doForward10( event ); }
 		void _wxFB_doPass( wxCommandEvent& event ){ doPass( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
@@ -78,12 +80,13 @@ class TMainFrame : public wxFrame
 			ID_EXIT,
 			ID_UNDO,
 			ID_REDO,
+			ID_BACK10,
+			ID_FWD10,
 			ID_PASS,
 			ID_SCORE,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
 			ID_HELPABOUT,
-			ID_NEWGAME9,
 		};
 		
 		wxSplitterWindow* m_splitter1;
@@ -115,6 +118,8 @@ class TMainFrame : public wxFrame
 		virtual void doExit( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doUndo( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doForward( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doBack10( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doForward10( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doPass( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doGoRules( wxCommandEvent& event ){ event.Skip(); }
@@ -178,17 +183,17 @@ class TAboutDialog : public wxDialog
 	private:
 		
 		// Private event handlers
-		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		void _wxFB_doInit( wxInitDialogEvent& event ){ doInit( event ); }
 		
 	
 	protected:
-		wxStaticText* m_staticText4;
+		wxStaticText* m_staticTextVersion;
 		wxStaticText* m_staticText5;
-		wxStaticText* m_staticText6;
+		wxHyperlinkCtrl* m_hyperlink3;
 		wxButton* m_button1;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
 		
 	
 	public:
