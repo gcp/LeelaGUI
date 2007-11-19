@@ -50,7 +50,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_cellDim = 0;    
     
     m_State = NULL;
-    m_playerColor = FastBoard::BLACK;
+    m_playerColor = FastBoard::BLACK;    
 }
 
 void TBoardPanel::setState(GameState * state) {
@@ -176,6 +176,11 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         return;
     }
     
+    if (m_State->get_passes() >= 2) {
+        ::wxLogDebug("Game has been passed out");
+        return;
+    }
+    
     if (m_State->get_to_move() == m_playerColor) {    
         int boardSize = m_State->board.get_boardsize();
         
@@ -194,17 +199,32 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         int vtx = m_State->board.get_vertex(cellX, cellY);
         
         if (m_State->legal_move(vtx)) {
-            m_State->play_move(vtx);
-        }
-           
-        Refresh();  
+            m_State->play_move(vtx);                                                         
+            
+            wxCommandEvent event(EVT_NEW_MOVE, GetId());
+            event.SetEventObject(this);                        
+            ::wxPostEvent(GetEventHandler(), event);
+        }                   
         
-        wxCommandEvent event(EVT_NEW_MOVE, GetId());
-        event.SetEventObject(this);                        
-        ::wxPostEvent(GetEventHandler(), event);
     } else {
         ::wxLogMessage("It's not your move!");
     }
     
     event.Skip();
+}
+
+void TBoardPanel::setShowTerritory(bool val) {
+    m_showTerritory = val;
+}
+
+void TBoardPanel::setShowMoyo(bool val) {
+    m_showMoyo = val;
+}
+
+bool TBoardPanel::getShowTerritory() {
+    return m_showTerritory  ;
+}
+
+bool TBoardPanel::getShowMoyo() {
+    return m_showMoyo;
 }

@@ -52,3 +52,6 @@ IDB_UNDO               BITMAP                "C:\\Projects\\LeelaGUI\\img\\undo.
 IDB_REDO               BITMAP                "C:\\Projects\\LeelaGUI\\img\\redo.bmp"
 IDB_FORWARD            BITMAP                "C:\\Projects\\LeelaGUI\\img\\forward.bmp"
 IDB_BACKWARD           BITMAP                "C:\\Projects\\LeelaGUI\\img\\back.bmp"
+IDB_FORCE              BITMAP                "C:\\Projects\\LeelaGUI\\img\\execute.bmp"
+
+IDW_TOCK               WAVE                  "C:\\Projects\\LeelaGUI\\snd\\tock.wav"

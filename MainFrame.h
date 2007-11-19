@@ -7,7 +7,8 @@
 #include "GameState.h"
 #include "EngineThread.h"
 
-DECLARE_EVENT_TYPE(EVT_NEW_MOVE, -1)
+DECLARE_EVENT_TYPE(EVT_NEW_MOVE, wxID_ANY)
+DECLARE_EVENT_TYPE(EVT_BOARD_UPDATE, wxID_ANY)
 
 class MainFrame : public TMainFrame {
     public:
@@ -18,6 +19,7 @@ class MainFrame : public TMainFrame {
 	virtual void doActivate(wxActivateEvent& event);
 	virtual void doPaint(wxPaintEvent& event);		
 	virtual void doNewMove(wxCommandEvent& event);
+	virtual void doBoardUpdate(wxCommandEvent& event);
 	virtual void doExit(wxCommandEvent& event);
 	virtual void doResize(wxSizeEvent& event);
 	virtual void doBoardResize(wxSizeEvent& event);		
@@ -34,9 +36,17 @@ class MainFrame : public TMainFrame {
         virtual void doSaveSGF(wxCommandEvent& event);
         virtual void doBack10(wxCommandEvent& event);
 	virtual void doForward10(wxCommandEvent& event);
+	virtual void doSoundToggle(wxCommandEvent& event);
+	virtual void doForceMove(wxCommandEvent& event);
+	virtual void doToggleTerritory(wxCommandEvent& event);
+	virtual void doToggleMoyo(wxCommandEvent& event);
+	
+	void startEngine();
 	
 	GameState m_State;
 	int m_playerColor;
+	int m_visitLimit;
+	bool m_soundEnabled;
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;
 };

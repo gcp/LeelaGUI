@@ -100,9 +100,9 @@
 					<label>&amp;New game...\tCtrl-N</label>
 					<help>Start a new game</help>
 				</object>
-				<object class="wxMenuItem" name="menuItem14">
+				<object class="wxMenuItem" name="menuItemNewRated">
 					<label>New &amp;rated game\tCtrl-R</label>
-					<help></help>
+					<help>Starts a new rated game</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem11">
@@ -110,7 +110,7 @@
 					<help>Opens a game from disk</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem12">
-					<label>&amp;Save...\tCtrl-S</label>
+					<label>&amp;Save game...\tCtrl-S</label>
 					<help>Save a game to disk</help>
 				</object>
 				<object class="separator" />
@@ -139,6 +139,10 @@
 					<help>Forward 10 moves</help>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="menuItem18">
+					<label>Force &amp;computer move\tCtrl-F</label>
+					<help>Force the computer to move now</help>
+				</object>
 				<object class="wxMenuItem" name="menuItem6">
 					<label>&amp;Pass\tAlt-P</label>
 					<help>Pass</help>
@@ -146,6 +150,26 @@
 				<object class="wxMenuItem" name="menuItem5">
 					<label>&amp;Score\tAlt-S</label>
 					<help>Score the position</help>
+				</object>
+			</object>
+			<object class="wxMenu" name="m_menuSettings">
+				<label>_Settings</label>
+				<object class="wxMenuItem" name="menuItem15">
+					<label>Show &amp;Territory\tCtrl-T</label>
+					<help>Show Territory</help>
+					<checkable>1</checkable>
+				</object>
+				<object class="wxMenuItem" name="menuItem16">
+					<label>Show &amp;Moyo\tCtrl-M</label>
+					<help>Show Moyo</help>
+					<checkable>1</checkable>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="menuItemSound">
+					<label>Sound</label>
+					<help>Enable or disable sound</help>
+					<checked>1</checked>
+					<checkable>1</checkable>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menu3">
@@ -214,6 +238,12 @@
 				<bitmap />
 			</object>
 			<object class="separator" />
+			<object class="tool" name="m_toolForce">
+				<label>Force computer move</label>
+				<tooltip>Force computer move</tooltip>
+				<longhelp>Force computer move</longhelp>
+				<bitmap />
+			</object>
 			<object class="tool" name="m_tool2">
 				<label>tool</label>
 				<tooltip>Pass</tooltip>
@@ -237,138 +267,146 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>225,474</size>
+		<size>260,250</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxRadioBox" name="m_radioBox2">
-					<style>wxRA_SPECIFY_ROWS</style>
-					<label>Board size</label>
-					<selection>0</selection>
-					<content>
-						<item> 9 x 9 </item>
-						<item> 13 x 13 </item>
-						<item> 19 x 19 </item>
-					</content>
-					<dimension>1</dimension>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxRadioBox" name="m_radioBox5">
-					<style>wxRA_SPECIFY_ROWS</style>
-					<label>Ruleset</label>
-					<selection>0</selection>
-					<content>
-						<item>Chinese</item>
-						<item>Japanese</item>
-					</content>
-					<dimension>1</dimension>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxStaticBoxSizer">
-					<orient>wxHORIZONTAL</orient>
-					<label>Komi</label>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxALIGN_CENTER</flag>
-						<border>5</border>
-						<object class="wxStaticText" name="m_staticText2">
-							<style>wxALIGN_CENTRE</style>
-							<label>Komi</label>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxALIGN_CENTER</flag>
-						<border>5</border>
-						<object class="wxSpinCtrl" name="m_spinCtrl2">
-							<style>wxSP_ARROW_KEYS</style>
-							<value>0</value>
-							<min>0</min>
-							<max>15</max>
-						</object>
-					</object>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxStaticBoxSizer">
-					<orient>wxHORIZONTAL</orient>
-					<label>Handicap</label>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxALIGN_CENTER</flag>
-						<border>5</border>
-						<object class="wxStaticText" name="m_staticText3">
-							<style>wxALIGN_CENTRE</style>
-							<label>Handicap</label>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxALIGN_CENTER</flag>
-						<border>5</border>
-						<object class="wxSpinCtrl" name="m_spinCtrl3">
-							<style>wxSP_ARROW_KEYS</style>
-							<value>0</value>
-							<min>0</min>
-							<max>9</max>
-						</object>
-					</object>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxRadioBox" name="m_radioBox3">
-					<style>wxRA_SPECIFY_ROWS</style>
-					<label>Your Color</label>
-					<selection>0</selection>
-					<content>
-						<item>White</item>
-						<item>Black</item>
-						<item>Both</item>
-					</content>
-					<dimension>1</dimension>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxRadioBox" name="m_radioBox4">
-					<style>wxRA_SPECIFY_COLS</style>
-					<label>Engine Max Level</label>
-					<selection>0</selection>
-					<content>
-						<item>100 simulations</item>
-						<item>500 simulations</item>
-						<item>1000 simulations</item>
-						<item>5000 simulations</item>
-						<item>10000 simulations</item>
-						<item>50000 simulations</item>
-					</content>
-					<dimension>1</dimension>
-				</object>
-			</object>
-			<object class="sizeritem">
 				<option>1</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
+				<object class="wxBoxSizer">
+					<orient>wxHORIZONTAL</orient>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxRadioBox" name="m_radioBoxBoardSize">
+									<style>wxRA_SPECIFY_COLS</style>
+									<label>Board size</label>
+									<selection>0</selection>
+									<content>
+										<item>9 x 9</item>
+										<item>13 x 13</item>
+										<item>19 x 19</item>
+									</content>
+									<dimension>1</dimension>
+								</object>
+							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxStaticBoxSizer">
+									<orient>wxHORIZONTAL</orient>
+									<label>Komi (+0.5)</label>
+									<object class="sizeritem">
+										<option>1</option>
+										<flag>wxALIGN_CENTER</flag>
+										<border>5</border>
+										<object class="wxStaticText" name="m_staticText2">
+											<style>wxALIGN_CENTRE</style>
+											<label>Komi</label>
+										</object>
+									</object>
+									<object class="sizeritem">
+										<option>1</option>
+										<flag>wxALIGN_CENTER</flag>
+										<border>5</border>
+										<object class="wxSpinCtrl" name="m_spinCtrlKomi">
+											<style>wxSP_ARROW_KEYS</style>
+											<value>0</value>
+											<min>0</min>
+											<max>15</max>
+										</object>
+									</object>
+								</object>
+							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxStaticBoxSizer">
+									<orient>wxHORIZONTAL</orient>
+									<label>Handicap</label>
+									<object class="sizeritem">
+										<option>1</option>
+										<flag>wxALIGN_CENTER</flag>
+										<border>5</border>
+										<object class="wxStaticText" name="m_staticText3">
+											<style>wxALIGN_CENTRE</style>
+											<label>Handicap</label>
+										</object>
+									</object>
+									<object class="sizeritem">
+										<option>1</option>
+										<flag>wxALIGN_CENTER</flag>
+										<border>5</border>
+										<object class="wxSpinCtrl" name="m_spinCtrlHandicap">
+											<style>wxSP_ARROW_KEYS</style>
+											<value>0</value>
+											<min>0</min>
+											<max>9</max>
+										</object>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxRadioBox" name="m_radioBoxColor">
+									<style>wxRA_SPECIFY_ROWS</style>
+									<label>Your Color</label>
+									<selection>0</selection>
+									<content>
+										<item>Black</item>
+										<item>White</item>
+									</content>
+									<dimension>1</dimension>
+								</object>
+							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxRadioBox" name="m_radioBoxLevel">
+									<style>wxRA_SPECIFY_COLS</style>
+									<label>Engine Max Level</label>
+									<selection>2</selection>
+									<content>
+										<item>100 simulations</item>
+										<item>500 simulations</item>
+										<item>1000 simulations</item>
+										<item>5000 simulations</item>
+										<item>10000 simulations</item>
+										<item>No limit</item>
+									</content>
+									<dimension>1</dimension>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxEXPAND|wxFIXED_MINSIZE</flag>
+				<border>1</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">
 						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
@@ -458,7 +496,7 @@
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Leela, Full Version</label>
+					<label>Leela - Full Version</label>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -482,7 +520,7 @@
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Deep Sjeng, the chess program</label>
+					<label>Deep Sjeng - The chess program</label>
 				</object>
 			</object>
 			<object class="sizeritem">

@@ -17,6 +17,10 @@ public:
                
     void setState(GameState * brd);               
     void setPlayerColor(int color);
+    void setShowTerritory(bool val);
+    void setShowMoyo(bool val);
+    bool getShowTerritory();
+    bool getShowMoyo();
                                       
 private:
     DECLARE_EVENT_TABLE()
@@ -29,6 +33,8 @@ private:
     wxBitmap m_tileFull;        
     int m_cellDim;
     int m_playerColor;
+    bool m_showTerritory;
+    bool m_showMoyo;    
 };
 
 #endif
