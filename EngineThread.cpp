@@ -4,7 +4,7 @@
 #include "UCTSearch.h"
 #include "MainFrame.h"
 
-TEngineThread::TEngineThread(GameState * state, wxSemaphore * sema, TMainFrame * frame) {
+TEngineThread::TEngineThread(GameState * state, wxSemaphore * sema, MainFrame * frame) {
     m_state = state;
     m_sema = sema;
     m_frame = frame;
@@ -13,6 +13,8 @@ TEngineThread::TEngineThread(GameState * state, wxSemaphore * sema, TMainFrame *
 
 void * TEngineThread::Entry() {     
     {
+        m_frame->SetStatusBar(wxT("Engine thinking..."), 2);
+    
         std::auto_ptr<UCTSearch> search(new UCTSearch(*m_state));
 
         int who = m_state->get_to_move();
@@ -21,6 +23,8 @@ void * TEngineThread::Entry() {
         m_state->play_move(who, move);                
         
         m_sema->Post();
+        
+        m_frame->SetStatusBar(wxT(""), 2);
         
         wxCommandEvent event(EVT_NEW_MOVE);                               
         ::wxPostEvent(m_frame->GetEventHandler(), event);                

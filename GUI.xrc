@@ -200,6 +200,12 @@
 				<longhelp>Start a new game</longhelp>
 				<bitmap />
 			</object>
+			<object class="tool" name="m_tool12">
+				<label>New Rated Game</label>
+				<tooltip>Start a new rated game</tooltip>
+				<longhelp>Start a new rated game</longhelp>
+				<bitmap />
+			</object>
 			<object class="tool" name="m_tool4">
 				<label>Load Game</label>
 				<tooltip>Load a game</tooltip>
@@ -394,7 +400,7 @@
 										<item>1000 simulations</item>
 										<item>5000 simulations</item>
 										<item>10000 simulations</item>
-										<item>No limit</item>
+										<item>Unlimited</item>
 									</content>
 									<dimension>1</dimension>
 								</object>

@@ -160,7 +160,7 @@ class TNewGameDialog : public wxDialog
 	private:
 		
 		// Private event handlers
-		void _wxFB_doKomiUpdate( wxSpinEvent& event ){ doKomiUpdate( event ); }
+		void _wxFB_doHandicapUpdate( wxSpinEvent& event ){ doHandicapUpdate( event ); }
 		void _wxFB_doCancel( wxCommandEvent& event ){ doCancel( event ); }
 		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
 		
@@ -170,6 +170,7 @@ class TNewGameDialog : public wxDialog
 		{
 			ID_NEWGAME = 1000,
 			ID_KOMISPIN,
+			ID_HANDICAPSPIN,
 		};
 		
 		wxRadioBox* m_radioBoxBoardSize;
@@ -184,7 +185,7 @@ class TNewGameDialog : public wxDialog
 		wxButton* m_sdbSizer1Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doKomiUpdate( wxSpinEvent& event ){ event.Skip(); }
+		virtual void doHandicapUpdate( wxSpinEvent& event ){ event.Skip(); }
 		virtual void doCancel( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
 		

@@ -41,6 +41,7 @@ aaaa                   ICON                  "C:\\Projects\\LeelaGUI\\img\\leela
 
 IDB_BITMAPWOOD         BITMAP                "C:\\Projects\\LeelaGUI\\img\\wood.bmp"
 IDB_NEWGAME            BITMAP                "C:\\Projects\\LeelaGUI\\img\\new.bmp"
+IDB_NEWRATED           BITMAP                "C:\\Projects\\LeelaGUI\\img\\newrated.bmp"
 IDB_PASS               BITMAP                "C:\\Projects\\LeelaGUI\\img\\delete.bmp"
 IDB_SCORE              BITMAP                "C:\\Projects\\LeelaGUI\\img\\find.bmp"
 

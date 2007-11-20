@@ -6,6 +6,9 @@ IMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {   
+    wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));    
+    wxConfig::Set(config);
+
     MainFrame* frame = new MainFrame(NULL, wxT("Leela"));    
     frame->Show();
     

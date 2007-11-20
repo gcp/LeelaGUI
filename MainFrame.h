@@ -14,6 +14,7 @@ class MainFrame : public TMainFrame {
     public:
         MainFrame(wxFrame *frame, const wxString& title);
         ~MainFrame();
+        void SetStatusBar(wxString mess, int pos);
 
     private:                                  	        
 	virtual void doActivate(wxActivateEvent& event);
@@ -42,11 +43,16 @@ class MainFrame : public TMainFrame {
 	virtual void doToggleMoyo(wxCommandEvent& event);
 	
 	void startEngine();
+	void scoreDialog(float komi, float score, float prekomi);
+	void scoreGame(bool & won, float & komi, float & score, float & prescore);
+	void ratedGameEnd(bool won);
+	wxString rankToString(int rank);
 	
 	GameState m_State;
 	int m_playerColor;
 	int m_visitLimit;
 	bool m_soundEnabled;
+	bool m_ratedGame;
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;
 };

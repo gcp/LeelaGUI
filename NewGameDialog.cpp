@@ -9,10 +9,6 @@ TNewGameDialog( parent )
     //m_radioBoxBoardSize->Enable(2, false);
 }
 
-void NewGameDialog::doKomiUpdate( wxSpinEvent& event ) {    
-    event.Skip();   
-}
-
 void NewGameDialog::doCancel( wxCommandEvent& event ) {
     event.Skip();
 }
@@ -68,4 +64,8 @@ int NewGameDialog::getPlayerColor() {
     int color = m_radioBoxColor->GetSelection();
     
     return color;
+}
+
+void NewGameDialog::doHandicapUpdate( wxSpinEvent& event ) {    
+    m_spinCtrlKomi->SetValue(0);
 }
