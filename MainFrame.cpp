@@ -93,23 +93,31 @@ void MainFrame::startEngine() {
 }
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
-    m_panelBoard->setShowTerritory(!m_panelBoard->getShowTerritory());
+    m_panelBoard->setShowInfluence(!m_panelBoard->getShowInfluence());
     
-    if (m_panelBoard->getShowTerritory()) {
+    if (m_panelBoard->getShowInfluence()) {
         m_panelBoard->setShowMoyo(false);
         wxMenuItem * moyo = m_menuSettings->FindItem(ID_SHOWMOYO);
         moyo->Check(false);
     }
+    
+    m_panelBoard->setShowTerritory(false);
+    
+    m_panelBoard->Refresh();
 }
 
 void MainFrame::doToggleMoyo(wxCommandEvent& event) {
     m_panelBoard->setShowMoyo(!m_panelBoard->getShowMoyo());
     
     if (m_panelBoard->getShowMoyo()) {
-        m_panelBoard->setShowTerritory(false);
-        wxMenuItem * territory = m_menuSettings->FindItem(ID_SHOWTERRITORY);
-        territory->Check(false);
+        m_panelBoard->setShowInfluence(false);
+        wxMenuItem * influence = m_menuSettings->FindItem(ID_SHOWTERRITORY);
+        influence->Check(false);
     }
+    
+    m_panelBoard->setShowTerritory(false);
+    
+    m_panelBoard->Refresh();
 }
 	
 void MainFrame::doNewMove(wxCommandEvent & event) {
@@ -134,10 +142,13 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         scoreGame(won, komi, score, prekomi);
         scoreDialog(komi, score, prekomi);       
         ratedGameEnd(won);        
-    } else if (m_State.get_to_move() != m_playerColor) {
-        ::wxLogDebug("Computer to move"); 
-        startEngine();                
-    }     
+    } else {
+        if (m_State.get_to_move() != m_playerColor) {
+            ::wxLogDebug("Computer to move"); 
+            startEngine();                
+        }     
+        m_panelBoard->setShowTerritory(false);
+    }
     
     // signal update of visible board
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
@@ -177,17 +188,16 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();       
         m_panelBoard->setPlayerColor(m_playerColor);
+        m_panelBoard->setShowTerritory(false);
         
-        m_engineRunning.Post();
+        m_engineRunning.Post();               
         
         wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
         myevent.SetEventObject(this);                        
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);     
     } else {
         m_engineRunning.Post();
-    }                 
-    
-    m_panelBoard->Refresh();
+    }                     
 }
 
 void MainFrame::doNewRatedGame(wxCommandEvent& event) {    
@@ -342,16 +352,15 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
+        m_panelBoard->setShowTerritory(false);
         m_ratedGame = true;
     }
         
-    m_engineRunning.Post();
+    m_engineRunning.Post();      
     
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);     
-    
-    m_panelBoard->Refresh();
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);             
 }
 
 void MainFrame::ratedGameEnd(bool won) {
@@ -405,6 +414,9 @@ void MainFrame::scoreGame(bool & won, float & komi, float & score, float & preko
     
     won = (score > 0.0f && m_playerColor == FastBoard::BLACK)
           || (score < 0.0f && m_playerColor == FastBoard::WHITE);
+    
+    m_panelBoard->doTerritory();      
+    m_panelBoard->setShowTerritory(true);    
     
     m_engineRunning.Post();        
 }
@@ -551,6 +563,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
+        m_panelBoard->setShowTerritory(false);
         
         m_engineRunning.Post();
         

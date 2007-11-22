@@ -17,10 +17,14 @@ public:
                
     void setState(GameState * brd);               
     void setPlayerColor(int color);
-    void setShowTerritory(bool val);
+    void setShowInfluence(bool val);
     void setShowMoyo(bool val);
-    bool getShowTerritory();
+    void setShowTerritory(bool val);
+    bool getShowInfluence();
     bool getShowMoyo();
+    void doMoyo();
+    void doInfluence();   
+    void doTerritory(); 
                                       
 private:
     DECLARE_EVENT_TABLE()
@@ -30,11 +34,15 @@ private:
     void doLeftMouse(wxMouseEvent& event);
     
     GameState * m_State;
-    wxBitmap m_tileFull;        
+    wxBitmap m_tileFull;  
+    wxImage m_whiteStone;
+    wxImage m_blackStone;      
     int m_cellDim;
     int m_playerColor;
-    bool m_showTerritory;
+    bool m_showTerritory;   // on game end
+    bool m_showInfluence;
     bool m_showMoyo;    
+    std::vector<int> m_Hatch;            
 };
 
 #endif

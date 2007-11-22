@@ -6,8 +6,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #endif //_WIN32
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0,0,2
- PRODUCTVERSION 0,0,0,2
+ FILEVERSION 0,0,0,3
+ PRODUCTVERSION 0,0,0,3
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -23,12 +23,12 @@ BEGIN
         BLOCK "080004b0"
         BEGIN
             VALUE "FileDescription", "LeelaGUI Application"
-            VALUE "FileVersion", "0, 0, 0, 2"
+            VALUE "FileVersion", "0, 0, 0, 3"
             VALUE "InternalName", "LeelaGUI"
             VALUE "LegalCopyright", "Copyright (C) 2007 Gian-Carlo Pascutto"
             VALUE "OriginalFilename", "LeelaGUI.exe"
             VALUE "ProductName", "LeelaGUI Application"
-            VALUE "ProductVersion", "0, 0, 0, 2"
+            VALUE "ProductVersion", "0, 0, 0, 3"
         END
     END
     BLOCK "VarFileInfo"
@@ -54,5 +54,8 @@ IDB_REDO               BITMAP                "C:\\Projects\\LeelaGUI\\img\\redo.
 IDB_FORWARD            BITMAP                "C:\\Projects\\LeelaGUI\\img\\forward.bmp"
 IDB_BACKWARD           BITMAP                "C:\\Projects\\LeelaGUI\\img\\back.bmp"
 IDB_FORCE              BITMAP                "C:\\Projects\\LeelaGUI\\img\\execute.bmp"
+
+IDB_WHITESTONE         BITMAP                "C:\\Projects\\LeelaGUI\\img\\whitestone.bmp"
+IDB_BLACKSTONE         BITMAP                "C:\\Projects\\LeelaGUI\\img\\blackstone.bmp"
 
 IDW_TOCK               WAVE                  "C:\\Projects\\LeelaGUI\\snd\\tock.wav"
