@@ -9,9 +9,11 @@
 #include "AboutDialog.h"
 #include "NewGameDialog.h"
 #include "NagDialog.h"
+#include "Utils.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
+DEFINE_EVENT_TYPE(EVT_STATUS_UPDATE)
 
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
           :TMainFrame(frame, wxID_ANY, title) {   
@@ -22,6 +24,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));   
     Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate)); 
+    Connect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate)); 
     
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);    
@@ -34,9 +37,12 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
     m_soundEnabled = true;
+    m_resignEnabled = true;
     
+    // set global message area
+    Utils::setGUIQueue(this->GetEventHandler(), EVT_STATUS_UPDATE);
     // allow one engine running
-    m_engineRunning.Post();
+    m_engineRunning.Post();    
     
     SetIcon(wxICON(aaaa));
 
@@ -53,6 +59,7 @@ MainFrame::~MainFrame() {
     
     Disconnect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
     Disconnect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
+    Disconnect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
     
     Hide();
     
@@ -61,12 +68,26 @@ MainFrame::~MainFrame() {
     dialog.ShowModal();
 }
 
+void MainFrame::doStatusUpdate(wxCommandEvent& event) {
+    m_statusBar->SetStatusText(event.GetString(), 1);
+}
+
 void MainFrame::SetStatusBar(wxString mess, int pos) {
     m_statusBar->SetStatusText(mess, pos);
 }
 
+void MainFrame::updateStatusBar(char *str) {
+    wxString wxstr(str);
+    //SetStatusText(str);
+}
+
 // do whatever we need to do if the visible board gets updated
-void MainFrame::doBoardUpdate(wxCommandEvent& event) {            
+void MainFrame::doBoardUpdate(wxCommandEvent& event) {       
+    wxString mess;
+    mess.Printf("Black Prisoners: %d   White Prisoners: %d", 
+                m_State.board.get_prisoners(FastBoard::BLACK),
+                m_State.board.get_prisoners(FastBoard::WHITE));
+    m_statusBar->SetStatusText(mess, 0);     
     Refresh();
 }
 
@@ -85,6 +106,7 @@ void MainFrame::startEngine() {
             ::wxLogDebug("Error starting engine");
         } else {            
             m_engineThread->limit_visits(m_visitLimit);
+            m_engineThread->set_resigning(m_resignEnabled);
             m_engineThread->Run();
         }
     } else {
@@ -215,6 +237,8 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     wxString mess = wxString(wxT("Rank: "));
     mess += rankToString(rank);    
     m_statusBar->SetStatusText(mess, 1);
+    
+    this->SetTitle(wxT("Leela - ") + mess); 
     
     int handicap;
     int simulations;
@@ -489,6 +513,7 @@ void MainFrame::doUndo(wxCommandEvent& event) {
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);        
+    m_panelBoard->setShowTerritory(false);
     
     m_ratedGame = false;
     
@@ -507,6 +532,7 @@ void MainFrame::doForward(wxCommandEvent& event) {
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
+    m_panelBoard->setShowTerritory(false);
     
     m_engineRunning.Post();
         
@@ -609,4 +635,8 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
     m_ratedGame = false;
     
     startEngine();
+}
+
+void MainFrame::doResignToggle(wxCommandEvent& event) {
+    m_resignEnabled = !m_resignEnabled;
 }

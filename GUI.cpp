@@ -30,6 +30,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
+	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
 	EVT_MENU( ID_SOUNDSWITCH, TMainFrame::_wxFB_doSoundToggle )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
 	EVT_MENU( ID_HOMEPAGE, TMainFrame::_wxFB_doHomePage )
@@ -100,7 +101,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	this->SetSizer( bSizer2 );
 	this->Layout();
-	m_statusBar = this->CreateStatusBar( 3, wxST_SIZEGRIP, ID_DEFAULT );
+	m_statusBar = this->CreateStatusBar( 2, wxST_SIZEGRIP, ID_DEFAULT );
 	m_menubar1 = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
 	wxMenuItem* menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("&New game...") ) + wxT('\t') + wxT("Ctrl-N"), _("Start a new game"), wxITEM_NORMAL );
@@ -147,7 +148,11 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuSettings->Append( menuItem16 );
 	
 	m_menuSettings->AppendSeparator();
-	wxMenuItem* menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("Sound") ) , _("Enable or disable sound"), wxITEM_CHECK );
+	wxMenuItem* menuItemResignToggle = new wxMenuItem( m_menuSettings, ID_RESIGNTOGGLE, wxString( _("Engine &resigns") ) , _("Allows the engine to resign or not"), wxITEM_CHECK );
+	m_menuSettings->Append( menuItemResignToggle );
+	menuItemResignToggle->Check( true );
+	
+	wxMenuItem* menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound") ) , _("Enable or disable sound"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItemSound );
 	menuItemSound->Check( true );
 	
@@ -158,6 +163,8 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu3->Append( menuItem13 );
 	wxMenuItem* menuItem10 = new wxMenuItem( m_menu3, ID_HOMEPAGE, wxString( _("Leela Homepage") ) + wxT('\t') + wxT("Ctrl-H"), wxEmptyString, wxITEM_NORMAL );
 	m_menu3->Append( menuItem10 );
+	
+	m_menu3->AppendSeparator();
 	wxMenuItem* menuItem7 = new wxMenuItem( m_menu3, ID_HELPABOUT, wxString( _("&About...") ) , _("Information about the program"), wxITEM_NORMAL );
 	m_menu3->Append( menuItem7 );
 	m_menubar1->Append( m_menu3, _("&Help") );

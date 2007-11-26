@@ -90,7 +90,7 @@
 		</object>
 		<object class="wxStatusBar" name="m_statusBar">
 			<style>wxST_SIZEGRIP</style>
-			<fields>3</fields>
+			<fields>2</fields>
 		</object>
 		<object class="wxMenuBar" name="m_menubar1">
 			<label>MyMenuBar</label>
@@ -165,8 +165,14 @@
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="menuItemResignToggle">
+					<label>Engine &amp;resigns</label>
+					<help>Allows the engine to resign or not</help>
+					<checked>1</checked>
+					<checkable>1</checkable>
+				</object>
 				<object class="wxMenuItem" name="menuItemSound">
-					<label>Sound</label>
+					<label>&amp;Sound</label>
 					<help>Enable or disable sound</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
@@ -182,6 +188,7 @@
 					<label>Leela Homepage\tCtrl-H</label>
 					<help></help>
 				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem7">
 					<label>&amp;About...</label>
 					<help>Information about the program</help>

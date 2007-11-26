@@ -693,7 +693,7 @@
                 <property name="context_help"></property>
                 <property name="enabled">1</property>
                 <property name="fg"></property>
-                <property name="fields">3</property>
+                <property name="fields">2</property>
                 <property name="font"></property>
                 <property name="hidden">0</property>
                 <property name="id">ID_DEFAULT</property>
@@ -996,10 +996,24 @@
                         <property name="bitmap"></property>
                         <property name="checked">1</property>
                         <property name="enabled">1</property>
+                        <property name="help">Allows the engine to resign or not</property>
+                        <property name="id">ID_RESIGNTOGGLE</property>
+                        <property name="kind">wxITEM_CHECK</property>
+                        <property name="label">Engine &amp;resigns</property>
+                        <property name="name">menuItemResignToggle</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doResignToggle</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">1</property>
+                        <property name="enabled">1</property>
                         <property name="help">Enable or disable sound</property>
                         <property name="id">ID_SOUNDSWITCH</property>
                         <property name="kind">wxITEM_CHECK</property>
-                        <property name="label">Sound</property>
+                        <property name="label">&amp;Sound</property>
                         <property name="name">menuItemSound</property>
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
@@ -1039,6 +1053,7 @@
                         <event name="OnMenuSelection">doHomePage</event>
                         <event name="OnUpdateUI"></event>
                     </object>
+                    <object class="separator" expanded="1" />
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
                         <property name="checked">0</property>

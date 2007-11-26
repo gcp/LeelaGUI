@@ -150,6 +150,42 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         }
     }  
     
+    // board coordinates
+    int fontSize = cellDim / 4;
+    wxFont cfont(fontSize, wxFONTFAMILY_SWISS, wxNORMAL, wxNORMAL);
+    dc.SetFont(cfont);
+    dc.SetBackgroundMode(wxTRANSPARENT);
+    dc.SetTextForeground(*wxBLACK);
+    dc.SetTextBackground(*wxWHITE);
+    for (int y = 0; y < boardSize; y++) {
+        int x = 0;
+        int xoff = cellDim + (x - 1) * cellDim;
+        int yoff = cellDim + y  * cellDim;   
+        xoff = xoff + cellDim / 2 - fontSize;  
+        yoff = yoff - fontSize; 
+        int xoff2 = xoff + cellDim * boardSize;
+        wxString text;
+        text.Printf("%2d", boardSize - y);
+        dc.DrawText(text, xoff, yoff);
+        dc.DrawText(text, xoff2, yoff);
+    }   
+    for (int x = 0; x < boardSize; x++) {
+        int y = 0;
+        int yoff = cellDim + (y - 1) * cellDim;
+        int xoff = cellDim + x  * cellDim;   
+        yoff = yoff + cellDim / 2 - fontSize;  
+        xoff = xoff - fontSize; 
+        int yoff2 = yoff + cellDim * boardSize;
+        wxString text;
+        if (x < 8) {
+            text.Printf(" %c", 'A' + x);
+        } else {
+            text.Printf(" %c", 'A' + x  + 1);
+        }
+        dc.DrawText(text, xoff, yoff);
+        dc.DrawText(text, xoff, yoff2);  
+    }      
+    
     // moyo/territory/influence
     if (!m_showTerritory) {
         if (m_showMoyo) {
@@ -238,7 +274,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     }              
         
     dc.SetBrush(wxNullBrush);
-    dc.SetPen(wxNullPen);            
+    dc.SetPen(wxNullPen);  
+    dc.SetFont(wxNullFont);          
 }
 
 void TBoardPanel::doErase(wxEraseEvent& event) {    

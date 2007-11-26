@@ -65,6 +65,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
+		void _wxFB_doResignToggle( wxCommandEvent& event ){ doResignToggle( event ); }
 		void _wxFB_doSoundToggle( wxCommandEvent& event ){ doSoundToggle( event ); }
 		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
 		void _wxFB_doHomePage( wxCommandEvent& event ){ doHomePage( event ); }
@@ -91,6 +92,7 @@ class TMainFrame : public wxFrame
 			ID_SCORE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
+			ID_RESIGNTOGGLE,
 			ID_SOUNDSWITCH,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
@@ -134,6 +136,7 @@ class TMainFrame : public wxFrame
 		virtual void doScore( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doResignToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doSoundToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doGoRules( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doHomePage( wxCommandEvent& event ){ event.Skip(); }

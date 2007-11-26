@@ -9,6 +9,7 @@
 
 DECLARE_EVENT_TYPE(EVT_NEW_MOVE, wxID_ANY)
 DECLARE_EVENT_TYPE(EVT_BOARD_UPDATE, wxID_ANY)
+DECLARE_EVENT_TYPE(EVT_STATUS_UPDATE, wxID_ANY)
 
 class MainFrame : public TMainFrame {
     public:
@@ -41,18 +42,22 @@ class MainFrame : public TMainFrame {
 	virtual void doForceMove(wxCommandEvent& event);
 	virtual void doToggleTerritory(wxCommandEvent& event);
 	virtual void doToggleMoyo(wxCommandEvent& event);
+	virtual void doResignToggle(wxCommandEvent& event);
+	virtual void doStatusUpdate(wxCommandEvent& event);
 	
 	void startEngine();
 	void scoreDialog(float komi, float score, float prekomi);
 	void scoreGame(bool & won, float & komi, float & score, float & prescore);
 	void ratedGameEnd(bool won);
 	wxString rankToString(int rank);
+	void updateStatusBar(char *str);
 	
 	GameState m_State;
 	int m_playerColor;
 	int m_visitLimit;
 	bool m_soundEnabled;
-	bool m_ratedGame;
+	bool m_resignEnabled;
+	bool m_ratedGame;		
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;
 };
