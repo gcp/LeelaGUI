@@ -305,3 +305,52 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->SetSizer( bSizer10 );
 	this->Layout();
 }
+BEGIN_EVENT_TABLE( TCopyProtectionDialog, wxDialog )
+	EVT_BUTTON( wxID_OK, TCopyProtectionDialog::_wxFB_doOK )
+END_EVENT_TABLE()
+
+TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer10;
+	bSizer10 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Please enter your name and serial number:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	bSizer10->Add( m_staticText12, 0, wxALL|wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer1->AddGrowableCol( 0 );
+	fgSizer1->AddGrowableCol( 1 );
+	fgSizer1->SetFlexibleDirection( wxBOTH );
+	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText14->Wrap( -1 );
+	fgSizer1->Add( m_staticText14, 0, wxALIGN_CENTER|wxALL|wxEXPAND, 5 );
+	
+	m_textCtrlName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer1->Add( m_textCtrlName, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND, 5 );
+	
+	m_staticText15 = new wxStaticText( this, wxID_ANY, _("Code"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText15->Wrap( -1 );
+	fgSizer1->Add( m_staticText15, 0, wxALIGN_RIGHT|wxALL|wxEXPAND, 5 );
+	
+	m_textCtrlCode = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer1->Add( m_textCtrlCode, 2, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND, 5 );
+	
+	bSizer10->Add( fgSizer1, 1, wxALL|wxEXPAND, 5 );
+	
+	m_sdbSizer2 = new wxStdDialogButtonSizer();
+	m_sdbSizer2OK = new wxButton( this, wxID_OK );
+	m_sdbSizer2->AddButton( m_sdbSizer2OK );
+	m_sdbSizer2Cancel = new wxButton( this, wxID_CANCEL );
+	m_sdbSizer2->AddButton( m_sdbSizer2Cancel );
+	m_sdbSizer2->Realize();
+	bSizer10->Add( m_sdbSizer2, 0, wxALL|wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer10 );
+	this->Layout();
+}

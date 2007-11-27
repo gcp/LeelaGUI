@@ -517,4 +517,90 @@
 			</object>
 		</object>
 	</object>
+	<object class="wxDialog" name="TCopyProtectionDialog">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>239,159</size>
+		<title>Copy protection</title>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText12">
+					<label>Please enter your name and serial number:</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxFlexGridSizer">
+					<rows>2</rows>
+					<cols>2</cols>
+					<vgap>0</vgap>
+					<hgap>0</hgap>
+					<growablecols>0,1</growablecols>
+					<growablerows></growablerows>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALIGN_CENTER|wxALL|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxStaticText" name="m_staticText14">
+							<style>wxALIGN_CENTRE</style>
+							<label>Name</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxTextCtrl" name="m_textCtrlName">
+							<value></value>
+							<maxlength>0</maxlength>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALIGN_RIGHT|wxALL|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxStaticText" name="m_staticText15">
+							<style>wxALIGN_CENTRE</style>
+							<label>Code</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>2</option>
+						<flag>wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxTextCtrl" name="m_textCtrlCode">
+							<value></value>
+							<maxlength>0</maxlength>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStdDialogButtonSizer">
+					<object class="button">
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxButton" name="wxID_OK">
+							<label>&amp;OK</label>
+						</object>
+					</object>
+					<object class="button">
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxButton" name="wxID_CANCEL">
+							<label>&amp;Cancel</label>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
 </resource>

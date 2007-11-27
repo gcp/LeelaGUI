@@ -152,6 +152,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
+				FixedBaseAddress="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -196,8 +197,32 @@
 				>
 			</File>
 			<File
+				RelativePath="..\CopyProtectionDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\EngineThread.cpp"
 				>
+			</File>
+			<File
+				RelativePath="..\EXECryptor.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\GUI.cpp"
@@ -214,6 +239,30 @@
 			<File
 				RelativePath="..\NewGameDialog.cpp"
 				>
+			</File>
+			<File
+				RelativePath="..\keygen\public.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\keygen\sha2.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\stdafx.cpp"
@@ -254,7 +303,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\CopyProtectionDialog.h"
+				>
+			</File>
+			<File
 				RelativePath="..\EngineThread.h"
+				>
+			</File>
+			<File
+				RelativePath="..\EXECryptor.h"
 				>
 			</File>
 			<File
@@ -271,6 +328,10 @@
 			</File>
 			<File
 				RelativePath="..\NewGameDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\keygen\sha2.h"
 				>
 			</File>
 			<File

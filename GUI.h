@@ -30,6 +30,7 @@ class TBoardPanel;
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/hyperlink.h>
+#include <wx/textctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -233,6 +234,37 @@ class TNagDialog : public wxDialog
 	
 	public:
 		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 249,200 ), long style = wxDEFAULT_DIALOG_STYLE );
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TCopyProtectionDialog
+///////////////////////////////////////////////////////////////////////////////
+class TCopyProtectionDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		
+	
+	protected:
+		wxStaticText* m_staticText12;
+		wxStaticText* m_staticText14;
+		wxTextCtrl* m_textCtrlName;
+		wxStaticText* m_staticText15;
+		wxTextCtrl* m_textCtrlCode;
+		wxStdDialogButtonSizer* m_sdbSizer2;
+		wxButton* m_sdbSizer2OK;
+		wxButton* m_sdbSizer2Cancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		
+	
+	public:
+		TCopyProtectionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Copy protection"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 239,159 ), long style = wxDEFAULT_DIALOG_STYLE );
 	
 };
 

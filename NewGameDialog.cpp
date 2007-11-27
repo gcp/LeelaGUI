@@ -6,8 +6,10 @@ NewGameDialog::NewGameDialog( wxWindow* parent )
 :
 TNewGameDialog( parent )
 {
+#ifdef LITEVERSION
     m_radioBoxBoardSize->Enable(2, false);
     m_radioBoxLevel->Enable(5, false);
+#endif    
 }
 
 void NewGameDialog::doCancel( wxCommandEvent& event ) {

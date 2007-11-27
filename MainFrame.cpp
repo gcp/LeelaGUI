@@ -9,6 +9,7 @@
 #include "AboutDialog.h"
 #include "NewGameDialog.h"
 #include "NagDialog.h"
+#include "CopyProtectionDialog.h"
 #include "Utils.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
@@ -69,9 +70,11 @@ MainFrame::~MainFrame() {
     
     Hide();
     
+#ifdef LITEVERSION    
     NagDialog dialog(this);
     
     dialog.ShowModal();
+#endif    
 }
 
 void MainFrame::doStatusUpdate(wxCommandEvent& event) {
