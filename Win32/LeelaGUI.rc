@@ -6,8 +6,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #endif //_WIN32
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0,0,3
- PRODUCTVERSION 0,0,0,3
+ FILEVERSION 0,2,9,0
+ PRODUCTVERSION 0,2,9,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -22,13 +22,13 @@ BEGIN
     BEGIN
         BLOCK "080004b0"
         BEGIN
-            VALUE "FileDescription", "LeelaGUI Application"
-            VALUE "FileVersion", "0, 0, 0, 3"
-            VALUE "InternalName", "LeelaGUI"
+            VALUE "FileDescription", "Leela - the Go program"
+            VALUE "FileVersion", "0, 2, 9, 0"
+            VALUE "InternalName", "Leela"
             VALUE "LegalCopyright", "Copyright (C) 2007 Gian-Carlo Pascutto"
             VALUE "OriginalFilename", "LeelaGUI.exe"
-            VALUE "ProductName", "LeelaGUI Application"
-            VALUE "ProductVersion", "0, 0, 0, 3"
+            VALUE "ProductName", "Leela"
+            VALUE "ProductVersion", "0, 2, 9, 0"
         END
     END
     BLOCK "VarFileInfo"

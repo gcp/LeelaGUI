@@ -16,16 +16,10 @@ class TBoardPanel;
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/statline.h>
-#include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/statusbr.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
-#include <wx/treectrl.h>
-#include <wx/listctrl.h>
-#include <wx/notebook.h>
-#include <wx/splitter.h>
-#include <wx/statusbr.h>
 #include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/frame.h>
@@ -76,7 +70,7 @@ class TMainFrame : public wxFrame
 		enum
 		{
 			ID_DEFAULT = wxID_ANY, // Default
-			ID_BOARDSASH = 1000,
+			ID_MAINFRAME = 1000,
 			ID_BOARDPANEL,
 			ID_NEWGAME,
 			ID_NEWRATED,
@@ -99,17 +93,7 @@ class TMainFrame : public wxFrame
 			ID_HELPABOUT,
 		};
 		
-		wxSplitterWindow* m_splitter1;
 		TBoardPanel* m_panelBoard;
-		wxPanel* m_panel6;
-		wxStaticLine* m_staticline1;
-		wxNotebook* m_notebook1;
-		wxPanel* m_panel4;
-		wxTextCtrl* m_logText;
-		wxPanel* m_panel5;
-		wxTreeCtrl* m_UCTTree;
-		wxPanel* m_panel51;
-		wxListCtrl* m_moveList;
 		wxStatusBar* m_statusBar;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
@@ -144,13 +128,7 @@ class TMainFrame : public wxFrame
 		
 	
 	public:
-		TMainFrame( wxWindow* parent, wxWindowID id = ID_DEFAULT, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 700,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
-		void m_splitter1OnIdle( wxIdleEvent& )
-		{
-		m_splitter1->SetSashPosition( 378 );
-		m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
-		}
-		
+		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
 	
 };
 
@@ -213,6 +191,7 @@ class TAboutDialog : public wxDialog
 	protected:
 		wxStaticText* m_staticTextVersion;
 		wxStaticText* m_staticText5;
+		wxStaticText* m_staticText9;
 		wxHyperlinkCtrl* m_hyperlink3;
 		wxButton* m_button1;
 		
@@ -221,7 +200,7 @@ class TAboutDialog : public wxDialog
 		
 	
 	public:
-		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 237,138 ), long style = wxDEFAULT_DIALOG_STYLE );
+		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 230,169 ), long style = wxDEFAULT_DIALOG_STYLE );
 	
 };
 
@@ -241,6 +220,7 @@ class TNagDialog : public wxDialog
 	protected:
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText9;
+		wxStaticText* m_staticText81;
 		wxHyperlinkCtrl* m_hyperlink1;
 		wxStaticText* m_staticText10;
 		wxHyperlinkCtrl* m_hyperlink2;
@@ -252,7 +232,7 @@ class TNagDialog : public wxDialog
 		
 	
 	public:
-		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 245,178 ), long style = wxDEFAULT_DIALOG_STYLE );
+		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 249,200 ), long style = wxDEFAULT_DIALOG_STYLE );
 	
 };
 

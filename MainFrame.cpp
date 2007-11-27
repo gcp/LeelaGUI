@@ -18,7 +18,7 @@ DEFINE_EVENT_TYPE(EVT_STATUS_UPDATE)
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
           :TMainFrame(frame, wxID_ANY, title) {   
         
-    delete wxLog::SetActiveTarget(new wxLogTextCtrl(m_logText)); 
+    delete wxLog::SetActiveTarget(NULL); 
 
     wxLog::SetTimestamp(NULL);            
 
@@ -28,7 +28,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);    
-       
+    
+    // init game   
     m_playerColor = FastBoard::BLACK;
     m_State.init_game(9, 7.5f);
     m_State.set_timecontrol(18 * 60 * 100, 0, 0);
@@ -36,6 +37,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_ratedGame = false;
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
+    
     m_soundEnabled = true;
     m_resignEnabled = true;
     
@@ -46,7 +48,11 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     
     SetIcon(wxICON(aaaa));
 
+    SetSize(450, 550);
     Center();
+    
+    wxCommandEvent evt;
+    doNewRatedGame(evt);
 }
 
 MainFrame::~MainFrame() {
@@ -496,7 +502,7 @@ void MainFrame::doPass(wxCommandEvent& event) {
     m_engineRunning.Wait();
 
     m_State.play_pass();
-    ::wxLogMessage("User passes");
+    //::wxLogMessage("User passes");
     
     m_engineRunning.Post();
     
@@ -581,12 +587,13 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         ::wxLogDebug("Opening: " + path);
         
         std::auto_ptr<SGFTree> tree(new SGFTree);
-        tree->load_from_file(path);  
-        
-        ::wxLogDebug("Read %d moves", tree->count_mainline_moves());
-        
-        m_State = tree->get_mainline();
-        
+        try {
+            tree->load_from_file(path);  
+             ::wxLogDebug("Read %d moves", tree->count_mainline_moves());        
+            m_State = tree->get_mainline();       
+        } catch (...) {
+        }
+                
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);

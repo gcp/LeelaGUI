@@ -44,60 +44,8 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 	
-	m_splitter1 = new wxSplitterWindow( this, ID_BOARDSASH, wxDefaultPosition, wxDefaultSize, 0 );
-	m_splitter1->SetSashGravity( 0.65 );
-	m_splitter1->SetMinimumPaneSize( 1 );
-	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( TMainFrame::m_splitter1OnIdle ), NULL, this );
-	m_panelBoard = new TBoardPanel( m_splitter1, ID_BOARDPANEL, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL );
-	m_panel6 = new wxPanel( m_splitter1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer8;
-	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_staticline1 = new wxStaticLine( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
-	bSizer8->Add( m_staticline1, 0, wxEXPAND | wxALL, 0 );
-	
-	m_notebook1 = new wxNotebook( m_panel6, ID_DEFAULT, wxDefaultPosition, wxSize( -1,-1 ), 0 );
-	m_panel4 = new wxPanel( m_notebook1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer5;
-	bSizer5 = new wxBoxSizer( wxVERTICAL );
-	
-	m_logText = new wxTextCtrl( m_panel4, ID_DEFAULT, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY );
-	bSizer5->Add( m_logText, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panel4->SetSizer( bSizer5 );
-	m_panel4->Layout();
-	bSizer5->Fit( m_panel4 );
-	m_notebook1->AddPage( m_panel4, _("Console"), true );
-	m_panel5 = new wxPanel( m_notebook1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer4;
-	bSizer4 = new wxBoxSizer( wxVERTICAL );
-	
-	m_UCTTree = new wxTreeCtrl( m_panel5, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE );
-	bSizer4->Add( m_UCTTree, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panel5->SetSizer( bSizer4 );
-	m_panel5->Layout();
-	bSizer4->Fit( m_panel5 );
-	m_notebook1->AddPage( m_panel5, _("Tree"), false );
-	m_panel51 = new wxPanel( m_notebook1, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer51;
-	bSizer51 = new wxBoxSizer( wxVERTICAL );
-	
-	m_moveList = new wxListCtrl( m_panel51, ID_DEFAULT, wxDefaultPosition, wxDefaultSize, wxLC_LIST|wxLC_VRULES );
-	bSizer51->Add( m_moveList, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panel51->SetSizer( bSizer51 );
-	m_panel51->Layout();
-	bSizer51->Fit( m_panel51 );
-	m_notebook1->AddPage( m_panel51, _("Moves"), false );
-	
-	bSizer8->Add( m_notebook1, 1, wxALL|wxEXPAND, 2 );
-	
-	m_panel6->SetSizer( bSizer8 );
-	m_panel6->Layout();
-	bSizer8->Fit( m_panel6 );
-	m_splitter1->SplitVertically( m_panelBoard, m_panel6, 378 );
-	bSizer2->Add( m_splitter1, 1, wxALL|wxEXPAND, 0 );
+	m_panelBoard = new TBoardPanel( this, ID_BOARDPANEL, wxDefaultPosition, wxSize( -1,-1 ), wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL );
+	bSizer2->Add( m_panelBoard, 1, wxEXPAND | wxALL, 1 );
 	
 	this->SetSizer( bSizer2 );
 	this->Layout();
@@ -285,13 +233,19 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela lite version 0.2.7"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
-	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 5 );
+	m_staticTextVersion->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 10 );
 	
 	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	bSizer9->Add( m_staticText5, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("http://www.sjeng.org"), wxT("http://www.sjeng.org"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_staticText9 = new wxStaticText( this, wxID_ANY, _("gcp@sjeng.org"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText9->Wrap( -1 );
+	bSizer9->Add( m_staticText9, 0, wxALIGN_CENTER|wxALL, 5 );
+	
+	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("http://www.sjeng.org/leela"), wxT("http://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	bSizer9->Add( m_hyperlink3, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	m_button1 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -317,22 +271,32 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_staticText8->Wrap( -1 );
 	bSizer10->Add( m_staticText8, 0, wxALL, 5 );
 	
-	m_staticText9 = new wxStaticText( this, wxID_ANY, _("Leela - Full Version"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText9 = new wxStaticText( this, wxID_ANY, _("Leela - full version"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText9->Wrap( -1 );
 	m_staticText9->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer10->Add( m_staticText9, 0, wxALIGN_CENTER|wxALL, 5 );
 	
+	m_staticText81 = new wxStaticText( this, wxID_ANY, _("including 19 x 19 and top levels"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText81->Wrap( -1 );
+	m_staticText81->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer10->Add( m_staticText81, 0, wxALIGN_CENTER|wxALL, 5 );
+	
 	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_hyperlink1->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxEmptyString ) );
+	
 	bSizer10->Add( m_hyperlink1, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	m_staticText10 = new wxStaticText( this, wxID_ANY, _("Deep Sjeng - The chess program"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText10 = new wxStaticText( this, wxID_ANY, _("Deep Sjeng - the chess program"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText10->Wrap( -1 );
 	m_staticText10->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer10->Add( m_staticText10, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	m_hyperlink2 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/deepsjeng2"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_hyperlink2->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxEmptyString ) );
+	
 	bSizer10->Add( m_hyperlink2, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	m_button2 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );

@@ -2,91 +2,10 @@
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxFrame" name="TMainFrame">
 		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
-		<size>700,450</size>
+		<size>400,450</size>
 		<title>Leela</title>
-		<object class="wxSplitterWindow" name="m_splitter1">
-			<sashpos>378</sashpos>
-			<minsize>1</minsize>
-			<orientation>vertical</orientation>
-			<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
-				<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
-			</object>
-			<object class="wxPanel" name="m_panel6">
-				<style>wxTAB_TRAVERSAL</style>
-				<object class="wxBoxSizer">
-					<orient>wxHORIZONTAL</orient>
-					<object class="sizeritem">
-						<option>0</option>
-						<flag>wxEXPAND | wxALL</flag>
-						<border>0</border>
-						<object class="wxStaticLine" name="m_staticline1">
-							<style>wxLI_VERTICAL</style>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxALL|wxEXPAND</flag>
-						<border>2</border>
-						<object class="wxNotebook" name="m_notebook1">
-							<object class="notebookpage">
-								<label>Console</label>
-								<selected>1</selected>
-								<object class="wxPanel" name="m_panel4">
-									<style>wxTAB_TRAVERSAL</style>
-									<object class="wxBoxSizer">
-										<orient>wxVERTICAL</orient>
-										<object class="sizeritem">
-											<option>1</option>
-											<flag>wxALL|wxEXPAND</flag>
-											<border>5</border>
-											<object class="wxTextCtrl" name="m_logText">
-												<style>wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY</style>
-												<value></value>
-											</object>
-										</object>
-									</object>
-								</object>
-							</object>
-							<object class="notebookpage">
-								<label>Tree</label>
-								<selected>0</selected>
-								<object class="wxPanel" name="m_panel5">
-									<style>wxTAB_TRAVERSAL</style>
-									<object class="wxBoxSizer">
-										<orient>wxVERTICAL</orient>
-										<object class="sizeritem">
-											<option>1</option>
-											<flag>wxALL|wxEXPAND</flag>
-											<border>5</border>
-											<object class="wxTreeCtrl" name="m_UCTTree">
-												<style>wxTR_DEFAULT_STYLE</style>
-											</object>
-										</object>
-									</object>
-								</object>
-							</object>
-							<object class="notebookpage">
-								<label>Moves</label>
-								<selected>0</selected>
-								<object class="wxPanel" name="m_panel51">
-									<style>wxTAB_TRAVERSAL</style>
-									<object class="wxBoxSizer">
-										<orient>wxVERTICAL</orient>
-										<object class="sizeritem">
-											<option>1</option>
-											<flag>wxALL|wxEXPAND</flag>
-											<border>5</border>
-											<object class="wxListCtrl" name="m_moveList">
-												<style>wxLC_LIST|wxLC_VRULES</style>
-											</object>
-										</object>
-									</object>
-								</object>
-							</object>
-						</object>
-					</object>
-				</object>
-			</object>
+		<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
+			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
 		</object>
 		<object class="wxStatusBar" name="m_statusBar">
 			<style>wxST_SIZEGRIP</style>
@@ -441,16 +360,22 @@
 	</object>
 	<object class="wxDialog" name="TAboutDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>237,138</size>
+		<size>230,169</size>
 		<title>About</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<option>0</option>
 				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
+				<border>10</border>
 				<object class="wxStaticText" name="m_staticTextVersion">
 					<style>wxALIGN_CENTRE</style>
+					<font>
+						<family>default</family>
+						<style>normal</style>
+						<weight>bold</weight>
+						<underlined>0</underlined>
+					</font>
 					<label>Leela lite version 0.2.7</label>
 				</object>
 			</object>
@@ -466,9 +391,17 @@
 				<option>0</option>
 				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
+				<object class="wxStaticText" name="m_staticText9">
+					<label>gcp@sjeng.org</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
 				<object class="wxHyperlinkCtrl" name="m_hyperlink3">
-					<label>http://www.sjeng.org</label>
-					<url>http://www.sjeng.org</url>
+					<label>http://www.sjeng.org/leela</label>
+					<url>http://www.sjeng.org/leela</url>
 					<style>wxHL_DEFAULT_STYLE</style>
 				</object>
 			</object>
@@ -485,7 +418,7 @@
 	</object>
 	<object class="wxDialog" name="TNagDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>245,178</size>
+		<size>249,200</size>
 		<title>Support Leela!</title>
 		<centered>1</centered>
 		<object class="wxBoxSizer">
@@ -509,7 +442,22 @@
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Leela - Full Version</label>
+					<label>Leela - full version</label>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER|wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticText81">
+					<style>wxALIGN_CENTRE</style>
+					<font>
+						<family>default</family>
+						<style>normal</style>
+						<weight>bold</weight>
+						<underlined>0</underlined>
+					</font>
+					<label>including 19 x 19 and top levels</label>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -520,6 +468,12 @@
 					<label></label>
 					<url>http://www.sjeng.org/leela</url>
 					<style>wxHL_DEFAULT_STYLE</style>
+					<font>
+						<family>default</family>
+						<style>normal</style>
+						<weight>normal</weight>
+						<underlined>0</underlined>
+					</font>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -533,7 +487,7 @@
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Deep Sjeng - The chess program</label>
+					<label>Deep Sjeng - the chess program</label>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -544,6 +498,12 @@
 					<label></label>
 					<url>http://www.sjeng.org/deepsjeng2</url>
 					<style>wxHL_DEFAULT_STYLE</style>
+					<font>
+						<family>default</family>
+						<style>normal</style>
+						<weight>normal</weight>
+						<underlined>0</underlined>
+					</font>
 				</object>
 			</object>
 			<object class="sizeritem">

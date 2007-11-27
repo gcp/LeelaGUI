@@ -325,8 +325,8 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
             Refresh();
         }                   
         
-    } else {
-        ::wxLogMessage("It's not your move!");
+    } else {        
+        //::wxLogMessage("It's not your move!");
     }
     
     event.Skip();
