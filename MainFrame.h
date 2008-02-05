@@ -46,11 +46,12 @@ class MainFrame : public TMainFrame {
 	virtual void doStatusUpdate(wxCommandEvent& event);
 	
 	void startEngine();
+	void stopEngine();
 	void scoreDialog(float komi, float score, float prekomi);
 	void scoreGame(bool & won, float & komi, float & score, float & prescore);
 	void ratedGameEnd(bool won);
 	wxString rankToString(int rank);
-	void updateStatusBar(char *str);
+	void updateStatusBar(char *str);	
 	
 	GameState m_State;
 	int m_playerColor;

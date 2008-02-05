@@ -204,8 +204,8 @@ bool MyApp::OnInit()
             config->Write(wxT("Name"), name);
             config->Write(wxT("Code"), code);
             if (!Verify_Serial(name, code)) {
-                ::wxMessageBox(wxT("The registration info you entered is not correct.\nPlease enter the name and code you received\nwhen you bought the program."),
-                               wxT("Copyprotection check"));
+                ::wxMessageBox(_("The registration info you entered is not correct.\nPlease enter the name and code you received\nwhen you bought the program."),
+                               _("Copyprotection check"));
             }
         } else {        
             return false;
@@ -214,7 +214,7 @@ bool MyApp::OnInit()
     CRYPT_END
 #endif            
 
-    MainFrame* frame = new MainFrame(NULL, wxT("Leela"));    
+    MainFrame* frame = new MainFrame(NULL, _("Leela"));    
     frame->Show();
     
     SetTopWindow(frame);

@@ -1,0 +1,483 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Leela 0.3.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-02-05 20:27+0100\n"
+"PO-Revision-Date: 2008-02-05 20:28+0100\n"
+"Last-Translator: Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Language-Team: GCP, WDK <gcp@sjeng.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: c:\\Projects\\LeelaGUI\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: AboutDialog.cpp:13
+msgid "Leela version "
+msgstr ""
+
+#: App.cpp:207
+msgid ""
+"The registration info you entered is not correct.\n"
+"Please enter the name and code you received\n"
+"when you bought the program."
+msgstr ""
+
+#: App.cpp:208
+msgid "Copyprotection check"
+msgstr ""
+
+#: App.cpp:217
+#: GUI.h:132
+msgid "Leela"
+msgstr ""
+
+#: EngineThread.cpp:16
+msgid "Engine thinking..."
+msgstr ""
+
+#: GUI.cpp:55
+msgid "&New game..."
+msgstr ""
+
+#: GUI.cpp:55
+#: GUI.cpp:123
+msgid "Start a new game"
+msgstr ""
+
+#: GUI.cpp:57
+msgid "New &rated game"
+msgstr ""
+
+#: GUI.cpp:57
+msgid "Starts a new rated game"
+msgstr ""
+
+#: GUI.cpp:61
+msgid "&Open game..."
+msgstr ""
+
+#: GUI.cpp:61
+msgid "Opens a game from disk"
+msgstr ""
+
+#: GUI.cpp:63
+msgid "&Save game..."
+msgstr ""
+
+#: GUI.cpp:63
+msgid "Save a game to disk"
+msgstr ""
+
+#: GUI.cpp:67
+msgid "E&xit"
+msgstr ""
+
+#: GUI.cpp:67
+msgid "Exit the program"
+msgstr ""
+
+#: GUI.cpp:69
+msgid "&File"
+msgstr ""
+
+#: GUI.cpp:72
+msgid "&Undo"
+msgstr ""
+
+#: GUI.cpp:74
+msgid "&Forward"
+msgstr ""
+
+#: GUI.cpp:78
+msgid "Go &back 10 moves"
+msgstr ""
+
+#: GUI.cpp:78
+msgid "Undo 10 moves"
+msgstr ""
+
+#: GUI.cpp:80
+msgid "Go for&ward 10 moves"
+msgstr ""
+
+#: GUI.cpp:80
+msgid "Forward 10 moves"
+msgstr ""
+
+#: GUI.cpp:84
+msgid "Force &computer move"
+msgstr ""
+
+#: GUI.cpp:84
+msgid "Force the computer to move now"
+msgstr ""
+
+#: GUI.cpp:86
+msgid "&Pass"
+msgstr ""
+
+#: GUI.cpp:86
+#: GUI.cpp:134
+#: MainFrame.cpp:166
+msgid "Pass"
+msgstr ""
+
+#: GUI.cpp:88
+msgid "&Score"
+msgstr ""
+
+#: GUI.cpp:88
+msgid "Score the position"
+msgstr ""
+
+#: GUI.cpp:90
+msgid "&Game"
+msgstr ""
+
+#: GUI.cpp:93
+msgid "Show &Territory"
+msgstr ""
+
+#: GUI.cpp:93
+msgid "Show Territory"
+msgstr ""
+
+#: GUI.cpp:95
+msgid "Show &Moyo"
+msgstr ""
+
+#: GUI.cpp:95
+msgid "Show Moyo"
+msgstr ""
+
+#: GUI.cpp:99
+msgid "Engine &resigns"
+msgstr ""
+
+#: GUI.cpp:99
+msgid "Allows the engine to resign or not"
+msgstr ""
+
+#: GUI.cpp:103
+msgid "&Sound"
+msgstr ""
+
+#: GUI.cpp:103
+msgid "Enable or disable sound"
+msgstr ""
+
+#: GUI.cpp:107
+msgid "&Settings"
+msgstr ""
+
+#: GUI.cpp:110
+msgid "&Go Rules"
+msgstr ""
+
+#: GUI.cpp:110
+msgid "Explanation of the rules of Go"
+msgstr ""
+
+#: GUI.cpp:112
+msgid "Leela Homepage"
+msgstr ""
+
+#: GUI.cpp:116
+msgid "&About..."
+msgstr ""
+
+#: GUI.cpp:116
+msgid "Information about the program"
+msgstr ""
+
+#: GUI.cpp:118
+msgid "&Help"
+msgstr ""
+
+#: GUI.cpp:123
+#: GUI.h:176
+msgid "New Game"
+msgstr ""
+
+#: GUI.cpp:124
+msgid "New Rated Game"
+msgstr ""
+
+#: GUI.cpp:124
+msgid "Start a new rated game"
+msgstr ""
+
+#: GUI.cpp:125
+msgid "Load Game"
+msgstr ""
+
+#: GUI.cpp:125
+msgid "Load a game"
+msgstr ""
+
+#: GUI.cpp:126
+msgid "Save"
+msgstr ""
+
+#: GUI.cpp:126
+msgid "Save the game"
+msgstr ""
+
+#: GUI.cpp:128
+msgid "Go back 10 moves"
+msgstr ""
+
+#: GUI.cpp:129
+msgid "Undo"
+msgstr ""
+
+#: GUI.cpp:129
+msgid "Take back one move"
+msgstr ""
+
+#: GUI.cpp:130
+msgid "Forward"
+msgstr ""
+
+#: GUI.cpp:130
+msgid "Go forward one move"
+msgstr ""
+
+#: GUI.cpp:131
+msgid "Forward 10"
+msgstr ""
+
+#: GUI.cpp:131
+msgid "Go forward 10 moves"
+msgstr ""
+
+#: GUI.cpp:133
+msgid "Force computer move"
+msgstr ""
+
+#: GUI.cpp:134
+#: GUI.cpp:135
+msgid "tool"
+msgstr ""
+
+#: GUI.cpp:135
+msgid "Score the game"
+msgstr ""
+
+#: GUI.cpp:137
+msgid "Exit"
+msgstr ""
+
+#: GUI.cpp:137
+msgid "Exits the program"
+msgstr ""
+
+#: GUI.cpp:161
+msgid "9 x 9"
+msgstr ""
+
+#: GUI.cpp:161
+msgid "13 x 13"
+msgstr ""
+
+#: GUI.cpp:161
+msgid "19 x 19"
+msgstr ""
+
+#: GUI.cpp:163
+msgid "Board size"
+msgstr ""
+
+#: GUI.cpp:168
+msgid "Komi (+0.5)"
+msgstr ""
+
+#: GUI.cpp:170
+msgid "Komi"
+msgstr ""
+
+#: GUI.cpp:180
+#: GUI.cpp:182
+msgid "Handicap"
+msgstr ""
+
+#: GUI.cpp:196
+msgid "Black"
+msgstr ""
+
+#: GUI.cpp:196
+msgid "White"
+msgstr ""
+
+#: GUI.cpp:198
+msgid "Your Color"
+msgstr ""
+
+#: GUI.cpp:202
+msgid "100 simulations"
+msgstr ""
+
+#: GUI.cpp:202
+msgid "500 simulations"
+msgstr ""
+
+#: GUI.cpp:202
+msgid "1000 simulations"
+msgstr ""
+
+#: GUI.cpp:202
+msgid "5000 simulations"
+msgstr ""
+
+#: GUI.cpp:202
+msgid "10000 simulations"
+msgstr ""
+
+#: GUI.cpp:202
+msgid "Unlimited"
+msgstr ""
+
+#: GUI.cpp:204
+msgid "Engine Max Level"
+msgstr ""
+
+#: GUI.cpp:234
+msgid "Leela lite version 0.2.7"
+msgstr ""
+
+#: GUI.cpp:240
+msgid "Copyright (C) 2007 Gian-Carlo Pascutto"
+msgstr ""
+
+#: GUI.cpp:244
+msgid "gcp@sjeng.org"
+msgstr ""
+
+#: GUI.cpp:248
+msgid "http://www.sjeng.org/leela"
+msgstr ""
+
+#: GUI.cpp:251
+#: GUI.cpp:302
+msgid "OK"
+msgstr ""
+
+#: GUI.cpp:270
+msgid "If you like Leela, you might also like:"
+msgstr ""
+
+#: GUI.cpp:274
+msgid "Leela - full version"
+msgstr ""
+
+#: GUI.cpp:280
+msgid "including 19 x 19 and top levels"
+msgstr ""
+
+#: GUI.cpp:291
+msgid "Deep Sjeng - the chess program"
+msgstr ""
+
+#: GUI.cpp:319
+msgid "Please enter your name and serial number:"
+msgstr ""
+
+#: GUI.cpp:330
+msgid "Name"
+msgstr ""
+
+#: GUI.cpp:337
+msgid "Code"
+msgstr ""
+
+#: MainFrame.cpp:96
+#, c-format
+msgid "Black Prisoners: %d   White Prisoners: %d"
+msgstr ""
+
+#: MainFrame.cpp:155
+msgid "New move arrived"
+msgstr ""
+
+#: MainFrame.cpp:166
+msgid "Computer passes"
+msgstr ""
+
+#: MainFrame.cpp:246
+#: MainFrame.cpp:424
+msgid "Rank: "
+msgstr ""
+
+#: MainFrame.cpp:250
+msgid "Leela - "
+msgstr ""
+
+#: MainFrame.cpp:462
+msgid "BLACK wins by resignation"
+msgstr ""
+
+#: MainFrame.cpp:464
+#, c-format
+msgid ""
+"Final score:\n"
+"BLACK wins by %.0f - %.1f (komi)\n"
+"= %.1f points"
+msgstr ""
+
+#: MainFrame.cpp:471
+msgid "WHITE wins by resignation"
+msgstr ""
+
+#: MainFrame.cpp:473
+#, c-format
+msgid ""
+"Final score:\n"
+"WHITE wins by %.0f + %.1f (komi)\n"
+"= %.1f points"
+msgstr ""
+
+#: MainFrame.cpp:477
+msgid "Game score"
+msgstr ""
+
+#: MainFrame.cpp:492
+#, c-format
+msgid "%d kyu"
+msgstr ""
+
+#: MainFrame.cpp:495
+#, c-format
+msgid "%d dan"
+msgstr ""
+
+#: MainFrame.cpp:497
+#, c-format
+msgid "%d pro"
+msgstr ""
+
+#: MainFrame.cpp:582
+#: MainFrame.cpp:620
+msgid "Choose a file"
+msgstr ""
+
+#: MainFrame.cpp:583
+#: MainFrame.cpp:621
+msgid "Go games (*.sgf)|*.sgf"
+msgstr ""
+
+#: GUI.h:204
+msgid "About"
+msgstr ""
+
+#: GUI.h:236
+msgid "Support Leela!"
+msgstr ""
+
+#: GUI.h:267
+msgid "Copy protection"
+msgstr ""
+

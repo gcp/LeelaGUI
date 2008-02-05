@@ -57,6 +57,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 }
 
 MainFrame::~MainFrame() {
+    stopEngine();
+    
     if (m_engineRunning.WaitTimeout(2000) == wxSEMA_TIMEOUT) {
         m_engineThread->Kill();
     }
@@ -93,7 +95,7 @@ void MainFrame::updateStatusBar(char *str) {
 // do whatever we need to do if the visible board gets updated
 void MainFrame::doBoardUpdate(wxCommandEvent& event) {       
     wxString mess;
-    mess.Printf("Black Prisoners: %d   White Prisoners: %d", 
+    mess.Printf(_("Black Prisoners: %d   White Prisoners: %d"), 
                 m_State.board.get_prisoners(FastBoard::BLACK),
                 m_State.board.get_prisoners(FastBoard::WHITE));
     m_statusBar->SetStatusText(mess, 0);     
@@ -121,6 +123,14 @@ void MainFrame::startEngine() {
     } else {
         ::wxLogDebug("Engine already running");
     }                
+}
+
+void MainFrame::stopEngine() {
+    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
+        m_engineThread->stop_engine();
+    } else {
+        m_engineRunning.Post();
+    }
 }
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
@@ -152,7 +162,7 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
 }
 	
 void MainFrame::doNewMove(wxCommandEvent & event) {
-    ::wxLogDebug("New move arrived");
+    ::wxLogDebug(_("New move arrived"));
     
     if (m_State.get_last_move() != FastBoard::PASS) {
         if (m_soundEnabled) {
@@ -163,7 +173,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         if (m_State.get_to_move() == m_playerColor 
             && m_State.get_last_move() == FastBoard::PASS) {
             
-            ::wxMessageBox(wxT("Computer passes"), wxT("Pass"), wxOK, this);
+            ::wxMessageBox(_("Computer passes"), _("Pass"), wxOK, this);
         }
     }
     
@@ -205,12 +215,13 @@ void MainFrame::doBoardResize(wxSizeEvent& event) {
 }
 
 void MainFrame::doNewGame(wxCommandEvent& event) {
+    stopEngine();
     m_engineRunning.Wait();
     
     NewGameDialog mydialog(this);
     
     if (mydialog.ShowModal() == wxID_OK) {
-        ::wxLogDebug("OK clicked");                
+        ::wxLogDebug("OK clicked"); 
         
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
         m_State.set_fixed_handicap(mydialog.getHandicap());        
@@ -232,7 +243,8 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
 }
 
 void MainFrame::doNewRatedGame(wxCommandEvent& event) {    
-     m_engineRunning.Wait();
+    stopEngine();
+    m_engineRunning.Wait();
     
     //m_State.init_game(9, 6.5f);    
     //m_State.set_timecontrol(3 * 60 * 100, 0, 0);
@@ -241,13 +253,13 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     
     int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
     
-    ::wxLogDebug("Last rank was: %d", rank);        
+    ::wxLogDebug("Last rank was: %d", rank); 
     
-    wxString mess = wxString(wxT("Rank: "));
+    wxString mess = wxString(_("Rank: "));
     mess += rankToString(rank);    
     m_statusBar->SetStatusText(mess, 1);
     
-    this->SetTitle(wxT("Leela - ") + mess); 
+    this->SetTitle(_("Leela - ") + mess); 
     
     int handicap;
     int simulations;
@@ -421,13 +433,14 @@ void MainFrame::ratedGameEnd(bool won) {
         
         wxConfig::Get()->Write(wxT("LastRank"), rank);                        
         
-        wxString mess = wxString(wxT("Rank: "));
+        wxString mess = wxString(_("Rank: "));
         mess += rankToString(rank);    
         m_statusBar->SetStatusText(mess, 1);
     }               
 }
 
 void MainFrame::scoreGame(bool & won, float & komi, float & score, float & prekomi) {
+    stopEngine();
     m_engineRunning.Wait();        
     
     if (m_State.get_last_move() == FastBoard::RESIGN) {
@@ -459,22 +472,22 @@ void MainFrame::scoreDialog(float komi, float score, float prekomi) {
     
     if (score > 0.0f) {        
         if (m_State.get_last_move() == FastBoard::RESIGN) {
-            mess.Printf(wxT("BLACK wins by resignation"));
+            mess.Printf(_("BLACK wins by resignation"));
         } else {
-            mess.Printf(wxT("Final score:\nBLACK wins by %.0f - %.1f (komi)\n= %.1f points"), prekomi, komi, score);        
+            mess.Printf(_("Final score:\nBLACK wins by %.0f - %.1f (komi)\n= %.1f points"), prekomi, komi, score);        
         }            
     } else {
         // avoid minus zero
         prekomi = prekomi - 0.001f;
         score = score - 0.001f;
         if (m_State.get_last_move() == FastBoard::RESIGN) {   
-            mess.Printf(wxT("WHITE wins by resignation"));
+            mess.Printf(_("WHITE wins by resignation"));
         } else {
-            mess.Printf(wxT("Final score:\nWHITE wins by %.0f + %.1f (komi)\n= %.1f points"), -prekomi, komi, -score);
+            mess.Printf(_("Final score:\nWHITE wins by %.0f + %.1f (komi)\n= %.1f points"), -prekomi, komi, -score);
         }            
     }   
     
-    ::wxMessageBox(mess, wxT("Game score"), wxOK, this);            
+    ::wxMessageBox(mess, _("Game score"), wxOK, this);            
 }
 
 void MainFrame::doScore(wxCommandEvent& event) {   
@@ -489,12 +502,12 @@ wxString MainFrame::rankToString(int rank) {
     wxString res;
     
     if (rank < 0) {
-        res.Printf("%d kyu", -rank);
+        res.Printf(_("%d kyu"), -rank);
     } else {
         if (rank < 7) {
-            res.Printf("%d dan", rank + 1);
+            res.Printf(_("%d dan"), rank + 1);
         } else {
-            res.Printf("%d pro", rank - 6);
+            res.Printf(_("%d pro"), rank - 6);
         }
     }
     
@@ -502,6 +515,7 @@ wxString MainFrame::rankToString(int rank) {
 }
 
 void MainFrame::doPass(wxCommandEvent& event) {
+    stopEngine();
     m_engineRunning.Wait();
 
     m_State.play_pass();
@@ -515,6 +529,7 @@ void MainFrame::doPass(wxCommandEvent& event) {
 }
 
 void MainFrame::doUndo(wxCommandEvent& event) {
+    stopEngine();
     m_engineRunning.Wait();
 
     if (m_State.undo_move()) {
@@ -534,6 +549,7 @@ void MainFrame::doUndo(wxCommandEvent& event) {
 }
 
 void MainFrame::doForward(wxCommandEvent& event) {
+    stopEngine();
     m_engineRunning.Wait();
 
     if (m_State.forward_move()) {
@@ -577,10 +593,11 @@ void MainFrame::doHelpAbout(wxCommandEvent& event) {
 }
 
 void MainFrame::doOpenSGF(wxCommandEvent& event) {    
+    stopEngine();
     m_engineRunning.Wait();    
     
-    wxString caption = wxT("Choose a file");
-    wxString wildcard = wxT("Go games (*.sgf)|*.sgf");
+    wxString caption = _("Choose a file");
+    wxString wildcard = _("Go games (*.sgf)|*.sgf");
     wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
                         wxFD_OPEN | wxFD_CHANGE_DIR | wxFD_FILE_MUST_EXIST);
     
@@ -613,12 +630,13 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
 }
 
 void MainFrame::doSaveSGF(wxCommandEvent& event) {
+    stopEngine();
     m_engineRunning.Wait();
     
     std::string sgfgame = SGFTree::state_to_string(&m_State, !m_playerColor);
     
-    wxString caption = wxT("Choose a file");
-    wxString wildcard = wxT("Go games (*.sgf)|*.sgf");
+    wxString caption = _("Choose a file");
+    wxString wildcard = _("Go games (*.sgf)|*.sgf");
     wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
                         wxFD_SAVE | wxFD_CHANGE_DIR | wxFD_OVERWRITE_PROMPT);
                         
@@ -638,13 +656,18 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 }
 
 void MainFrame::doForceMove(wxCommandEvent& event) {        
-    m_playerColor = !m_State.get_to_move();
+    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
+        stopEngine();        
+    } else {
+        m_engineRunning.Post();
+        
+        m_playerColor = !m_State.get_to_move();    
+        m_panelBoard->setPlayerColor(m_playerColor);
     
-    m_panelBoard->setPlayerColor(m_playerColor);
+        m_ratedGame = false;
     
-    m_ratedGame = false;
-    
-    startEngine();
+        startEngine();
+    }                    
 }
 
 void MainFrame::doResignToggle(wxCommandEvent& event) {

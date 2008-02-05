@@ -11,13 +11,15 @@ class TEngineThread : public wxThread {
         TEngineThread(GameState * gamestate, wxSemaphore * sema, MainFrame * frame);
         void limit_visits(int visits);
         void set_resigning(bool res);
+        void stop_engine(void);
         virtual void * Entry();
     private:
         GameState * m_state; 
         wxSemaphore * m_sema;
-        MainFrame * m_frame; 
+        MainFrame * m_frame;                 
         int m_maxvisits;  
-        bool m_resigning;
+        bool m_resigning;    
+        bool m_runflag;    
 };
 
 #endif
