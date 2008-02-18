@@ -57,7 +57,9 @@ class TMainFrame : public wxFrame
 		void _wxFB_doForward10( wxCommandEvent& event ){ doForward10( event ); }
 		void _wxFB_doForceMove( wxCommandEvent& event ){ doForceMove( event ); }
 		void _wxFB_doPass( wxCommandEvent& event ){ doPass( event ); }
+		void _wxFB_doResign( wxCommandEvent& event ){ doResign( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
+		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
 		void _wxFB_doResignToggle( wxCommandEvent& event ){ doResignToggle( event ); }
@@ -84,7 +86,9 @@ class TMainFrame : public wxFrame
 			ID_FWD10,
 			ID_FORCE,
 			ID_PASS,
+			ID_RESIGN,
 			ID_SCORE,
+			ID_ANALYZE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
 			ID_RESIGNTOGGLE,
@@ -99,6 +103,7 @@ class TMainFrame : public wxFrame
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
 		wxMenu* m_menu2;
+		wxMenu* m_menu5;
 		wxMenu* m_menuSettings;
 		wxMenu* m_menu3;
 		wxToolBar* m_toolBar1;
@@ -118,7 +123,9 @@ class TMainFrame : public wxFrame
 		virtual void doForward10( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doForceMove( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doPass( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doResign( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doAnalyze( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doResignToggle( wxCommandEvent& event ){ event.Skip(); }
@@ -142,6 +149,7 @@ class TNewGameDialog : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_doInit( wxInitDialogEvent& event ){ doInit( event ); }
 		void _wxFB_doHandicapUpdate( wxSpinEvent& event ){ doHandicapUpdate( event ); }
 		void _wxFB_doCancel( wxCommandEvent& event ){ doCancel( event ); }
 		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
@@ -160,6 +168,8 @@ class TNewGameDialog : public wxDialog
 		wxSpinCtrl* m_spinCtrlKomi;
 		wxStaticText* m_staticText3;
 		wxSpinCtrl* m_spinCtrlHandicap;
+		wxStaticText* m_staticText13;
+		wxSpinCtrl* m_spinCtrlTime;
 		wxRadioBox* m_radioBoxColor;
 		wxRadioBox* m_radioBoxLevel;
 		wxStdDialogButtonSizer* m_sdbSizer1;
@@ -167,13 +177,14 @@ class TNewGameDialog : public wxDialog
 		wxButton* m_sdbSizer1Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
 		virtual void doHandicapUpdate( wxSpinEvent& event ){ event.Skip(); }
 		virtual void doCancel( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
 		
 	
 	public:
-		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 260,250 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 294,273 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
 	
 };
 
@@ -201,7 +212,7 @@ class TAboutDialog : public wxDialog
 		
 	
 	public:
-		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 230,169 ), long style = wxDEFAULT_DIALOG_STYLE );
+		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 237,172 ), long style = wxDEFAULT_DIALOG_STYLE );
 	
 };
 

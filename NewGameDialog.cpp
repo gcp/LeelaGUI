@@ -6,10 +6,33 @@ NewGameDialog::NewGameDialog( wxWindow* parent )
 :
 TNewGameDialog( parent )
 {
+                  
+}
+
+void NewGameDialog::doInit( wxInitDialogEvent& event ) {    
+    int size = wxConfig::Get()->Read(wxT("DefaultBoardSize"), (long)0);
+    m_radioBoxBoardSize->SetSelection(size);
+    
+    int handicap = wxConfig::Get()->Read(wxT("DefaultHandicap"), (long)0);
+    m_spinCtrlHandicap->SetValue(handicap);
+    
+    int komi = wxConfig::Get()->Read(wxT("DefaultKomi"), (long)0);
+    m_spinCtrlKomi->SetValue(komi);
+    
+    int simulations = wxConfig::Get()->Read(wxT("DefaultSimulations"), (long)2);
+    m_radioBoxLevel->SetSelection(simulations);
+    
+    int minutes = wxConfig::Get()->Read(wxT("DefaultMinutes"), (long)30);
+    m_spinCtrlTime->SetValue(minutes);
+    
+    int color = wxConfig::Get()->Read(wxT("DefaultColor"), (long)0);
+    m_radioBoxColor->SetSelection(color);
+        
 #ifdef LITEVERSION
     m_radioBoxBoardSize->Enable(2, false);
     m_radioBoxLevel->Enable(5, false);
-#endif    
+    m_radioBoxLevel->Enable(6, false);
+#endif  
 }
 
 void NewGameDialog::doCancel( wxCommandEvent& event ) {
@@ -17,7 +40,26 @@ void NewGameDialog::doCancel( wxCommandEvent& event ) {
 }
 
 void NewGameDialog::doOK( wxCommandEvent& event ) {
-    event.Skip();
+    // XXX: save settings        
+    int size = m_radioBoxBoardSize->GetSelection();
+    wxConfig::Get()->Write(wxT("DefaultBoardSize"), size);
+    
+    int simulations = m_radioBoxLevel->GetSelection();
+    wxConfig::Get()->Write(wxT("DefaultSimulations"), simulations);
+    
+    int color = m_radioBoxColor->GetSelection();
+    wxConfig::Get()->Write(wxT("DefaultColor"), color);
+    
+    int handicap = m_spinCtrlHandicap->GetValue();
+    wxConfig::Get()->Write(wxT("DefaultHandicap"), handicap);
+    
+    int komi = m_spinCtrlKomi->GetValue();
+    wxConfig::Get()->Write(wxT("DefaultKomi"), komi);
+    
+    int minutes = m_spinCtrlTime->GetValue();
+    wxConfig::Get()->Write(wxT("DefaultMinutes"), minutes);  
+    
+    event.Skip();          
 }
 
 float NewGameDialog::getKomi() {
@@ -57,6 +99,8 @@ int NewGameDialog::getSimulations() {
     } else if (simuls == 4) {
         return 10000;
     } else if (simuls == 5) {
+        return 20000;
+    } else if (simuls == 6) {
         return UCTSearch::MAX_TREE_SIZE * 100;
     }
     

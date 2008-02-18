@@ -44,6 +44,8 @@ class MainFrame : public TMainFrame {
 	virtual void doToggleMoyo(wxCommandEvent& event);
 	virtual void doResignToggle(wxCommandEvent& event);
 	virtual void doStatusUpdate(wxCommandEvent& event);
+	virtual void doResign(wxCommandEvent& event);
+	virtual void doAnalyze(wxCommandEvent& event);
 	
 	void startEngine();
 	void stopEngine();

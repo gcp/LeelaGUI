@@ -6,8 +6,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #endif //_WIN32
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,9,0
- PRODUCTVERSION 0,2,9,0
+ FILEVERSION 0,3,8,0
+ PRODUCTVERSION 0,3,8,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -23,12 +23,12 @@ BEGIN
         BLOCK "080004b0"
         BEGIN
             VALUE "FileDescription", "Leela - the Go program"
-            VALUE "FileVersion", "0, 2, 9, 0"
+            VALUE "FileVersion", "0, 3, 8, 0"
             VALUE "InternalName", "Leela"
-            VALUE "LegalCopyright", "Copyright (C) 2007 Gian-Carlo Pascutto"
+            VALUE "LegalCopyright", "Copyright (C) 2008 Gian-Carlo Pascutto"
             VALUE "OriginalFilename", "LeelaGUI.exe"
             VALUE "ProductName", "Leela"
-            VALUE "ProductVersion", "0, 2, 9, 0"
+            VALUE "ProductVersion", "0, 3, 8, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -44,6 +44,7 @@ IDB_NEWGAME            BITMAP                "C:\\Projects\\LeelaGUI\\img\\new.b
 IDB_NEWRATED           BITMAP                "C:\\Projects\\LeelaGUI\\img\\newrated.bmp"
 IDB_PASS               BITMAP                "C:\\Projects\\LeelaGUI\\img\\delete.bmp"
 IDB_SCORE              BITMAP                "C:\\Projects\\LeelaGUI\\img\\find.bmp"
+IDB_RESIGN             BITMAP                "C:\\Projects\\LeelaGUI\\img\\resign.bmp"
 
 IDB_OPEN               BITMAP                "C:\\Projects\\LeelaGUI\\img\\fileopen.bmp"
 IDB_SAVE               BITMAP                "C:\\Projects\\LeelaGUI\\img\\filesave.bmp"
@@ -54,6 +55,7 @@ IDB_REDO               BITMAP                "C:\\Projects\\LeelaGUI\\img\\redo.
 IDB_FORWARD            BITMAP                "C:\\Projects\\LeelaGUI\\img\\forward.bmp"
 IDB_BACKWARD           BITMAP                "C:\\Projects\\LeelaGUI\\img\\back.bmp"
 IDB_FORCE              BITMAP                "C:\\Projects\\LeelaGUI\\img\\execute.bmp"
+IDB_ANALYZE            BITMAP                "C:\\Projects\\LeelaGUI\\img\\analyze.bmp"
 
 IDB_WHITESTONE         BITMAP                "C:\\Projects\\LeelaGUI\\img\\whitestone.bmp"
 IDB_BLACKSTONE         BITMAP                "C:\\Projects\\LeelaGUI\\img\\blackstone.bmp"

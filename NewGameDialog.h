@@ -16,6 +16,7 @@ class NewGameDialog : public TNewGameDialog
 protected:    
     virtual void doCancel( wxCommandEvent& event );
     virtual void doOK( wxCommandEvent& event );
+    virtual void doInit( wxInitDialogEvent& event );
     virtual void doHandicapUpdate( wxSpinEvent& event );
     
 public:

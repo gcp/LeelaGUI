@@ -27,7 +27,9 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_FWD10, TMainFrame::_wxFB_doForward10 )
 	EVT_MENU( ID_FORCE, TMainFrame::_wxFB_doForceMove )
 	EVT_MENU( ID_PASS, TMainFrame::_wxFB_doPass )
+	EVT_MENU( ID_RESIGN, TMainFrame::_wxFB_doResign )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
+	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
 	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
@@ -83,11 +85,22 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu2->AppendSeparator();
 	wxMenuItem* menuItem18 = new wxMenuItem( m_menu2, ID_FORCE, wxString( _("Force &computer move") ) + wxT('\t') + wxT("Ctrl-F"), _("Force the computer to move now"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem18 );
+	
+	m_menu2->AppendSeparator();
 	wxMenuItem* menuItem6 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("&Pass") ) + wxT('\t') + wxT("Alt-P"), _("Pass"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem6 );
-	wxMenuItem* menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
+	wxMenuItem* menuItem20 = new wxMenuItem( m_menu2, ID_RESIGN, wxString( _("&Resign") ) + wxT('\t') + wxT("Alt-R"), _("Resign the game"), wxITEM_NORMAL );
+	m_menu2->Append( menuItem20 );
+	
+	m_menu2->AppendSeparator();
+	wxMenuItem* menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score game") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem5 );
 	m_menubar1->Append( m_menu2, _("&Game") );
+	
+	m_menu5 = new wxMenu();
+	wxMenuItem* menuItem26 = new wxMenuItem( m_menu5, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
+	m_menu5->Append( menuItem26 );
+	m_menubar1->Append( m_menu5, _("&Analyze") );
 	
 	m_menuSettings = new wxMenu();
 	wxMenuItem* menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("Ctrl-T"), _("Show Territory"), wxITEM_CHECK );
@@ -131,14 +144,18 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_toolBar1->AddTool( ID_FWD10, _("Forward 10"), wxBitmap( wxT("IDB_FORWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward 10 moves"), _("Go forward 10 moves") );
 	m_toolBar1->AddSeparator();
 	m_toolBar1->AddTool( ID_FORCE, _("Force computer move"), wxBitmap( wxT("IDB_FORCE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move") );
+	m_toolBar1->AddTool( ID_ANALYZE, _("tool"), wxBitmap( wxT("IDB_ANALYZE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis") );
+	m_toolBar1->AddSeparator();
 	m_toolBar1->AddTool( ID_PASS, _("tool"), wxBitmap( wxT("IDB_PASS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Pass"), _("Pass") );
 	m_toolBar1->AddTool( ID_SCORE, _("tool"), wxBitmap( wxT("IDB_SCORE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game") );
+	m_toolBar1->AddTool( ID_RESIGN, _("tool"), wxBitmap( wxT("IDB_RESIGN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Resign the game"), _("Resign the game") );
 	m_toolBar1->AddSeparator();
 	m_toolBar1->AddTool( ID_EXIT, _("Exit"), wxBitmap( wxT("IDB_QUIT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Exits the program"), wxEmptyString );
 	m_toolBar1->Realize();
 	
 }
 BEGIN_EVENT_TABLE( TNewGameDialog, wxDialog )
+	EVT_INIT_DIALOG( TNewGameDialog::_wxFB_doInit )
 	EVT_SPINCTRL( ID_HANDICAPSPIN, TNewGameDialog::_wxFB_doHandicapUpdate )
 	EVT_BUTTON( wxID_CANCEL, TNewGameDialog::_wxFB_doCancel )
 	EVT_BUTTON( wxID_OK, TNewGameDialog::_wxFB_doOK )
@@ -188,26 +205,38 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	
 	bSizer9->Add( sbSizer3, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
-	bSizer11->Add( bSizer9, 1, wxEXPAND, 5 );
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, -1, _("Time for game") ), wxHORIZONTAL );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Minutes"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText13->Wrap( -1 );
+	sbSizer5->Add( m_staticText13, 1, wxALIGN_CENTER, 5 );
+	
+	m_spinCtrlTime = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 240, 30 );
+	sbSizer5->Add( m_spinCtrlTime, 1, wxALIGN_CENTER, 5 );
+	
+	bSizer9->Add( sbSizer5, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	
+	bSizer11->Add( bSizer9, 4, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
 	
 	wxString m_radioBoxColorChoices[] = { _("Black"), _("White") };
 	int m_radioBoxColorNChoices = sizeof( m_radioBoxColorChoices ) / sizeof( wxString );
-	m_radioBoxColor = new wxRadioBox( this, wxID_ANY, _("Your Color"), wxDefaultPosition, wxDefaultSize, m_radioBoxColorNChoices, m_radioBoxColorChoices, 1, wxRA_SPECIFY_ROWS );
+	m_radioBoxColor = new wxRadioBox( this, wxID_ANY, _("Your color"), wxDefaultPosition, wxDefaultSize, m_radioBoxColorNChoices, m_radioBoxColorChoices, 1, wxRA_SPECIFY_ROWS );
 	m_radioBoxColor->SetSelection( 0 );
 	bSizer10->Add( m_radioBoxColor, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
-	wxString m_radioBoxLevelChoices[] = { _("100 simulations"), _("500 simulations"), _("1000 simulations"), _("5000 simulations"), _("10000 simulations"), _("Unlimited") };
+	wxString m_radioBoxLevelChoices[] = { _("100 simulations"), _("500 simulations"), _("1000 simulations"), _("5000 simulations"), _("10000 simulations"), _("20000 simulations"), _("Unlimited") };
 	int m_radioBoxLevelNChoices = sizeof( m_radioBoxLevelChoices ) / sizeof( wxString );
-	m_radioBoxLevel = new wxRadioBox( this, wxID_ANY, _("Engine Max Level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLevelNChoices, m_radioBoxLevelChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxLevel->SetSelection( 2 );
+	m_radioBoxLevel = new wxRadioBox( this, wxID_ANY, _("Engine max level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLevelNChoices, m_radioBoxLevelChoices, 1, wxRA_SPECIFY_COLS );
+	m_radioBoxLevel->SetSelection( 1 );
 	bSizer10->Add( m_radioBoxLevel, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
-	bSizer11->Add( bSizer10, 1, wxEXPAND, 5 );
+	bSizer11->Add( bSizer10, 5, wxEXPAND, 5 );
 	
-	bSizer7->Add( bSizer11, 1, wxEXPAND, 5 );
+	bSizer7->Add( bSizer11, 4, wxEXPAND, 5 );
 	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );
@@ -215,7 +244,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_sdbSizer1Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer1->AddButton( m_sdbSizer1Cancel );
 	m_sdbSizer1->Realize();
-	bSizer7->Add( m_sdbSizer1, 0, wxEXPAND|wxFIXED_MINSIZE, 1 );
+	bSizer7->Add( m_sdbSizer1, 0, wxALL|wxEXPAND|wxFIXED_MINSIZE, 2 );
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
@@ -237,7 +266,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 10 );
 	
-	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2008 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	bSizer9->Add( m_staticText5, 0, wxALIGN_CENTER|wxALL, 5 );
 	

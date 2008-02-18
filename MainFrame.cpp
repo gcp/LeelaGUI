@@ -33,7 +33,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     // init game   
     m_playerColor = FastBoard::BLACK;
     m_State.init_game(9, 7.5f);
-    m_State.set_timecontrol(18 * 60 * 100, 0, 0);
+    m_State.set_timecontrol(30 * 60 * 100, 0, 0);
     m_visitLimit = 1000;
     m_ratedGame = false;
     m_panelBoard->setState(&m_State);
@@ -672,4 +672,12 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
 
 void MainFrame::doResignToggle(wxCommandEvent& event) {
     m_resignEnabled = !m_resignEnabled;
+}
+
+void MainFrame::doResign(wxCommandEvent& event) {
+    // XXX
+}
+
+void MainFrame::doAnalyze(wxCommandEvent& event) {
+    // XXX
 }

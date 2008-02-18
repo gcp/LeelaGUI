@@ -62,13 +62,26 @@
 					<label>Force &amp;computer move\tCtrl-F</label>
 					<help>Force the computer to move now</help>
 				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem6">
 					<label>&amp;Pass\tAlt-P</label>
 					<help>Pass</help>
 				</object>
+				<object class="wxMenuItem" name="menuItem20">
+					<label>&amp;Resign\tAlt-R</label>
+					<help>Resign the game</help>
+				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem5">
-					<label>&amp;Score\tAlt-S</label>
+					<label>&amp;Score game\tAlt-S</label>
 					<help>Score the position</help>
+				</object>
+			</object>
+			<object class="wxMenu" name="m_menu5">
+				<label>_Analyze</label>
+				<object class="wxMenuItem" name="menuItem26">
+					<label>&amp;Start/Stop analysis\tCtrl-A</label>
+					<help>Start analyzing</help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menuSettings">
@@ -176,6 +189,13 @@
 				<longhelp>Force computer move</longhelp>
 				<bitmap />
 			</object>
+			<object class="tool" name="m_tool14">
+				<label>tool</label>
+				<tooltip>Start/Stop analysis</tooltip>
+				<longhelp>Start/Stop analysis</longhelp>
+				<bitmap />
+			</object>
+			<object class="separator" />
 			<object class="tool" name="m_tool2">
 				<label>tool</label>
 				<tooltip>Pass</tooltip>
@@ -186,6 +206,12 @@
 				<label>tool</label>
 				<tooltip>Score the game</tooltip>
 				<longhelp>Score the game</longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_tool131">
+				<label>tool</label>
+				<tooltip>Resign the game</tooltip>
+				<longhelp>Resign the game</longhelp>
 				<bitmap />
 			</object>
 			<object class="separator" />
@@ -199,18 +225,18 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>260,250</size>
+		<size>294,273</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<option>1</option>
+				<option>4</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxBoxSizer">
 					<orient>wxHORIZONTAL</orient>
 					<object class="sizeritem">
-						<option>1</option>
+						<option>4</option>
 						<flag>wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
@@ -289,10 +315,39 @@
 									</object>
 								</object>
 							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxStaticBoxSizer">
+									<orient>wxHORIZONTAL</orient>
+									<label>Time for game</label>
+									<object class="sizeritem">
+										<option>1</option>
+										<flag>wxALIGN_CENTER</flag>
+										<border>5</border>
+										<object class="wxStaticText" name="m_staticText13">
+											<style>wxALIGN_CENTRE</style>
+											<label>Minutes</label>
+										</object>
+									</object>
+									<object class="sizeritem">
+										<option>1</option>
+										<flag>wxALIGN_CENTER</flag>
+										<border>5</border>
+										<object class="wxSpinCtrl" name="m_spinCtrlTime">
+											<style>wxSP_ARROW_KEYS</style>
+											<value>30</value>
+											<min>1</min>
+											<max>240</max>
+										</object>
+									</object>
+								</object>
+							</object>
 						</object>
 					</object>
 					<object class="sizeritem">
-						<option>1</option>
+						<option>5</option>
 						<flag>wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
@@ -303,7 +358,7 @@
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxColor">
 									<style>wxRA_SPECIFY_ROWS</style>
-									<label>Your Color</label>
+									<label>Your color</label>
 									<selection>0</selection>
 									<content>
 										<item>Black</item>
@@ -318,14 +373,15 @@
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxLevel">
 									<style>wxRA_SPECIFY_COLS</style>
-									<label>Engine Max Level</label>
-									<selection>2</selection>
+									<label>Engine max level</label>
+									<selection>1</selection>
 									<content>
 										<item>100 simulations</item>
 										<item>500 simulations</item>
 										<item>1000 simulations</item>
 										<item>5000 simulations</item>
 										<item>10000 simulations</item>
+										<item>20000 simulations</item>
 										<item>Unlimited</item>
 									</content>
 									<dimension>1</dimension>
@@ -337,8 +393,8 @@
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxEXPAND|wxFIXED_MINSIZE</flag>
-				<border>1</border>
+				<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
+				<border>2</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">
 						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
@@ -360,7 +416,7 @@
 	</object>
 	<object class="wxDialog" name="TAboutDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>230,169</size>
+		<size>237,172</size>
 		<title>About</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -384,7 +440,7 @@
 				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText5">
-					<label>Copyright (C) 2007 Gian-Carlo Pascutto</label>
+					<label>Copyright (C) 2007-2008 Gian-Carlo Pascutto</label>
 				</object>
 			</object>
 			<object class="sizeritem">
