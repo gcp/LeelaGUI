@@ -293,8 +293,8 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         return;
     }
     
-    if (m_State->get_passes() >= 2) {
-        ::wxLogDebug("Game has been passed out");
+    if (m_State->get_last_move() == FastBoard::RESIGN) {
+        ::wxLogDebug("Game has been resigned");
         return;
     }
     

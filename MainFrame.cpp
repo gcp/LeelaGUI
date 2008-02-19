@@ -181,8 +181,10 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         float komi, score, prekomi;
         bool won;    
         scoreGame(won, komi, score, prekomi);
-        scoreDialog(komi, score, prekomi);       
-        ratedGameEnd(won);        
+        bool accepts = scoreDialog(komi, score, prekomi);       
+        if (accepts) {
+            ratedGameEnd(won);        
+        }
     } else {
         if (m_State.get_to_move() != m_playerColor) {
             ::wxLogDebug("Computer to move"); 
@@ -226,7 +228,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
         m_State.set_fixed_handicap(mydialog.getHandicap());        
         // max 60 minutes per game    
-        m_State.set_timecontrol(2 * mydialog.getBoardsize() * 60 * 100, 0, 0);
+        m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0);
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();       
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -436,6 +438,9 @@ void MainFrame::ratedGameEnd(bool won) {
         wxString mess = wxString(_("Rank: "));
         mess += rankToString(rank);    
         m_statusBar->SetStatusText(mess, 1);
+        
+        // don't adjust rank twice
+        m_ratedGame = false;
     }               
 }
 
@@ -446,7 +451,7 @@ void MainFrame::scoreGame(bool & won, float & komi, float & score, float & preko
     if (m_State.get_last_move() == FastBoard::RESIGN) {
         komi = m_State.get_komi();
         int size = m_State.board.get_boardsize() * m_State.board.get_boardsize();
-        if (m_playerColor == FastBoard::WHITE) {
+        if (m_State.get_to_move() == FastBoard::WHITE) {
             score = -size;
         } else {
             score = size;
@@ -467,7 +472,7 @@ void MainFrame::scoreGame(bool & won, float & komi, float & score, float & preko
     m_engineRunning.Post();        
 }
 
-void MainFrame::scoreDialog(float komi, float score, float prekomi) {
+bool MainFrame::scoreDialog(float komi, float score, float prekomi) {
     wxString mess;
     
     if (score > 0.0f) {        
@@ -487,7 +492,13 @@ void MainFrame::scoreDialog(float komi, float score, float prekomi) {
         }            
     }   
     
-    ::wxMessageBox(mess, _("Game score"), wxOK, this);            
+    int result = ::wxMessageBox(mess, _("Game score"), wxOK | wxCANCEL, this);            
+    
+    if (result == wxOK) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void MainFrame::doScore(wxCommandEvent& event) {   
@@ -675,9 +686,37 @@ void MainFrame::doResignToggle(wxCommandEvent& event) {
 }
 
 void MainFrame::doResign(wxCommandEvent& event) {
-    // XXX
+    if (m_State.get_to_move() == m_playerColor) {
+        stopEngine();
+        m_engineRunning.Wait();        
+            
+        m_State.play_move(FastBoard::RESIGN);
+        wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+        myevent.SetEventObject(this);                        
+        ::wxPostEvent(GetEventHandler(), myevent);
+        
+        m_engineRunning.Post();
+    }
 }
 
 void MainFrame::doAnalyze(wxCommandEvent& event) {
-    // XXX
+    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
+        stopEngine();        
+    } else {
+        m_engineRunning.Post();
+        
+        TimeControl oldcontrol = (*m_State.get_timecontrol());
+        int oldlimit = m_visitLimit;
+        
+        m_visitLimit = FastBoard::BIG;
+        TimeControl newcontrol(m_State.board.get_boardsize(), 1000 * 60 * 100);        
+        m_State.set_timecontrol(newcontrol);
+
+        m_ratedGame = false;
+
+        startEngine();
+        
+        m_State.set_timecontrol(oldcontrol);
+        m_visitLimit = oldlimit;        
+    }
 }

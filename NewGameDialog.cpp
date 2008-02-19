@@ -113,6 +113,10 @@ int NewGameDialog::getPlayerColor() {
     return color;
 }
 
+int NewGameDialog::getTimeControl() {
+    return m_spinCtrlTime->GetValue();
+}
+
 void NewGameDialog::doHandicapUpdate( wxSpinEvent& event ) {    
     m_spinCtrlKomi->SetValue(0);
 }

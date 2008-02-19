@@ -29,6 +29,7 @@ public:
     int getBoardsize();
     int getSimulations();
     int getPlayerColor();
+    int getTimeControl();
 };
 
 #endif // __NewGameDialog__
