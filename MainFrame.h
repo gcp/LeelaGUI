@@ -61,7 +61,8 @@ class MainFrame : public TMainFrame {
 	int m_visitLimit;
 	bool m_soundEnabled;
 	bool m_resignEnabled;
-	bool m_ratedGame;		
+	bool m_ratedGame;
+	bool m_analyzing;		
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;
 };

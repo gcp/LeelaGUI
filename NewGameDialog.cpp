@@ -16,10 +16,10 @@ void NewGameDialog::doInit( wxInitDialogEvent& event ) {
     int handicap = wxConfig::Get()->Read(wxT("DefaultHandicap"), (long)0);
     m_spinCtrlHandicap->SetValue(handicap);
     
-    int komi = wxConfig::Get()->Read(wxT("DefaultKomi"), (long)0);
+    int komi = wxConfig::Get()->Read(wxT("DefaultKomi"), (long)7);
     m_spinCtrlKomi->SetValue(komi);
     
-    int simulations = wxConfig::Get()->Read(wxT("DefaultSimulations"), (long)2);
+    int simulations = wxConfig::Get()->Read(wxT("DefaultSimulations"), (long)4);
     m_radioBoxLevel->SetSelection(simulations);
     
     int minutes = wxConfig::Get()->Read(wxT("DefaultMinutes"), (long)30);

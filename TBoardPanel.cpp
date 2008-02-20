@@ -62,9 +62,11 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_showMoyo = false;
     m_showInfluence = false;
     m_showTerritory = false;
+    m_stateLock = false;
     m_State = NULL;
     m_playerColor = FastBoard::BLACK;    
     m_Hatch.resize(FastBoard::MAXSQ);
+    
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
 }
 
@@ -298,6 +300,10 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         return;
     }
     
+    if (m_stateLock) {
+        return;
+    }
+    
     if (m_State->get_to_move() == m_playerColor) {    
         int boardSize = m_State->board.get_boardsize();
         
@@ -313,7 +319,7 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         // engine board is inverted vertically        
         cellY = boardSize - cellY - 1;
      
-        int vtx = m_State->board.get_vertex(cellX, cellY);
+        int vtx = m_State->board.get_vertex(cellX, cellY);                
         
         if (m_State->legal_move(vtx)) {
             m_State->play_move(vtx);                                                         
@@ -401,4 +407,12 @@ void TBoardPanel::doTerritory() {
             m_Hatch[i] = FastBoard::WHITE;
         }
     }     
+}
+
+void TBoardPanel::lockState() {
+    m_stateLock = true;
+}
+
+void TBoardPanel::unlockState() {
+    m_stateLock = false;
 }

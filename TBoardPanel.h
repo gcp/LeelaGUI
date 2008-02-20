@@ -14,7 +14,7 @@ public:
                const wxSize& size = wxDefaultSize,
                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
                const wxString& name = wxPanelNameStr);
-               
+                   
     void setState(GameState * brd);               
     void setPlayerColor(int color);
     void setShowInfluence(bool val);
@@ -24,7 +24,9 @@ public:
     bool getShowMoyo();
     void doMoyo();
     void doInfluence();   
-    void doTerritory(); 
+    void doTerritory();     
+    void lockState();
+    void unlockState();
                                       
 private:
     DECLARE_EVENT_TABLE()
@@ -34,6 +36,7 @@ private:
     void doLeftMouse(wxMouseEvent& event);
     
     GameState * m_State;
+    bool m_stateLock;
     wxBitmap m_tileFull;  
     wxImage m_whiteStone;
     wxImage m_blackStone;      

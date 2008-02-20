@@ -38,6 +38,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_ratedGame = false;
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
+    m_analyzing = false;
     
     m_soundEnabled = true;
     m_resignEnabled = true;
@@ -116,8 +117,12 @@ void MainFrame::startEngine() {
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             ::wxLogDebug("Error starting engine");
         } else {            
+            // lock the board
+            m_panelBoard->lockState();
+            
             m_engineThread->limit_visits(m_visitLimit);
             m_engineThread->set_resigning(m_resignEnabled);
+            m_engineThread->set_analyzing(m_analyzing);
             m_engineThread->Run();
         }
     } else {
@@ -164,6 +169,12 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
 void MainFrame::doNewMove(wxCommandEvent & event) {
     ::wxLogDebug(_("New move arrived"));
     
+    m_panelBoard->unlockState();
+    
+    if (m_analyzing) {
+        return;
+    }
+    
     if (m_State.get_last_move() != FastBoard::PASS) {
         if (m_soundEnabled) {
             wxSound tock("IDW_TOCK", true);
@@ -182,8 +193,16 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         bool won;    
         scoreGame(won, komi, score, prekomi);
         bool accepts = scoreDialog(komi, score, prekomi);       
-        if (accepts) {
+        if (accepts || m_State.get_last_move() == FastBoard::RESIGN) {
             ratedGameEnd(won);        
+        } else {
+            // undo passes
+            m_State.undo_move();
+            m_State.undo_move();
+            if (m_State.get_to_move() != m_playerColor) {
+                ::wxLogDebug("Computer to move"); 
+                startEngine();                
+            }                 
         }
     } else {
         if (m_State.get_to_move() != m_playerColor) {
@@ -233,6 +252,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_playerColor = mydialog.getPlayerColor();       
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
+        m_analyzing = false;
         
         m_engineRunning.Post();               
         
@@ -248,10 +268,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     stopEngine();
     m_engineRunning.Wait();
     
-    //m_State.init_game(9, 6.5f);    
-    //m_State.set_timecontrol(3 * 60 * 100, 0, 0);
-    
-    //::wxLogMessage("New game with 3 minutes thinking time and komi 6.5");
+    m_analyzing = false;        
     
     int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
     
@@ -668,6 +685,8 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 
 void MainFrame::doForceMove(wxCommandEvent& event) {        
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
+        m_analyzing = false;
+        
         stopEngine();        
     } else {
         m_engineRunning.Post();
@@ -676,6 +695,7 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
         m_panelBoard->setPlayerColor(m_playerColor);
     
         m_ratedGame = false;
+        m_analyzing = false;
     
         startEngine();
     }                    
@@ -701,22 +721,14 @@ void MainFrame::doResign(wxCommandEvent& event) {
 
 void MainFrame::doAnalyze(wxCommandEvent& event) {
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
-        stopEngine();        
+        stopEngine();                   
+        m_analyzing = false;                           
     } else {
-        m_engineRunning.Post();
-        
-        TimeControl oldcontrol = (*m_State.get_timecontrol());
-        int oldlimit = m_visitLimit;
-        
-        m_visitLimit = FastBoard::BIG;
-        TimeControl newcontrol(m_State.board.get_boardsize(), 1000 * 60 * 100);        
-        m_State.set_timecontrol(newcontrol);
-
+        m_analyzing = true;
         m_ratedGame = false;
-
-        startEngine();
         
-        m_State.set_timecontrol(oldcontrol);
-        m_visitLimit = oldlimit;        
+        m_engineRunning.Post();                        
+
+        startEngine();                
     }
 }

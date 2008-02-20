@@ -21,6 +21,7 @@ void * TEngineThread::Entry() {
         int who = m_state->get_to_move();
         search->set_visit_limit(m_maxvisits);
         search->set_runflag(&m_runflag);
+        search->set_analyzing(m_analyseflag);
         
         int move;
         if (m_resigning) {
@@ -28,12 +29,15 @@ void * TEngineThread::Entry() {
         } else {
             move = search->think(who, UCTSearch::NORESIGN);
         }        
-        m_state->play_move(who, move);                                
+        
+        if (!m_analyseflag) {
+            m_state->play_move(who, move);                                
+        }
         
         m_sema->Post();                
-        
+                
         wxCommandEvent event(EVT_NEW_MOVE);                               
-        ::wxPostEvent(m_frame->GetEventHandler(), event);                
+        ::wxPostEvent(m_frame->GetEventHandler(), event);                        
     }
 
     return NULL;
@@ -49,4 +53,8 @@ void TEngineThread::stop_engine() {
 
 void TEngineThread::set_resigning(bool res) {
     m_resigning = res;
+}
+
+void TEngineThread::set_analyzing(bool flag) {
+    m_analyseflag = flag;
 }
