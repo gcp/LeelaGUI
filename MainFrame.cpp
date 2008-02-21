@@ -189,10 +189,10 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     }
     
     if (m_State.get_passes() >= 2 || m_State.get_last_move() == FastBoard::RESIGN) {                        
-        float komi, score, prekomi;
+        float komi, score, prekomi, handicap;
         bool won;    
-        scoreGame(won, komi, score, prekomi);
-        bool accepts = scoreDialog(komi, score, prekomi);       
+        scoreGame(won, komi, handicap, score, prekomi);
+        bool accepts = scoreDialog(komi, score, prekomi, handicap);       
         if (accepts || m_State.get_last_move() == FastBoard::RESIGN) {
             ratedGameEnd(won);        
         } else {
@@ -403,6 +403,18 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     } else if (rank == 9) {
         simulations = 5000;
         handicap = -3;
+    } else if (rank == 10) {
+        simulations = 10000;
+        handicap = -3;
+    } else if (rank == 11) {
+        simulations = 2500;
+        handicap = -4;
+    } else if (rank == 12) {
+        simulations = 5000;
+        handicap = -4;
+    } else if (rank == 13) {
+        simulations = 10000;
+        handicap = -4;
     }
     
     ::wxLogDebug("Handicap %d Simulations %d", handicap, simulations);        
@@ -436,7 +448,7 @@ void MainFrame::ratedGameEnd(bool won) {
                
         if (won) {
             rank = rank + 1;
-            rank = std::min(9, rank);
+            rank = std::min(13, rank);
                                     
             //mess += wxT("Promoting from") + wxString(" ") + rankToString(rank-1) + wxString("\n");
             //mess += wxT("to") + wxString(" ") + rankToString(rank);
@@ -461,23 +473,27 @@ void MainFrame::ratedGameEnd(bool won) {
     }               
 }
 
-void MainFrame::scoreGame(bool & won, float & komi, float & score, float & prekomi) {
+void MainFrame::scoreGame(bool & won, float & komi, float & handicap, 
+                          float & score, float & prekomi) {
     stopEngine();
     m_engineRunning.Wait();        
     
     if (m_State.get_last_move() == FastBoard::RESIGN) {
         komi = m_State.get_komi();
+        handicap = m_State.get_handicap();
+        
         int size = m_State.board.get_boardsize() * m_State.board.get_boardsize();
         if (m_State.get_to_move() == FastBoard::WHITE) {
             score = -size;
         } else {
             score = size;
         }        
-        prekomi = score + komi;        
+        prekomi = score + komi + handicap;        
     } else {
         komi = m_State.get_komi();
         score = m_State.final_score();
-        prekomi = score + komi;        
+        handicap = m_State.get_handicap();
+        prekomi = score + komi + handicap;        
     }      
     
     won = (score > 0.0f && m_playerColor == FastBoard::BLACK)
@@ -489,14 +505,18 @@ void MainFrame::scoreGame(bool & won, float & komi, float & score, float & preko
     m_engineRunning.Post();        
 }
 
-bool MainFrame::scoreDialog(float komi, float score, float prekomi) {
+bool MainFrame::scoreDialog(float komi, float score, float prekomi, float handicap) {
     wxString mess;
     
     if (score > 0.0f) {        
         if (m_State.get_last_move() == FastBoard::RESIGN) {
             mess.Printf(_("BLACK wins by resignation"));
         } else {
-            mess.Printf(_("Final score:\nBLACK wins by %.0f - %.1f (komi)\n= %.1f points"), prekomi, komi, score);        
+            if (handicap > 0.5f) {
+                mess.Printf(_("Final score:\nBLACK wins by %.0f - %.1f (komi) - %0.f (handicap)\n= %.1f points"), prekomi, komi, handicap, score);        
+            } else {
+                mess.Printf(_("Final score:\nBLACK wins by %.0f - %.1f (komi)\n= %.1f points"), prekomi, komi, score);        
+            }
         }            
     } else {
         // avoid minus zero
@@ -505,7 +525,11 @@ bool MainFrame::scoreDialog(float komi, float score, float prekomi) {
         if (m_State.get_last_move() == FastBoard::RESIGN) {   
             mess.Printf(_("WHITE wins by resignation"));
         } else {
-            mess.Printf(_("Final score:\nWHITE wins by %.0f + %.1f (komi)\n= %.1f points"), -prekomi, komi, -score);
+            if (handicap > 0.5f) {
+                mess.Printf(_("Final score:\nWHITE wins by %.0f + %.1f (komi) + %0.f (handicap)\n= %.1f points"), -prekomi, komi, handicap, -score);
+            } else {
+                mess.Printf(_("Final score:\nWHITE wins by %.0f + %.1f (komi)\n= %.1f points"), -prekomi, komi, -score);
+            }
         }            
     }   
     
@@ -519,11 +543,11 @@ bool MainFrame::scoreDialog(float komi, float score, float prekomi) {
 }
 
 void MainFrame::doScore(wxCommandEvent& event) {   
-    float komi, score, prekomi;
+    float komi, score, prekomi, handicap;
     bool won;
     
-    scoreGame(won, komi, score, prekomi);
-    scoreDialog(komi, score, prekomi);       
+    scoreGame(won, komi, handicap, score, prekomi);
+    scoreDialog(komi, score, prekomi, handicap);       
 }
 
 wxString MainFrame::rankToString(int rank) {

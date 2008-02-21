@@ -50,8 +50,8 @@ class MainFrame : public TMainFrame {
 	void startEngine();
 	void stopEngine();
 	// true = user accepts score
-	bool scoreDialog(float komi, float score, float prekomi);
-	void scoreGame(bool & won, float & komi, float & score, float & prescore);
+	bool scoreDialog(float komi, float score, float prekomi, float handicap);
+	void scoreGame(bool & won, float & komi, float & handicap, float & score, float & prescore);
 	void ratedGameEnd(bool won);
 	wxString rankToString(int rank);
 	void updateStatusBar(char *str);	
