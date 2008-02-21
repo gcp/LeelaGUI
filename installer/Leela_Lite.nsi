@@ -1,5 +1,5 @@
-!define VERSION "0.2.9.0"
-!define VERSIONNAME "0.2.9"
+!define VERSION "0.3.8.0"
+!define VERSIONNAME "0.3.8"
 
 ;
 ; General options

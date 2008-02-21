@@ -103,7 +103,7 @@ class TMainFrame : public wxFrame
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
 		wxMenu* m_menu2;
-		wxMenu* m_menu5;
+		wxMenu* m_menuAnalyze;
 		wxMenu* m_menuSettings;
 		wxMenu* m_menu3;
 		wxToolBar* m_toolBar1;
@@ -136,7 +136,7 @@ class TMainFrame : public wxFrame
 		
 	
 	public:
-		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
+		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela lite"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
 	
 };
 

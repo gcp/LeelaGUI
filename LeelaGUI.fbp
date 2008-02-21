@@ -36,7 +36,7 @@
             <property name="size">400,450</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass"></property>
-            <property name="title">Leela</property>
+            <property name="title">Leela lite</property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
             <property name="window_name">LeelaGUI</property>
@@ -414,7 +414,7 @@
                 </object>
                 <object class="wxMenu" expanded="1">
                     <property name="label">&amp;Analyze</property>
-                    <property name="name">m_menu5</property>
+                    <property name="name">m_menuAnalyze</property>
                     <property name="permission">protected</property>
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
@@ -424,7 +424,7 @@
                         <property name="id">ID_ANALYZE</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">&amp;Start/Stop analysis</property>
-                        <property name="name">menuItem26</property>
+                        <property name="name">menuItemAnalyze</property>
                         <property name="shortcut">Ctrl-A</property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doAnalyze</event>
@@ -722,7 +722,7 @@
                     <property name="id">ID_ANALYZE</property>
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">tool</property>
-                    <property name="name">m_tool14</property>
+                    <property name="name">m_toolAnalyze</property>
                     <property name="statusbar">Start/Stop analysis</property>
                     <property name="tooltip">Start/Stop analysis</property>
                     <event name="OnMenuSelection"></event>

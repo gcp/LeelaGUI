@@ -3,7 +3,7 @@
 	<object class="wxFrame" name="TMainFrame">
 		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
 		<size>400,450</size>
-		<title>Leela</title>
+		<title>Leela lite</title>
 		<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
 			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
 		</object>
@@ -77,9 +77,9 @@
 					<help>Score the position</help>
 				</object>
 			</object>
-			<object class="wxMenu" name="m_menu5">
+			<object class="wxMenu" name="m_menuAnalyze">
 				<label>_Analyze</label>
-				<object class="wxMenuItem" name="menuItem26">
+				<object class="wxMenuItem" name="menuItemAnalyze">
 					<label>&amp;Start/Stop analysis\tCtrl-A</label>
 					<help>Start analyzing</help>
 				</object>
@@ -189,7 +189,7 @@
 				<longhelp>Force computer move</longhelp>
 				<bitmap />
 			</object>
-			<object class="tool" name="m_tool14">
+			<object class="tool" name="m_toolAnalyze">
 				<label>tool</label>
 				<tooltip>Start/Stop analysis</tooltip>
 				<longhelp>Start/Stop analysis</longhelp>

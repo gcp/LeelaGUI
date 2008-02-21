@@ -49,6 +49,11 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     // allow one engine running
     m_engineRunning.Post();    
     
+#ifdef LITEVERSION 
+    m_menuAnalyze->FindItem(ID_ANALYZE)->Enable(false);
+    m_toolBar1->EnableTool(ID_ANALYZE, false);
+#endif
+    
     SetIcon(wxICON(aaaa));
 
     SetSize(450, 550);
@@ -283,7 +288,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     mess += rankToString(rank);    
     m_statusBar->SetStatusText(mess, 1);
     
-    this->SetTitle(_("Leela - ") + mess); 
+    this->SetTitle(_("Leela lite - ") + mess); 
     
     int handicap;
     int simulations;

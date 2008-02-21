@@ -214,7 +214,7 @@ bool MyApp::OnInit()
     CRYPT_END
 #endif            
 
-    MainFrame* frame = new MainFrame(NULL, _("Leela"));    
+    MainFrame* frame = new MainFrame(NULL, _("Leela lite"));    
     frame->Show();
     
     SetTopWindow(frame);

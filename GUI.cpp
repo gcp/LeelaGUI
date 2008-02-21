@@ -97,10 +97,10 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu2->Append( menuItem5 );
 	m_menubar1->Append( m_menu2, _("&Game") );
 	
-	m_menu5 = new wxMenu();
-	wxMenuItem* menuItem26 = new wxMenuItem( m_menu5, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
-	m_menu5->Append( menuItem26 );
-	m_menubar1->Append( m_menu5, _("&Analyze") );
+	m_menuAnalyze = new wxMenu();
+	wxMenuItem* menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
+	m_menuAnalyze->Append( menuItemAnalyze );
+	m_menubar1->Append( m_menuAnalyze, _("&Analyze") );
 	
 	m_menuSettings = new wxMenu();
 	wxMenuItem* menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("Ctrl-T"), _("Show Territory"), wxITEM_CHECK );
