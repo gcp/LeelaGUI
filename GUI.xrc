@@ -217,8 +217,8 @@
 			<object class="separator" />
 			<object class="tool" name="m_tool11">
 				<label>Exit</label>
-				<tooltip>Exits the program</tooltip>
-				<longhelp></longhelp>
+				<tooltip>Exit the program</tooltip>
+				<longhelp>Exit the program</longhelp>
 				<bitmap />
 			</object>
 		</object>

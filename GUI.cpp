@@ -150,7 +150,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_toolBar1->AddTool( ID_SCORE, _("tool"), wxBitmap( wxT("IDB_SCORE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game") );
 	m_toolBar1->AddTool( ID_RESIGN, _("tool"), wxBitmap( wxT("IDB_RESIGN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Resign the game"), _("Resign the game") );
 	m_toolBar1->AddSeparator();
-	m_toolBar1->AddTool( ID_EXIT, _("Exit"), wxBitmap( wxT("IDB_QUIT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Exits the program"), wxEmptyString );
+	m_toolBar1->AddTool( ID_EXIT, _("Exit"), wxBitmap( wxT("IDB_QUIT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program") );
 	m_toolBar1->Realize();
 	
 }

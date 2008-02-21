@@ -39,6 +39,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
     m_analyzing = false;
+    m_disputing = false;
     
     m_soundEnabled = true;
     m_resignEnabled = true;
@@ -123,6 +124,7 @@ void MainFrame::startEngine() {
             m_engineThread->limit_visits(m_visitLimit);
             m_engineThread->set_resigning(m_resignEnabled);
             m_engineThread->set_analyzing(m_analyzing);
+            m_engineThread->set_nopass(m_disputing);
             m_engineThread->Run();
         }
     } else {
@@ -196,6 +198,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         if (accepts || m_State.get_last_move() == FastBoard::RESIGN) {
             ratedGameEnd(won);        
         } else {
+            m_disputing = true;
             // undo passes
             m_State.undo_move();
             m_State.undo_move();
@@ -253,6 +256,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
+        m_disputing = false;
         
         m_engineRunning.Post();               
         
@@ -268,7 +272,8 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     stopEngine();
     m_engineRunning.Wait();
     
-    m_analyzing = false;        
+    m_analyzing = false;   
+    m_disputing = false;     
     
     int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
     

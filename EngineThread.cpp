@@ -9,7 +9,8 @@ TEngineThread::TEngineThread(GameState * state, wxSemaphore * sema, MainFrame * 
     m_sema = sema;
     m_frame = frame;
     m_maxvisits = 0;
-    m_runflag = true;    
+    m_runflag = true; 
+    m_nopass = false;   
 }
 
 void * TEngineThread::Entry() {     
@@ -23,11 +24,17 @@ void * TEngineThread::Entry() {
         search->set_runflag(&m_runflag);
         search->set_analyzing(m_analyseflag);
         
+        
+        int mode = UCTSearch::NORMAL;
+        if (m_nopass) {
+            mode = UCTSearch::NOPASS;
+        }
+        
         int move;
         if (m_resigning) {
-            move = search->think(who);
+            move = search->think(who, mode);
         } else {
-            move = search->think(who, UCTSearch::NORESIGN);
+            move = search->think(who, mode | UCTSearch::NORESIGN);
         }        
         
         if (!m_analyseflag) {
@@ -57,4 +64,8 @@ void TEngineThread::set_resigning(bool res) {
 
 void TEngineThread::set_analyzing(bool flag) {
     m_analyseflag = flag;
+}
+
+void TEngineThread::set_nopass(bool flag) {
+    m_nopass = flag;
 }

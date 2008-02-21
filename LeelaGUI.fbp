@@ -781,8 +781,8 @@
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">Exit</property>
                     <property name="name">m_tool11</property>
-                    <property name="statusbar"></property>
-                    <property name="tooltip">Exits the program</property>
+                    <property name="statusbar">Exit the program</property>
+                    <property name="tooltip">Exit the program</property>
                     <event name="OnMenuSelection"></event>
                     <event name="OnToolClicked"></event>
                     <event name="OnToolEnter"></event>
