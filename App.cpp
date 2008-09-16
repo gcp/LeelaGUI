@@ -191,6 +191,7 @@ bool MyApp::OnInit()
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));    
     wxConfig::Set(config);
     
+	/*
 #ifndef LITEVERSION
     CRYPT_START
     wxString name = config->Read(wxT("Name"));
@@ -212,9 +213,10 @@ bool MyApp::OnInit()
         }                
     }
     CRYPT_END
-#endif            
+#endif     
+	*/
 
-    MainFrame* frame = new MainFrame(NULL, _("Leela lite"));    
+    MainFrame* frame = new MainFrame(NULL, _("Leela"));    
     frame->Show();
     
     SetTopWindow(frame);

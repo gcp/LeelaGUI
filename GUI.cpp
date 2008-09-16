@@ -212,7 +212,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_staticText13->Wrap( -1 );
 	sbSizer5->Add( m_staticText13, 1, wxALIGN_CENTER, 5 );
 	
-	m_spinCtrlTime = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 240, 30 );
+	m_spinCtrlTime = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 720, 30 );
 	sbSizer5->Add( m_spinCtrlTime, 1, wxALIGN_CENTER, 5 );
 	
 	bSizer9->Add( sbSizer5, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
@@ -244,7 +244,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_sdbSizer1Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer1->AddButton( m_sdbSizer1Cancel );
 	m_sdbSizer1->Realize();
-	bSizer7->Add( m_sdbSizer1, 0, wxALL|wxEXPAND|wxFIXED_MINSIZE, 2 );
+	bSizer7->Add( m_sdbSizer1, 0, wxALL|wxEXPAND, 2 );
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
@@ -260,7 +260,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela lite version 0.2.7"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.2.7"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
 	m_staticTextVersion->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	

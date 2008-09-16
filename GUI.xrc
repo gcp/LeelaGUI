@@ -339,7 +339,7 @@
 											<style>wxSP_ARROW_KEYS</style>
 											<value>30</value>
 											<min>1</min>
-											<max>240</max>
+											<max>720</max>
 										</object>
 									</object>
 								</object>
@@ -393,7 +393,7 @@
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>2</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">

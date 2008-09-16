@@ -288,7 +288,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     mess += rankToString(rank);    
     m_statusBar->SetStatusText(mess, 1);
     
-    this->SetTitle(_("Leela lite - ") + mess); 
+    this->SetTitle(_("Leela - ") + mess); 
     
     int handicap;
     int simulations;
