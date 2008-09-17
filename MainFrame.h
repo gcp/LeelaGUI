@@ -35,19 +35,21 @@ class MainFrame : public TMainFrame {
 	virtual void doHelpAbout(wxCommandEvent& event);	
 	virtual void doHomePage(wxCommandEvent& event);
 	virtual void doOpenSGF(wxCommandEvent& event);
-        virtual void doSaveSGF(wxCommandEvent& event);
-        virtual void doBack10(wxCommandEvent& event);
+    virtual void doSaveSGF(wxCommandEvent& event);
+    virtual void doBack10(wxCommandEvent& event);
 	virtual void doForward10(wxCommandEvent& event);
 	virtual void doSoundToggle(wxCommandEvent& event);
 	virtual void doForceMove(wxCommandEvent& event);
 	virtual void doToggleTerritory(wxCommandEvent& event);
 	virtual void doToggleMoyo(wxCommandEvent& event);
 	virtual void doResignToggle(wxCommandEvent& event);
+	virtual void doPassToggle(wxCommandEvent& event);
 	virtual void doStatusUpdate(wxCommandEvent& event);
 	virtual void doResign(wxCommandEvent& event);
 	virtual void doAnalyze(wxCommandEvent& event);
 	
 	void startEngine();
+	void startPonder();
 	void stopEngine();
 	// true = user accepts score
 	bool scoreDialog(float komi, float score, float prekomi, float handicap);
@@ -57,12 +59,15 @@ class MainFrame : public TMainFrame {
 	void updateStatusBar(char *str);	
 	
 	GameState m_State;
+	GameState m_ponderState;
 	int m_playerColor;
 	int m_visitLimit;
 	bool m_soundEnabled;
 	bool m_resignEnabled;
+	bool m_passEnabled;
 	bool m_ratedGame;
 	bool m_analyzing;
+	bool m_pondering;
 	bool m_disputing;		
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;

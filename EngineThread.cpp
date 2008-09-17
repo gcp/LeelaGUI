@@ -22,8 +22,7 @@ void * TEngineThread::Entry() {
         int who = m_state->get_to_move();
         search->set_visit_limit(m_maxvisits);
         search->set_runflag(&m_runflag);
-        search->set_analyzing(m_analyseflag);
-        
+        search->set_analyzing(m_analyseflag);        
         
         int mode = UCTSearch::NORMAL;
         if (m_nopass) {
@@ -42,9 +41,9 @@ void * TEngineThread::Entry() {
         }
         
         m_sema->Post();                
-                
-        wxCommandEvent event(EVT_NEW_MOVE);                               
-        ::wxPostEvent(m_frame->GetEventHandler(), event);                        
+
+		wxCommandEvent event(EVT_NEW_MOVE);                               
+		::wxPostEvent(m_frame->GetEventHandler(), event);                        
     }
 
     return NULL;

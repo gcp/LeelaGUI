@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Sep 26 2007)
+// C++ code generated with wxFormBuilder (version Apr 16 2008)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -7,6 +7,8 @@
 
 #ifndef __GUI__
 #define __GUI__
+
+#include <wx/intl.h>
 
 class TBoardPanel;
 
@@ -20,6 +22,7 @@ class TBoardPanel;
 #include <wx/statusbr.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
+#include <wx/icon.h>
 #include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/frame.h>
@@ -62,8 +65,10 @@ class TMainFrame : public wxFrame
 		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
+		void _wxFB_doPassToggle( wxCommandEvent& event ){ doPassToggle( event ); }
 		void _wxFB_doResignToggle( wxCommandEvent& event ){ doResignToggle( event ); }
 		void _wxFB_doSoundToggle( wxCommandEvent& event ){ doSoundToggle( event ); }
+		void _wxFB_doAdjustClocks( wxCommandEvent& event ){ doAdjustClocks( event ); }
 		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
 		void _wxFB_doHomePage( wxCommandEvent& event ){ doHomePage( event ); }
 		void _wxFB_doHelpAbout( wxCommandEvent& event ){ doHelpAbout( event ); }
@@ -91,8 +96,10 @@ class TMainFrame : public wxFrame
 			ID_ANALYZE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
+			wxID_PASSTOGGLE,
 			ID_RESIGNTOGGLE,
 			ID_SOUNDSWITCH,
+			wxID_ADJUSTCLOCKS,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
 			ID_HELPABOUT,
@@ -128,8 +135,10 @@ class TMainFrame : public wxFrame
 		virtual void doAnalyze( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doPassToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doResignToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doSoundToggle( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doAdjustClocks( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doGoRules( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doHomePage( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doHelpAbout( wxCommandEvent& event ){ event.Skip(); }
@@ -137,6 +146,7 @@ class TMainFrame : public wxFrame
 	
 	public:
 		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
+		~TMainFrame();
 	
 };
 
@@ -185,6 +195,7 @@ class TNewGameDialog : public wxDialog
 	
 	public:
 		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 294,273 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+		~TNewGameDialog();
 	
 };
 
@@ -213,6 +224,7 @@ class TAboutDialog : public wxDialog
 	
 	public:
 		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 237,172 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TAboutDialog();
 	
 };
 
@@ -245,6 +257,7 @@ class TNagDialog : public wxDialog
 	
 	public:
 		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 249,200 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TNagDialog();
 	
 };
 
@@ -276,6 +289,7 @@ class TCopyProtectionDialog : public wxDialog
 	
 	public:
 		TCopyProtectionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Copy protection"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 239,159 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TCopyProtectionDialog();
 	
 };
 

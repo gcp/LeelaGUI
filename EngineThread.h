@@ -12,7 +12,7 @@ class TEngineThread : public wxThread {
         void limit_visits(int visits);
         void set_resigning(bool res);
         void set_analyzing(bool flag);
-        void set_nopass(bool flag);
+        void set_nopass(bool flag);		
         void stop_engine(void);
         virtual void * Entry();
     private:
@@ -21,7 +21,7 @@ class TEngineThread : public wxThread {
         MainFrame * m_frame;                 
         int m_maxvisits;  
         bool m_resigning;  
-        bool m_analyseflag;  
+        bool m_analyseflag;  		
         bool m_nopass;
         bool m_runflag;    
 };

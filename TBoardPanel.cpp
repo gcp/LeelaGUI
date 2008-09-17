@@ -11,13 +11,13 @@ END_EVENT_TABLE()
 TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
                          const wxSize& size, long style,const wxString& name)
     : wxPanel(parent, winid, pos, size, style, name) {        
-        
+
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
         
     wxBitmap woodTile("IDB_BITMAPWOOD", wxBITMAP_TYPE_BMP_RESOURCE);
     int srcWidth = woodTile.GetWidth();
     int srcHeight = woodTile.GetHeight();
-    
+	
     // generate all orientations
     wxImage tileNorm = woodTile.ConvertToImage();
     wxImage tileHoriz = tileNorm.Mirror(true);
@@ -27,12 +27,12 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     wxBitmap tileN(tileNorm);    
     wxBitmap tileH(tileHoriz);
     wxBitmap tileV(tileVertic);
-    wxBitmap tileI(tileInvert);    
+    wxBitmap tileI(tileInvert);   
     
     // 2 x 2 tile
     m_tileFull.Create(srcWidth * 2, srcHeight * 2);
     wxMemoryDC dcTile;
-    wxMemoryDC dcSrc;
+    wxMemoryDC dcSrc;	
     
     dcTile.SelectObject(m_tileFull);    
     dcSrc.SelectObject(tileN);    
@@ -79,9 +79,9 @@ void TBoardPanel::setPlayerColor(int color) {
 }
 
 void TBoardPanel::doPaint(wxPaintEvent& event) {
-    wxBufferedPaintDC dc(this);
+    wxAutoBufferedPaintDC dc(this);
         
-    PrepareDC(dc);                
+    PrepareDC(dc);                	
         
     wxSize sz = GetClientSize();
     int tileW = m_tileFull.GetWidth();
@@ -97,7 +97,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             dc.DrawBitmap(m_tileFull, x * tileW, y * tileH, false);             
         }
     }      
-    
+
     if (m_State == NULL) {
         ::wxLogDebug("Paint on empty state");
         return;
@@ -125,8 +125,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     
     // bitmaps
     wxBitmap wstone = wxBitmap(m_whiteStone.Scale(stoneDiam, stoneDiam));
-    wxBitmap bstone = wxBitmap(m_blackStone.Scale(stoneDiam, stoneDiam));        
-    
+    wxBitmap bstone = wxBitmap(m_blackStone.Scale(stoneDiam, stoneDiam));            	
+
     // emtpy fill
     wxBrush ebrush(*wxBLACK, wxTRANSPARENT);
     
@@ -302,7 +302,7 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
     
     if (m_stateLock) {
         return;
-    }
+	} 
     
     if (m_State->get_to_move() == m_playerColor) {    
         int boardSize = m_State->board.get_boardsize();

@@ -3,7 +3,7 @@
 	<object class="wxFrame" name="TMainFrame">
 		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
 		<size>400,450</size>
-		<title>Leela lite</title>
+		<title>Leela</title>
 		<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
 			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
 		</object>
@@ -97,6 +97,12 @@
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuPassToggle">
+					<label>Engine &amp;passes</label>
+					<help>Allows the engine to pass</help>
+					<checked>1</checked>
+					<checkable>1</checkable>
+				</object>
 				<object class="wxMenuItem" name="menuItemResignToggle">
 					<label>Engine &amp;resigns</label>
 					<help>Allows the engine to resign or not</help>
@@ -108,6 +114,11 @@
 					<help>Enable or disable sound</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuItemAdjustClocks">
+					<label>&amp;Adjust clocks...</label>
+					<help></help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menu3">
@@ -432,7 +443,7 @@
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Leela lite version 0.2.7</label>
+					<label>Leela version 0.3.15</label>
 				</object>
 			</object>
 			<object class="sizeritem">

@@ -39,8 +39,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
     m_analyzing = false;
+	m_pondering = false;
     m_disputing = false;
     
+	m_passEnabled = true;
     m_soundEnabled = true;
     m_resignEnabled = true;
     
@@ -95,7 +97,7 @@ void MainFrame::SetStatusBar(wxString mess, int pos) {
 }
 
 void MainFrame::updateStatusBar(char *str) {
-    wxString wxstr(str);
+    //wxString wxstr(str);
     //SetStatusText(str);
 }
 
@@ -118,18 +120,29 @@ void MainFrame::doSoundToggle(wxCommandEvent& event) {
 }
 
 void MainFrame::startEngine() {
-    if (m_engineRunning.TryWait() != wxSEMA_BUSY) {                                
-        m_engineThread = new TEngineThread(&m_State, &m_engineRunning, this);
+    if (m_engineRunning.TryWait() != wxSEMA_BUSY) { 
+		if (!m_pondering) {
+	        m_engineThread = new TEngineThread(&m_State, &m_engineRunning, this);
+		} else {
+			m_ponderState = m_State;
+			m_engineThread = new TEngineThread(&m_ponderState, &m_engineRunning, this);
+		}
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             ::wxLogDebug("Error starting engine");
         } else {            
             // lock the board
-            m_panelBoard->lockState();
+			if (!m_pondering) {
+				m_panelBoard->lockState();
+			}
             
             m_engineThread->limit_visits(m_visitLimit);
             m_engineThread->set_resigning(m_resignEnabled);
-            m_engineThread->set_analyzing(m_analyzing);
-            m_engineThread->set_nopass(m_disputing);
+            m_engineThread->set_analyzing(m_analyzing | m_pondering);
+			if (m_passEnabled) {
+				m_engineThread->set_nopass(m_disputing);
+			} else {
+				m_engineThread->set_nopass(true);
+			}            
             m_engineThread->Run();
         }
     } else {
@@ -181,6 +194,11 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     if (m_analyzing) {
         return;
     }
+
+	if (m_pondering) {
+		stopEngine();
+		m_pondering = false;
+	}
     
     if (m_State.get_last_move() != FastBoard::PASS) {
         if (m_soundEnabled) {
@@ -210,16 +228,22 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             if (m_State.get_to_move() != m_playerColor) {
                 ::wxLogDebug("Computer to move"); 
                 startEngine();                
-            }                 
+			} else {
+				m_pondering = true;
+				startEngine();
+			}
         }
     } else {
         if (m_State.get_to_move() != m_playerColor) {
             ::wxLogDebug("Computer to move"); 
             startEngine();                
-        }     
+		} else {
+			m_pondering = true;
+			startEngine();
+		}
         m_panelBoard->setShowTerritory(false);
-    }
-    
+    }	
+	
     // signal update of visible board
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);                        
@@ -261,6 +285,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
+		m_pondering = false;
         m_disputing = false;
         
         m_engineRunning.Post();               
@@ -278,7 +303,8 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     m_engineRunning.Wait();
     
     m_analyzing = false;   
-    m_disputing = false;     
+    m_disputing = false;    
+	m_pondering = false;
     
     int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
     
@@ -718,10 +744,23 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 }
 
 void MainFrame::doForceMove(wxCommandEvent& event) {        
-    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
-        m_analyzing = false;
-        
+    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {        
         stopEngine();        
+
+		m_analyzing = false;		
+
+		m_engineRunning.Wait();
+		m_engineRunning.Post();
+
+		if (m_pondering) {
+			m_pondering = false;	
+			m_playerColor = !m_State.get_to_move();    
+			m_panelBoard->setPlayerColor(m_playerColor);
+			m_ratedGame = false;
+			m_analyzing = false;			
+
+			startEngine();
+		}		
     } else {
         m_engineRunning.Post();
         
@@ -730,9 +769,14 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
     
         m_ratedGame = false;
         m_analyzing = false;
+		m_pondering = false;
     
         startEngine();
     }                    
+}
+
+void MainFrame::doPassToggle(wxCommandEvent& event) {
+	m_passEnabled = !m_passEnabled;
 }
 
 void MainFrame::doResignToggle(wxCommandEvent& event) {
@@ -756,9 +800,11 @@ void MainFrame::doResign(wxCommandEvent& event) {
 void MainFrame::doAnalyze(wxCommandEvent& event) {
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
         stopEngine();                   
-        m_analyzing = false;                           
+        m_analyzing = false;   
+		m_pondering = false;
     } else {
         m_analyzing = true;
+		m_pondering = false;
         m_ratedGame = false;
         
         m_engineRunning.Post();                        

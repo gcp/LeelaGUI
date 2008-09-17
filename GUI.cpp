@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Sep 26 2007)
+// C++ code generated with wxFormBuilder (version Apr 16 2008)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -12,6 +12,7 @@
 #include "GUI.h"
 
 ///////////////////////////////////////////////////////////////////////////
+
 BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_ACTIVATE( TMainFrame::_wxFB_doActivate )
 	EVT_PAINT( TMainFrame::_wxFB_doPaint )
@@ -32,8 +33,10 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
+	EVT_MENU( wxID_PASSTOGGLE, TMainFrame::_wxFB_doPassToggle )
 	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
 	EVT_MENU( ID_SOUNDSWITCH, TMainFrame::_wxFB_doSoundToggle )
+	EVT_MENU( wxID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
 	EVT_MENU( ID_HOMEPAGE, TMainFrame::_wxFB_doHomePage )
 	EVT_MENU( ID_HELPABOUT, TMainFrame::_wxFB_doHelpAbout )
@@ -54,80 +57,131 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_statusBar = this->CreateStatusBar( 2, wxST_SIZEGRIP, ID_DEFAULT );
 	m_menubar1 = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
-	wxMenuItem* menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("&New game...") ) + wxT('\t') + wxT("Ctrl-N"), _("Start a new game"), wxITEM_NORMAL );
+	wxMenuItem* menuItemNewGame;
+	menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("&New game...") ) + wxT('\t') + wxT("Ctrl-N"), _("Start a new game"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemNewGame );
-	wxMenuItem* menuItemNewRated = new wxMenuItem( m_menu1, ID_NEWRATED, wxString( _("New &rated game") ) + wxT('\t') + wxT("Ctrl-R"), _("Starts a new rated game"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItemNewRated;
+	menuItemNewRated = new wxMenuItem( m_menu1, ID_NEWRATED, wxString( _("New &rated game") ) + wxT('\t') + wxT("Ctrl-R"), _("Starts a new rated game"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemNewRated );
 	
 	m_menu1->AppendSeparator();
-	wxMenuItem* menuItem11 = new wxMenuItem( m_menu1, ID_OPEN, wxString( _("&Open game...") ) + wxT('\t') + wxT("Ctrl-O"), _("Opens a game from disk"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem11;
+	menuItem11 = new wxMenuItem( m_menu1, ID_OPEN, wxString( _("&Open game...") ) + wxT('\t') + wxT("Ctrl-O"), _("Opens a game from disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem11 );
-	wxMenuItem* menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("&Save game...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem12;
+	menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("&Save game...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem12 );
 	
 	m_menu1->AppendSeparator();
-	wxMenuItem* menuItemExit = new wxMenuItem( m_menu1, ID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt-F4"), _("Exit the program"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItemExit;
+	menuItemExit = new wxMenuItem( m_menu1, ID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt-F4"), _("Exit the program"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemExit );
+	
 	m_menubar1->Append( m_menu1, _("&File") );
 	
 	m_menu2 = new wxMenu();
-	wxMenuItem* menuItem9 = new wxMenuItem( m_menu2, ID_UNDO, wxString( _("&Undo") ) + wxT('\t') + wxT("Ctrl-Z"), wxEmptyString, wxITEM_NORMAL );
+	wxMenuItem* menuItem9;
+	menuItem9 = new wxMenuItem( m_menu2, ID_UNDO, wxString( _("&Undo") ) + wxT('\t') + wxT("Ctrl-Z"), wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( menuItem9 );
-	wxMenuItem* menuItem8 = new wxMenuItem( m_menu2, ID_REDO, wxString( _("&Forward") ) + wxT('\t') + wxT("Ctrl-Y"), wxEmptyString, wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem8;
+	menuItem8 = new wxMenuItem( m_menu2, ID_REDO, wxString( _("&Forward") ) + wxT('\t') + wxT("Ctrl-Y"), wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( menuItem8 );
 	
 	m_menu2->AppendSeparator();
-	wxMenuItem* menuItem131 = new wxMenuItem( m_menu2, ID_BACK10, wxString( _("Go &back 10 moves") ) + wxT('\t') + wxT("Alt-B"), _("Undo 10 moves"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem131;
+	menuItem131 = new wxMenuItem( m_menu2, ID_BACK10, wxString( _("Go &back 10 moves") ) + wxT('\t') + wxT("Alt-B"), _("Undo 10 moves"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem131 );
-	wxMenuItem* menuItem141 = new wxMenuItem( m_menu2, ID_FWD10, wxString( _("Go for&ward 10 moves") ) + wxT('\t') + wxT("Alt-F"), _("Forward 10 moves"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem141;
+	menuItem141 = new wxMenuItem( m_menu2, ID_FWD10, wxString( _("Go for&ward 10 moves") ) + wxT('\t') + wxT("Alt-F"), _("Forward 10 moves"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem141 );
 	
 	m_menu2->AppendSeparator();
-	wxMenuItem* menuItem18 = new wxMenuItem( m_menu2, ID_FORCE, wxString( _("Force &computer move") ) + wxT('\t') + wxT("Ctrl-F"), _("Force the computer to move now"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem18;
+	menuItem18 = new wxMenuItem( m_menu2, ID_FORCE, wxString( _("Force &computer move") ) + wxT('\t') + wxT("Ctrl-F"), _("Force the computer to move now"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem18 );
 	
 	m_menu2->AppendSeparator();
-	wxMenuItem* menuItem6 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("&Pass") ) + wxT('\t') + wxT("Alt-P"), _("Pass"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem6;
+	menuItem6 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("&Pass") ) + wxT('\t') + wxT("Alt-P"), _("Pass"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem6 );
-	wxMenuItem* menuItem20 = new wxMenuItem( m_menu2, ID_RESIGN, wxString( _("&Resign") ) + wxT('\t') + wxT("Alt-R"), _("Resign the game"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem20;
+	menuItem20 = new wxMenuItem( m_menu2, ID_RESIGN, wxString( _("&Resign") ) + wxT('\t') + wxT("Alt-R"), _("Resign the game"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem20 );
 	
 	m_menu2->AppendSeparator();
-	wxMenuItem* menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score game") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem5;
+	menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score game") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem5 );
+	
 	m_menubar1->Append( m_menu2, _("&Game") );
 	
 	m_menuAnalyze = new wxMenu();
-	wxMenuItem* menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
+	wxMenuItem* menuItemAnalyze;
+	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
 	m_menuAnalyze->Append( menuItemAnalyze );
+	
 	m_menubar1->Append( m_menuAnalyze, _("&Analyze") );
 	
 	m_menuSettings = new wxMenu();
-	wxMenuItem* menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("Ctrl-T"), _("Show Territory"), wxITEM_CHECK );
+	wxMenuItem* menuItem15;
+	menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("Ctrl-T"), _("Show Territory"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItem15 );
-	wxMenuItem* menuItem16 = new wxMenuItem( m_menuSettings, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("Ctrl-M"), _("Show Moyo"), wxITEM_CHECK );
+	
+	wxMenuItem* menuItem16;
+	menuItem16 = new wxMenuItem( m_menuSettings, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("Ctrl-M"), _("Show Moyo"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItem16 );
 	
 	m_menuSettings->AppendSeparator();
-	wxMenuItem* menuItemResignToggle = new wxMenuItem( m_menuSettings, ID_RESIGNTOGGLE, wxString( _("Engine &resigns") ) , _("Allows the engine to resign or not"), wxITEM_CHECK );
+	
+	wxMenuItem* m_menuPassToggle;
+	m_menuPassToggle = new wxMenuItem( m_menuSettings, wxID_PASSTOGGLE, wxString( _("Engine &passes") ) , _("Allows the engine to pass"), wxITEM_CHECK );
+	m_menuSettings->Append( m_menuPassToggle );
+	m_menuPassToggle->Check( true );
+	
+	wxMenuItem* menuItemResignToggle;
+	menuItemResignToggle = new wxMenuItem( m_menuSettings, ID_RESIGNTOGGLE, wxString( _("Engine &resigns") ) , _("Allows the engine to resign or not"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItemResignToggle );
 	menuItemResignToggle->Check( true );
 	
-	wxMenuItem* menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound") ) , _("Enable or disable sound"), wxITEM_CHECK );
+	wxMenuItem* menuItemSound;
+	menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound") ) , _("Enable or disable sound"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItemSound );
 	menuItemSound->Check( true );
+	
+	m_menuSettings->AppendSeparator();
+	
+	wxMenuItem* m_menuItemAdjustClocks;
+	m_menuItemAdjustClocks = new wxMenuItem( m_menuSettings, wxID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuSettings->Append( m_menuItemAdjustClocks );
 	
 	m_menubar1->Append( m_menuSettings, _("&Settings") );
 	
 	m_menu3 = new wxMenu();
-	wxMenuItem* menuItem13 = new wxMenuItem( m_menu3, ID_HELPRULES, wxString( _("&Go Rules") ) + wxT('\t') + wxT("F1"), _("Explanation of the rules of Go"), wxITEM_NORMAL );
+	wxMenuItem* menuItem13;
+	menuItem13 = new wxMenuItem( m_menu3, ID_HELPRULES, wxString( _("&Go Rules") ) + wxT('\t') + wxT("F1"), _("Explanation of the rules of Go"), wxITEM_NORMAL );
 	m_menu3->Append( menuItem13 );
-	wxMenuItem* menuItem10 = new wxMenuItem( m_menu3, ID_HOMEPAGE, wxString( _("Leela Homepage") ) + wxT('\t') + wxT("Ctrl-H"), wxEmptyString, wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem10;
+	menuItem10 = new wxMenuItem( m_menu3, ID_HOMEPAGE, wxString( _("Leela Homepage") ) + wxT('\t') + wxT("Ctrl-H"), wxEmptyString, wxITEM_NORMAL );
 	m_menu3->Append( menuItem10 );
 	
 	m_menu3->AppendSeparator();
-	wxMenuItem* menuItem7 = new wxMenuItem( m_menu3, ID_HELPABOUT, wxString( _("&About...") ) , _("Information about the program"), wxITEM_NORMAL );
+	
+	wxMenuItem* menuItem7;
+	menuItem7 = new wxMenuItem( m_menu3, ID_HELPABOUT, wxString( _("&About...") ) , _("Information about the program"), wxITEM_NORMAL );
 	m_menu3->Append( menuItem7 );
+	
 	m_menubar1->Append( m_menu3, _("&Help") );
 	
 	this->SetMenuBar( m_menubar1 );
@@ -154,6 +208,11 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_toolBar1->Realize();
 	
 }
+
+TMainFrame::~TMainFrame()
+{
+}
+
 BEGIN_EVENT_TABLE( TNewGameDialog, wxDialog )
 	EVT_INIT_DIALOG( TNewGameDialog::_wxFB_doInit )
 	EVT_SPINCTRL( ID_HANDICAPSPIN, TNewGameDialog::_wxFB_doHandicapUpdate )
@@ -182,7 +241,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer9->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer2;
-	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, -1, _("Komi (+0.5)") ), wxHORIZONTAL );
+	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Komi (+0.5)") ), wxHORIZONTAL );
 	
 	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Komi"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText2->Wrap( -1 );
@@ -194,7 +253,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer9->Add( sbSizer2, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer3;
-	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, -1, _("Handicap") ), wxHORIZONTAL );
+	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Handicap") ), wxHORIZONTAL );
 	
 	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Handicap"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText3->Wrap( -1 );
@@ -206,7 +265,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer9->Add( sbSizer3, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, -1, _("Time for game") ), wxHORIZONTAL );
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Time for game") ), wxHORIZONTAL );
 	
 	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Minutes"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText13->Wrap( -1 );
@@ -249,6 +308,11 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	this->SetSizer( bSizer7 );
 	this->Layout();
 }
+
+TNewGameDialog::~TNewGameDialog()
+{
+}
+
 BEGIN_EVENT_TABLE( TAboutDialog, wxDialog )
 	EVT_INIT_DIALOG( TAboutDialog::_wxFB_doInit )
 END_EVENT_TABLE()
@@ -260,7 +324,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.2.7"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.3.15"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
 	m_staticTextVersion->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
@@ -283,6 +347,11 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	this->SetSizer( bSizer9 );
 	this->Layout();
 }
+
+TAboutDialog::~TAboutDialog()
+{
+}
+
 BEGIN_EVENT_TABLE( TNagDialog, wxDialog )
 	EVT_INIT_DIALOG( TNagDialog::_wxFB_doInit )
 	EVT_BUTTON( wxID_OK, TNagDialog::_wxFB_doOK )
@@ -291,7 +360,6 @@ END_EVENT_TABLE()
 TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	this->Centre( wxBOTH );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
@@ -333,7 +401,14 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	this->SetSizer( bSizer10 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
+
+TNagDialog::~TNagDialog()
+{
+}
+
 BEGIN_EVENT_TABLE( TCopyProtectionDialog, wxDialog )
 	EVT_BUTTON( wxID_OK, TCopyProtectionDialog::_wxFB_doOK )
 END_EVENT_TABLE()
@@ -382,4 +457,8 @@ TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, c
 	
 	this->SetSizer( bSizer10 );
 	this->Layout();
+}
+
+TCopyProtectionDialog::~TCopyProtectionDialog()
+{
 }
