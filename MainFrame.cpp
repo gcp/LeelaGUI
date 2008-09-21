@@ -11,6 +11,7 @@
 #include "NagDialog.h"
 #include "CopyProtectionDialog.h"
 #include "Utils.h"
+#include "ClockAdjustDialog.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
@@ -39,10 +40,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
     m_analyzing = false;
-	m_pondering = false;
+    m_pondering = false;
     m_disputing = false;
     
-	m_passEnabled = true;
+    m_passEnabled = true;
     m_soundEnabled = true;
     m_resignEnabled = true;
     
@@ -121,28 +122,28 @@ void MainFrame::doSoundToggle(wxCommandEvent& event) {
 
 void MainFrame::startEngine() {
     if (m_engineRunning.TryWait() != wxSEMA_BUSY) { 
-		if (!m_pondering) {
-	        m_engineThread = new TEngineThread(&m_State, &m_engineRunning, this);
-		} else {
-			m_ponderState = m_State;
-			m_engineThread = new TEngineThread(&m_ponderState, &m_engineRunning, this);
-		}
+        if (!m_pondering) {
+            m_engineThread = new TEngineThread(&m_State, &m_engineRunning, this);
+        } else {
+            m_ponderState = m_State;
+            m_engineThread = new TEngineThread(&m_ponderState, &m_engineRunning, this);
+        }
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             ::wxLogDebug("Error starting engine");
         } else {            
             // lock the board
-			if (!m_pondering) {
-				m_panelBoard->lockState();
-			}
-            
+            if (!m_pondering) {
+                m_panelBoard->lockState();
+            }
+
             m_engineThread->limit_visits(m_visitLimit);
             m_engineThread->set_resigning(m_resignEnabled);
             m_engineThread->set_analyzing(m_analyzing | m_pondering);
-			if (m_passEnabled) {
-				m_engineThread->set_nopass(m_disputing);
-			} else {
-				m_engineThread->set_nopass(true);
-			}            
+            if (m_passEnabled) {
+                m_engineThread->set_nopass(m_disputing);
+            } else {
+                m_engineThread->set_nopass(true);
+            }            
             m_engineThread->Run();
         }
     } else {
@@ -195,10 +196,10 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         return;
     }
 
-	if (m_pondering) {
-		stopEngine();
-		m_pondering = false;
-	}
+    if (m_pondering) {
+        stopEngine();
+        m_pondering = false;
+    }
     
     if (m_State.get_last_move() != FastBoard::PASS) {
         if (m_soundEnabled) {
@@ -747,20 +748,20 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {        
         stopEngine();        
 
-		m_analyzing = false;		
+        m_analyzing = false;		
 
-		m_engineRunning.Wait();
-		m_engineRunning.Post();
+        m_engineRunning.Wait();
+        m_engineRunning.Post();
 
-		if (m_pondering) {
-			m_pondering = false;	
-			m_playerColor = !m_State.get_to_move();    
-			m_panelBoard->setPlayerColor(m_playerColor);
-			m_ratedGame = false;
-			m_analyzing = false;			
+        if (m_pondering) {
+            m_pondering = false;	
+            m_playerColor = !m_State.get_to_move();    
+            m_panelBoard->setPlayerColor(m_playerColor);
+            m_ratedGame = false;
+            m_analyzing = false;			
 
-			startEngine();
-		}		
+            startEngine();
+        }		
     } else {
         m_engineRunning.Post();
         
@@ -769,7 +770,7 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
     
         m_ratedGame = false;
         m_analyzing = false;
-		m_pondering = false;
+	m_pondering = false;
     
         startEngine();
     }                    
@@ -801,14 +802,26 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
         stopEngine();                   
         m_analyzing = false;   
-		m_pondering = false;
+	m_pondering = false;
     } else {
         m_analyzing = true;
-		m_pondering = false;
+	m_pondering = false;
         m_ratedGame = false;
         
         m_engineRunning.Post();                        
 
         startEngine();                
     }
+}
+
+void MainFrame::doAdjustClocks(wxCommandEvent& event) {
+    ClockAdjustDialog mydialog(this);
+
+    mydialog.setTimeControl(*(m_State.get_timecontrol()));
+
+    if (mydialog.ShowModal() == wxID_OK) {
+        ::wxLogDebug("Adjust clocks clicked"); 
+
+        m_State.set_timecontrol(mydialog.getTimeControl());       
+    } 
 }

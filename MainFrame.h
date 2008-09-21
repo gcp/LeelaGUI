@@ -17,7 +17,7 @@ class MainFrame : public TMainFrame {
         ~MainFrame();
         void SetStatusBar(wxString mess, int pos);
 
-    private:                                  	        
+    private:                                  	                
 	virtual void doActivate(wxActivateEvent& event);
 	virtual void doPaint(wxPaintEvent& event);		
 	virtual void doNewMove(wxCommandEvent& event);
@@ -35,8 +35,8 @@ class MainFrame : public TMainFrame {
 	virtual void doHelpAbout(wxCommandEvent& event);	
 	virtual void doHomePage(wxCommandEvent& event);
 	virtual void doOpenSGF(wxCommandEvent& event);
-    virtual void doSaveSGF(wxCommandEvent& event);
-    virtual void doBack10(wxCommandEvent& event);
+        virtual void doSaveSGF(wxCommandEvent& event);
+        virtual void doBack10(wxCommandEvent& event);
 	virtual void doForward10(wxCommandEvent& event);
 	virtual void doSoundToggle(wxCommandEvent& event);
 	virtual void doForceMove(wxCommandEvent& event);
@@ -47,6 +47,7 @@ class MainFrame : public TMainFrame {
 	virtual void doStatusUpdate(wxCommandEvent& event);
 	virtual void doResign(wxCommandEvent& event);
 	virtual void doAnalyze(wxCommandEvent& event);
+        virtual void doAdjustClocks(wxCommandEvent& event);
 	
 	void startEngine();
 	void startPonder();

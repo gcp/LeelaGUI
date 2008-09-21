@@ -462,3 +462,54 @@ TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, c
 TCopyProtectionDialog::~TCopyProtectionDialog()
 {
 }
+
+BEGIN_EVENT_TABLE( TClockAdjustDialog, wxDialog )
+	EVT_INIT_DIALOG( TClockAdjustDialog::_wxFB_doInit )
+	EVT_BUTTON( wxID_CANCEL, TClockAdjustDialog::_wxFB_doCancel )
+	EVT_BUTTON( wxID_OK, TClockAdjustDialog::_wxFB_doOK )
+END_EVENT_TABLE()
+
+TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer9;
+	bSizer9 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer4;
+	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Black clock (minutes:seconds)") ), wxHORIZONTAL );
+	
+	m_spinCtrlBlackMins = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 999, 30 );
+	sbSizer4->Add( m_spinCtrlBlackMins, 1, wxALL|wxEXPAND, 5 );
+	
+	m_spinCtrlBlackSecs = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
+	sbSizer4->Add( m_spinCtrlBlackSecs, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer9->Add( sbSizer4, 1, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer6;
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("White clock (minutes:seconds)") ), wxHORIZONTAL );
+	
+	m_spinCtrlWhiteMins = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 999, 30 );
+	sbSizer6->Add( m_spinCtrlWhiteMins, 1, wxALL|wxEXPAND, 5 );
+	
+	m_spinCtrlWhiteSecs = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
+	sbSizer6->Add( m_spinCtrlWhiteSecs, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer9->Add( sbSizer6, 1, wxEXPAND, 5 );
+	
+	m_sdbSizer3 = new wxStdDialogButtonSizer();
+	m_sdbSizer3OK = new wxButton( this, wxID_OK );
+	m_sdbSizer3->AddButton( m_sdbSizer3OK );
+	m_sdbSizer3Cancel = new wxButton( this, wxID_CANCEL );
+	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
+	m_sdbSizer3->Realize();
+	bSizer9->Add( m_sdbSizer3, 1, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer9 );
+	this->Layout();
+}
+
+TClockAdjustDialog::~TClockAdjustDialog()
+{
+}

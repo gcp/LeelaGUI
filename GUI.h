@@ -293,4 +293,39 @@ class TCopyProtectionDialog : public wxDialog
 	
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class TClockAdjustDialog
+///////////////////////////////////////////////////////////////////////////////
+class TClockAdjustDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doInit( wxInitDialogEvent& event ){ doInit( event ); }
+		void _wxFB_doCancel( wxCommandEvent& event ){ doCancel( event ); }
+		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		
+	
+	protected:
+		wxSpinCtrl* m_spinCtrlBlackMins;
+		wxSpinCtrl* m_spinCtrlBlackSecs;
+		wxSpinCtrl* m_spinCtrlWhiteMins;
+		wxSpinCtrl* m_spinCtrlWhiteSecs;
+		wxStdDialogButtonSizer* m_sdbSizer3;
+		wxButton* m_sdbSizer3OK;
+		wxButton* m_sdbSizer3Cancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
+		virtual void doCancel( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		
+	
+	public:
+		TClockAdjustDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Adjust clocks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 184,183 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TClockAdjustDialog();
+	
+};
+
 #endif //__GUI__

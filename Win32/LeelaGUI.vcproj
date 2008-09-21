@@ -220,6 +220,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\ClockAdjustDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\CopyProtectionDialog.cpp"
 				>
 				<FileConfiguration
@@ -431,6 +435,10 @@
 			</File>
 			<File
 				RelativePath="..\App.h"
+				>
+			</File>
+			<File
+				RelativePath="..\ClockAdjustDialog.h"
 				>
 			</File>
 			<File
