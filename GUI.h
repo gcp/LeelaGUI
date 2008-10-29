@@ -67,6 +67,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
 		void _wxFB_doPassToggle( wxCommandEvent& event ){ doPassToggle( event ); }
 		void _wxFB_doResignToggle( wxCommandEvent& event ){ doResignToggle( event ); }
+		void _wxFB_doPonderToggle( wxCommandEvent& event ){ doPonderToggle( event ); }
 		void _wxFB_doSoundToggle( wxCommandEvent& event ){ doSoundToggle( event ); }
 		void _wxFB_doAdjustClocks( wxCommandEvent& event ){ doAdjustClocks( event ); }
 		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
@@ -96,8 +97,9 @@ class TMainFrame : public wxFrame
 			ID_ANALYZE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
-			wxID_PASSTOGGLE,
+			ID_PASSTOGGLE,
 			ID_RESIGNTOGGLE,
+			ID_PONDERTOGGLE,
 			ID_SOUNDSWITCH,
 			wxID_ADJUSTCLOCKS,
 			ID_HELPRULES,
@@ -137,6 +139,7 @@ class TMainFrame : public wxFrame
 		virtual void doToggleMoyo( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doPassToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doResignToggle( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doPonderToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doSoundToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doAdjustClocks( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doGoRules( wxCommandEvent& event ){ event.Skip(); }

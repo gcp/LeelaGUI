@@ -10,7 +10,8 @@ TEngineThread::TEngineThread(GameState * state, wxSemaphore * sema, MainFrame * 
     m_frame = frame;
     m_maxvisits = 0;
     m_runflag = true; 
-    m_nopass = false;   
+    m_nopass = false;  
+    m_quiet = false;
 }
 
 void * TEngineThread::Entry() {     
@@ -22,7 +23,8 @@ void * TEngineThread::Entry() {
         int who = m_state->get_to_move();
         search->set_visit_limit(m_maxvisits);
         search->set_runflag(&m_runflag);
-        search->set_analyzing(m_analyseflag);        
+        search->set_analyzing(m_analyseflag);  
+        search->set_quiet(m_quiet);
         
         int mode = UCTSearch::NORMAL;
         if (m_nopass) {
@@ -40,10 +42,12 @@ void * TEngineThread::Entry() {
             m_state->play_move(who, move);                                
         }
         
-        m_sema->Post();                
+        m_sema->Post();
 
-		wxCommandEvent event(EVT_NEW_MOVE);                               
-		::wxPostEvent(m_frame->GetEventHandler(), event);                        
+        //if (!m_analyseflag) {
+	    wxCommandEvent event(EVT_NEW_MOVE);                               
+	    ::wxPostEvent(m_frame->GetEventHandler(), event);                        
+        //}
     }
 
     return NULL;
@@ -67,4 +71,8 @@ void TEngineThread::set_analyzing(bool flag) {
 
 void TEngineThread::set_nopass(bool flag) {
     m_nopass = flag;
+}
+
+void TEngineThread::set_quiet(bool flag) {
+    m_quiet = flag;
 }

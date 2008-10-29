@@ -301,8 +301,9 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
     }
     
     if (m_stateLock) {
+        ::wxLogDebug("Click on locked state");
         return;
-	} 
+    } 
     
     if (m_State->get_to_move() == m_playerColor) {    
         int boardSize = m_State->board.get_boardsize();
@@ -332,7 +333,7 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         }                   
         
     } else {        
-        //::wxLogMessage("It's not your move!");
+        ::wxLogDebug("It's not your move!");
     }
     
     event.Skip();

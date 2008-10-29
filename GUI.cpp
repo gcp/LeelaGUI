@@ -33,8 +33,9 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
-	EVT_MENU( wxID_PASSTOGGLE, TMainFrame::_wxFB_doPassToggle )
+	EVT_MENU( ID_PASSTOGGLE, TMainFrame::_wxFB_doPassToggle )
 	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
+	EVT_MENU( ID_PONDERTOGGLE, TMainFrame::_wxFB_doPonderToggle )
 	EVT_MENU( ID_SOUNDSWITCH, TMainFrame::_wxFB_doSoundToggle )
 	EVT_MENU( wxID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
@@ -145,7 +146,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuSettings->AppendSeparator();
 	
 	wxMenuItem* m_menuPassToggle;
-	m_menuPassToggle = new wxMenuItem( m_menuSettings, wxID_PASSTOGGLE, wxString( _("Engine &passes") ) , _("Allows the engine to pass"), wxITEM_CHECK );
+	m_menuPassToggle = new wxMenuItem( m_menuSettings, ID_PASSTOGGLE, wxString( _("Engine &passes") ) , _("Allows the engine to pass"), wxITEM_CHECK );
 	m_menuSettings->Append( m_menuPassToggle );
 	m_menuPassToggle->Check( true );
 	
@@ -153,6 +154,11 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	menuItemResignToggle = new wxMenuItem( m_menuSettings, ID_RESIGNTOGGLE, wxString( _("Engine &resigns") ) , _("Allows the engine to resign or not"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItemResignToggle );
 	menuItemResignToggle->Check( true );
+	
+	wxMenuItem* m_menuItemPonder;
+	m_menuItemPonder = new wxMenuItem( m_menuSettings, ID_PONDERTOGGLE, wxString( _("Engine &ponders") ) , _("Allows the engine to think during the opponents time"), wxITEM_CHECK );
+	m_menuSettings->Append( m_menuItemPonder );
+	m_menuItemPonder->Check( true );
 	
 	wxMenuItem* menuItemSound;
 	menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound") ) , _("Enable or disable sound"), wxITEM_CHECK );

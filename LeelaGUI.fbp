@@ -498,7 +498,7 @@
                         <property name="checked">1</property>
                         <property name="enabled">1</property>
                         <property name="help">Allows the engine to pass</property>
-                        <property name="id">wxID_PASSTOGGLE</property>
+                        <property name="id">ID_PASSTOGGLE</property>
                         <property name="kind">wxITEM_CHECK</property>
                         <property name="label">Engine &amp;passes</property>
                         <property name="name">m_menuPassToggle</property>
@@ -521,6 +521,21 @@
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doResignToggle</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">1</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Allows the engine to think during the opponents time</property>
+                        <property name="id">ID_PONDERTOGGLE</property>
+                        <property name="kind">wxITEM_CHECK</property>
+                        <property name="label">Engine &amp;ponders</property>
+                        <property name="name">m_menuItemPonder</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doPonderToggle</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                     <object class="wxMenuItem" expanded="1">

@@ -36,20 +36,27 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_State.init_game(9, 7.5f);
     m_State.set_timecontrol(30 * 60 * 100, 0, 0);
     m_visitLimit = 1000;
-    m_ratedGame = false;
+    m_ratedGame = true;
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
     m_analyzing = false;
     m_pondering = false;
     m_disputing = false;
+    m_ponderedOnce = true;
     
-    m_passEnabled = true;
-    m_soundEnabled = true;
-    m_resignEnabled = true;
+    m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), 1);     
+    m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1); 
+    m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1); 
+    m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1); 
+    
+    m_menuSettings->FindItem(ID_PASSTOGGLE)->Check(m_passEnabled);
+    m_menuSettings->FindItem(ID_SOUNDSWITCH)->Check(m_soundEnabled);
+    m_menuSettings->FindItem(ID_RESIGNTOGGLE)->Check(m_resignEnabled);
+    m_menuSettings->FindItem(ID_PONDERTOGGLE)->Check(m_ponderEnabled);    
     
     // set global message area
     Utils::setGUIQueue(this->GetEventHandler(), EVT_STATUS_UPDATE);
-    // allow one engine running
+    // allow one engine running (engine finished signal)
     m_engineRunning.Post();    
     
 #ifdef LITEVERSION 
@@ -105,9 +112,11 @@ void MainFrame::updateStatusBar(char *str) {
 // do whatever we need to do if the visible board gets updated
 void MainFrame::doBoardUpdate(wxCommandEvent& event) {       
     wxString mess;
-    mess.Printf(_("Black Prisoners: %d   White Prisoners: %d"), 
+    mess.Printf(_("Komi: %d.5; Prisoners white: %d/black: %d"), 
+                (int)m_State.get_komi(),
                 m_State.board.get_prisoners(FastBoard::BLACK),
-                m_State.board.get_prisoners(FastBoard::WHITE));
+                m_State.board.get_prisoners(FastBoard::WHITE)
+                );
     m_statusBar->SetStatusText(mess, 0);     
     Refresh();
 }
@@ -118,6 +127,7 @@ void MainFrame::doExit(wxCommandEvent & event) {
 
 void MainFrame::doSoundToggle(wxCommandEvent& event) {
     m_soundEnabled = !m_soundEnabled;
+    wxConfig::Get()->Write(wxT("soundEnabled"), m_soundEnabled);  
 }
 
 void MainFrame::startEngine() {
@@ -139,6 +149,7 @@ void MainFrame::startEngine() {
             m_engineThread->limit_visits(m_visitLimit);
             m_engineThread->set_resigning(m_resignEnabled);
             m_engineThread->set_analyzing(m_analyzing | m_pondering);
+            m_engineThread->set_quiet(!m_analyzing);
             if (m_passEnabled) {
                 m_engineThread->set_nopass(m_disputing);
             } else {
@@ -153,8 +164,9 @@ void MainFrame::startEngine() {
 
 void MainFrame::stopEngine() {
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
-        m_engineThread->stop_engine();
+        m_engineThread->stop_engine();        
     } else {
+        // trywait success, repost
         m_engineRunning.Post();
     }
 }
@@ -191,14 +203,19 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     ::wxLogDebug(_("New move arrived"));
     
     m_panelBoard->unlockState();
-    
+   
     if (m_analyzing) {
+        m_analyzing = false;
+        m_ponderedOnce = true;
         return;
     }
 
     if (m_pondering) {
         stopEngine();
         m_pondering = false;
+        m_ponderedOnce = true;
+    } else {
+        m_ponderedOnce = false;
     }
     
     if (m_State.get_last_move() != FastBoard::PASS) {
@@ -229,19 +246,21 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             if (m_State.get_to_move() != m_playerColor) {
                 ::wxLogDebug("Computer to move"); 
                 startEngine();                
-			} else {
-				m_pondering = true;
-				startEngine();
-			}
+            } else {
+                m_pondering = true;
+                startEngine();
+            }
         }
     } else {
         if (m_State.get_to_move() != m_playerColor) {
             ::wxLogDebug("Computer to move"); 
             startEngine();                
-		} else {
-			m_pondering = true;
-			startEngine();
-		}
+        } else {
+            if (m_ponderEnabled && !m_ratedGame && !m_analyzing && !m_ponderedOnce) {
+                m_pondering = true;
+                startEngine();
+            }
+        }
         m_panelBoard->setShowTerritory(false);
     }	
 	
@@ -280,14 +299,15 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
         m_State.set_fixed_handicap(mydialog.getHandicap());        
         // max 60 minutes per game    
-        m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0);
+        m_State.set_timecontrol(mydialog.getTimeControl() * 30 * 100, 0, 0);
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();       
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
-		m_pondering = false;
+	m_pondering = false;
         m_disputing = false;
+        m_ratedGame = false;
         
         m_engineRunning.Post();               
         
@@ -305,7 +325,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     
     m_analyzing = false;   
     m_disputing = false;    
-	m_pondering = false;
+    m_pondering = false;
     
     int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
     
@@ -762,9 +782,9 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
 
             startEngine();
         }		
-    } else {
+    } else {   
         m_engineRunning.Post();
-        
+
         m_playerColor = !m_State.get_to_move();    
         m_panelBoard->setPlayerColor(m_playerColor);
     
@@ -777,11 +797,13 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
 }
 
 void MainFrame::doPassToggle(wxCommandEvent& event) {
-	m_passEnabled = !m_passEnabled;
+    m_passEnabled = !m_passEnabled;
+    wxConfig::Get()->Write(wxT("passEnabled"), m_passEnabled);  
 }
 
 void MainFrame::doResignToggle(wxCommandEvent& event) {
     m_resignEnabled = !m_resignEnabled;
+    wxConfig::Get()->Write(wxT("resignEnabled"), m_resignEnabled);  
 }
 
 void MainFrame::doResign(wxCommandEvent& event) {
@@ -800,16 +822,24 @@ void MainFrame::doResign(wxCommandEvent& event) {
 
 void MainFrame::doAnalyze(wxCommandEvent& event) {
     if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
-        stopEngine();                   
-        m_analyzing = false;   
+        stopEngine();    
+
+        m_engineRunning.Wait();
+        m_engineRunning.Post();
+
+        if (m_pondering) {
+            m_analyzing = true;   
+        }        
 	m_pondering = false;
+        m_ponderedOnce = true;
     } else {
+        m_engineRunning.Post();
+
         m_analyzing = true;
 	m_pondering = false;
         m_ratedGame = false;
-        
-        m_engineRunning.Post();                        
-
+        m_ponderedOnce = true;
+                                    
         startEngine();                
     }
 }
@@ -824,4 +854,12 @@ void MainFrame::doAdjustClocks(wxCommandEvent& event) {
 
         m_State.set_timecontrol(mydialog.getTimeControl());       
     } 
+}
+
+void MainFrame::doPonderToggle(wxCommandEvent& event) {
+    m_ponderEnabled = !m_ponderEnabled;
+    if (!m_ponderEnabled) {
+        stopEngine();
+    }
+    wxConfig::Get()->Write(wxT("ponderEnabled"), m_ponderEnabled);  
 }

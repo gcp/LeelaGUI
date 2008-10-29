@@ -109,6 +109,12 @@
 					<checked>1</checked>
 					<checkable>1</checkable>
 				</object>
+				<object class="wxMenuItem" name="m_menuItemPonder">
+					<label>Engine &amp;ponders</label>
+					<help>Allows the engine to think during the opponents time</help>
+					<checked>1</checked>
+					<checkable>1</checkable>
+				</object>
 				<object class="wxMenuItem" name="menuItemSound">
 					<label>&amp;Sound</label>
 					<help>Enable or disable sound</help>

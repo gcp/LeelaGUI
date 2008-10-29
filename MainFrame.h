@@ -44,7 +44,8 @@ class MainFrame : public TMainFrame {
 	virtual void doToggleMoyo(wxCommandEvent& event);
 	virtual void doResignToggle(wxCommandEvent& event);
 	virtual void doPassToggle(wxCommandEvent& event);
-	virtual void doStatusUpdate(wxCommandEvent& event);
+        virtual void doPonderToggle(wxCommandEvent& event);
+	virtual void doStatusUpdate(wxCommandEvent& event);        
 	virtual void doResign(wxCommandEvent& event);
 	virtual void doAnalyze(wxCommandEvent& event);
         virtual void doAdjustClocks(wxCommandEvent& event);
@@ -65,11 +66,13 @@ class MainFrame : public TMainFrame {
 	int m_visitLimit;
 	bool m_soundEnabled;
 	bool m_resignEnabled;
+        bool m_ponderEnabled;
 	bool m_passEnabled;
 	bool m_ratedGame;
 	bool m_analyzing;
 	bool m_pondering;
-	bool m_disputing;		
+	bool m_disputing;
+        bool m_ponderedOnce;
 	wxSemaphore m_engineRunning;
 	TEngineThread * m_engineThread;
 };

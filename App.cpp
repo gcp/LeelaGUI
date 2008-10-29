@@ -11,7 +11,6 @@ IMPLEMENT_APP(MyApp);
 // public key
 extern unsigned int pub[16384];
 
-#pragma optimize("", off)   
 static void sha256_rounds(unsigned char *s, unsigned char *d, unsigned int r) {    
     int j;
     
@@ -190,8 +189,7 @@ bool MyApp::OnInit()
 {   
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));    
     wxConfig::Set(config);
-    
-	/*
+    	
 #ifndef LITEVERSION
     CRYPT_START
     wxString name = config->Read(wxT("Name"));
@@ -214,7 +212,6 @@ bool MyApp::OnInit()
     }
     CRYPT_END
 #endif     
-	*/
 
     MainFrame* frame = new MainFrame(NULL, _("Leela"));    
     frame->Show();
@@ -223,4 +220,3 @@ bool MyApp::OnInit()
 
     return true;
 }
-#pragma optimize("", on)
