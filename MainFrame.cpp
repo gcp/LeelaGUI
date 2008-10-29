@@ -827,11 +827,13 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
         m_engineRunning.Wait();
         m_engineRunning.Post();
 
-        if (m_pondering) {
-            m_analyzing = true;   
-        }        
-	m_pondering = false;
         m_ponderedOnce = true;
+
+        if (m_pondering) {
+            m_pondering = false;   
+            m_analyzing = true;   
+            startEngine();  
+        } 
     } else {
         m_engineRunning.Post();
 
