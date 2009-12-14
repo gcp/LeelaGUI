@@ -569,7 +569,7 @@
 				<border>5</border>
 				<object class="wxHyperlinkCtrl" name="m_hyperlink2">
 					<label></label>
-					<url>http://www.sjeng.org/deepsjeng2</url>
+					<url>http://www.sjeng.org/deepsjeng3</url>
 					<style>wxHL_DEFAULT_STYLE</style>
 					<font>
 						<family>default</family>

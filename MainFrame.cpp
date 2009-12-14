@@ -334,8 +334,12 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     wxString mess = wxString(_("Rank: "));
     mess += rankToString(rank);    
     m_statusBar->SetStatusText(mess, 1);
-    
+
+#ifndef LITEVERSION    
     this->SetTitle(_("Leela - ") + mess); 
+#else
+    this->SetTitle(_("Leela lite - ") + mess); 
+#endif
     
     int handicap;
     int simulations;

@@ -1,5 +1,5 @@
-!define VERSION "0.3.8.0"
-!define VERSIONNAME "0.3.8"
+!define VERSION "0.3.16.0"
+!define VERSIONNAME "0.3.16"
 
 ;
 ; General options
@@ -203,7 +203,7 @@ Section "-Leela lite Installation"
 	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela lite ${VERSIONNAME}" \
 	                 "Publisher" "Sjeng.Org"                         
 	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela lite ${VERSIONNAME}" \
-	                   "EstimatedSize" 647
+	                   "EstimatedSize" 2114
 	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela lite ${VERSIONNAME}" \
 	                   "NoModify" 1                         
 	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela lite ${VERSIONNAME}" \

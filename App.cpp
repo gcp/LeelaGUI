@@ -212,8 +212,11 @@ bool MyApp::OnInit()
     }
     CRYPT_END
 #endif     
-
+#ifdef LITEVERSION
+    MainFrame* frame = new MainFrame(NULL, _("Leela lite"));    
+#else
     MainFrame* frame = new MainFrame(NULL, _("Leela"));    
+#endif
     frame->Show();
     
     SetTopWindow(frame);

@@ -2174,7 +2174,7 @@
                         <property name="style">wxHL_DEFAULT_STYLE</property>
                         <property name="subclass"></property>
                         <property name="tooltip"></property>
-                        <property name="url">http://www.sjeng.org/deepsjeng2</property>
+                        <property name="url">http://www.sjeng.org/deepsjeng3</property>
                         <property name="visited_color"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>

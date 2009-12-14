@@ -397,7 +397,7 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	bSizer10->Add( m_staticText10, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	m_hyperlink2 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/deepsjeng2"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_hyperlink2 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/deepsjeng3"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	m_hyperlink2->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxEmptyString ) );
 	
 	bSizer10->Add( m_hyperlink2, 0, wxALIGN_CENTER|wxALL, 5 );
