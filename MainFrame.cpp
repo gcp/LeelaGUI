@@ -297,9 +297,9 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         ::wxLogDebug("OK clicked"); 
         
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
-        m_State.set_fixed_handicap(mydialog.getHandicap());        
+        m_State.place_free_handicap(mydialog.getHandicap());        
         // max 60 minutes per game    
-        m_State.set_timecontrol(mydialog.getTimeControl() * 30 * 100, 0, 0);
+        m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0);
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();       
         m_panelBoard->setPlayerColor(m_playerColor);

@@ -80,7 +80,15 @@ int NewGameDialog::getBoardsize() {
         return 13;
     } else if (sboardsize == "19 x 19") {
         return 19;
-    }    
+    } else if (sboardsize == "25 x 25") {
+        return 25;
+    } else if (sboardsize == "29 x 29") {
+        return 29;
+    } else if (sboardsize == "33 x 33") {
+        return 33;
+    } else if (sboardsize == "37 x 37") {
+        return 37;
+    }   
     
     throw std::exception("Invalid board size selection");
 }

@@ -240,7 +240,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("19 x 19") };
+	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("19 x 19"), _("25 x 25"), _("29 x 29"), _("33 x 33"), _("37 x 37") };
 	int m_radioBoxBoardSizeNChoices = sizeof( m_radioBoxBoardSizeChoices ) / sizeof( wxString );
 	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 1, wxRA_SPECIFY_COLS );
 	m_radioBoxBoardSize->SetSelection( 0 );
@@ -265,7 +265,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_staticText3->Wrap( -1 );
 	sbSizer3->Add( m_staticText3, 1, wxALIGN_CENTER, 5 );
 	
-	m_spinCtrlHandicap = new wxSpinCtrl( this, ID_HANDICAPSPIN, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9, 0 );
+	m_spinCtrlHandicap = new wxSpinCtrl( this, ID_HANDICAPSPIN, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
 	sbSizer3->Add( m_spinCtrlHandicap, 1, wxALIGN_CENTER, 5 );
 	
 	bSizer9->Add( sbSizer3, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
@@ -277,7 +277,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_staticText13->Wrap( -1 );
 	sbSizer5->Add( m_staticText13, 1, wxALIGN_CENTER, 5 );
 	
-	m_spinCtrlTime = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 720, 30 );
+	m_spinCtrlTime = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 720, 90 );
 	sbSizer5->Add( m_spinCtrlTime, 1, wxALIGN_CENTER, 5 );
 	
 	bSizer9->Add( sbSizer5, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
@@ -290,13 +290,13 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxString m_radioBoxColorChoices[] = { _("Black"), _("White") };
 	int m_radioBoxColorNChoices = sizeof( m_radioBoxColorChoices ) / sizeof( wxString );
 	m_radioBoxColor = new wxRadioBox( this, wxID_ANY, _("Your color"), wxDefaultPosition, wxDefaultSize, m_radioBoxColorNChoices, m_radioBoxColorChoices, 1, wxRA_SPECIFY_ROWS );
-	m_radioBoxColor->SetSelection( 0 );
+	m_radioBoxColor->SetSelection( 1 );
 	bSizer10->Add( m_radioBoxColor, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxString m_radioBoxLevelChoices[] = { _("100 simulations"), _("500 simulations"), _("1000 simulations"), _("5000 simulations"), _("10000 simulations"), _("20000 simulations"), _("Unlimited") };
 	int m_radioBoxLevelNChoices = sizeof( m_radioBoxLevelChoices ) / sizeof( wxString );
 	m_radioBoxLevel = new wxRadioBox( this, wxID_ANY, _("Engine max level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLevelNChoices, m_radioBoxLevelChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxLevel->SetSelection( 1 );
+	m_radioBoxLevel->SetSelection( 6 );
 	bSizer10->Add( m_radioBoxLevel, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	bSizer11->Add( bSizer10, 5, wxEXPAND, 5 );

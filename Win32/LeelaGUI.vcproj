@@ -121,7 +121,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\..\Leela"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0400;wxUSE_GUI=1;wxUSE_NO_MANIFEST=1;LITEVERSION"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0400;wxUSE_GUI=1;wxUSE_NO_MANIFEST=1"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				FloatingPointModel="2"

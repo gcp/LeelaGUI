@@ -197,7 +197,7 @@ class TNewGameDialog : public wxDialog
 		
 	
 	public:
-		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 294,273 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 321,340 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
 		~TNewGameDialog();
 	
 };

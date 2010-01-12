@@ -889,7 +889,7 @@
             <property name="minimum_size"></property>
             <property name="name">TNewGameDialog</property>
             <property name="pos"></property>
-            <property name="size">294,273</property>
+            <property name="size">321,340</property>
             <property name="style">wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass"></property>
             <property name="title">New Game</property>
@@ -956,7 +956,7 @@
                                     <property name="proportion">0</property>
                                     <object class="wxRadioBox" expanded="1">
                                         <property name="bg"></property>
-                                        <property name="choices">&quot;9 x 9&quot; &quot;13 x 13&quot; &quot;19 x 19&quot;</property>
+                                        <property name="choices">&quot;9 x 9&quot; &quot;13 x 13&quot; &quot;19 x 19&quot; &quot;25 x 25&quot; &quot;29 x 29&quot; &quot;33 x 33&quot; &quot;37 x 37&quot;</property>
                                         <property name="context_help"></property>
                                         <property name="enabled">1</property>
                                         <property name="fg"></property>
@@ -1200,7 +1200,7 @@
                                                 <property name="hidden">0</property>
                                                 <property name="id">ID_HANDICAPSPIN</property>
                                                 <property name="initial">0</property>
-                                                <property name="max">9</property>
+                                                <property name="max">100</property>
                                                 <property name="maximum_size"></property>
                                                 <property name="min">0</property>
                                                 <property name="minimum_size"></property>
@@ -1319,7 +1319,7 @@
                                                 <property name="font"></property>
                                                 <property name="hidden">0</property>
                                                 <property name="id">wxID_ANY</property>
-                                                <property name="initial">30</property>
+                                                <property name="initial">90</property>
                                                 <property name="max">720</property>
                                                 <property name="maximum_size"></property>
                                                 <property name="min">1</property>
@@ -1395,7 +1395,7 @@
                                         <property name="name">m_radioBoxColor</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
-                                        <property name="selection">0</property>
+                                        <property name="selection">1</property>
                                         <property name="size"></property>
                                         <property name="style">wxRA_SPECIFY_ROWS</property>
                                         <property name="subclass"></property>
@@ -1449,7 +1449,7 @@
                                         <property name="name">m_radioBoxLevel</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
-                                        <property name="selection">1</property>
+                                        <property name="selection">6</property>
                                         <property name="size"></property>
                                         <property name="style">wxRA_SPECIFY_COLS</property>
                                         <property name="subclass"></property>

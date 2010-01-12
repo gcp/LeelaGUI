@@ -242,7 +242,7 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>294,273</size>
+		<size>321,340</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -270,6 +270,10 @@
 										<item>9 x 9</item>
 										<item>13 x 13</item>
 										<item>19 x 19</item>
+										<item>25 x 25</item>
+										<item>29 x 29</item>
+										<item>33 x 33</item>
+										<item>37 x 37</item>
 									</content>
 									<dimension>1</dimension>
 								</object>
@@ -327,7 +331,7 @@
 											<style>wxSP_ARROW_KEYS</style>
 											<value>0</value>
 											<min>0</min>
-											<max>9</max>
+											<max>100</max>
 										</object>
 									</object>
 								</object>
@@ -354,7 +358,7 @@
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlTime">
 											<style>wxSP_ARROW_KEYS</style>
-											<value>30</value>
+											<value>90</value>
 											<min>1</min>
 											<max>720</max>
 										</object>
@@ -376,7 +380,7 @@
 								<object class="wxRadioBox" name="m_radioBoxColor">
 									<style>wxRA_SPECIFY_ROWS</style>
 									<label>Your color</label>
-									<selection>0</selection>
+									<selection>1</selection>
 									<content>
 										<item>Black</item>
 										<item>White</item>
@@ -391,7 +395,7 @@
 								<object class="wxRadioBox" name="m_radioBoxLevel">
 									<style>wxRA_SPECIFY_COLS</style>
 									<label>Engine max level</label>
-									<selection>1</selection>
+									<selection>6</selection>
 									<content>
 										<item>100 simulations</item>
 										<item>500 simulations</item>

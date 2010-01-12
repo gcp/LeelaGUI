@@ -179,10 +179,19 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         xoff = xoff - fontSize; 
         int yoff2 = yoff + cellDim * boardSize;
         wxString text;
-        if (x < 8) {
-            text.Printf(" %c", 'A' + x);
+        if (x < 25) {
+            if (x < 8) {
+                text.Printf(" %c", 'a' + x);
+            } else {
+                text.Printf(" %c", 'a' + x  + 1);
+            }
         } else {
-            text.Printf(" %c", 'A' + x  + 1);
+            int tmx = x - 25;
+            if (tmx < 8) {
+                text.Printf(" %c", 'A' + tmx);
+            } else {
+                text.Printf(" %c", 'A' + tmx  + 1);
+            }
         }
         dc.DrawText(text, xoff, yoff);
         dc.DrawText(text, xoff, yoff2);  
