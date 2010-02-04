@@ -259,7 +259,8 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             ::wxLogDebug("Computer to move"); 
             startEngine();                
         } else {
-            if (m_ponderEnabled && !m_ratedGame && !m_analyzing && !m_ponderedOnce) {
+            if (m_ponderEnabled && !m_ratedGame && !m_analyzing && !m_ponderedOnce
+                && !m_visitLimit) {
                 m_pondering = true;
                 startEngine();
             }

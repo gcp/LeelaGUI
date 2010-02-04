@@ -109,7 +109,7 @@ int NewGameDialog::getSimulations() {
     } else if (simuls == 5) {
         return 20000;
     } else if (simuls == 6) {
-        return UCTSearch::MAX_TREE_SIZE * 100;
+        return 0;
     }
     
     throw std::exception("Invalid simulations level selection");
