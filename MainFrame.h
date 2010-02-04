@@ -29,6 +29,7 @@ class MainFrame : public TMainFrame {
 	virtual void doScore(wxCommandEvent& event);
 	virtual void doPass(wxCommandEvent& event);	
 	virtual void doNewRatedGame(wxCommandEvent& event);
+        virtual void doSetRatedSize(wxCommandEvent& event);
 	virtual void doUndo(wxCommandEvent& event);
 	virtual void doForward(wxCommandEvent& event);
 	virtual void doGoRules(wxCommandEvent& event);
@@ -64,6 +65,7 @@ class MainFrame : public TMainFrame {
 	GameState m_ponderState;
 	int m_playerColor;
 	int m_visitLimit;
+        int m_ratedSize;
 	bool m_soundEnabled;
 	bool m_resignEnabled;
         bool m_ponderEnabled;

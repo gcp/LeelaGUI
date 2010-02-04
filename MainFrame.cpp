@@ -12,6 +12,7 @@
 #include "CopyProtectionDialog.h"
 #include "Utils.h"
 #include "ClockAdjustDialog.h"
+#include "RatedSizeDialog.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
@@ -32,13 +33,9 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Zobrist::init_zobrist(*rng);    
     
     // init game   
-    m_playerColor = FastBoard::BLACK;
-    m_State.init_game(9, 7.5f);
-    m_State.set_timecontrol(30 * 60 * 100, 0, 0);
-    m_visitLimit = 1000;
-    m_ratedGame = true;
-    m_panelBoard->setState(&m_State);
-    m_panelBoard->setPlayerColor(m_playerColor);
+    m_playerColor = FastBoard::BLACK;        
+    m_visitLimit = 5000;    
+    m_ratedGame = true;    
     m_analyzing = false;
     m_pondering = false;
     m_disputing = false;
@@ -48,6 +45,12 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1); 
     m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1); 
     m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1); 
+    m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9); 
+
+    m_State.init_game(m_ratedSize, 7.5f);
+    m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0);
+    m_panelBoard->setState(&m_State);
+    m_panelBoard->setPlayerColor(m_playerColor);
     
     m_menuSettings->FindItem(ID_PASSTOGGLE)->Check(m_passEnabled);
     m_menuSettings->FindItem(ID_SOUNDSWITCH)->Check(m_soundEnabled);
@@ -297,11 +300,10 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         ::wxLogDebug("OK clicked"); 
         
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
-        m_State.place_free_handicap(mydialog.getHandicap());        
-        // max 60 minutes per game    
+        m_State.place_free_handicap(mydialog.getHandicap());                
         m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0);
         m_visitLimit = mydialog.getSimulations();
-        m_playerColor = mydialog.getPlayerColor();       
+        m_playerColor = mydialog.getPlayerColor();           
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
@@ -319,6 +321,17 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
     }                     
 }
 
+void MainFrame::doSetRatedSize(wxCommandEvent& event) {   
+    RatedSizeDialog mydialog(this);
+    mydialog.ShowModal();
+
+    m_ratedSize = mydialog.getSizeSelected();
+
+    wxConfig::Get()->Write(wxT("ratedSize"), m_ratedSize);
+
+    doNewRatedGame(event);
+}
+
 void MainFrame::doNewRatedGame(wxCommandEvent& event) {    
     stopEngine();
     m_engineRunning.Wait();
@@ -327,7 +340,12 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     m_disputing = false;    
     m_pondering = false;
     
-    int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
+    int rank;
+    if (m_ratedSize == 9) {
+        rank = wxConfig::Get()->Read(wxT("LastRank9"), (long)-30);
+    } else if (m_ratedSize == 19) {
+        rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-9);
+    }
     
     ::wxLogDebug("Last rank was: %d", rank); 
     
@@ -344,148 +362,284 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     int handicap;
     int simulations;
     
-    if (rank == -30) {
-        simulations =  250;
-        handicap = 5;
-    } else if (rank == -29) {
-        simulations =  500;
-        handicap = 5;
-    } else if (rank == -28) {
-        simulations = 1000;
-        handicap = 5;
-    } else if (rank == -27) {
-        simulations = 2500;
-        handicap = 5;
-    } else if (rank == -26) {
-        simulations = 5000;
-        handicap = 5;
-    } else if (rank == -25) {
-        simulations = 10000;
-        handicap = 5;
-    } else if (rank == -24) {
-        simulations = 250;
-        handicap = 4;
-    } else if (rank == -23) {
-        simulations = 500;
-        handicap = 4;
-    } else if (rank == -22) {
-        simulations = 1000;
-        handicap = 4;
-    } else if (rank == -21) {
-        simulations = 2500;
-        handicap = 4;
-    } else if (rank == -20) {
-        simulations = 5000;
-        handicap = 4;
-    } else if (rank == -19) {
-        simulations = 10000;
-        handicap = 4;
-    } else if (rank == -18) {
-        simulations = 250;
-        handicap = 3;
-    } else if (rank == -17) {
-        simulations = 500;
-        handicap = 3;
-    } else if (rank == -16) {
-        simulations = 1000;
-        handicap = 3;
-    } else if (rank == -15) {
-        simulations = 2500;
-        handicap = 3;
-    } else if (rank == -14) {
-        simulations = 5000;
-        handicap = 3;
-    } else if (rank == -13) {
-        simulations = 10000;
-        handicap = 3;
-    } else if (rank == -12) {
-        simulations = 250;
-        handicap = 2;
-    } else if (rank == -11) {
-        simulations = 500;
-        handicap = 2;
-    } else if (rank == -10) {
-        simulations = 1000;
-        handicap = 2;
-    } else if (rank == -9) {
-        simulations = 2500;
-        handicap = 2;
-    } else if (rank == -8) {
-        simulations = 5000;
-        handicap = 2;
-    } else if (rank == -7) {
-        simulations = 10000;
-        handicap = 2;
-    } else if (rank == -6) {
-        simulations = 250;
-        handicap = 0;
-    } else if (rank == -5) {
-        simulations = 500;
-        handicap = 0;
-    } else if (rank == -4) {
-        simulations = 1000;
-        handicap = 0;
-    } else if (rank == -3) {
-        simulations = 2500;
-        handicap = 0;
-    } else if (rank == -2) {
-        simulations = 5000;
-        handicap = 0;
-    } else if (rank == -1) {
-        simulations = 10000;
-        handicap = 0;
-    } else if (rank == 0) {
-        simulations = 250;
-        handicap = -2;
-    } else if (rank == 1) {
-        simulations = 500;
-        handicap = -2;
-    } else if (rank == 2) {
-        simulations = 1000;
-        handicap = -2;
-    } else if (rank == 3) {
-        simulations = 2500;
-        handicap = -2;
-    } else if (rank == 4) {
-        simulations = 5000;
-        handicap = -2;
-    } else if (rank == 5) {
-        simulations = 10000;
-        handicap = -2;
-    } else if (rank == 6) {
-        simulations = 500;
-        handicap = -3;
-    } else if (rank == 7) {
-        simulations = 1000;
-        handicap = -3;
-    } else if (rank == 8) {
-        simulations = 2500;
-        handicap = -3;
-    } else if (rank == 9) {
-        simulations = 5000;
-        handicap = -3;
-    } else if (rank == 10) {
-        simulations = 10000;
-        handicap = -3;
-    } else if (rank == 11) {
-        simulations = 2500;
-        handicap = -4;
-    } else if (rank == 12) {
-        simulations = 5000;
-        handicap = -4;
-    } else if (rank == 13) {
-        simulations = 10000;
-        handicap = -4;
+    if (m_ratedSize == 9) {
+        if (rank == -30) {
+            simulations =  250;
+            handicap = 5;
+        } else if (rank == -29) {
+            simulations =  500;
+            handicap = 5;
+        } else if (rank == -28) {
+            simulations = 1000;
+            handicap = 5;
+        } else if (rank == -27) {
+            simulations = 2500;
+            handicap = 5;
+        } else if (rank == -26) {
+            simulations = 5000;
+            handicap = 5;
+        } else if (rank == -25) {
+            simulations = 10000;
+            handicap = 5;
+        } else if (rank == -24) {
+            simulations = 250;
+            handicap = 4;
+        } else if (rank == -23) {
+            simulations = 500;
+            handicap = 4;
+        } else if (rank == -22) {
+            simulations = 1000;
+            handicap = 4;
+        } else if (rank == -21) {
+            simulations = 2500;
+            handicap = 4;
+        } else if (rank == -20) {
+            simulations = 5000;
+            handicap = 4;
+        } else if (rank == -19) {
+            simulations = 10000;
+            handicap = 4;
+        } else if (rank == -18) {
+            simulations = 250;
+            handicap = 3;
+        } else if (rank == -17) {
+            simulations = 500;
+            handicap = 3;
+        } else if (rank == -16) {
+            simulations = 1000;
+            handicap = 3;
+        } else if (rank == -15) {
+            simulations = 2500;
+            handicap = 3;
+        } else if (rank == -14) {
+            simulations = 5000;
+            handicap = 3;
+        } else if (rank == -13) {
+            simulations = 10000;
+            handicap = 3;
+        } else if (rank == -12) {
+            simulations = 250;
+            handicap = 2;
+        } else if (rank == -11) {
+            simulations = 500;
+            handicap = 2;
+        } else if (rank == -10) {
+            simulations = 1000;
+            handicap = 2;
+        } else if (rank == -9) {
+            simulations = 2500;
+            handicap = 2;
+        } else if (rank == -8) {
+            simulations = 5000;
+            handicap = 2;
+        } else if (rank == -7) {
+            simulations = 10000;
+            handicap = 2;
+        } else if (rank == -6) {
+            simulations = 250;
+            handicap = 0;
+        } else if (rank == -5) {
+            simulations = 500;
+            handicap = 0;
+        } else if (rank == -4) {
+            simulations = 1000;
+            handicap = 0;
+        } else if (rank == -3) {
+            simulations = 2500;
+            handicap = 0;
+        } else if (rank == -2) {
+            simulations = 5000;
+            handicap = 0;
+        } else if (rank == -1) {
+            simulations = 10000;
+            handicap = 0;
+        } else if (rank == 0) {
+            simulations = 250;
+            handicap = -2;
+        } else if (rank == 1) {
+            simulations = 500;
+            handicap = -2;
+        } else if (rank == 2) {
+            simulations = 1000;
+            handicap = -2;
+        } else if (rank == 3) {
+            simulations = 2500;
+            handicap = -2;
+        } else if (rank == 4) {
+            simulations = 5000;
+            handicap = -2;
+        } else if (rank == 5) {
+            simulations = 10000;
+            handicap = -2;
+        } else if (rank == 6) {
+            simulations = 500;
+            handicap = -3;
+        } else if (rank == 7) {
+            simulations = 1000;
+            handicap = -3;
+        } else if (rank == 8) {
+            simulations = 2500;
+            handicap = -3;
+        } else if (rank == 9) {
+            simulations = 5000;
+            handicap = -3;
+        } else if (rank == 10) {
+            simulations = 10000;
+            handicap = -3;
+        } else if (rank == 11) {
+            simulations = 2500;
+            handicap = -4;
+        } else if (rank == 12) {
+            simulations = 5000;
+            handicap = -4;
+        } else if (rank == 13) {
+            simulations = 10000;
+            handicap = -4;
+        }
+    } else if (m_ratedSize == 19) {
+        if (rank == -30) {
+            simulations = 5000;
+            handicap = 28;
+        } else if (rank == -29) {
+            simulations = 5000;
+            handicap = 27;
+        } else if (rank == -28) {
+            simulations = 5000;
+            handicap = 26;
+        } else if (rank == -27) {
+            simulations = 5000;
+            handicap = 25;
+        } else if (rank == -26) {
+            simulations = 5000;
+            handicap = 24;
+        } else if (rank == -25) {
+            simulations = 5000;
+            handicap = 23;
+        } else if (rank == -24) {
+            simulations = 5000;
+            handicap = 22;
+        } else if (rank == -23) {
+            simulations = 5000;
+            handicap = 21;
+        } else if (rank == -22) {
+            simulations = 5000;
+            handicap = 20;
+        } else if (rank == -21) {
+            simulations = 5000;
+            handicap = 19;
+        } else if (rank == -20) {
+            simulations = 5000;
+            handicap = 18;
+        } else if (rank == -19) {
+            simulations = 5000;
+            handicap = 17;
+        } else if (rank == -18) {
+            simulations = 5000;
+            handicap = 16;
+        } else if (rank == -17) {
+            simulations = 5000;
+            handicap = 15;
+        } else if (rank == -16) {
+            simulations = 5000;
+            handicap = 14;
+        } else if (rank == -15) {
+            simulations = 5000;
+            handicap = 13;
+        } else if (rank == -14) {
+            simulations = 5000;
+            handicap = 12;
+        } else if (rank == -13) {
+            simulations = 5000;
+            handicap = 11;
+        } else if (rank == -12) {
+            simulations = 5000;
+            handicap = 10;
+        } else if (rank == -11) {
+            simulations = 5000;
+            handicap = 9;
+        } else if (rank == -10) {
+            simulations = 5000;
+            handicap = 8;
+        } else if (rank == -9) {
+            simulations = 5000;
+            handicap = 7;
+        } else if (rank == -8) {
+            simulations = 5000;
+            handicap = 6;
+        } else if (rank == -7) {
+            simulations = 5000;
+            handicap = 5;
+        } else if (rank == -6) {
+            simulations = 5000;
+            handicap = 4;
+        } else if (rank == -5) {
+            simulations = 5000;
+            handicap = 3;
+        } else if (rank == -4) {
+            simulations = 5000;
+            handicap = 2;
+        } else if (rank == -3) {
+            simulations = 1000;
+            handicap = 0;
+        } else if (rank == -2) {
+            simulations = 2500;
+            handicap = 0;
+        } else if (rank == -1) {
+            simulations = 5000;
+            handicap = 0;
+        } else if (rank == 0) {
+            simulations = 10000;
+            handicap = 0;
+        } else if (rank == 1) {
+            simulations = 2500;
+            handicap = -2;
+        } else if (rank == 2) {
+            simulations = 5000;
+            handicap = -2;
+        } else if (rank == 3) {
+            simulations = 5000;
+            handicap = -3;
+        } else if (rank == 4) {
+            simulations = 5000;
+            handicap = -4;
+        } else if (rank == 5) {
+            simulations = 5000;
+            handicap = -6;
+        } else if (rank == 6) {
+            simulations = 5000;
+            handicap = -8;
+        } else if (rank == 7) {
+            simulations = 5000;
+            handicap = -12;
+        } else if (rank == 8) {
+            simulations = 5000;
+            handicap = -16;
+        } else if (rank == 9) {
+            simulations = 10000;
+            handicap = -20;
+        } else if (rank == 10) {
+            simulations = 10000;
+            handicap = -25;
+        } else if (rank == 11) {
+            simulations = 10000;
+            handicap = -30;
+        } else if (rank == 12) {
+            simulations = 10000;
+            handicap = -40;
+        } else if (rank == 13) {
+            simulations = 10000;
+            handicap = -50;
+        } 
     }
     
     ::wxLogDebug("Handicap %d Simulations %d", handicap, simulations);        
     
     {
         float komi = handicap ? 0.5f : 7.5f;
-        m_State.init_game(9, komi);
-        m_State.set_fixed_handicap(abs(handicap));        
+        m_State.init_game(m_ratedSize, komi);
+        m_State.place_free_handicap(abs(handicap));        
         // max 60 minutes per game    
-        m_State.set_timecontrol(2 * 9 * 60 * 100, 0, 0);
+        m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0);
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -505,7 +659,12 @@ void MainFrame::ratedGameEnd(bool won) {
     wxString rankstr;
     
     if (m_ratedGame) {
-        int rank = wxConfig::Get()->Read(wxT("LastRank"), (long)-30);
+        int rank;
+        if (m_ratedSize == 9) {
+            rank = wxConfig::Get()->Read(wxT("LastRank9"), (long)-30);
+        } else if (m_ratedSize == 19) {
+            rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-9);
+        }
                
         if (won) {
             rank = rank + 1;
@@ -523,8 +682,12 @@ void MainFrame::ratedGameEnd(bool won) {
         
 //        ::wxMessageBox(mess, wxT("Rated game"), wxOK, this);
         
-        wxConfig::Get()->Write(wxT("LastRank"), rank);                        
-        
+        if (m_ratedSize == 9) {
+            wxConfig::Get()->Write(wxT("LastRank9"), rank);                        
+        } else if (m_ratedSize == 19) {
+            wxConfig::Get()->Write(wxT("LastRank19"), rank);                        
+        }
+                
         wxString mess = wxString(_("Rank: "));
         mess += rankToString(rank);    
         m_statusBar->SetStatusText(mess, 1);

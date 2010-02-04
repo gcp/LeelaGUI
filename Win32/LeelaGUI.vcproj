@@ -363,6 +363,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\RatedSizeDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\keygen\sha2.cpp"
 				>
 				<FileConfiguration
@@ -462,6 +466,10 @@
 			</File>
 			<File
 				RelativePath="..\NewGameDialog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\RatedSizeDialog.h"
 				>
 			</File>
 			<File

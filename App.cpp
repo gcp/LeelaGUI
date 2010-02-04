@@ -190,7 +190,7 @@ bool MyApp::OnInit()
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));    
     wxConfig::Set(config);
     	
-/*#ifndef LITEVERSION
+#ifndef LITEVERSION
     CRYPT_START
     wxString name = config->Read(wxT("Name"));
     wxString code = config->Read(wxT("Code"));        
@@ -210,8 +210,8 @@ bool MyApp::OnInit()
             return false;
         }                
     }
-    CRYPT_END*/
-//#endif
+    CRYPT_END
+#endif
 #ifdef LITEVERSION
     MainFrame* frame = new MainFrame(NULL, _("Leela lite"));    
 #else

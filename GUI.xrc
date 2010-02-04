@@ -23,6 +23,10 @@
 					<label>New &amp;rated game\tCtrl-R</label>
 					<help>Starts a new rated game</help>
 				</object>
+				<object class="wxMenuItem" name="m_menuItemRatedSize">
+					<label>Set rated &amp;board size...\tCtrl-B</label>
+					<help>Change the board size for rated games</help>
+				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem11">
 					<label>&amp;Open game...\tCtrl-O</label>
@@ -242,7 +246,7 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>321,340</size>
+		<size>309,279</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -263,19 +267,20 @@
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxBoardSize">
-									<style>wxRA_SPECIFY_COLS</style>
+									<style>wxRA_SPECIFY_ROWS</style>
 									<label>Board size</label>
-									<selection>0</selection>
+									<selection>3</selection>
 									<content>
 										<item>9 x 9</item>
 										<item>13 x 13</item>
+										<item>17 x 17</item>
 										<item>19 x 19</item>
 										<item>25 x 25</item>
 										<item>29 x 29</item>
 										<item>33 x 33</item>
 										<item>37 x 37</item>
 									</content>
-									<dimension>1</dimension>
+									<dimension>4</dimension>
 								</object>
 							</object>
 							<object class="sizeritem">
@@ -453,7 +458,7 @@
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Leela version 0.3.15</label>
+					<label>Leela version 0.4.0</label>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -461,7 +466,7 @@
 				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText5">
-					<label>Copyright (C) 2007-2008 Gian-Carlo Pascutto</label>
+					<label>Copyright (C) 2007-2010 Gian-Carlo Pascutto</label>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -767,6 +772,32 @@
 							<label>&amp;Cancel</label>
 						</object>
 					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TRatedSizeDialog">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>183,61</size>
+		<title>Select board size</title>
+		<object class="wxBoxSizer">
+			<orient>wxHORIZONTAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL</flag>
+				<border>5</border>
+				<object class="wxButton" name="m_buttonSize9">
+					<label>9 x 9</label>
+					<default>1</default>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL</flag>
+				<border>5</border>
+				<object class="wxButton" name="m_buttonSize19">
+					<label>19 x 19</label>
+					<default>0</default>
 				</object>
 			</object>
 		</object>

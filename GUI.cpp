@@ -19,6 +19,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_SIZE( TMainFrame::_wxFB_doResize )
 	EVT_MENU( ID_NEWGAME, TMainFrame::_wxFB_doNewGame )
 	EVT_MENU( ID_NEWRATED, TMainFrame::_wxFB_doNewRatedGame )
+	EVT_MENU( ID_RATEDSIZE, TMainFrame::_wxFB_doSetRatedSize )
 	EVT_MENU( ID_OPEN, TMainFrame::_wxFB_doOpenSGF )
 	EVT_MENU( ID_SAVE, TMainFrame::_wxFB_doSaveSGF )
 	EVT_MENU( ID_EXIT, TMainFrame::_wxFB_doExit )
@@ -37,7 +38,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
 	EVT_MENU( ID_PONDERTOGGLE, TMainFrame::_wxFB_doPonderToggle )
 	EVT_MENU( ID_SOUNDSWITCH, TMainFrame::_wxFB_doSoundToggle )
-	EVT_MENU( wxID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
+	EVT_MENU( ID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
 	EVT_MENU( ID_HOMEPAGE, TMainFrame::_wxFB_doHomePage )
 	EVT_MENU( ID_HELPABOUT, TMainFrame::_wxFB_doHelpAbout )
@@ -65,6 +66,10 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxMenuItem* menuItemNewRated;
 	menuItemNewRated = new wxMenuItem( m_menu1, ID_NEWRATED, wxString( _("New &rated game") ) + wxT('\t') + wxT("Ctrl-R"), _("Starts a new rated game"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemNewRated );
+	
+	wxMenuItem* m_menuItemRatedSize;
+	m_menuItemRatedSize = new wxMenuItem( m_menu1, ID_RATEDSIZE, wxString( _("Set rated &board size...") ) + wxT('\t') + wxT("Ctrl-B"), _("Change the board size for rated games"), wxITEM_NORMAL );
+	m_menu1->Append( m_menuItemRatedSize );
 	
 	m_menu1->AppendSeparator();
 	
@@ -168,7 +173,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuSettings->AppendSeparator();
 	
 	wxMenuItem* m_menuItemAdjustClocks;
-	m_menuItemAdjustClocks = new wxMenuItem( m_menuSettings, wxID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItemAdjustClocks = new wxMenuItem( m_menuSettings, ID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuSettings->Append( m_menuItemAdjustClocks );
 	
 	m_menubar1->Append( m_menuSettings, _("&Settings") );
@@ -240,10 +245,10 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("19 x 19"), _("25 x 25"), _("29 x 29"), _("33 x 33"), _("37 x 37") };
+	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("17 x 17"), _("19 x 19"), _("25 x 25"), _("29 x 29"), _("33 x 33"), _("37 x 37") };
 	int m_radioBoxBoardSizeNChoices = sizeof( m_radioBoxBoardSizeChoices ) / sizeof( wxString );
-	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxBoardSize->SetSelection( 0 );
+	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 4, wxRA_SPECIFY_ROWS );
+	m_radioBoxBoardSize->SetSelection( 3 );
 	bSizer9->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer2;
@@ -330,13 +335,13 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.3.15"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.4.0"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
 	m_staticTextVersion->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 10 );
 	
-	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2008 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2010 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	bSizer9->Add( m_staticText5, 0, wxALIGN_CENTER|wxALL, 5 );
 	
@@ -517,5 +522,32 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 }
 
 TClockAdjustDialog::~TClockAdjustDialog()
+{
+}
+
+BEGIN_EVENT_TABLE( TRatedSizeDialog, wxDialog )
+	EVT_BUTTON( ID_SIZE9, TRatedSizeDialog::_wxFB_doSize9 )
+	EVT_BUTTON( ID_SIZE19, TRatedSizeDialog::_wxFB_doSize19 )
+END_EVENT_TABLE()
+
+TRatedSizeDialog::TRatedSizeDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer10;
+	bSizer10 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_buttonSize9 = new wxButton( this, ID_SIZE9, _("9 x 9"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSize9->SetDefault(); 
+	bSizer10->Add( m_buttonSize9, 0, wxALL, 5 );
+	
+	m_buttonSize19 = new wxButton( this, ID_SIZE19, _("19 x 19"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer10->Add( m_buttonSize19, 0, wxALL, 5 );
+	
+	this->SetSizer( bSizer10 );
+	this->Layout();
+}
+
+TRatedSizeDialog::~TRatedSizeDialog()
 {
 }

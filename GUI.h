@@ -51,6 +51,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
 		void _wxFB_doNewGame( wxCommandEvent& event ){ doNewGame( event ); }
 		void _wxFB_doNewRatedGame( wxCommandEvent& event ){ doNewRatedGame( event ); }
+		void _wxFB_doSetRatedSize( wxCommandEvent& event ){ doSetRatedSize( event ); }
 		void _wxFB_doOpenSGF( wxCommandEvent& event ){ doOpenSGF( event ); }
 		void _wxFB_doSaveSGF( wxCommandEvent& event ){ doSaveSGF( event ); }
 		void _wxFB_doExit( wxCommandEvent& event ){ doExit( event ); }
@@ -83,6 +84,7 @@ class TMainFrame : public wxFrame
 			ID_BOARDPANEL,
 			ID_NEWGAME,
 			ID_NEWRATED,
+			ID_RATEDSIZE,
 			ID_OPEN,
 			ID_SAVE,
 			ID_EXIT,
@@ -101,7 +103,7 @@ class TMainFrame : public wxFrame
 			ID_RESIGNTOGGLE,
 			ID_PONDERTOGGLE,
 			ID_SOUNDSWITCH,
-			wxID_ADJUSTCLOCKS,
+			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
 			ID_HELPABOUT,
@@ -123,6 +125,7 @@ class TMainFrame : public wxFrame
 		virtual void doResize( wxSizeEvent& event ){ event.Skip(); }
 		virtual void doNewGame( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doNewRatedGame( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doSetRatedSize( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doOpenSGF( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doSaveSGF( wxCommandEvent& event ){ event.Skip(); }
 		virtual void doExit( wxCommandEvent& event ){ event.Skip(); }
@@ -197,7 +200,7 @@ class TNewGameDialog : public wxDialog
 		
 	
 	public:
-		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 321,340 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 309,279 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
 		~TNewGameDialog();
 	
 };
@@ -328,6 +331,40 @@ class TClockAdjustDialog : public wxDialog
 	public:
 		TClockAdjustDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Adjust clocks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 184,183 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~TClockAdjustDialog();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TRatedSizeDialog
+///////////////////////////////////////////////////////////////////////////////
+class TRatedSizeDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doSize9( wxCommandEvent& event ){ doSize9( event ); }
+		void _wxFB_doSize19( wxCommandEvent& event ){ doSize19( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_SIZE9 = 1000,
+			ID_SIZE19,
+		};
+		
+		wxButton* m_buttonSize9;
+		wxButton* m_buttonSize19;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doSize9( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doSize19( wxCommandEvent& event ){ event.Skip(); }
+		
+	
+	public:
+		TRatedSizeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select board size"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 183,61 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TRatedSizeDialog();
 	
 };
 
