@@ -687,12 +687,12 @@
 	</object>
 	<object class="wxDialog" name="TClockAdjustDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>184,183</size>
+		<size>166,156</size>
 		<title>Adjust clocks</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<option>1</option>
+				<option>0</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticBoxSizer">
@@ -723,7 +723,7 @@
 				</object>
 			</object>
 			<object class="sizeritem">
-				<option>1</option>
+				<option>0</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticBoxSizer">
@@ -754,8 +754,8 @@
 				</object>
 			</object>
 			<object class="sizeritem">
-				<option>1</option>
-				<flag>wxEXPAND</flag>
+				<option>0</option>
+				<flag>wxALIGN_CENTER</flag>
 				<border>5</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">
@@ -798,6 +798,23 @@
 				<object class="wxButton" name="m_buttonSize19">
 					<label>19 x 19</label>
 					<default>0</default>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TCalculateDialog">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>210,62</size>
+		<title>Calculation in progress</title>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticTextCalculating">
+					<style>wxALIGN_CENTRE</style>
+					<label>Calculating, please hold...</label>
 				</object>
 			</object>
 		</object>

@@ -13,6 +13,7 @@
 #include "Utils.h"
 #include "ClockAdjustDialog.h"
 #include "RatedSizeDialog.h"
+#include "CalculateDialog.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
@@ -301,7 +302,13 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         ::wxLogDebug("OK clicked"); 
         
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
+        ::wxBeginBusyCursor();
+        CalculateDialog calcdialog(this);
+        calcdialog.Show();
+        ::wxSafeYield();
         m_State.place_free_handicap(mydialog.getHandicap());                
+        calcdialog.Hide();
+        ::wxEndBusyCursor();
         m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0);
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();           

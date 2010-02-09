@@ -329,7 +329,7 @@ class TClockAdjustDialog : public wxDialog
 		
 	
 	public:
-		TClockAdjustDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Adjust clocks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 184,183 ), long style = wxDEFAULT_DIALOG_STYLE );
+		TClockAdjustDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Adjust clocks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 166,156 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~TClockAdjustDialog();
 	
 };
@@ -365,6 +365,22 @@ class TRatedSizeDialog : public wxDialog
 	public:
 		TRatedSizeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select board size"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 183,61 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~TRatedSizeDialog();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TCalculateDialog
+///////////////////////////////////////////////////////////////////////////////
+class TCalculateDialog : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticTextCalculating;
+	
+	public:
+		TCalculateDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Calculation in progress"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 210,62 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TCalculateDialog();
 	
 };
 

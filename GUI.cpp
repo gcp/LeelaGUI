@@ -496,7 +496,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	m_spinCtrlBlackSecs = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
 	sbSizer4->Add( m_spinCtrlBlackSecs, 1, wxALL|wxEXPAND, 5 );
 	
-	bSizer9->Add( sbSizer4, 1, wxEXPAND, 5 );
+	bSizer9->Add( sbSizer4, 0, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("White clock (minutes:seconds)") ), wxHORIZONTAL );
@@ -507,7 +507,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	m_spinCtrlWhiteSecs = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
 	sbSizer6->Add( m_spinCtrlWhiteSecs, 1, wxALL|wxEXPAND, 5 );
 	
-	bSizer9->Add( sbSizer6, 1, wxEXPAND, 5 );
+	bSizer9->Add( sbSizer6, 0, wxEXPAND, 5 );
 	
 	m_sdbSizer3 = new wxStdDialogButtonSizer();
 	m_sdbSizer3OK = new wxButton( this, wxID_OK );
@@ -515,7 +515,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	m_sdbSizer3Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
 	m_sdbSizer3->Realize();
-	bSizer9->Add( m_sdbSizer3, 1, wxEXPAND, 5 );
+	bSizer9->Add( m_sdbSizer3, 0, wxALIGN_CENTER, 5 );
 	
 	this->SetSizer( bSizer9 );
 	this->Layout();
@@ -549,5 +549,24 @@ TRatedSizeDialog::TRatedSizeDialog( wxWindow* parent, wxWindowID id, const wxStr
 }
 
 TRatedSizeDialog::~TRatedSizeDialog()
+{
+}
+
+TCalculateDialog::TCalculateDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticTextCalculating = new wxStaticText( this, wxID_ANY, _("Calculating, please hold..."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextCalculating->Wrap( -1 );
+	bSizer11->Add( m_staticTextCalculating, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	this->SetSizer( bSizer11 );
+	this->Layout();
+}
+
+TCalculateDialog::~TCalculateDialog()
 {
 }

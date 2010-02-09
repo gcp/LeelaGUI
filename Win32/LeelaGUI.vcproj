@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib rpcrt4.lib winmm.lib advapi32.lib wsock32.lib wxbase28d.lib wxbase28d_net.lib wxbase28d_xml.lib wxexpatd.lib wxjpegd.lib wxmsw28d_adv.lib wxmsw28d_core.lib wxmsw28d_dbgrid.lib wxmsw28d_gl.lib wxmsw28d_html.lib wxmsw28d_qa.lib wxmsw28d_richtext.lib wxmsw28d_xrc.lib wxpngd.lib wxregexd.lib wxtiffd.lib wxzlibd.lib"
+				AdditionalDependencies="comctl32.lib rpcrt4.lib winmm.lib advapi32.lib wsock32.lib wxbase28d.lib wxbase28d_net.lib wxbase28d_xml.lib wxjpegd.lib wxmsw28d_adv.lib wxmsw28d_core.lib wxmsw28d_dbgrid.lib wxmsw28d_gl.lib wxmsw28d_html.lib wxmsw28d_qa.lib wxmsw28d_richtext.lib wxmsw28d_xrc.lib wxpngd.lib wxregexd.lib wxtiffd.lib wxzlibd.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -121,12 +121,14 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\..\Leela"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0400;wxUSE_GUI=1;wxUSE_NO_MANIFEST=1"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0400;wxUSE_GUI=1;wxUSE_NO_MANIFEST=1;_SECURE_SCL=0"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
+				AssemblerOutput="2"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -140,7 +142,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib rpcrt4.lib winmm.lib advapi32.lib wsock32.lib wxbase28.lib wxbase28_net.lib wxbase28_xml.lib wxexpat.lib wxjpeg.lib wxmsw28_adv.lib wxmsw28_core.lib wxmsw28_dbgrid.lib wxmsw28_gl.lib wxmsw28_html.lib wxmsw28_qa.lib wxmsw28_richtext.lib wxmsw28_xrc.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib wxpng.lib"
+				AdditionalDependencies="comctl32.lib rpcrt4.lib winmm.lib advapi32.lib wsock32.lib wxbase28.lib wxbase28_net.lib wxbase28_xml.lib wxjpeg.lib wxmsw28_adv.lib wxmsw28_core.lib wxmsw28_dbgrid.lib wxmsw28_gl.lib wxmsw28_html.lib wxmsw28_qa.lib wxmsw28_richtext.lib wxmsw28_xrc.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib wxpng.lib"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				LargeAddressAware="2"
 				OptimizeReferences="2"
@@ -217,6 +220,10 @@
 						UsePrecompiledHeader="2"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\CalculateDialog.cpp"
+				>
 			</File>
 			<File
 				RelativePath="..\ClockAdjustDialog.cpp"
@@ -438,6 +445,10 @@
 			</File>
 			<File
 				RelativePath="..\App.h"
+				>
+			</File>
+			<File
+				RelativePath="..\CalculateDialog.h"
 				>
 			</File>
 			<File
