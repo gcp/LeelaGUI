@@ -587,55 +587,55 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
             simulations = 5000;
             handicap = 2;
         } else if (rank == -3) {
-            simulations = 1000;
+            simulations = 2500;
             handicap = 0;
         } else if (rank == -2) {
-            simulations = 2500;
+            simulations = 5000;
             handicap = 0;
         } else if (rank == -1) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = 0;
         } else if (rank == 0) {
-            simulations = 10000;
+            simulations = 20000;
             handicap = 0;
         } else if (rank == 1) {
-            simulations = 2500;
+            simulations =  5000;
             handicap = -2;
         } else if (rank == 2) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = -2;
         } else if (rank == 3) {
-            simulations = 5000;
+            simulations = 7500;
             handicap = -3;
         } else if (rank == 4) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = -4;
         } else if (rank == 5) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = -6;
         } else if (rank == 6) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = -8;
         } else if (rank == 7) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = -12;
         } else if (rank == 8) {
-            simulations = 5000;
+            simulations = 10000;
             handicap = -16;
         } else if (rank == 9) {
-            simulations = 10000;
+            simulations = 15000;
             handicap = -20;
         } else if (rank == 10) {
-            simulations = 10000;
+            simulations = 15000;
             handicap = -25;
         } else if (rank == 11) {
-            simulations = 10000;
+            simulations = 15000;
             handicap = -30;
         } else if (rank == 12) {
-            simulations = 10000;
+            simulations = 20000;
             handicap = -40;
         } else if (rank == 13) {
-            simulations = 10000;
+            simulations = 20000;
             handicap = -50;
         } 
     }
@@ -645,7 +645,12 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     {
         float komi = handicap ? 0.5f : 7.5f;
         m_State.init_game(m_ratedSize, komi);
+        CalculateDialog calcdialog(this);
+        calcdialog.Show();
+        ::wxSafeYield();
         m_State.place_free_handicap(abs(handicap));        
+        calcdialog.Hide();
+        ::wxEndBusyCursor();        
         // max 60 minutes per game    
         m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0);
         m_visitLimit = simulations;
