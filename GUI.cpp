@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Apr 16 2008)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -54,6 +54,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_panelBoard = new TBoardPanel( this, ID_BOARDPANEL, wxDefaultPosition, wxSize( -1,-1 ), wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL );
 	bSizer2->Add( m_panelBoard, 1, wxEXPAND | wxALL, 1 );
 	
+	
 	this->SetSizer( bSizer2 );
 	this->Layout();
 	m_statusBar = this->CreateStatusBar( 2, wxST_SIZEGRIP, ID_DEFAULT );
@@ -87,7 +88,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	menuItemExit = new wxMenuItem( m_menu1, ID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt-F4"), _("Exit the program"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemExit );
 	
-	m_menubar1->Append( m_menu1, _("&File") );
+	m_menubar1->Append( m_menu1, _("&File") ); 
 	
 	m_menu2 = new wxMenu();
 	wxMenuItem* menuItem9;
@@ -130,14 +131,14 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score game") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem5 );
 	
-	m_menubar1->Append( m_menu2, _("&Game") );
+	m_menubar1->Append( m_menu2, _("&Game") ); 
 	
 	m_menuAnalyze = new wxMenu();
 	wxMenuItem* menuItemAnalyze;
 	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
 	m_menuAnalyze->Append( menuItemAnalyze );
 	
-	m_menubar1->Append( m_menuAnalyze, _("&Analyze") );
+	m_menubar1->Append( m_menuAnalyze, _("&Analyze") ); 
 	
 	m_menuSettings = new wxMenu();
 	wxMenuItem* menuItem15;
@@ -176,7 +177,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuItemAdjustClocks = new wxMenuItem( m_menuSettings, ID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuSettings->Append( m_menuItemAdjustClocks );
 	
-	m_menubar1->Append( m_menuSettings, _("&Settings") );
+	m_menubar1->Append( m_menuSettings, _("&Settings") ); 
 	
 	m_menu3 = new wxMenu();
 	wxMenuItem* menuItem13;
@@ -193,30 +194,48 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	menuItem7 = new wxMenuItem( m_menu3, ID_HELPABOUT, wxString( _("&About...") ) , _("Information about the program"), wxITEM_NORMAL );
 	m_menu3->Append( menuItem7 );
 	
-	m_menubar1->Append( m_menu3, _("&Help") );
+	m_menubar1->Append( m_menu3, _("&Help") ); 
 	
 	this->SetMenuBar( m_menubar1 );
 	
 	m_toolBar1 = this->CreateToolBar( wxTB_FLAT|wxTB_HORIZONTAL, wxID_ANY ); 
-	m_toolBar1->AddTool( ID_NEWGAME, _("New Game"), wxBitmap( wxT("IDB_NEWGAME"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new game"), _("Start a new game") );
-	m_toolBar1->AddTool( ID_NEWRATED, _("New Rated Game"), wxBitmap( wxT("IDB_NEWRATED"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new rated game"), _("Start a new rated game") );
-	m_toolBar1->AddTool( ID_OPEN, _("Load Game"), wxBitmap( wxT("IDB_OPEN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Load a game"), _("Load a game") );
-	m_toolBar1->AddTool( ID_SAVE, _("Save"), wxBitmap( wxT("IDB_SAVEAS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Save the game"), _("Save the game") );
-	m_toolBar1->AddSeparator();
-	m_toolBar1->AddTool( ID_BACK10, _("Go back 10 moves"), wxBitmap( wxT("IDB_BACKWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go back 10 moves"), _("Go back 10 moves") );
-	m_toolBar1->AddTool( ID_UNDO, _("Undo"), wxBitmap( wxT("IDB_UNDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Take back one move"), _("Take back one move") );
-	m_toolBar1->AddTool( ID_REDO, _("Forward"), wxBitmap( wxT("IDB_REDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward one move"), _("Go forward one move") );
-	m_toolBar1->AddTool( ID_FWD10, _("Forward 10"), wxBitmap( wxT("IDB_FORWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward 10 moves"), _("Go forward 10 moves") );
-	m_toolBar1->AddSeparator();
-	m_toolBar1->AddTool( ID_FORCE, _("Force computer move"), wxBitmap( wxT("IDB_FORCE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move") );
-	m_toolBar1->AddTool( ID_ANALYZE, _("tool"), wxBitmap( wxT("IDB_ANALYZE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis") );
-	m_toolBar1->AddSeparator();
-	m_toolBar1->AddTool( ID_PASS, _("tool"), wxBitmap( wxT("IDB_PASS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Pass"), _("Pass") );
-	m_toolBar1->AddTool( ID_SCORE, _("tool"), wxBitmap( wxT("IDB_SCORE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game") );
-	m_toolBar1->AddTool( ID_RESIGN, _("tool"), wxBitmap( wxT("IDB_RESIGN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Resign the game"), _("Resign the game") );
-	m_toolBar1->AddSeparator();
-	m_toolBar1->AddTool( ID_EXIT, _("Exit"), wxBitmap( wxT("IDB_QUIT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program") );
-	m_toolBar1->Realize();
+	m_tool1 = m_toolBar1->AddTool( ID_NEWGAME, _("New Game"), wxBitmap( wxT("IDB_NEWGAME"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new game"), _("Start a new game"), NULL ); 
+	
+	m_tool12 = m_toolBar1->AddTool( ID_NEWRATED, _("New Rated Game"), wxBitmap( wxT("IDB_NEWRATED"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new rated game"), _("Start a new rated game"), NULL ); 
+	
+	m_tool4 = m_toolBar1->AddTool( ID_OPEN, _("Load Game"), wxBitmap( wxT("IDB_OPEN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Load a game"), _("Load a game"), NULL ); 
+	
+	m_tool5 = m_toolBar1->AddTool( ID_SAVE, _("Save"), wxBitmap( wxT("IDB_SAVEAS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Save the game"), _("Save the game"), NULL ); 
+	
+	m_toolBar1->AddSeparator(); 
+	
+	m_tool10 = m_toolBar1->AddTool( ID_BACK10, _("Go back 10 moves"), wxBitmap( wxT("IDB_BACKWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go back 10 moves"), _("Go back 10 moves"), NULL ); 
+	
+	m_tool13 = m_toolBar1->AddTool( ID_UNDO, _("Undo"), wxBitmap( wxT("IDB_UNDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Take back one move"), _("Take back one move"), NULL ); 
+	
+	m_tool15 = m_toolBar1->AddTool( ID_REDO, _("Forward"), wxBitmap( wxT("IDB_REDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward one move"), _("Go forward one move"), NULL ); 
+	
+	m_tool9 = m_toolBar1->AddTool( ID_FWD10, _("Forward 10"), wxBitmap( wxT("IDB_FORWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward 10 moves"), _("Go forward 10 moves"), NULL ); 
+	
+	m_toolBar1->AddSeparator(); 
+	
+	m_toolForce = m_toolBar1->AddTool( ID_FORCE, _("Force computer move"), wxBitmap( wxT("IDB_FORCE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move"), NULL ); 
+	
+	m_toolAnalyze = m_toolBar1->AddTool( ID_ANALYZE, _("tool"), wxBitmap( wxT("IDB_ANALYZE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis"), NULL ); 
+	
+	m_toolBar1->AddSeparator(); 
+	
+	m_tool2 = m_toolBar1->AddTool( ID_PASS, _("tool"), wxBitmap( wxT("IDB_PASS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Pass"), _("Pass"), NULL ); 
+	
+	m_tool3 = m_toolBar1->AddTool( ID_SCORE, _("tool"), wxBitmap( wxT("IDB_SCORE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game"), NULL ); 
+	
+	m_tool131 = m_toolBar1->AddTool( ID_RESIGN, _("tool"), wxBitmap( wxT("IDB_RESIGN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Resign the game"), _("Resign the game"), NULL ); 
+	
+	m_toolBar1->AddSeparator(); 
+	
+	m_tool11 = m_toolBar1->AddTool( ID_EXIT, _("Exit"), wxBitmap( wxT("IDB_QUIT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program"), NULL ); 
+	
+	m_toolBar1->Realize(); 
 	
 }
 
@@ -245,49 +264,59 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxVERTICAL );
+	
 	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("17 x 17"), _("19 x 19"), _("25 x 25"), _("29 x 29"), _("33 x 33"), _("37 x 37") };
 	int m_radioBoxBoardSizeNChoices = sizeof( m_radioBoxBoardSizeChoices ) / sizeof( wxString );
-	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 4, wxRA_SPECIFY_ROWS );
+	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 3, wxRA_SPECIFY_ROWS );
 	m_radioBoxBoardSize->SetSelection( 3 );
-	bSizer9->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer12->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	
+	
+	bSizer9->Add( bSizer12, 1, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer2;
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Komi (+0.5)") ), wxHORIZONTAL );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Komi"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText2 = new wxStaticText( sbSizer2->GetStaticBox(), wxID_ANY, _("Komi"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText2->Wrap( -1 );
 	sbSizer2->Add( m_staticText2, 1, wxALIGN_CENTER, 5 );
 	
-	m_spinCtrlKomi = new wxSpinCtrl( this, ID_KOMISPIN, wxT("7"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 15, 0 );
+	m_spinCtrlKomi = new wxSpinCtrl( sbSizer2->GetStaticBox(), ID_KOMISPIN, wxT("7"), wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 0, 15, 0 );
 	sbSizer2->Add( m_spinCtrlKomi, 1, wxALIGN_CENTER, 5 );
 	
-	bSizer9->Add( sbSizer2, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	
+	bSizer9->Add( sbSizer2, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer3;
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Handicap") ), wxHORIZONTAL );
 	
-	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Handicap"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText3 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, _("Handicap"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText3->Wrap( -1 );
 	sbSizer3->Add( m_staticText3, 1, wxALIGN_CENTER, 5 );
 	
-	m_spinCtrlHandicap = new wxSpinCtrl( this, ID_HANDICAPSPIN, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+	m_spinCtrlHandicap = new wxSpinCtrl( sbSizer3->GetStaticBox(), ID_HANDICAPSPIN, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 0, 100, 0 );
 	sbSizer3->Add( m_spinCtrlHandicap, 1, wxALIGN_CENTER, 5 );
 	
-	bSizer9->Add( sbSizer3, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	
+	bSizer9->Add( sbSizer3, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer5;
 	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Time for game") ), wxHORIZONTAL );
 	
-	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Minutes"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText13 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Minutes"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText13->Wrap( -1 );
 	sbSizer5->Add( m_staticText13, 1, wxALIGN_CENTER, 5 );
 	
-	m_spinCtrlTime = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 720, 90 );
+	m_spinCtrlTime = new wxSpinCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 1, 720, 90 );
 	sbSizer5->Add( m_spinCtrlTime, 1, wxALIGN_CENTER, 5 );
 	
-	bSizer9->Add( sbSizer5, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
-	bSizer11->Add( bSizer9, 4, wxEXPAND, 5 );
+	bSizer9->Add( sbSizer5, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	
+	
+	bSizer11->Add( bSizer9, 1, wxALL, 5 );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
@@ -295,16 +324,18 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxString m_radioBoxColorChoices[] = { _("Black"), _("White") };
 	int m_radioBoxColorNChoices = sizeof( m_radioBoxColorChoices ) / sizeof( wxString );
 	m_radioBoxColor = new wxRadioBox( this, wxID_ANY, _("Your color"), wxDefaultPosition, wxDefaultSize, m_radioBoxColorNChoices, m_radioBoxColorChoices, 1, wxRA_SPECIFY_ROWS );
-	m_radioBoxColor->SetSelection( 1 );
-	bSizer10->Add( m_radioBoxColor, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	m_radioBoxColor->SetSelection( 0 );
+	bSizer10->Add( m_radioBoxColor, 0, wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxString m_radioBoxLevelChoices[] = { _("100 simulations"), _("500 simulations"), _("1000 simulations"), _("5000 simulations"), _("10000 simulations"), _("20000 simulations"), _("Unlimited") };
 	int m_radioBoxLevelNChoices = sizeof( m_radioBoxLevelChoices ) / sizeof( wxString );
 	m_radioBoxLevel = new wxRadioBox( this, wxID_ANY, _("Engine max level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLevelNChoices, m_radioBoxLevelChoices, 1, wxRA_SPECIFY_COLS );
 	m_radioBoxLevel->SetSelection( 6 );
-	bSizer10->Add( m_radioBoxLevel, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer10->Add( m_radioBoxLevel, 1, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
-	bSizer11->Add( bSizer10, 5, wxEXPAND, 5 );
+	
+	bSizer11->Add( bSizer10, 4, wxALL|wxEXPAND, 5 );
+	
 	
 	bSizer7->Add( bSizer11, 4, wxEXPAND, 5 );
 	
@@ -314,7 +345,9 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_sdbSizer1Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer1->AddButton( m_sdbSizer1Cancel );
 	m_sdbSizer1->Realize();
-	bSizer7->Add( m_sdbSizer1, 0, wxALL|wxEXPAND, 2 );
+	
+	bSizer7->Add( m_sdbSizer1, 0, wxALIGN_RIGHT|wxALL|wxEXPAND, 2 );
+	
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
@@ -335,25 +368,26 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.4.0"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.4.6"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
 	m_staticTextVersion->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 10 );
 	
-	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2010 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2016 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText5->Wrap( -1 );
-	bSizer9->Add( m_staticText5, 0, wxALIGN_CENTER|wxALL, 5 );
+	bSizer9->Add( m_staticText5, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText9 = new wxStaticText( this, wxID_ANY, _("gcp@sjeng.org"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText9 = new wxStaticText( this, wxID_ANY, _("gcp@sjeng.org"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText9->Wrap( -1 );
-	bSizer9->Add( m_staticText9, 0, wxALIGN_CENTER|wxALL, 5 );
+	bSizer9->Add( m_staticText9, 0, wxALL|wxEXPAND, 5 );
 	
-	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("http://www.sjeng.org/leela"), wxT("http://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("https://www.sjeng.org/leela"), wxT("https://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	bSizer9->Add( m_hyperlink3, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	m_button1 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer9->Add( m_button1, 0, wxALIGN_CENTER|wxALL, 5 );
+	
 	
 	this->SetSizer( bSizer9 );
 	this->Layout();
@@ -375,7 +409,7 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticText8 = new wxStaticText( this, wxID_ANY, _("If you like Leela, you might also like:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8 = new wxStaticText( this, wxID_ANY, _("If you like Leela lite, you might also like:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText8->Wrap( -1 );
 	bSizer10->Add( m_staticText8, 0, wxALL, 5 );
 	
@@ -396,19 +430,9 @@ TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	bSizer10->Add( m_hyperlink1, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	m_staticText10 = new wxStaticText( this, wxID_ANY, _("Deep Sjeng - the chess program"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText10->Wrap( -1 );
-	m_staticText10->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	bSizer10->Add( m_staticText10, 0, wxALIGN_CENTER|wxALL, 5 );
-	
-	m_hyperlink2 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/deepsjeng3"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-	m_hyperlink2->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxEmptyString ) );
-	
-	bSizer10->Add( m_hyperlink2, 0, wxALIGN_CENTER|wxALL, 5 );
-	
 	m_button2 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer10->Add( m_button2, 0, wxALIGN_CENTER|wxALL, 5 );
+	
 	
 	this->SetSizer( bSizer10 );
 	this->Layout();
@@ -447,6 +471,7 @@ TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, c
 	fgSizer1->Add( m_staticText14, 0, wxALIGN_CENTER|wxALL|wxEXPAND, 5 );
 	
 	m_textCtrlName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlName->SetMaxLength( 0 ); 
 	fgSizer1->Add( m_textCtrlName, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND, 5 );
 	
 	m_staticText15 = new wxStaticText( this, wxID_ANY, _("Code"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
@@ -454,7 +479,9 @@ TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, c
 	fgSizer1->Add( m_staticText15, 0, wxALIGN_RIGHT|wxALL|wxEXPAND, 5 );
 	
 	m_textCtrlCode = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlCode->SetMaxLength( 0 ); 
 	fgSizer1->Add( m_textCtrlCode, 2, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND, 5 );
+	
 	
 	bSizer10->Add( fgSizer1, 1, wxALL|wxEXPAND, 5 );
 	
@@ -464,7 +491,9 @@ TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, c
 	m_sdbSizer2Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer2->AddButton( m_sdbSizer2Cancel );
 	m_sdbSizer2->Realize();
+	
 	bSizer10->Add( m_sdbSizer2, 0, wxALL|wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer10 );
 	this->Layout();
@@ -490,24 +519,26 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	wxStaticBoxSizer* sbSizer4;
 	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Black clock (minutes:seconds)") ), wxHORIZONTAL );
 	
-	m_spinCtrlBlackMins = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 999, 30 );
+	m_spinCtrlBlackMins = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 120,-1 ), wxSP_ARROW_KEYS, 0, 999, 30 );
 	sbSizer4->Add( m_spinCtrlBlackMins, 1, wxALL|wxEXPAND, 5 );
 	
-	m_spinCtrlBlackSecs = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
+	m_spinCtrlBlackSecs = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
 	sbSizer4->Add( m_spinCtrlBlackSecs, 1, wxALL|wxEXPAND, 5 );
 	
-	bSizer9->Add( sbSizer4, 0, wxEXPAND, 5 );
+	
+	bSizer9->Add( sbSizer4, 0, wxALL|wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("White clock (minutes:seconds)") ), wxHORIZONTAL );
 	
-	m_spinCtrlWhiteMins = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 999, 30 );
+	m_spinCtrlWhiteMins = new wxSpinCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 120,-1 ), wxSP_ARROW_KEYS, 0, 999, 30 );
 	sbSizer6->Add( m_spinCtrlWhiteMins, 1, wxALL|wxEXPAND, 5 );
 	
-	m_spinCtrlWhiteSecs = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
+	m_spinCtrlWhiteSecs = new wxSpinCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
 	sbSizer6->Add( m_spinCtrlWhiteSecs, 1, wxALL|wxEXPAND, 5 );
 	
-	bSizer9->Add( sbSizer6, 0, wxEXPAND, 5 );
+	
+	bSizer9->Add( sbSizer6, 0, wxALL|wxEXPAND, 5 );
 	
 	m_sdbSizer3 = new wxStdDialogButtonSizer();
 	m_sdbSizer3OK = new wxButton( this, wxID_OK );
@@ -515,7 +546,9 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	m_sdbSizer3Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
 	m_sdbSizer3->Realize();
-	bSizer9->Add( m_sdbSizer3, 0, wxALIGN_CENTER, 5 );
+	
+	bSizer9->Add( m_sdbSizer3, 0, wxALIGN_CENTER|wxALL, 5 );
+	
 	
 	this->SetSizer( bSizer9 );
 	this->Layout();
@@ -544,6 +577,7 @@ TRatedSizeDialog::TRatedSizeDialog( wxWindow* parent, wxWindowID id, const wxStr
 	m_buttonSize19 = new wxButton( this, ID_SIZE19, _("19 x 19"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer10->Add( m_buttonSize19, 0, wxALL, 5 );
 	
+	
 	this->SetSizer( bSizer10 );
 	this->Layout();
 }
@@ -562,6 +596,7 @@ TCalculateDialog::TCalculateDialog( wxWindow* parent, wxWindowID id, const wxStr
 	m_staticTextCalculating = new wxStaticText( this, wxID_ANY, _("Calculating, please hold..."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextCalculating->Wrap( -1 );
 	bSizer11->Add( m_staticTextCalculating, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	
 	this->SetSizer( bSizer11 );
 	this->Layout();

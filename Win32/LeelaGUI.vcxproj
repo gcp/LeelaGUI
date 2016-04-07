@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9302BF69-D79E-4267-A192-53452C07A84D}</ProjectGuid>
+    <RootNamespace>LeelaGUI</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\boost\boost_1_60_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost\boost_1_60_0\stage\lib;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>C:\boost\boost_1_60_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost\boost_1_60_0\stage\lib;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\Leela;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WXMSW__;__WXDEBUG__;WINVER=0x0501;wxUSE_GUI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>wxUSE_NO_MANIFEST=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31ud.lib;wxbase31ud_net.lib;wxbase31ud_xml.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxmsw31ud_html.lib;wxmsw31ud_qa.lib;wxmsw31ud_richtext.lib;wxmsw31ud_xrc.lib;wxpngd.lib;wxregexud.lib;wxtiffd.lib;wxzlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\..\Leela;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0500;wxUSE_GUI=1;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_core.lib;wxmsw31u_qa.lib;wxmsw31u_xrc.lib;wxpng.lib;wxregexu.lib;wxzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>PGOptimization</LinkTimeCodeGeneration>
+    </Link>
+    <Manifest />
+    <Manifest>
+      <AdditionalManifestFiles>$(SolutionDir)DeclareDPIAware.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Leela\AttribScores.cpp" />
+    <ClCompile Include="..\..\Leela\Attributes.cpp" />
+    <ClCompile Include="..\..\Leela\FastBoard.cpp" />
+    <ClCompile Include="..\..\Leela\FastState.cpp" />
+    <ClCompile Include="..\..\Leela\FullBoard.cpp" />
+    <ClCompile Include="..\..\Leela\GameState.cpp" />
+    <ClCompile Include="..\..\Leela\Genetic.cpp" />
+    <ClCompile Include="..\..\Leela\GTP.cpp" />
+    <ClCompile Include="..\..\Leela\KoState.cpp" />
+    <ClCompile Include="..\..\Leela\Leela.cpp" />
+    <ClCompile Include="..\..\Leela\Matcher.cpp" />
+    <ClCompile Include="..\..\Leela\MCOTable.cpp" />
+    <ClCompile Include="..\..\Leela\Playout.cpp" />
+    <ClCompile Include="..\..\Leela\PNNode.cpp" />
+    <ClCompile Include="..\..\Leela\PNSearch.cpp" />
+    <ClCompile Include="..\..\Leela\Random.cpp" />
+    <ClCompile Include="..\..\Leela\Ruleset.cpp" />
+    <ClCompile Include="..\..\Leela\SGFParser.cpp" />
+    <ClCompile Include="..\..\Leela\SGFTree.cpp" />
+    <ClCompile Include="..\..\Leela\SMP.cpp" />
+    <ClCompile Include="..\..\Leela\TimeControl.cpp" />
+    <ClCompile Include="..\..\Leela\Timing.cpp" />
+    <ClCompile Include="..\..\Leela\TTable.cpp" />
+    <ClCompile Include="..\..\Leela\UCTNode.cpp" />
+    <ClCompile Include="..\..\Leela\UCTSearch.cpp" />
+    <ClCompile Include="..\..\Leela\Utils.cpp" />
+    <ClCompile Include="..\..\Leela\Zobrist.cpp" />
+    <ClCompile Include="..\AboutDialog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\App.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\CalculateDialog.cpp" />
+    <ClCompile Include="..\ClockAdjustDialog.cpp" />
+    <ClCompile Include="..\CopyProtectionDialog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\EngineThread.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\GUI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\MainFrame.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\NagDialog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\NewGameDialog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\RatedSizeDialog.cpp" />
+    <ClCompile Include="..\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\TBoardPanel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Leela\AttribScores.h" />
+    <ClInclude Include="..\..\Leela\Attributes.h" />
+    <ClInclude Include="..\..\Leela\config.h" />
+    <ClInclude Include="..\..\Leela\FastBoard.h" />
+    <ClInclude Include="..\..\Leela\FastState.h" />
+    <ClInclude Include="..\..\Leela\FullBoard.h" />
+    <ClInclude Include="..\..\Leela\GameState.h" />
+    <ClInclude Include="..\..\Leela\Genetic.h" />
+    <ClInclude Include="..\..\Leela\GTP.h" />
+    <ClInclude Include="..\..\Leela\KoState.h" />
+    <ClInclude Include="..\..\Leela\Matcher.h" />
+    <ClInclude Include="..\..\Leela\MCOTable.h" />
+    <ClInclude Include="..\..\Leela\Playout.h" />
+    <ClInclude Include="..\..\Leela\PNNode.h" />
+    <ClInclude Include="..\..\Leela\PNSearch.h" />
+    <ClInclude Include="..\..\Leela\Random.h" />
+    <ClInclude Include="..\..\Leela\Ruleset.h" />
+    <ClInclude Include="..\..\Leela\SGFParser.h" />
+    <ClInclude Include="..\..\Leela\SGFTree.h" />
+    <ClInclude Include="..\..\Leela\SMP.h" />
+    <ClInclude Include="..\..\Leela\TimeControl.h" />
+    <ClInclude Include="..\..\Leela\Timing.h" />
+    <ClInclude Include="..\..\Leela\TTable.h" />
+    <ClInclude Include="..\..\Leela\UCTNode.h" />
+    <ClInclude Include="..\..\Leela\UCTSearch.h" />
+    <ClInclude Include="..\..\Leela\Utils.h" />
+    <ClInclude Include="..\..\Leela\Weights.h" />
+    <ClInclude Include="..\..\Leela\WeightsMatcher.h" />
+    <ClInclude Include="..\..\Leela\Zobrist.h" />
+    <ClInclude Include="..\AboutDialog.h" />
+    <ClInclude Include="..\App.h" />
+    <ClInclude Include="..\CalculateDialog.h" />
+    <ClInclude Include="..\ClockAdjustDialog.h" />
+    <ClInclude Include="..\CopyProtectionDialog.h" />
+    <ClInclude Include="..\EngineThread.h" />
+    <ClInclude Include="..\GUI.h" />
+    <ClInclude Include="..\keygen\sha2.h" />
+    <ClInclude Include="..\MainFrame.h" />
+    <ClInclude Include="..\NagDialog.h" />
+    <ClInclude Include="..\NewGameDialog.h" />
+    <ClInclude Include="..\RatedSizeDialog.h" />
+    <ClInclude Include="..\stdafx.h" />
+    <ClInclude Include="..\TBoardPanel.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LeelaGUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\img\analyze.bmp" />
+    <Image Include="..\img\back.bmp" />
+    <Image Include="..\img\blackstone.bmp" />
+    <Image Include="..\img\delete.bmp" />
+    <Image Include="..\img\execute.bmp" />
+    <Image Include="..\img\fileopen.bmp" />
+    <Image Include="..\img\filesave.bmp" />
+    <Image Include="..\img\filesaveas.bmp" />
+    <Image Include="..\img\find.bmp" />
+    <Image Include="..\img\forward.bmp" />
+    <Image Include="..\img\leela_mock.ico" />
+    <Image Include="..\img\new.bmp" />
+    <Image Include="..\img\newrated.bmp" />
+    <Image Include="..\img\quit.bmp" />
+    <Image Include="..\img\redo.bmp" />
+    <Image Include="..\img\resign.bmp" />
+    <Image Include="..\img\undo.bmp" />
+    <Image Include="..\img\whitestone.bmp" />
+    <Image Include="..\img\wood.bmp" />
+    <Image Include="wx\msw\cdrom.ico" />
+    <Image Include="wx\msw\colours.bmp" />
+    <Image Include="wx\msw\computer.ico" />
+    <Image Include="wx\msw\csquery.bmp" />
+    <Image Include="wx\msw\drive.ico" />
+    <Image Include="wx\msw\file1.ico" />
+    <Image Include="wx\msw\floppy.ico" />
+    <Image Include="wx\msw\folder1.ico" />
+    <Image Include="wx\msw\folder2.ico" />
+    <Image Include="wx\msw\removble.ico" />
+    <Image Include="wx\msw\std.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\snd\tock.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wx\msw\blank.cur" />
+    <None Include="wx\msw\bullseye.cur" />
+    <None Include="wx\msw\cross.cur" />
+    <None Include="wx\msw\hand.cur" />
+    <None Include="wx\msw\magnif1.cur" />
+    <None Include="wx\msw\pbrush.cur" />
+    <None Include="wx\msw\pencil.cur" />
+    <None Include="wx\msw\pntleft.cur" />
+    <None Include="wx\msw\pntright.cur" />
+    <None Include="wx\msw\rightarr.cur" />
+    <None Include="wx\msw\roller.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="DeclareDPIAware.manifest" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

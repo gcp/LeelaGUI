@@ -1,15 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Apr 16 2008)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __GUI__
-#define __GUI__
+#ifndef __GUI_H__
+#define __GUI_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 class TBoardPanel;
 
 #include <wx/panel.h>
@@ -106,7 +107,7 @@ class TMainFrame : public wxFrame
 			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
-			ID_HELPABOUT,
+			ID_HELPABOUT
 		};
 		
 		TBoardPanel* m_panelBoard;
@@ -118,40 +119,56 @@ class TMainFrame : public wxFrame
 		wxMenu* m_menuSettings;
 		wxMenu* m_menu3;
 		wxToolBar* m_toolBar1;
+		wxToolBarToolBase* m_tool1; 
+		wxToolBarToolBase* m_tool12; 
+		wxToolBarToolBase* m_tool4; 
+		wxToolBarToolBase* m_tool5; 
+		wxToolBarToolBase* m_tool10; 
+		wxToolBarToolBase* m_tool13; 
+		wxToolBarToolBase* m_tool15; 
+		wxToolBarToolBase* m_tool9; 
+		wxToolBarToolBase* m_toolForce; 
+		wxToolBarToolBase* m_toolAnalyze; 
+		wxToolBarToolBase* m_tool2; 
+		wxToolBarToolBase* m_tool3; 
+		wxToolBarToolBase* m_tool131; 
+		wxToolBarToolBase* m_tool11; 
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doActivate( wxActivateEvent& event ){ event.Skip(); }
-		virtual void doPaint( wxPaintEvent& event ){ event.Skip(); }
-		virtual void doResize( wxSizeEvent& event ){ event.Skip(); }
-		virtual void doNewGame( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doNewRatedGame( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doSetRatedSize( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doOpenSGF( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doSaveSGF( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doExit( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doUndo( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doForward( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doBack10( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doForward10( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doForceMove( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doPass( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doResign( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doScore( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doAnalyze( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doToggleTerritory( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doToggleMoyo( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doPassToggle( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doResignToggle( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doPonderToggle( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doSoundToggle( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doAdjustClocks( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doGoRules( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doHomePage( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doHelpAbout( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doActivate( wxActivateEvent& event ) { event.Skip(); }
+		virtual void doPaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void doResize( wxSizeEvent& event ) { event.Skip(); }
+		virtual void doNewGame( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doNewRatedGame( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doSetRatedSize( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doOpenSGF( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doSaveSGF( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doExit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doUndo( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doForward( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doBack10( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doForward10( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doForceMove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPass( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doResign( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doScore( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doAnalyze( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPassToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doResignToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPonderToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doSoundToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doAdjustClocks( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doGoRules( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doHomePage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doHelpAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,450 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
+		
+		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 520,630 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
+		
 		~TMainFrame();
 	
 };
@@ -176,7 +193,7 @@ class TNewGameDialog : public wxDialog
 		{
 			ID_NEWGAME = 1000,
 			ID_KOMISPIN,
-			ID_HANDICAPSPIN,
+			ID_HANDICAPSPIN
 		};
 		
 		wxRadioBox* m_radioBoxBoardSize;
@@ -193,14 +210,15 @@ class TNewGameDialog : public wxDialog
 		wxButton* m_sdbSizer1Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
-		virtual void doHandicapUpdate( wxSpinEvent& event ){ event.Skip(); }
-		virtual void doCancel( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doInit( wxInitDialogEvent& event ) { event.Skip(); }
+		virtual void doHandicapUpdate( wxSpinEvent& event ) { event.Skip(); }
+		virtual void doCancel( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 309,279 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+		
+		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 446,434 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE ); 
 		~TNewGameDialog();
 	
 };
@@ -225,11 +243,12 @@ class TAboutDialog : public wxDialog
 		wxButton* m_button1;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
+		virtual void doInit( wxInitDialogEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 237,172 ), long style = wxDEFAULT_DIALOG_STYLE );
+		
+		TAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 344,214 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TAboutDialog();
 	
 };
@@ -252,17 +271,16 @@ class TNagDialog : public wxDialog
 		wxStaticText* m_staticText9;
 		wxStaticText* m_staticText81;
 		wxHyperlinkCtrl* m_hyperlink1;
-		wxStaticText* m_staticText10;
-		wxHyperlinkCtrl* m_hyperlink2;
 		wxButton* m_button2;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
-		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doInit( wxInitDialogEvent& event ) { event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 249,200 ), long style = wxDEFAULT_DIALOG_STYLE );
+		
+		TNagDialog( wxWindow* parent, wxWindowID id = wxID_OK, const wxString& title = _("Support Leela!"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 256,195 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TNagDialog();
 	
 };
@@ -290,11 +308,12 @@ class TCopyProtectionDialog : public wxDialog
 		wxButton* m_sdbSizer2Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TCopyProtectionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Copy protection"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 239,159 ), long style = wxDEFAULT_DIALOG_STYLE );
+		
+		TCopyProtectionDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Copy protection"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 267,194 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TCopyProtectionDialog();
 	
 };
@@ -323,13 +342,14 @@ class TClockAdjustDialog : public wxDialog
 		wxButton* m_sdbSizer3Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doInit( wxInitDialogEvent& event ){ event.Skip(); }
-		virtual void doCancel( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doOK( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doInit( wxInitDialogEvent& event ) { event.Skip(); }
+		virtual void doCancel( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TClockAdjustDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Adjust clocks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 166,156 ), long style = wxDEFAULT_DIALOG_STYLE );
+		
+		TClockAdjustDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Adjust clocks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 258,237 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TClockAdjustDialog();
 	
 };
@@ -351,19 +371,20 @@ class TRatedSizeDialog : public wxDialog
 		enum
 		{
 			ID_SIZE9 = 1000,
-			ID_SIZE19,
+			ID_SIZE19
 		};
 		
 		wxButton* m_buttonSize9;
 		wxButton* m_buttonSize19;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void doSize9( wxCommandEvent& event ){ event.Skip(); }
-		virtual void doSize19( wxCommandEvent& event ){ event.Skip(); }
+		virtual void doSize9( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doSize19( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
-		TRatedSizeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select board size"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 183,61 ), long style = wxDEFAULT_DIALOG_STYLE );
+		
+		TRatedSizeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select board size"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 228,76 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TRatedSizeDialog();
 	
 };
@@ -379,9 +400,10 @@ class TCalculateDialog : public wxDialog
 		wxStaticText* m_staticTextCalculating;
 	
 	public:
-		TCalculateDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Calculation in progress"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 210,62 ), long style = wxDEFAULT_DIALOG_STYLE );
+		
+		TCalculateDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Calculation in progress"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 210,62 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TCalculateDialog();
 	
 };
 
-#endif //__GUI__
+#endif //__GUI_H__

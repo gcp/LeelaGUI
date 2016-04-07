@@ -1,11 +1,33 @@
-!define VERSION "0.4.0.0"
-!define VERSIONNAME "0.4.0"
+!if "${NSIS_PACKEDVERSION}" >= 0x3000000
+Unicode true
+!endif
+
+; create ver.vbs and extract version number from the leela.exe binary
+!system 'echo set args = WScript.Arguments>ver.vbs'
+!system 'echo Set fso = CreateObject("Scripting.FileSystemObject")>>ver.vbs'
+!system 'echo WScript.Echo "ver: " + fso.GetFileVersion(args(0))>>ver.vbs'
+!system 'echo Wscript.Quit>>ver.vbs'
+!system 'cscript.exe //nologo ver.vbs "bin\Leela.exe">ver.tmp'
+
+!searchparse /file ver.tmp "ver: " V1 . V2 . V3 . V4
+!delfile ver.vbs
+!delfile ver.tmp
+
+!define VERSION "${V1}.${V2}.${V3}.${V4}"
+
+!if ${V4} != 0
+!define VERSIONNAME "${VERSION}"
+!else if ${V3} != 0
+!define VERSIONNAME "${V1}.${V2}.${V3}"
+!else
+!define VERSIONNAME "${V1}.${V2}"
+!endif
 
 ;
 ; General options
 ;
+  Name                    "Leela ${VERSIONNAME}"
 	CRCCheck                on
-	SetCompressor           zlib
 	SetCompress             auto
 	SetDatablockOptimize    on
 	InstallColors           /windows
@@ -17,21 +39,18 @@
 	UninstallCaption        "Leela ${VERSIONNAME} Uninstall"
 	ShowUninstDetails       hide
 	ShowInstDetails         hide
-	RequestExecutionLevel   highest
+	RequestExecutionLevel   user
+	ManifestDPIAware        true
 
-;
-; includes
-;
-!include LogicLib.nsh
+  !if ${V4} != 0
+	OutFile "setupLeela${V1}${V2}${V3}${V4}.exe"
+  !else if ${V3} != 0
+	OutFile "setupLeela${V1}${V2}${V3}.exe"
+  !else
+	OutFile "setupLeela${V1}${V2}.exe"
+  !endif
+
 !include MUI.nsh
-!include WinVer.nsh
-!include x64.nsh
-
-;
-; Main settings
-;
-	Name "Leela"
-	OutFile "setupLeela.exe"
 
 ;
 ; File info options
@@ -42,53 +61,50 @@
 	VIAddVersionKey "CompanyName" "Sjeng.Org"
 	VIAddVersionKey "LegalCopyright" "© Gian-Carlo Pascutto. All rights reserved."
 	VIAddVersionKey "FileVersion" "${VERSION}"
- 
-;
-; Modern UI options
-;
-	!define MUI_PRODUCT "Leela ${VERSIONNAME}"
-	!define MUI_FILE "Leela"
 
 ;Variables
 
 	Var MUI_TEMP
 	Var STARTMENU_FOLDER
-	Var ADMINRIGHTS		
-		
+
 ;
 ;Get installation folder from registry if available
 ;
 	InstallDirRegKey HKCU "Software\Leela" ""
-	InstallDir "$PROGRAMFILES\${MUI_PRODUCT}"
+	InstallDir "$LOCALAPPDATA\Programs\Leela"
 
 ;
 ;Define page settings
 ;
 	!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install-full.ico"
 	!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall-full.ico"
-	
+
 	!define MUI_INSTALLCOLORS /windows
 	!define MUI_LICENSEBKCOLOR /windows
 	!define MUI_PROGRESSBAR smooth
 	!define MUI_ABORTWARNING
 	!define MUI_UNINSTALLER
 	!define MUI_UNCONFIRMPAGE
-	!define MUI_FINISHPAGE  
+	!define MUI_FINISHPAGE
 	!define MUI_DIRECTORYPAGE
-	
-; 
+
+  !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of Leela - the Go program.$\r$\n$\r$\n$\r$\nClick Next to continue."
+
+;
 ; Welcome page
 ;
-	!insertmacro MUI_PAGE_WELCOME	
+	!insertmacro MUI_PAGE_WELCOME
+    !insertmacro MUI_PAGE_LICENSE license.rtf
 	!insertmacro MUI_PAGE_DIRECTORY
 
 ;
 ;Start Menu Folder Page Configuration
 ;
-	!define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU" 
-	!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Leela" 
+  !define MUI_STARTMENUPAGE_DEFAULTFOLDER "Leela"
+	!define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
+	!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Leela"
 	!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
-	  
+
 	!insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
 
 ;
@@ -104,161 +120,93 @@
 ;
 	!insertmacro MUI_LANGUAGE "English"
 
-
-Function .onInit
-	;
-	; First, check our permissions
-	;
-
-	ClearErrors	
-	UserInfo::GetAccountType
-	IfErrors use_program_files  # Win9x
-	Pop $1
-	StrCmp $1 "Admin" use_program_files
-	StrCmp $1 "Power" use_program_files
-	StrCmp $1 ""      use_program_files
-	StrCmp $1 "User"  use_user_dir	
-	StrCmp $1 "Guest" use_user_dir	
-
-  use_user_dir:
-    StrCpy $INSTDIR "$DOCUMENTS\${MUI_PRODUCT}"    
-    SetShellVarContext current
-    StrCpy $ADMINRIGHTS "No"
-    Goto end_checks
-
-  use_program_files:    
-    SetShellVarContext all
-    StrCpy $ADMINRIGHTS "Yes"    
-
-  end_checks:
-
-FunctionEnd
-
-Function un.onInit
-	;
-	; First, check our permissions
-	;
-
-	ClearErrors	
-	UserInfo::GetAccountType
-	IfErrors use_program_files  # Win9x
-	Pop $1
-	StrCmp $1 "Admin" use_program_files
-	StrCmp $1 "Power" use_program_files
-	StrCmp $1 ""      use_program_files
-	StrCmp $1 "User"  use_user_dir	
-	StrCmp $1 "Guest" use_user_dir	
-
-  use_user_dir:
-    StrCpy $INSTDIR "$DOCUMENTS\${MUI_PRODUCT}"    
-    SetShellVarContext current
-    StrCpy $ADMINRIGHTS "No"
-    Goto end_checks
-
-  use_program_files:    
-    SetShellVarContext all
-    StrCpy $ADMINRIGHTS "Yes"    
-
-  end_checks:
-FunctionEnd
-
-!include "Sections.nsh"  
-    
-Section "-Leela Installation" 		  			
-
+Section "-Leela Installation"
+  SetShellVarContext current
 	SetOutPath $INSTDIR
-	
-	File "bin\${MUI_FILE}.exe"  	
-		  		  		
-	File "bin\Leela Homepage.url"  		
-	
+
+	File "bin\Leela.exe"
+	File "bin\Leela Homepage.url"
+
 	;create desktop shortcut
-	CreateShortCut "$DESKTOP\${MUI_PRODUCT}.lnk" "$INSTDIR\${MUI_FILE}.exe" ""
-	
-	 ;Store installation folder
+	CreateShortCut "$DESKTOP\Leela.lnk" "$INSTDIR\Leela.exe" ""
+
+  ;store installation folder
 	WriteRegStr HKCU "Software\Leela" "" $INSTDIR
-	
-	;Create uninstaller
+
+	;create uninstaller
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
-	
+
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-	
-	;Create shortcuts
+
+	;create shortcuts
 	CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-	CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\${MUI_PRODUCT}.lnk" "$INSTDIR\${MUI_FILE}.exe"  
+	CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Leela.lnk" "$INSTDIR\Leela.exe"
 	CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Leela Homepage.lnk" "$INSTDIR\Leela Homepage.url" \
 	                "" "" 0 SW_SHOWNORMAL \
                     "" "http://www.sjeng.org/leela"
 	CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
-	
-	!insertmacro MUI_STARTMENU_WRITE_END			
-	
-	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
+
+	!insertmacro MUI_STARTMENU_WRITE_END
+
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
 	                  "DisplayName" "Leela - the Go Program"
-	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                  "DisplayIcon" "$INSTDIR\Leela.exe,0"
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
 	                 "UninstallString" "$INSTDIR\Uninstall.exe"
-	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                 "InstallLocation" "$INSTDIR"                         
-	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                 "Publisher" "Sjeng.Org"                         
-	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                   "EstimatedSize" 2114
-	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                   "NoModify" 1                         
-	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                   "NoRepair" 1                         
-	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                 "HelpLink" "http://www.sjeng.org"                         
-	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}" \
-	                 "URLInfoAbout" "http://www.sjeng.org"        
-	                 
-  	  
-	MessageBox MB_OK|MB_ICONINFORMATION "Setup has completed."
-	
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                 "InstallLocation" "$INSTDIR"
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                 "Publisher" "Sjeng.Org"
+	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                   "EstimatedSize" 2781
+	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                   "NoModify" 1
+	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                   "NoRepair" 1
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                 "HelpLink" "http://www.sjeng.org"
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
+	                 "URLInfoAbout" "http://www.sjeng.org"
+
 	;Quit
-	
 SectionEnd
 
-;--------------------------------    
-;Uninstaller Section  
-Section "Uninstall"	
-   
-	;Delete Files 
-	RMDir /r "$INSTDIR\*.*"    
-	
-	;Remove the installation directory
-	
+;--------------------------------
+;Uninstaller Section
+Section "Uninstall"
+  SetShellVarContext current
+
+	;Delete Files
+	Delete "$INSTDIR\Leela.exe"
+	Delete "$INSTDIR\Leela Homepage.url"
 	Delete "$INSTDIR\Uninstall.exe"
+
+	;Remove the installation directory
 	RMDir "$INSTDIR"
-	
-	Delete "$DESKTOP\${MUI_PRODUCT}.lnk"
-	
+
+	Delete "$DESKTOP\Leela.lnk"
+
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
-	
-	Delete "$SMPROGRAMS\$MUI_TEMP\${MUI_PRODUCT}.lnk"  
+
+	Delete "$SMPROGRAMS\$MUI_TEMP\Leela.lnk"
 	Delete "$SMPROGRAMS\$MUI_TEMP\Leela Homepage.lnk"
 	Delete "$SMPROGRAMS\$MUI_TEMP\Uninstall.lnk"
-	
-	;Delete empty start menu parent diretories
+
+	;Delete empty start menu parent directories
 	StrCpy $MUI_TEMP "$SMPROGRAMS\$MUI_TEMP"
-	
+
   startMenuDeleteLoop:
 	ClearErrors
 	RMDir $MUI_TEMP
 	GetFullPathName $MUI_TEMP "$MUI_TEMP\.."
-	
+
 	IfErrors startMenuDeleteLoopDone
-	
+
 	StrCmp $MUI_TEMP $SMPROGRAMS startMenuDeleteLoopDone startMenuDeleteLoop
 
   startMenuDeleteLoopDone:
-	
-	DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela ${VERSIONNAME}"	
-	DeleteRegKey /ifempty HKCU "Software\Leela"       		
-  
+
+	DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela"
+	DeleteRegKey /ifempty HKCU "Software\Leela"
 SectionEnd
-
-Function un.onUninstSuccess
-  MessageBox MB_OK "You have successfully uninstalled ${MUI_PRODUCT}."
-FunctionEnd
-

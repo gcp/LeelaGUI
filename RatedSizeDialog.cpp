@@ -5,7 +5,7 @@ RatedSizeDialog::RatedSizeDialog( wxWindow* parent )
 :
 TRatedSizeDialog( parent )
 {
-
+    m_sizeSelected = 9;
 }
 
 void RatedSizeDialog::doSize9( wxCommandEvent& event )

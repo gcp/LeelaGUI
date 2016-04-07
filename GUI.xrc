@@ -2,8 +2,9 @@
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxFrame" name="TMainFrame">
 		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
-		<size>400,450</size>
+		<size>520,630</size>
 		<title>Leela</title>
+		<aui_managed>0</aui_managed>
 		<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
 			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
 		</object>
@@ -16,125 +17,125 @@
 			<object class="wxMenu" name="m_menu1">
 				<label>_File</label>
 				<object class="wxMenuItem" name="menuItemNewGame">
-					<label>&amp;New game...\tCtrl-N</label>
+					<label>_New game...\tCtrl-N</label>
 					<help>Start a new game</help>
 				</object>
 				<object class="wxMenuItem" name="menuItemNewRated">
-					<label>New &amp;rated game\tCtrl-R</label>
+					<label>New _rated game\tCtrl-R</label>
 					<help>Starts a new rated game</help>
 				</object>
 				<object class="wxMenuItem" name="m_menuItemRatedSize">
-					<label>Set rated &amp;board size...\tCtrl-B</label>
+					<label>Set rated _board size...\tCtrl-B</label>
 					<help>Change the board size for rated games</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem11">
-					<label>&amp;Open game...\tCtrl-O</label>
+					<label>_Open game...\tCtrl-O</label>
 					<help>Opens a game from disk</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem12">
-					<label>&amp;Save game...\tCtrl-S</label>
+					<label>_Save game...\tCtrl-S</label>
 					<help>Save a game to disk</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItemExit">
-					<label>E&amp;xit\tAlt-F4</label>
+					<label>E_xit\tAlt-F4</label>
 					<help>Exit the program</help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menu2">
 				<label>_Game</label>
 				<object class="wxMenuItem" name="menuItem9">
-					<label>&amp;Undo\tCtrl-Z</label>
+					<label>_Undo\tCtrl-Z</label>
 					<help></help>
 				</object>
 				<object class="wxMenuItem" name="menuItem8">
-					<label>&amp;Forward\tCtrl-Y</label>
+					<label>_Forward\tCtrl-Y</label>
 					<help></help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem131">
-					<label>Go &amp;back 10 moves\tAlt-B</label>
+					<label>Go _back 10 moves\tAlt-B</label>
 					<help>Undo 10 moves</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem141">
-					<label>Go for&amp;ward 10 moves\tAlt-F</label>
+					<label>Go for_ward 10 moves\tAlt-F</label>
 					<help>Forward 10 moves</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem18">
-					<label>Force &amp;computer move\tCtrl-F</label>
+					<label>Force _computer move\tCtrl-F</label>
 					<help>Force the computer to move now</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem6">
-					<label>&amp;Pass\tAlt-P</label>
+					<label>_Pass\tAlt-P</label>
 					<help>Pass</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem20">
-					<label>&amp;Resign\tAlt-R</label>
+					<label>_Resign\tAlt-R</label>
 					<help>Resign the game</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem5">
-					<label>&amp;Score game\tAlt-S</label>
+					<label>_Score game\tAlt-S</label>
 					<help>Score the position</help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menuAnalyze">
 				<label>_Analyze</label>
 				<object class="wxMenuItem" name="menuItemAnalyze">
-					<label>&amp;Start/Stop analysis\tCtrl-A</label>
+					<label>_Start/Stop analysis\tCtrl-A</label>
 					<help>Start analyzing</help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menuSettings">
 				<label>_Settings</label>
 				<object class="wxMenuItem" name="menuItem15">
-					<label>Show &amp;Territory\tCtrl-T</label>
+					<label>Show _Territory\tCtrl-T</label>
 					<help>Show Territory</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItem16">
-					<label>Show &amp;Moyo\tCtrl-M</label>
+					<label>Show _Moyo\tCtrl-M</label>
 					<help>Show Moyo</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuPassToggle">
-					<label>Engine &amp;passes</label>
+					<label>Engine _passes</label>
 					<help>Allows the engine to pass</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItemResignToggle">
-					<label>Engine &amp;resigns</label>
+					<label>Engine _resigns</label>
 					<help>Allows the engine to resign or not</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="m_menuItemPonder">
-					<label>Engine &amp;ponders</label>
+					<label>Engine _ponders</label>
 					<help>Allows the engine to think during the opponents time</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItemSound">
-					<label>&amp;Sound</label>
+					<label>_Sound</label>
 					<help>Enable or disable sound</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuItemAdjustClocks">
-					<label>&amp;Adjust clocks...</label>
+					<label>_Adjust clocks...</label>
 					<help></help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menu3">
 				<label>_Help</label>
 				<object class="wxMenuItem" name="menuItem13">
-					<label>&amp;Go Rules\tF1</label>
+					<label>_Go Rules\tF1</label>
 					<help>Explanation of the rules of Go</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem10">
@@ -143,7 +144,7 @@
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem7">
-					<label>&amp;About...</label>
+					<label>_About...</label>
 					<help>Information about the program</help>
 				</object>
 			</object>
@@ -246,9 +247,10 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>309,279</size>
+		<size>446,434</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
+			<minsize>260,250</minsize>
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<option>4</option>
@@ -257,34 +259,42 @@
 				<object class="wxBoxSizer">
 					<orient>wxHORIZONTAL</orient>
 					<object class="sizeritem">
-						<option>4</option>
-						<flag>wxEXPAND</flag>
+						<option>1</option>
+						<flag>wxALL</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
-								<option>0</option>
-								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<option>1</option>
+								<flag>wxEXPAND</flag>
 								<border>5</border>
-								<object class="wxRadioBox" name="m_radioBoxBoardSize">
-									<style>wxRA_SPECIFY_ROWS</style>
-									<label>Board size</label>
-									<selection>3</selection>
-									<content>
-										<item>9 x 9</item>
-										<item>13 x 13</item>
-										<item>17 x 17</item>
-										<item>19 x 19</item>
-										<item>25 x 25</item>
-										<item>29 x 29</item>
-										<item>33 x 33</item>
-										<item>37 x 37</item>
-									</content>
-									<dimension>4</dimension>
+								<object class="wxBoxSizer">
+									<orient>wxVERTICAL</orient>
+									<object class="sizeritem">
+										<option>0</option>
+										<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+										<border>5</border>
+										<object class="wxRadioBox" name="m_radioBoxBoardSize">
+											<style>wxRA_SPECIFY_ROWS</style>
+											<label>Board size</label>
+											<selection>3</selection>
+											<content>
+												<item>9 x 9</item>
+												<item>13 x 13</item>
+												<item>17 x 17</item>
+												<item>19 x 19</item>
+												<item>25 x 25</item>
+												<item>29 x 29</item>
+												<item>33 x 33</item>
+												<item>37 x 37</item>
+											</content>
+											<dimension>3</dimension>
+										</object>
+									</object>
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>0</option>
+								<option>4</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">
@@ -297,6 +307,7 @@
 										<object class="wxStaticText" name="m_staticText2">
 											<style>wxALIGN_CENTRE</style>
 											<label>Komi</label>
+											<wrap>-1</wrap>
 										</object>
 									</object>
 									<object class="sizeritem">
@@ -305,6 +316,7 @@
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlKomi">
 											<style>wxSP_ARROW_KEYS</style>
+											<size>100,-1</size>
 											<value>0</value>
 											<min>0</min>
 											<max>15</max>
@@ -313,7 +325,7 @@
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>0</option>
+								<option>4</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">
@@ -326,6 +338,7 @@
 										<object class="wxStaticText" name="m_staticText3">
 											<style>wxALIGN_CENTRE</style>
 											<label>Handicap</label>
+											<wrap>-1</wrap>
 										</object>
 									</object>
 									<object class="sizeritem">
@@ -334,6 +347,7 @@
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlHandicap">
 											<style>wxSP_ARROW_KEYS</style>
+											<size>100,-1</size>
 											<value>0</value>
 											<min>0</min>
 											<max>100</max>
@@ -342,7 +356,7 @@
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>0</option>
+								<option>4</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">
@@ -355,6 +369,7 @@
 										<object class="wxStaticText" name="m_staticText13">
 											<style>wxALIGN_CENTRE</style>
 											<label>Minutes</label>
+											<wrap>-1</wrap>
 										</object>
 									</object>
 									<object class="sizeritem">
@@ -363,6 +378,7 @@
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlTime">
 											<style>wxSP_ARROW_KEYS</style>
+											<size>100,-1</size>
 											<value>90</value>
 											<min>1</min>
 											<max>720</max>
@@ -373,19 +389,19 @@
 						</object>
 					</object>
 					<object class="sizeritem">
-						<option>5</option>
-						<flag>wxEXPAND</flag>
+						<option>4</option>
+						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
 								<option>0</option>
-								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<flag>wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxColor">
 									<style>wxRA_SPECIFY_ROWS</style>
 									<label>Your color</label>
-									<selection>1</selection>
+									<selection>0</selection>
 									<content>
 										<item>Black</item>
 										<item>White</item>
@@ -394,7 +410,7 @@
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>0</option>
+								<option>1</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxLevel">
@@ -419,7 +435,7 @@
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALIGN_RIGHT|wxALL|wxEXPAND</flag>
 				<border>2</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">
@@ -442,7 +458,7 @@
 	</object>
 	<object class="wxDialog" name="TAboutDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>237,172</size>
+		<size>344,214</size>
 		<title>About</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -453,28 +469,32 @@
 				<object class="wxStaticText" name="m_staticTextVersion">
 					<style>wxALIGN_CENTRE</style>
 					<font>
-						<family>default</family>
 						<style>normal</style>
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Leela version 0.4.0</label>
+					<label>Leela version 0.4.6</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText5">
-					<label>Copyright (C) 2007-2010 Gian-Carlo Pascutto</label>
+					<style>wxALIGN_CENTRE</style>
+					<label>Copyright (C) 2007-2016 Gian-Carlo Pascutto</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText9">
+					<style>wxALIGN_CENTRE</style>
 					<label>gcp@sjeng.org</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -482,8 +502,8 @@
 				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
 				<object class="wxHyperlinkCtrl" name="m_hyperlink3">
-					<label>http://www.sjeng.org/leela</label>
-					<url>http://www.sjeng.org/leela</url>
+					<label>https://www.sjeng.org/leela</label>
+					<url>https://www.sjeng.org/leela</url>
 					<style>wxHL_DEFAULT_STYLE</style>
 				</object>
 			</object>
@@ -500,7 +520,7 @@
 	</object>
 	<object class="wxDialog" name="TNagDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>249,200</size>
+		<size>256,195</size>
 		<title>Support Leela!</title>
 		<centered>1</centered>
 		<object class="wxBoxSizer">
@@ -510,7 +530,8 @@
 				<flag>wxALL</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText8">
-					<label>If you like Leela, you might also like:</label>
+					<label>If you like Leela lite, you might also like:</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -519,12 +540,12 @@
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText9">
 					<font>
-						<family>default</family>
 						<style>normal</style>
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
 					<label>Leela - full version</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -534,12 +555,12 @@
 				<object class="wxStaticText" name="m_staticText81">
 					<style>wxALIGN_CENTRE</style>
 					<font>
-						<family>default</family>
 						<style>normal</style>
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
 					<label>including 19 x 19 and top levels</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -551,37 +572,6 @@
 					<url>http://www.sjeng.org/leela</url>
 					<style>wxHL_DEFAULT_STYLE</style>
 					<font>
-						<family>default</family>
-						<style>normal</style>
-						<weight>normal</weight>
-						<underlined>0</underlined>
-					</font>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
-				<border>5</border>
-				<object class="wxStaticText" name="m_staticText10">
-					<font>
-						<family>default</family>
-						<style>normal</style>
-						<weight>bold</weight>
-						<underlined>0</underlined>
-					</font>
-					<label>Deep Sjeng - the chess program</label>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
-				<border>5</border>
-				<object class="wxHyperlinkCtrl" name="m_hyperlink2">
-					<label></label>
-					<url>http://www.sjeng.org/deepsjeng3</url>
-					<style>wxHL_DEFAULT_STYLE</style>
-					<font>
-						<family>default</family>
 						<style>normal</style>
 						<weight>normal</weight>
 						<underlined>0</underlined>
@@ -601,7 +591,7 @@
 	</object>
 	<object class="wxDialog" name="TCopyProtectionDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>239,159</size>
+		<size>267,194</size>
 		<title>Copy protection</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -611,6 +601,7 @@
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText12">
 					<label>Please enter your name and serial number:</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -631,6 +622,7 @@
 						<object class="wxStaticText" name="m_staticText14">
 							<style>wxALIGN_CENTRE</style>
 							<label>Name</label>
+							<wrap>-1</wrap>
 						</object>
 					</object>
 					<object class="sizeritem">
@@ -649,6 +641,7 @@
 						<object class="wxStaticText" name="m_staticText15">
 							<style>wxALIGN_CENTRE</style>
 							<label>Code</label>
+							<wrap>-1</wrap>
 						</object>
 					</object>
 					<object class="sizeritem">
@@ -687,13 +680,13 @@
 	</object>
 	<object class="wxDialog" name="TClockAdjustDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>166,156</size>
+		<size>258,237</size>
 		<title>Adjust clocks</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxEXPAND</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticBoxSizer">
 					<orient>wxHORIZONTAL</orient>
@@ -704,6 +697,7 @@
 						<border>5</border>
 						<object class="wxSpinCtrl" name="m_spinCtrlBlackMins">
 							<style>wxSP_ARROW_KEYS</style>
+							<size>120,-1</size>
 							<value>30</value>
 							<min>0</min>
 							<max>999</max>
@@ -724,7 +718,7 @@
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxEXPAND</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticBoxSizer">
 					<orient>wxHORIZONTAL</orient>
@@ -735,6 +729,7 @@
 						<border>5</border>
 						<object class="wxSpinCtrl" name="m_spinCtrlWhiteMins">
 							<style>wxSP_ARROW_KEYS</style>
+							<size>120,-1</size>
 							<value>30</value>
 							<min>0</min>
 							<max>999</max>
@@ -755,7 +750,7 @@
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxALIGN_CENTER</flag>
+				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">
@@ -778,7 +773,7 @@
 	</object>
 	<object class="wxDialog" name="TRatedSizeDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>183,61</size>
+		<size>228,76</size>
 		<title>Select board size</title>
 		<object class="wxBoxSizer">
 			<orient>wxHORIZONTAL</orient>
@@ -815,6 +810,7 @@
 				<object class="wxStaticText" name="m_staticTextCalculating">
 					<style>wxALIGN_CENTRE</style>
 					<label>Calculating, please hold...</label>
+					<wrap>-1</wrap>
 				</object>
 			</object>
 		</object>

@@ -3,10 +3,10 @@
 #include "MainFrame.h"
 #include "CopyProtectionDialog.h"
 #include "keygen/sha2.h"
-#include "EXECryptor.h"
 
 IMPLEMENT_APP(MyApp);
 
+#ifdef COPYPROTECT
 #ifndef LITEVERSION
 // public key
 extern unsigned int pub[16384];
@@ -47,8 +47,6 @@ bool Verify_Serial(wxString p_regname, wxString p_serial) {
     char *regname = bregname;
     char *serial = bserial;
     unsigned int check1, check2, seal1, seal2;        
-    
-    CRYPT_START
         
     memset(regbuff, 0, sizeof(regbuff));
     memset(bregname, 0, sizeof(bregname));
@@ -179,19 +177,18 @@ bool Verify_Serial(wxString p_regname, wxString p_serial) {
         return false;
     }                    
         
-    return true;     
-    
-    CRYPT_END                    
+    return true;             
 }
+#endif
 #endif
 
 bool MyApp::OnInit()
 {   
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));    
     wxConfig::Set(config);
-    	
-#ifndef LITEVERSION
-    CRYPT_START
+
+#ifdef COPYPROTECT
+#ifndef LITEVERSION    
     wxString name = config->Read(wxT("Name"));
     wxString code = config->Read(wxT("Code"));        
     
@@ -209,8 +206,8 @@ bool MyApp::OnInit()
         } else {        
             return false;
         }                
-    }
-    CRYPT_END
+    }    
+#endif
 #endif
 #ifdef LITEVERSION
     MainFrame* frame = new MainFrame(NULL, _("Leela lite"));    

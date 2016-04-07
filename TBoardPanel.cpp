@@ -87,7 +87,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     int tileW = m_tileFull.GetWidth();
     int tileH = m_tileFull.GetHeight();
             
-    ::wxLogDebug("width: %d height: %d", sz.GetWidth(), sz.GetHeight());        
+    wxLogDebug("width: %d height: %d", sz.GetWidth(), sz.GetHeight());        
         
     int xc = (sz.GetWidth() / tileW) + 1;
     int yc = (sz.GetHeight() / tileH) + 1;
@@ -99,7 +99,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     }      
 
     if (m_State == NULL) {
-        ::wxLogDebug("Paint on empty state");
+        wxLogDebug("Paint on empty state");
         return;
     }
     
@@ -110,7 +110,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     
     m_cellDim = cellDim;
     
-    ::wxLogDebug("cell size: %d", cellDim);
+    wxLogDebug("cell size: %d", cellDim);
             
     wxPen penThick(*wxBLACK, 2, wxSOLID);
     wxPen penThin(*wxBLACK, 1, wxSOLID);
@@ -297,20 +297,20 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
     int startX = event.GetX();
     int startY = event.GetY();
     
-    ::wxLogDebug("Left down at %d %d", startX, startY);
+    wxLogDebug("Left down at %d %d", startX, startY);
     
     if (m_State == NULL) {
-        ::wxLogDebug("Click on empty board");
+        wxLogDebug("Click on empty board");
         return;
     }
     
     if (m_State->get_last_move() == FastBoard::RESIGN) {
-        ::wxLogDebug("Game has been resigned");
+        wxLogDebug("Game has been resigned");
         return;
     }
     
     if (m_stateLock) {
-        ::wxLogDebug("Click on locked state");
+        wxLogDebug("Click on locked state");
         return;
     } 
     
@@ -342,7 +342,7 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         }                   
         
     } else {        
-        ::wxLogDebug("It's not your move!");
+        wxLogDebug("It's not your move!");
     }
     
     event.Skip();

@@ -24,7 +24,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         
     delete wxLog::SetActiveTarget(NULL); 
 
-    wxLog::SetTimestamp(NULL);            
+    wxLog::SetTimestamp("");
 
     Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));   
     Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate)); 
@@ -48,6 +48,11 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1); 
     m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9); 
 
+    // This is a bug in 0.4.0, correct broken values.
+    if (m_ratedSize != 9 && m_ratedSize != 19) {
+        m_ratedSize = 9;
+    }
+
     m_State.init_game(m_ratedSize, 7.5f);
     m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0);
     m_panelBoard->setState(&m_State);
@@ -70,7 +75,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     
     SetIcon(wxICON(aaaa));
 
-    SetSize(450, 550);
+    SetSize(530, 640);
     Center();
     
     wxCommandEvent evt;
@@ -143,7 +148,7 @@ void MainFrame::startEngine() {
             m_engineThread = new TEngineThread(&m_ponderState, &m_engineRunning, this);
         }
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
-            ::wxLogDebug("Error starting engine");
+            wxLogDebug("Error starting engine");
         } else {            
             // lock the board
             if (!m_pondering) {
@@ -162,7 +167,7 @@ void MainFrame::startEngine() {
             m_engineThread->Run();
         }
     } else {
-        ::wxLogDebug("Engine already running");
+        wxLogDebug("Engine already running");
     }                
 }
 
@@ -204,7 +209,7 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
 }
 	
 void MainFrame::doNewMove(wxCommandEvent & event) {
-    ::wxLogDebug(_("New move arrived"));
+    wxLogDebug(_("New move arrived"));
     
     m_panelBoard->unlockState();
    
@@ -248,7 +253,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             m_State.undo_move();
             m_State.undo_move();
             if (m_State.get_to_move() != m_playerColor) {
-                ::wxLogDebug("Computer to move"); 
+                wxLogDebug("Computer to move"); 
                 startEngine();                
             } else {
                 m_pondering = true;
@@ -257,7 +262,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         }
     } else {
         if (m_State.get_to_move() != m_playerColor) {
-            ::wxLogDebug("Computer to move"); 
+            wxLogDebug("Computer to move"); 
             startEngine();                
         } else {
             if (m_ponderEnabled && !m_ratedGame && !m_analyzing && !m_ponderedOnce
@@ -299,13 +304,13 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
     NewGameDialog mydialog(this);
     
     if (mydialog.ShowModal() == wxID_OK) {
-        ::wxLogDebug("OK clicked"); 
+        wxLogDebug("OK clicked"); 
         
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
         ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
-        ::wxSafeYield();
+        //::wxSafeYield();
         m_State.place_free_handicap(mydialog.getHandicap());                
         calcdialog.Hide();
         ::wxEndBusyCursor();
@@ -355,7 +360,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-9);
     }
     
-    ::wxLogDebug("Last rank was: %d", rank); 
+    wxLogDebug("Last rank was: %d", rank); 
     
     wxString mess = wxString(_("Rank: "));
     mess += rankToString(rank);    
@@ -640,14 +645,15 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         } 
     }
     
-    ::wxLogDebug("Handicap %d Simulations %d", handicap, simulations);        
+    wxLogDebug("Handicap %d Simulations %d", handicap, simulations);        
     
     {
         float komi = handicap ? 0.5f : 7.5f;
         m_State.init_game(m_ratedSize, komi);
+        ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
-        ::wxSafeYield();
+        //::wxSafeYield();
         m_State.place_free_handicap(abs(handicap));        
         calcdialog.Hide();
         ::wxEndBusyCursor();        
@@ -822,7 +828,7 @@ void MainFrame::doUndo(wxCommandEvent& event) {
     m_engineRunning.Wait();
 
     if (m_State.undo_move()) {
-        ::wxLogDebug("Undoing one move");
+        wxLogDebug("Undoing one move");
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);        
@@ -842,7 +848,7 @@ void MainFrame::doForward(wxCommandEvent& event) {
     m_engineRunning.Wait();
 
     if (m_State.forward_move()) {
-        ::wxLogDebug("Forward one move");
+        wxLogDebug("Forward one move");
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
@@ -893,12 +899,12 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
     if (dialog.ShowModal() == wxID_OK) {
         wxString path = dialog.GetPath();
         
-        ::wxLogDebug("Opening: " + path);
+        wxLogDebug("Opening: " + path);
         
         std::auto_ptr<SGFTree> tree(new SGFTree);
         try {
-            tree->load_from_file(path);  
-             ::wxLogDebug("Read %d moves", tree->count_mainline_moves());        
+            tree->load_from_file(path.ToStdString());
+             wxLogDebug("Read %d moves", tree->count_mainline_moves());        
             m_State = tree->get_mainline();       
         } catch (...) {
         }
@@ -932,7 +938,7 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
     if (dialog.ShowModal() == wxID_OK) {
         wxString path = dialog.GetPath();
         
-        ::wxLogDebug("Saving: " + path);
+        wxLogDebug("Saving: " + path);
                 
         wxFileOutputStream file(path);
         
@@ -1032,7 +1038,7 @@ void MainFrame::doAdjustClocks(wxCommandEvent& event) {
     mydialog.setTimeControl(*(m_State.get_timecontrol()));
 
     if (mydialog.ShowModal() == wxID_OK) {
-        ::wxLogDebug("Adjust clocks clicked"); 
+        wxLogDebug("Adjust clocks clicked"); 
 
         m_State.set_timecontrol(mydialog.getTimeControl());       
     } 
