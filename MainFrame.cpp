@@ -4,13 +4,14 @@
 #include "TBoardPanel.h"
 #include "Zobrist.h"
 #include "Random.h"
+#include "Utils.h"
+#include "Network.h"
+#include "Matcher.h"
+#include "AttribScores.h"
 #include "SGFTree.h"
 #include "EngineThread.h"
 #include "AboutDialog.h"
 #include "NewGameDialog.h"
-#include "NagDialog.h"
-#include "CopyProtectionDialog.h"
-#include "Utils.h"
 #include "ClockAdjustDialog.h"
 #include "RatedSizeDialog.h"
 #include "CalculateDialog.h"
@@ -20,33 +21,37 @@ DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
 DEFINE_EVENT_TYPE(EVT_STATUS_UPDATE)
 
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
-          :TMainFrame(frame, wxID_ANY, title) {   
-        
-    delete wxLog::SetActiveTarget(NULL); 
+          :TMainFrame(frame, wxID_ANY, title) {
+
+    delete wxLog::SetActiveTarget(NULL);
 
     wxLog::SetTimestamp("");
 
-    Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));   
-    Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate)); 
-    Connect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate)); 
-    
+    Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
+    Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
+    Connect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
+
     std::auto_ptr<Random> rng(new Random(5489UL));
-    Zobrist::init_zobrist(*rng);    
-    
-    // init game   
-    m_playerColor = FastBoard::BLACK;        
-    m_visitLimit = 5000;    
-    m_ratedGame = true;    
+    Zobrist::init_zobrist(*rng);
+    AttribScores::get_attribscores();
+    Matcher::get_Matcher();
+    Network::get_Network();
+
+    // init game
+    m_playerColor = FastBoard::BLACK;
+    m_visitLimit = 5000;
+    m_ratedGame = true;
     m_analyzing = false;
     m_pondering = false;
     m_disputing = false;
     m_ponderedOnce = true;
-    
-    m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), 1);     
-    m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1); 
-    m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1); 
-    m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1); 
-    m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9); 
+
+    m_netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), 1);
+    m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), 1);
+    m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1);
+    m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1);
+    m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1);
+    m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9);
 
     // This is a bug in 0.4.0, correct broken values.
     if (m_ratedSize != 9 && m_ratedSize != 19) {
@@ -54,55 +59,39 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     }
 
     m_State.init_game(m_ratedSize, 7.5f);
-    m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0);
+    m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
-    
+
+    m_menuSettings->FindItem(ID_NETWORKTOGGLE)->Check(m_netsEnabled);
     m_menuSettings->FindItem(ID_PASSTOGGLE)->Check(m_passEnabled);
     m_menuSettings->FindItem(ID_SOUNDSWITCH)->Check(m_soundEnabled);
     m_menuSettings->FindItem(ID_RESIGNTOGGLE)->Check(m_resignEnabled);
-    m_menuSettings->FindItem(ID_PONDERTOGGLE)->Check(m_ponderEnabled);    
-    
+    m_menuSettings->FindItem(ID_PONDERTOGGLE)->Check(m_ponderEnabled);
+
     // set global message area
     Utils::setGUIQueue(this->GetEventHandler(), EVT_STATUS_UPDATE);
-    // allow one engine running (engine finished signal)
-    m_engineRunning.Post();    
-    
-#ifdef LITEVERSION 
-    m_menuAnalyze->FindItem(ID_ANALYZE)->Enable(false);
-    m_toolBar1->EnableTool(ID_ANALYZE, false);
-#endif
-    
+
     SetIcon(wxICON(aaaa));
 
     SetSize(530, 640);
     Center();
-    
+
     wxCommandEvent evt;
     doNewRatedGame(evt);
 }
 
 MainFrame::~MainFrame() {
     stopEngine();
-    
-    if (m_engineRunning.WaitTimeout(2000) == wxSEMA_TIMEOUT) {
-        m_engineThread->Kill();
-    }
 
-    delete wxLog::SetActiveTarget(new wxLogStderr(NULL));       
-    m_panelBoard->setState(NULL); 
-    
+    delete wxLog::SetActiveTarget(new wxLogStderr(NULL));
+    m_panelBoard->setState(NULL);
+
     Disconnect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
     Disconnect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
     Disconnect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
-    
+
     Hide();
-    
-#ifdef LITEVERSION    
-    NagDialog dialog(this);
-    
-    dialog.ShowModal();
-#endif    
 }
 
 void MainFrame::doStatusUpdate(wxCommandEvent& event) {
@@ -119,14 +108,14 @@ void MainFrame::updateStatusBar(char *str) {
 }
 
 // do whatever we need to do if the visible board gets updated
-void MainFrame::doBoardUpdate(wxCommandEvent& event) {       
+void MainFrame::doBoardUpdate(wxCommandEvent& event) {
     wxString mess;
-    mess.Printf(_("Komi: %d.5; Prisoners white: %d/black: %d"), 
+    mess.Printf(_("Komi: %d.5; Prisoners white: %d/black: %d"),
                 (int)m_State.get_komi(),
                 m_State.board.get_prisoners(FastBoard::BLACK),
                 m_State.board.get_prisoners(FastBoard::WHITE)
                 );
-    m_statusBar->SetStatusText(mess, 0);     
+    m_statusBar->SetStatusText(mess, 0);
     Refresh();
 }
 
@@ -136,20 +125,25 @@ void MainFrame::doExit(wxCommandEvent & event) {
 
 void MainFrame::doSoundToggle(wxCommandEvent& event) {
     m_soundEnabled = !m_soundEnabled;
-    wxConfig::Get()->Write(wxT("soundEnabled"), m_soundEnabled);  
+    wxConfig::Get()->Write(wxT("soundEnabled"), m_soundEnabled);
+}
+
+void MainFrame::doNetToggle(wxCommandEvent& event) {
+    m_netsEnabled = !m_netsEnabled;
+    wxConfig::Get()->Write(wxT("netsEnabled"), m_netsEnabled);
 }
 
 void MainFrame::startEngine() {
-    if (m_engineRunning.TryWait() != wxSEMA_BUSY) { 
+    if (!m_engineThread) {
         if (!m_pondering) {
-            m_engineThread = new TEngineThread(&m_State, &m_engineRunning, this);
+            m_engineThread.reset(new TEngineThread(&m_State, this));
         } else {
             m_ponderState = m_State;
-            m_engineThread = new TEngineThread(&m_ponderState, &m_engineRunning, this);
+            m_engineThread.reset(new TEngineThread(&m_ponderState, this));
         }
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             wxLogDebug("Error starting engine");
-        } else {            
+        } else {
             // lock the board
             if (!m_pondering) {
                 m_panelBoard->lockState();
@@ -159,25 +153,26 @@ void MainFrame::startEngine() {
             m_engineThread->set_resigning(m_resignEnabled);
             m_engineThread->set_analyzing(m_analyzing | m_pondering);
             m_engineThread->set_quiet(!m_analyzing);
+            m_engineThread->set_nets(m_netsEnabled);
             if (m_passEnabled) {
                 m_engineThread->set_nopass(m_disputing);
             } else {
                 m_engineThread->set_nopass(true);
-            }            
+            }
             m_engineThread->Run();
+            SetStatusBar(_("Engine thinking..."), 1);
         }
     } else {
         wxLogDebug("Engine already running");
-    }                
+    }
 }
 
-void MainFrame::stopEngine() {
-    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
-        m_engineThread->stop_engine();        
-    } else {
-        // trywait success, repost
-        m_engineRunning.Post();
-    }
+bool MainFrame::stopEngine() {
+    if (!m_engineThread) return false;
+    m_engineThread->stop_engine();
+    m_engineThread->Wait();
+    m_engineThread.reset(nullptr);
+    return true;
 }
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
@@ -207,12 +202,13 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
     
     m_panelBoard->Refresh();
 }
-	
+
 void MainFrame::doNewMove(wxCommandEvent & event) {
     wxLogDebug(_("New move arrived"));
-    
+
+    stopEngine();
     m_panelBoard->unlockState();
-   
+
     if (m_analyzing) {
         m_analyzing = false;
         m_ponderedOnce = true;
@@ -220,41 +216,40 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     }
 
     if (m_pondering) {
-        stopEngine();
         m_pondering = false;
         m_ponderedOnce = true;
     } else {
         m_ponderedOnce = false;
     }
-    
+
     if (m_State.get_last_move() != FastBoard::PASS) {
         if (m_soundEnabled) {
             wxSound tock("IDW_TOCK", true);
-            tock.Play(wxSOUND_ASYNC);                              
+            tock.Play(wxSOUND_ASYNC);
         }
     } else {
-        if (m_State.get_to_move() == m_playerColor 
+        if (m_State.get_to_move() == m_playerColor
             && m_State.get_last_move() == FastBoard::PASS) {
-            
+
             ::wxMessageBox(_("Computer passes"), _("Pass"), wxOK, this);
         }
     }
-    
-    if (m_State.get_passes() >= 2 || m_State.get_last_move() == FastBoard::RESIGN) {                        
+
+    if (m_State.get_passes() >= 2 || m_State.get_last_move() == FastBoard::RESIGN) {
         float komi, score, prekomi, handicap;
-        bool won;    
+        bool won;
         scoreGame(won, komi, handicap, score, prekomi);
-        bool accepts = scoreDialog(komi, score, prekomi, handicap);       
+        bool accepts = scoreDialog(komi, score, prekomi, handicap);
         if (accepts || m_State.get_last_move() == FastBoard::RESIGN) {
-            ratedGameEnd(won);        
+            ratedGameEnd(won);
         } else {
             m_disputing = true;
             // undo passes
             m_State.undo_move();
             m_State.undo_move();
             if (m_State.get_to_move() != m_playerColor) {
-                wxLogDebug("Computer to move"); 
-                startEngine();                
+                wxLogDebug("Computer to move");
+                startEngine();
             } else {
                 m_pondering = true;
                 startEngine();
@@ -262,8 +257,8 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         }
     } else {
         if (m_State.get_to_move() != m_playerColor) {
-            wxLogDebug("Computer to move"); 
-            startEngine();                
+            wxLogDebug("Computer to move");
+            startEngine();
         } else {
             if (m_ponderEnabled && !m_ratedGame && !m_analyzing && !m_ponderedOnce
                 && !m_visitLimit) {
@@ -272,12 +267,12 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             }
         }
         m_panelBoard->setShowTerritory(false);
-    }	
-	
+    }
+
     // signal update of visible board
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
-    myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);     
+    myevent.SetEventObject(this);
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
 void MainFrame::doPaint(wxPaintEvent& event) {    
@@ -289,8 +284,8 @@ void MainFrame::doActivate(wxActivateEvent& event) {
     event.Skip();
 }
 
-void MainFrame::doResize(wxSizeEvent& event) { 
-    event.Skip();    
+void MainFrame::doResize(wxSizeEvent& event) {
+    event.Skip();
 }
 
 void MainFrame::doBoardResize(wxSizeEvent& event) {
@@ -299,42 +294,43 @@ void MainFrame::doBoardResize(wxSizeEvent& event) {
 
 void MainFrame::doNewGame(wxCommandEvent& event) {
     stopEngine();
-    m_engineRunning.Wait();
-    
+
     NewGameDialog mydialog(this);
-    
+
     if (mydialog.ShowModal() == wxID_OK) {
-        wxLogDebug("OK clicked"); 
-        
+        wxLogDebug("OK clicked");
+
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
         ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
         //::wxSafeYield();
-        m_State.place_free_handicap(mydialog.getHandicap());                
+        m_State.set_timecontrol(30 * 100, 0, 0, 0);
+        m_State.place_free_handicap(mydialog.getHandicap());
         calcdialog.Hide();
         ::wxEndBusyCursor();
-        m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0);
+        m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0, 0);
         m_visitLimit = mydialog.getSimulations();
-        m_playerColor = mydialog.getPlayerColor();           
+        m_playerColor = mydialog.getPlayerColor();
+        // XXX
+        m_netsEnabled = mydialog.getNetsEnabled();
+        m_menuSettings->FindItem(ID_NETWORKTOGGLE)->Check(m_netsEnabled);
+        wxConfig::Get()->Write(wxT("netsEnabled"), m_netsEnabled);
+        // XXX
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
 	m_pondering = false;
         m_disputing = false;
         m_ratedGame = false;
-        
-        m_engineRunning.Post();               
-        
+
         wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
-        myevent.SetEventObject(this);                        
-        ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);     
-    } else {
-        m_engineRunning.Post();
-    }                     
+        myevent.SetEventObject(this);
+        ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    }
 }
 
-void MainFrame::doSetRatedSize(wxCommandEvent& event) {   
+void MainFrame::doSetRatedSize(wxCommandEvent& event) {
     RatedSizeDialog mydialog(this);
     mydialog.ShowModal();
 
@@ -345,308 +341,330 @@ void MainFrame::doSetRatedSize(wxCommandEvent& event) {
     doNewRatedGame(event);
 }
 
-void MainFrame::doNewRatedGame(wxCommandEvent& event) {    
+void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     stopEngine();
-    m_engineRunning.Wait();
-    
-    m_analyzing = false;   
-    m_disputing = false;    
+
+    m_analyzing = false;
+    m_disputing = false;
     m_pondering = false;
-    
+
     int rank;
     if (m_ratedSize == 9) {
         rank = wxConfig::Get()->Read(wxT("LastRank9"), (long)-30);
     } else if (m_ratedSize == 19) {
         rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-9);
     }
-    
-    wxLogDebug("Last rank was: %d", rank); 
-    
+
+    wxLogDebug("Last rank was: %d", rank);
+
     wxString mess = wxString(_("Rank: "));
-    mess += rankToString(rank);    
+    mess += rankToString(rank);
     m_statusBar->SetStatusText(mess, 1);
 
-#ifndef LITEVERSION    
     this->SetTitle(_("Leela - ") + mess); 
-#else
-    this->SetTitle(_("Leela lite - ") + mess); 
-#endif
-    
+
+    int used_rank = rank;
     int handicap;
     int simulations;
-    
+
+    // Correct for neural network enabled
+    if (m_ratedSize == 19) {
+        if (m_netsEnabled) {
+            // Estimate it as being worth 6 stones
+            used_rank = rank - 6;
+        }
+    }
+
     if (m_ratedSize == 9) {
-        if (rank == -30) {
+        if (used_rank == -30) {
             simulations =  250;
             handicap = 5;
-        } else if (rank == -29) {
+        } else if (used_rank == -29) {
             simulations =  500;
             handicap = 5;
-        } else if (rank == -28) {
+        } else if (used_rank == -28) {
             simulations = 1000;
             handicap = 5;
-        } else if (rank == -27) {
+        } else if (used_rank == -27) {
             simulations = 2500;
             handicap = 5;
-        } else if (rank == -26) {
+        } else if (used_rank == -26) {
             simulations = 5000;
             handicap = 5;
-        } else if (rank == -25) {
+        } else if (used_rank == -25) {
             simulations = 10000;
             handicap = 5;
-        } else if (rank == -24) {
+        } else if (used_rank == -24) {
             simulations = 250;
             handicap = 4;
-        } else if (rank == -23) {
+        } else if (used_rank == -23) {
             simulations = 500;
             handicap = 4;
-        } else if (rank == -22) {
+        } else if (used_rank == -22) {
             simulations = 1000;
             handicap = 4;
-        } else if (rank == -21) {
+        } else if (used_rank == -21) {
             simulations = 2500;
             handicap = 4;
-        } else if (rank == -20) {
+        } else if (used_rank == -20) {
             simulations = 5000;
             handicap = 4;
-        } else if (rank == -19) {
+        } else if (used_rank == -19) {
             simulations = 10000;
             handicap = 4;
-        } else if (rank == -18) {
+        } else if (used_rank == -18) {
             simulations = 250;
             handicap = 3;
-        } else if (rank == -17) {
+        } else if (used_rank == -17) {
             simulations = 500;
             handicap = 3;
-        } else if (rank == -16) {
+        } else if (used_rank == -16) {
             simulations = 1000;
             handicap = 3;
-        } else if (rank == -15) {
+        } else if (used_rank == -15) {
             simulations = 2500;
             handicap = 3;
-        } else if (rank == -14) {
+        } else if (used_rank == -14) {
             simulations = 5000;
             handicap = 3;
-        } else if (rank == -13) {
+        } else if (used_rank == -13) {
             simulations = 10000;
             handicap = 3;
-        } else if (rank == -12) {
+        } else if (used_rank == -12) {
             simulations = 250;
             handicap = 2;
-        } else if (rank == -11) {
+        } else if (used_rank == -11) {
             simulations = 500;
             handicap = 2;
-        } else if (rank == -10) {
+        } else if (used_rank == -10) {
             simulations = 1000;
             handicap = 2;
-        } else if (rank == -9) {
+        } else if (used_rank == -9) {
             simulations = 2500;
             handicap = 2;
-        } else if (rank == -8) {
+        } else if (used_rank == -8) {
             simulations = 5000;
             handicap = 2;
-        } else if (rank == -7) {
+        } else if (used_rank == -7) {
             simulations = 10000;
             handicap = 2;
-        } else if (rank == -6) {
+        } else if (used_rank == -6) {
             simulations = 250;
             handicap = 0;
-        } else if (rank == -5) {
+        } else if (used_rank == -5) {
             simulations = 500;
             handicap = 0;
-        } else if (rank == -4) {
+        } else if (used_rank == -4) {
             simulations = 1000;
             handicap = 0;
-        } else if (rank == -3) {
+        } else if (used_rank == -3) {
             simulations = 2500;
             handicap = 0;
-        } else if (rank == -2) {
+        } else if (used_rank == -2) {
             simulations = 5000;
             handicap = 0;
-        } else if (rank == -1) {
+        } else if (used_rank == -1) {
             simulations = 10000;
             handicap = 0;
-        } else if (rank == 0) {
+        } else if (used_rank == 0) {
             simulations = 250;
             handicap = -2;
-        } else if (rank == 1) {
+        } else if (used_rank == 1) {
             simulations = 500;
             handicap = -2;
-        } else if (rank == 2) {
+        } else if (used_rank == 2) {
             simulations = 1000;
             handicap = -2;
-        } else if (rank == 3) {
+        } else if (used_rank == 3) {
             simulations = 2500;
             handicap = -2;
-        } else if (rank == 4) {
+        } else if (used_rank == 4) {
             simulations = 5000;
             handicap = -2;
-        } else if (rank == 5) {
+        } else if (used_rank == 5) {
             simulations = 10000;
             handicap = -2;
-        } else if (rank == 6) {
+        } else if (used_rank == 6) {
             simulations = 500;
             handicap = -3;
-        } else if (rank == 7) {
+        } else if (used_rank == 7) {
             simulations = 1000;
             handicap = -3;
-        } else if (rank == 8) {
+        } else if (used_rank == 8) {
             simulations = 2500;
             handicap = -3;
-        } else if (rank == 9) {
+        } else if (used_rank == 9) {
             simulations = 5000;
             handicap = -3;
-        } else if (rank == 10) {
+        } else if (used_rank == 10) {
             simulations = 10000;
             handicap = -3;
-        } else if (rank == 11) {
+        } else if (used_rank == 11) {
             simulations = 2500;
             handicap = -4;
-        } else if (rank == 12) {
+        } else if (used_rank == 12) {
             simulations = 5000;
             handicap = -4;
-        } else if (rank == 13) {
+        } else if (used_rank == 13) {
             simulations = 10000;
             handicap = -4;
         }
     } else if (m_ratedSize == 19) {
-        if (rank == -30) {
+        if (used_rank == -36) {
+            simulations = 5000;
+            handicap = 33;
+        } else if (used_rank == -35) {
+            simulations = 5000;
+            handicap = 32;
+        } else if (used_rank == -34) {
+            simulations = 5000;
+            handicap = 31;
+        } else if (used_rank == -33) {
+            simulations = 5000;
+            handicap = 30;
+        } else if (used_rank == -32) {
+            simulations = 5000;
+            handicap = 29;
+        } else if (used_rank == -31) {
             simulations = 5000;
             handicap = 28;
-        } else if (rank == -29) {
+        } else if (used_rank == -30) {
             simulations = 5000;
             handicap = 27;
-        } else if (rank == -28) {
+        } else if (used_rank == -29) {
+            simulations = 5000;
+            handicap = 27;
+        } else if (used_rank == -28) {
             simulations = 5000;
             handicap = 26;
-        } else if (rank == -27) {
+        } else if (used_rank == -27) {
             simulations = 5000;
             handicap = 25;
-        } else if (rank == -26) {
+        } else if (used_rank == -26) {
             simulations = 5000;
             handicap = 24;
-        } else if (rank == -25) {
+        } else if (used_rank == -25) {
             simulations = 5000;
             handicap = 23;
-        } else if (rank == -24) {
+        } else if (used_rank == -24) {
             simulations = 5000;
             handicap = 22;
-        } else if (rank == -23) {
+        } else if (used_rank == -23) {
             simulations = 5000;
             handicap = 21;
-        } else if (rank == -22) {
+        } else if (used_rank == -22) {
             simulations = 5000;
             handicap = 20;
-        } else if (rank == -21) {
+        } else if (used_rank == -21) {
             simulations = 5000;
             handicap = 19;
-        } else if (rank == -20) {
+        } else if (used_rank == -20) {
             simulations = 5000;
             handicap = 18;
-        } else if (rank == -19) {
+        } else if (used_rank == -19) {
             simulations = 5000;
             handicap = 17;
-        } else if (rank == -18) {
+        } else if (used_rank == -18) {
             simulations = 5000;
             handicap = 16;
-        } else if (rank == -17) {
+        } else if (used_rank == -17) {
             simulations = 5000;
             handicap = 15;
-        } else if (rank == -16) {
+        } else if (used_rank == -16) {
             simulations = 5000;
             handicap = 14;
-        } else if (rank == -15) {
+        } else if (used_rank == -15) {
             simulations = 5000;
             handicap = 13;
-        } else if (rank == -14) {
+        } else if (used_rank == -14) {
             simulations = 5000;
             handicap = 12;
-        } else if (rank == -13) {
+        } else if (used_rank == -13) {
             simulations = 5000;
             handicap = 11;
-        } else if (rank == -12) {
+        } else if (used_rank == -12) {
             simulations = 5000;
             handicap = 10;
-        } else if (rank == -11) {
+        } else if (used_rank == -11) {
             simulations = 5000;
             handicap = 9;
-        } else if (rank == -10) {
+        } else if (used_rank == -10) {
             simulations = 5000;
             handicap = 8;
-        } else if (rank == -9) {
+        } else if (used_rank == -9) {
             simulations = 5000;
             handicap = 7;
-        } else if (rank == -8) {
+        } else if (used_rank == -8) {
             simulations = 5000;
             handicap = 6;
-        } else if (rank == -7) {
+        } else if (used_rank == -7) {
             simulations = 5000;
             handicap = 5;
-        } else if (rank == -6) {
+        } else if (used_rank == -6) {
             simulations = 5000;
             handicap = 4;
-        } else if (rank == -5) {
+        } else if (used_rank == -5) {
             simulations = 5000;
             handicap = 3;
-        } else if (rank == -4) {
+        } else if (used_rank == -4) {
             simulations = 5000;
             handicap = 2;
-        } else if (rank == -3) {
+        } else if (used_rank == -3) {
             simulations = 2500;
             handicap = 0;
-        } else if (rank == -2) {
+        } else if (used_rank == -2) {
             simulations = 5000;
             handicap = 0;
-        } else if (rank == -1) {
+        } else if (used_rank == -1) {
             simulations = 10000;
             handicap = 0;
-        } else if (rank == 0) {
+        } else if (used_rank == 0) {
             simulations = 20000;
             handicap = 0;
-        } else if (rank == 1) {
+        } else if (used_rank == 1) {
             simulations =  5000;
             handicap = -2;
-        } else if (rank == 2) {
+        } else if (used_rank == 2) {
             simulations = 10000;
             handicap = -2;
-        } else if (rank == 3) {
-            simulations = 7500;
+        } else if (used_rank == 3) {
+            simulations =  7500;
             handicap = -3;
-        } else if (rank == 4) {
+        } else if (used_rank == 4) {
             simulations = 10000;
             handicap = -4;
-        } else if (rank == 5) {
+        } else if (used_rank == 5) {
             simulations = 10000;
             handicap = -6;
-        } else if (rank == 6) {
+        } else if (used_rank == 6) {
             simulations = 10000;
             handicap = -8;
-        } else if (rank == 7) {
+        } else if (used_rank == 7) {
             simulations = 10000;
             handicap = -12;
-        } else if (rank == 8) {
+        } else if (used_rank == 8) {
             simulations = 10000;
+            handicap = -14;
+        } else if (used_rank == 9) {
+            simulations = 15000;
             handicap = -16;
-        } else if (rank == 9) {
+        } else if (used_rank == 10) {
+            simulations = 15000;
+            handicap = -18;
+        } else if (used_rank == 11) {
             simulations = 15000;
             handicap = -20;
-        } else if (rank == 10) {
-            simulations = 15000;
-            handicap = -25;
-        } else if (rank == 11) {
-            simulations = 15000;
-            handicap = -30;
-        } else if (rank == 12) {
+        } else if (used_rank == 12) {
             simulations = 20000;
-            handicap = -40;
-        } else if (rank == 13) {
+            handicap = -22;
+        } else if (used_rank == 13) {
             simulations = 20000;
-            handicap = -50;
-        } 
+            handicap = -24;
+        }
     }
-    
-    wxLogDebug("Handicap %d Simulations %d", handicap, simulations);        
-    
+
+    wxLogDebug("Handicap %d Simulations %d", handicap, simulations);
+
     {
         float komi = handicap ? 0.5f : 7.5f;
         m_State.init_game(m_ratedSize, komi);
@@ -654,23 +672,22 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         CalculateDialog calcdialog(this);
         calcdialog.Show();
         //::wxSafeYield();
-        m_State.place_free_handicap(abs(handicap));        
+        m_State.set_timecontrol(30 * 100, 0, 0, 0);
+        m_State.place_free_handicap(abs(handicap));
         calcdialog.Hide();
-        ::wxEndBusyCursor();        
-        // max 60 minutes per game    
-        m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0);
+        ::wxEndBusyCursor();
+        // max 60 minutes per game
+        m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_ratedGame = true;
     }
-        
-    m_engineRunning.Post();      
-    
+
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
-    myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);             
+    myevent.SetEventObject(this);
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
 void MainFrame::ratedGameEnd(bool won) {
@@ -719,8 +736,7 @@ void MainFrame::ratedGameEnd(bool won) {
 void MainFrame::scoreGame(bool & won, float & komi, float & handicap, 
                           float & score, float & prekomi) {
     stopEngine();
-    m_engineRunning.Wait();        
-    
+
     if (m_State.get_last_move() == FastBoard::RESIGN) {
         komi = m_State.get_komi();
         handicap = m_State.get_handicap();
@@ -741,11 +757,9 @@ void MainFrame::scoreGame(bool & won, float & komi, float & handicap,
     
     won = (score > 0.0f && m_playerColor == FastBoard::BLACK)
           || (score < 0.0f && m_playerColor == FastBoard::WHITE);
-    
-    m_panelBoard->doTerritory();      
-    m_panelBoard->setShowTerritory(true);    
-    
-    m_engineRunning.Post();        
+
+    m_panelBoard->doTerritory();
+    m_panelBoard->setShowTerritory(true);
 }
 
 bool MainFrame::scoreDialog(float komi, float score, float prekomi, float handicap) {
@@ -810,42 +824,35 @@ wxString MainFrame::rankToString(int rank) {
 }
 
 void MainFrame::doPass(wxCommandEvent& event) {
-    stopEngine();
-    m_engineRunning.Wait();
+    stopEngine();    
 
     m_State.play_pass();
     //::wxLogMessage("User passes");
-    
-    m_engineRunning.Post();
-    
+
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
-    myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);    
+    myevent.SetEventObject(this);
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
 void MainFrame::doUndo(wxCommandEvent& event) {
     stopEngine();
-    m_engineRunning.Wait();
 
     if (m_State.undo_move()) {
         wxLogDebug("Undoing one move");
     }
     m_playerColor = m_State.get_to_move();
-    m_panelBoard->setPlayerColor(m_playerColor);        
+    m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
-    
+
     m_ratedGame = false;
-    
-    m_engineRunning.Post();
-    
+
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
-    myevent.SetEventObject(this);                        
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);    
+    myevent.SetEventObject(this);
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
 void MainFrame::doForward(wxCommandEvent& event) {
     stopEngine();
-    m_engineRunning.Wait();
 
     if (m_State.forward_move()) {
         wxLogDebug("Forward one move");
@@ -853,11 +860,9 @@ void MainFrame::doForward(wxCommandEvent& event) {
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
-    
-    m_engineRunning.Post();
-        
+
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
-    myevent.SetEventObject(this);                        
+    myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
@@ -878,7 +883,7 @@ void MainFrame::doGoRules(wxCommandEvent& event) {
 }
 
 void MainFrame::doHomePage(wxCommandEvent& event) {
-   ::wxLaunchDefaultBrowser("http://www.sjeng.org/leela");
+   ::wxLaunchDefaultBrowser("https://sjeng.org/leela");
 }
 
 void MainFrame::doHelpAbout(wxCommandEvent& event) {
@@ -887,149 +892,123 @@ void MainFrame::doHelpAbout(wxCommandEvent& event) {
     myabout.ShowModal();    
 }
 
-void MainFrame::doOpenSGF(wxCommandEvent& event) {    
+void MainFrame::doOpenSGF(wxCommandEvent& event) {
     stopEngine();
-    m_engineRunning.Wait();    
-    
+
     wxString caption = _("Choose a file");
     wxString wildcard = _("Go games (*.sgf)|*.sgf");
-    wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
+    wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard,
                         wxFD_OPEN | wxFD_CHANGE_DIR | wxFD_FILE_MUST_EXIST);
-    
+
     if (dialog.ShowModal() == wxID_OK) {
         wxString path = dialog.GetPath();
-        
+
         wxLogDebug("Opening: " + path);
-        
+
         std::auto_ptr<SGFTree> tree(new SGFTree);
         try {
             tree->load_from_file(path.ToStdString());
-             wxLogDebug("Read %d moves", tree->count_mainline_moves());        
-            m_State = tree->get_mainline();       
+             wxLogDebug("Read %d moves", tree->count_mainline_moves());
+            m_State = tree->get_mainline();
         } catch (...) {
         }
-                
+
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
-        
-        m_engineRunning.Post();
-        
+
         //signal board change
         wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
-        myevent.SetEventObject(this);                        
+        myevent.SetEventObject(this);
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
-    } else {
-        m_engineRunning.Post();
-    }        
+    }
 }
 
 void MainFrame::doSaveSGF(wxCommandEvent& event) {
     stopEngine();
-    m_engineRunning.Wait();
-    
+
     std::string sgfgame = SGFTree::state_to_string(&m_State, !m_playerColor);
-    
+
     wxString caption = _("Choose a file");
     wxString wildcard = _("Go games (*.sgf)|*.sgf");
     wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
                         wxFD_SAVE | wxFD_CHANGE_DIR | wxFD_OVERWRITE_PROMPT);
-                        
+
     if (dialog.ShowModal() == wxID_OK) {
         wxString path = dialog.GetPath();
-        
+
         wxLogDebug("Saving: " + path);
-                
+
         wxFileOutputStream file(path);
-        
+
         if (file.IsOk()) {
             file.Write(sgfgame.c_str(), sgfgame.size());  
-        }        
-    }        
-    
-    m_engineRunning.Post();
+        }
+    }
 }
 
-void MainFrame::doForceMove(wxCommandEvent& event) {        
-    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {        
-        stopEngine();        
-
-        m_analyzing = false;		
-
-        m_engineRunning.Wait();
-        m_engineRunning.Post();
+void MainFrame::doForceMove(wxCommandEvent& event) {
+    bool wasRunning = stopEngine();
+    if (wasRunning) {
+        m_analyzing = false;
 
         if (m_pondering) {
-            m_pondering = false;	
-            m_playerColor = !m_State.get_to_move();    
+            m_pondering = false;
+            m_playerColor = !m_State.get_to_move();
             m_panelBoard->setPlayerColor(m_playerColor);
             m_ratedGame = false;
-            m_analyzing = false;			
+            m_analyzing = false;
 
             startEngine();
-        }		
-    } else {   
-        m_engineRunning.Post();
-
-        m_playerColor = !m_State.get_to_move();    
+        }
+    } else {
+        m_playerColor = !m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
-    
+
         m_ratedGame = false;
         m_analyzing = false;
 	m_pondering = false;
-    
+
         startEngine();
-    }                    
+    }
 }
 
 void MainFrame::doPassToggle(wxCommandEvent& event) {
     m_passEnabled = !m_passEnabled;
-    wxConfig::Get()->Write(wxT("passEnabled"), m_passEnabled);  
+    wxConfig::Get()->Write(wxT("passEnabled"), m_passEnabled);
 }
 
 void MainFrame::doResignToggle(wxCommandEvent& event) {
     m_resignEnabled = !m_resignEnabled;
-    wxConfig::Get()->Write(wxT("resignEnabled"), m_resignEnabled);  
+    wxConfig::Get()->Write(wxT("resignEnabled"), m_resignEnabled);
 }
 
 void MainFrame::doResign(wxCommandEvent& event) {
     if (m_State.get_to_move() == m_playerColor) {
         stopEngine();
-        m_engineRunning.Wait();        
-            
+
         m_State.play_move(FastBoard::RESIGN);
         wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
-        myevent.SetEventObject(this);                        
+        myevent.SetEventObject(this);
         ::wxPostEvent(GetEventHandler(), myevent);
-        
-        m_engineRunning.Post();
     }
 }
 
 void MainFrame::doAnalyze(wxCommandEvent& event) {
-    if (m_engineRunning.TryWait() == wxSEMA_BUSY) {
-        stopEngine();    
-
-        m_engineRunning.Wait();
-        m_engineRunning.Post();
-
-        m_ponderedOnce = true;
-
+    bool wasRunning = stopEngine();
+    if (wasRunning) {
         if (m_pondering) {
-            m_pondering = false;   
-            m_analyzing = true;   
-            startEngine();  
-        } 
+            m_pondering = false;
+            m_analyzing = true;
+            startEngine();
+        }
     } else {
-        m_engineRunning.Post();
-
         m_analyzing = true;
-	m_pondering = false;
+        m_pondering = false;
         m_ratedGame = false;
-        m_ponderedOnce = true;
-                                    
-        startEngine();                
+        startEngine();
     }
+    m_ponderedOnce = true;
 }
 
 void MainFrame::doAdjustClocks(wxCommandEvent& event) {
@@ -1038,10 +1017,10 @@ void MainFrame::doAdjustClocks(wxCommandEvent& event) {
     mydialog.setTimeControl(*(m_State.get_timecontrol()));
 
     if (mydialog.ShowModal() == wxID_OK) {
-        wxLogDebug("Adjust clocks clicked"); 
+        wxLogDebug("Adjust clocks clicked");
 
-        m_State.set_timecontrol(mydialog.getTimeControl());       
-    } 
+        m_State.set_timecontrol(mydialog.getTimeControl());
+    }
 }
 
 void MainFrame::doPonderToggle(wxCommandEvent& event) {
@@ -1049,5 +1028,5 @@ void MainFrame::doPonderToggle(wxCommandEvent& event) {
     if (!m_ponderEnabled) {
         stopEngine();
     }
-    wxConfig::Get()->Write(wxT("ponderEnabled"), m_ponderEnabled);  
+    wxConfig::Get()->Write(wxT("ponderEnabled"), m_ponderEnabled);
 }

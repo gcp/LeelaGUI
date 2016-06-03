@@ -102,6 +102,13 @@
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuNetToggle">
+					<label>Use _Neural Network\tAlt-N</label>
+					<help>Enable use of Neural Network</help>
+					<checked>1</checked>
+					<checkable>1</checkable>
+				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuPassToggle">
 					<label>Engine _passes</label>
 					<help>Allows the engine to pass</help>
@@ -115,13 +122,13 @@
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="m_menuItemPonder">
-					<label>Engine _ponders</label>
+					<label>Engine p_onders</label>
 					<help>Allows the engine to think during the opponents time</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItemSound">
-					<label>_Sound</label>
+					<label>_Sound enabled</label>
 					<help>Enable or disable sound</help>
 					<checked>1</checked>
 					<checkable>1</checkable>
@@ -247,7 +254,7 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>446,434</size>
+		<size>449,489</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
 			<minsize>260,250</minsize>
@@ -260,7 +267,7 @@
 					<orient>wxHORIZONTAL</orient>
 					<object class="sizeritem">
 						<option>1</option>
-						<flag>wxALL</flag>
+						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
@@ -277,7 +284,7 @@
 										<object class="wxRadioBox" name="m_radioBoxBoardSize">
 											<style>wxRA_SPECIFY_ROWS</style>
 											<label>Board size</label>
-											<selection>3</selection>
+											<selection>4</selection>
 											<content>
 												<item>9 x 9</item>
 												<item>13 x 13</item>
@@ -390,13 +397,13 @@
 					</object>
 					<object class="sizeritem">
 						<option>4</option>
-						<flag>wxALL|wxEXPAND</flag>
+						<flag>wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
 								<option>0</option>
-								<flag>wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxColor">
 									<style>wxRA_SPECIFY_ROWS</style>
@@ -416,7 +423,7 @@
 								<object class="wxRadioBox" name="m_radioBoxLevel">
 									<style>wxRA_SPECIFY_COLS</style>
 									<label>Engine max level</label>
-									<selection>6</selection>
+									<selection>0</selection>
 									<content>
 										<item>100 simulations</item>
 										<item>500 simulations</item>
@@ -429,13 +436,31 @@
 									<dimension>1</dimension>
 								</object>
 							</object>
+							<object class="sizeritem">
+								<option>1</option>
+								<flag>wxEXPAND</flag>
+								<border>5</border>
+								<object class="wxStaticBoxSizer">
+									<orient>wxVERTICAL</orient>
+									<label>Engine settings</label>
+									<object class="sizeritem">
+										<option>0</option>
+										<flag>wxALL</flag>
+										<border>5</border>
+										<object class="wxCheckBox" name="m_checkNeuralNet">
+											<label>Use Neural Network</label>
+											<checked>1</checked>
+										</object>
+									</object>
+								</object>
+							</object>
 						</object>
 					</object>
 				</object>
 			</object>
 			<object class="sizeritem">
 				<option>0</option>
-				<flag>wxALIGN_RIGHT|wxALL|wxEXPAND</flag>
+				<flag>wxALIGN_LEFT|wxALL</flag>
 				<border>2</border>
 				<object class="wxStdDialogButtonSizer">
 					<object class="button">
@@ -458,7 +483,6 @@
 	</object>
 	<object class="wxDialog" name="TAboutDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>344,214</size>
 		<title>About</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -469,12 +493,23 @@
 				<object class="wxStaticText" name="m_staticTextVersion">
 					<style>wxALIGN_CENTRE</style>
 					<font>
+						<size>11</size>
 						<style>normal</style>
 						<weight>bold</weight>
 						<underlined>0</underlined>
 					</font>
-					<label>Leela version 0.4.6</label>
+					<label>Leela version 0.6.2</label>
 					<wrap>-1</wrap>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStaticText" name="m_staticTextEngine">
+					<style>wxALIGN_CENTRE</style>
+					<label>OpenCL/BLAS Engine goes here and can be a very long string</label>
+					<wrap>400</wrap>
 				</object>
 			</object>
 			<object class="sizeritem">
@@ -502,7 +537,7 @@
 				<flag>wxALIGN_CENTER|wxALL</flag>
 				<border>5</border>
 				<object class="wxHyperlinkCtrl" name="m_hyperlink3">
-					<label>https://www.sjeng.org/leela</label>
+					<label>https://sjeng.org/leela</label>
 					<url>https://www.sjeng.org/leela</url>
 					<style>wxHL_DEFAULT_STYLE</style>
 				</object>
@@ -518,169 +553,8 @@
 			</object>
 		</object>
 	</object>
-	<object class="wxDialog" name="TNagDialog">
-		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>256,195</size>
-		<title>Support Leela!</title>
-		<centered>1</centered>
-		<object class="wxBoxSizer">
-			<orient>wxVERTICAL</orient>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL</flag>
-				<border>5</border>
-				<object class="wxStaticText" name="m_staticText8">
-					<label>If you like Leela lite, you might also like:</label>
-					<wrap>-1</wrap>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
-				<border>5</border>
-				<object class="wxStaticText" name="m_staticText9">
-					<font>
-						<style>normal</style>
-						<weight>bold</weight>
-						<underlined>0</underlined>
-					</font>
-					<label>Leela - full version</label>
-					<wrap>-1</wrap>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
-				<border>5</border>
-				<object class="wxStaticText" name="m_staticText81">
-					<style>wxALIGN_CENTRE</style>
-					<font>
-						<style>normal</style>
-						<weight>bold</weight>
-						<underlined>0</underlined>
-					</font>
-					<label>including 19 x 19 and top levels</label>
-					<wrap>-1</wrap>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
-				<border>5</border>
-				<object class="wxHyperlinkCtrl" name="m_hyperlink1">
-					<label></label>
-					<url>http://www.sjeng.org/leela</url>
-					<style>wxHL_DEFAULT_STYLE</style>
-					<font>
-						<style>normal</style>
-						<weight>normal</weight>
-						<underlined>0</underlined>
-					</font>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER|wxALL</flag>
-				<border>5</border>
-				<object class="wxButton" name="m_button2">
-					<label>OK</label>
-					<default>0</default>
-				</object>
-			</object>
-		</object>
-	</object>
-	<object class="wxDialog" name="TCopyProtectionDialog">
-		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>267,194</size>
-		<title>Copy protection</title>
-		<object class="wxBoxSizer">
-			<orient>wxVERTICAL</orient>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxStaticText" name="m_staticText12">
-					<label>Please enter your name and serial number:</label>
-					<wrap>-1</wrap>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>1</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxFlexGridSizer">
-					<rows>2</rows>
-					<cols>2</cols>
-					<vgap>0</vgap>
-					<hgap>0</hgap>
-					<growablecols>0,1</growablecols>
-					<growablerows></growablerows>
-					<object class="sizeritem">
-						<option>0</option>
-						<flag>wxALIGN_CENTER|wxALL|wxEXPAND</flag>
-						<border>5</border>
-						<object class="wxStaticText" name="m_staticText14">
-							<style>wxALIGN_CENTRE</style>
-							<label>Name</label>
-							<wrap>-1</wrap>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>1</option>
-						<flag>wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND</flag>
-						<border>5</border>
-						<object class="wxTextCtrl" name="m_textCtrlName">
-							<value></value>
-							<maxlength>0</maxlength>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>0</option>
-						<flag>wxALIGN_RIGHT|wxALL|wxEXPAND</flag>
-						<border>5</border>
-						<object class="wxStaticText" name="m_staticText15">
-							<style>wxALIGN_CENTRE</style>
-							<label>Code</label>
-							<wrap>-1</wrap>
-						</object>
-					</object>
-					<object class="sizeritem">
-						<option>2</option>
-						<flag>wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND</flag>
-						<border>5</border>
-						<object class="wxTextCtrl" name="m_textCtrlCode">
-							<value></value>
-							<maxlength>0</maxlength>
-						</object>
-					</object>
-				</object>
-			</object>
-			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALL|wxEXPAND</flag>
-				<border>5</border>
-				<object class="wxStdDialogButtonSizer">
-					<object class="button">
-						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
-						<border>5</border>
-						<object class="wxButton" name="wxID_OK">
-							<label>&amp;OK</label>
-						</object>
-					</object>
-					<object class="button">
-						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
-						<border>5</border>
-						<object class="wxButton" name="wxID_CANCEL">
-							<label>&amp;Cancel</label>
-						</object>
-					</object>
-				</object>
-			</object>
-		</object>
-	</object>
 	<object class="wxDialog" name="TClockAdjustDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>258,237</size>
 		<title>Adjust clocks</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
@@ -697,7 +571,6 @@
 						<border>5</border>
 						<object class="wxSpinCtrl" name="m_spinCtrlBlackMins">
 							<style>wxSP_ARROW_KEYS</style>
-							<size>120,-1</size>
 							<value>30</value>
 							<min>0</min>
 							<max>999</max>
@@ -729,7 +602,6 @@
 						<border>5</border>
 						<object class="wxSpinCtrl" name="m_spinCtrlWhiteMins">
 							<style>wxSP_ARROW_KEYS</style>
-							<size>120,-1</size>
 							<value>30</value>
 							<min>0</min>
 							<max>999</max>
@@ -773,7 +645,6 @@
 	</object>
 	<object class="wxDialog" name="TRatedSizeDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>228,76</size>
 		<title>Select board size</title>
 		<object class="wxBoxSizer">
 			<orient>wxHORIZONTAL</orient>
@@ -799,7 +670,6 @@
 	</object>
 	<object class="wxDialog" name="TCalculateDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
-		<size>210,62</size>
 		<title>Calculation in progress</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>

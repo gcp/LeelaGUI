@@ -30,6 +30,7 @@ public:
     int getSimulations();
     int getPlayerColor();
     int getTimeControl();
+    bool getNetsEnabled();
 };
 
 #endif // __NewGameDialog__

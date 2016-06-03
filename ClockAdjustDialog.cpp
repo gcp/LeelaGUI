@@ -17,11 +17,11 @@ void ClockAdjustDialog::doCancel( wxCommandEvent& event ) {
 void ClockAdjustDialog::doOK( wxCommandEvent& event ) {
     int tleftmins = m_spinCtrlBlackMins->GetValue();
     int tleftsecs = m_spinCtrlBlackSecs->GetValue();
-    m_tc.adjust_time(FastBoard::BLACK, (tleftmins * 60 + tleftsecs) * 100, 25);
+    m_tc.adjust_time(FastBoard::BLACK, (tleftmins * 60 + tleftsecs) * 100, 0);
 
     tleftmins = m_spinCtrlWhiteMins->GetValue();
     tleftsecs = m_spinCtrlWhiteSecs->GetValue();
-    m_tc.adjust_time(FastBoard::WHITE, (tleftmins * 60 + tleftsecs) * 100, 25);
+    m_tc.adjust_time(FastBoard::WHITE, (tleftmins * 60 + tleftsecs) * 100, 0);
     event.Skip();
 }
 

@@ -9,10 +9,10 @@
 #include <wx/dir.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
-#include <wx/regex.h>  
+#include <wx/regex.h>
 #include <wx/config.h>
 #include <wx/listctrl.h>
-#include <wx/calctrl.h>     
+#include <wx/calctrl.h>
 #include <wx/dcbuffer.h>
 
 // more wxWidgets headers
@@ -46,12 +46,12 @@
 
 // STD headers
 #include <utility>
-#include <memory>   
+#include <memory>
 #include <vector>
 #include <set>
-#include <map>    
+#include <map>
 #include <algorithm>
-#include <functional>              
+#include <functional>
 
 // Boost headers
 #include <boost/lexical_cast.hpp>

@@ -27,12 +27,9 @@ void NewGameDialog::doInit( wxInitDialogEvent& event ) {
     
     int color = wxConfig::Get()->Read(wxT("DefaultColor"), (long)0);
     m_radioBoxColor->SetSelection(color);
-        
-#ifdef LITEVERSION
-    m_radioBoxBoardSize->Enable(2, false);
-    m_radioBoxLevel->Enable(5, false);
-    m_radioBoxLevel->Enable(6, false);
-#endif  
+
+    bool nets = wxConfig::Get()->Read(wxT("netsEnabled"), (bool)1);
+    m_checkNeuralNet->SetValue(nets);
 }
 
 void NewGameDialog::doCancel( wxCommandEvent& event ) {
@@ -40,26 +37,29 @@ void NewGameDialog::doCancel( wxCommandEvent& event ) {
 }
 
 void NewGameDialog::doOK( wxCommandEvent& event ) {
-    // XXX: save settings        
+    // XXX: save settings
     int size = m_radioBoxBoardSize->GetSelection();
     wxConfig::Get()->Write(wxT("DefaultBoardSize"), size);
-    
+
     int simulations = m_radioBoxLevel->GetSelection();
     wxConfig::Get()->Write(wxT("DefaultSimulations"), simulations);
-    
+
     int color = m_radioBoxColor->GetSelection();
     wxConfig::Get()->Write(wxT("DefaultColor"), color);
-    
+
     int handicap = m_spinCtrlHandicap->GetValue();
     wxConfig::Get()->Write(wxT("DefaultHandicap"), handicap);
-    
+
     int komi = m_spinCtrlKomi->GetValue();
     wxConfig::Get()->Write(wxT("DefaultKomi"), komi);
-    
+
     int minutes = m_spinCtrlTime->GetValue();
-    wxConfig::Get()->Write(wxT("DefaultMinutes"), minutes);  
-    
-    event.Skip();          
+    wxConfig::Get()->Write(wxT("DefaultMinutes"), minutes);
+
+    bool nets = m_checkNeuralNet->GetValue();
+    wxConfig::Get()->Write(wxT("netsEnabled"), nets);
+
+    event.Skip();
 }
 
 float NewGameDialog::getKomi() {
@@ -129,4 +129,8 @@ int NewGameDialog::getTimeControl() {
 
 void NewGameDialog::doHandicapUpdate( wxSpinEvent& event ) {    
     m_spinCtrlKomi->SetValue(0);
+}
+
+bool NewGameDialog::getNetsEnabled() {
+    return m_checkNeuralNet->GetValue();
 }

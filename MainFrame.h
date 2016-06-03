@@ -1,6 +1,7 @@
 #ifndef MAINFRAME_H
 #define MAINFRAME_H
 
+#include <memory>
 #include "stdafx.h"
 #include "GUI.h"
 #include "FastBoard.h"
@@ -17,7 +18,7 @@ class MainFrame : public TMainFrame {
         ~MainFrame();
         void SetStatusBar(wxString mess, int pos);
 
-    private:                                  	                
+    private:
 	virtual void doActivate(wxActivateEvent& event);
 	virtual void doPaint(wxPaintEvent& event);		
 	virtual void doNewMove(wxCommandEvent& event);
@@ -39,6 +40,7 @@ class MainFrame : public TMainFrame {
         virtual void doSaveSGF(wxCommandEvent& event);
         virtual void doBack10(wxCommandEvent& event);
 	virtual void doForward10(wxCommandEvent& event);
+        virtual void doNetToggle(wxCommandEvent& event);
 	virtual void doSoundToggle(wxCommandEvent& event);
 	virtual void doForceMove(wxCommandEvent& event);
 	virtual void doToggleTerritory(wxCommandEvent& event);
@@ -46,26 +48,27 @@ class MainFrame : public TMainFrame {
 	virtual void doResignToggle(wxCommandEvent& event);
 	virtual void doPassToggle(wxCommandEvent& event);
         virtual void doPonderToggle(wxCommandEvent& event);
-	virtual void doStatusUpdate(wxCommandEvent& event);        
+	virtual void doStatusUpdate(wxCommandEvent& event);
 	virtual void doResign(wxCommandEvent& event);
 	virtual void doAnalyze(wxCommandEvent& event);
         virtual void doAdjustClocks(wxCommandEvent& event);
-	
+
 	void startEngine();
 	void startPonder();
-	void stopEngine();
+	bool stopEngine();
 	// true = user accepts score
 	bool scoreDialog(float komi, float score, float prekomi, float handicap);
 	void scoreGame(bool & won, float & komi, float & handicap, float & score, float & prescore);
 	void ratedGameEnd(bool won);
 	wxString rankToString(int rank);
-	void updateStatusBar(char *str);	
-	
+	void updateStatusBar(char *str);
+
 	GameState m_State;
 	GameState m_ponderState;
 	int m_playerColor;
 	int m_visitLimit;
         int m_ratedSize;
+        bool m_netsEnabled;
 	bool m_soundEnabled;
 	bool m_resignEnabled;
         bool m_ponderEnabled;
@@ -75,8 +78,8 @@ class MainFrame : public TMainFrame {
 	bool m_pondering;
 	bool m_disputing;
         bool m_ponderedOnce;
-	wxSemaphore m_engineRunning;
-	TEngineThread * m_engineThread;
+	std::unique_ptr<TEngineThread> m_engineThread;
+        friend class TEngineThread;
 };
 
 #endif

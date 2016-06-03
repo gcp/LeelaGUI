@@ -34,6 +34,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
+	EVT_MENU( ID_NETWORKTOGGLE, TMainFrame::_wxFB_doNetToggle )
 	EVT_MENU( ID_PASSTOGGLE, TMainFrame::_wxFB_doPassToggle )
 	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
 	EVT_MENU( ID_PONDERTOGGLE, TMainFrame::_wxFB_doPonderToggle )
@@ -151,6 +152,13 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menuSettings->AppendSeparator();
 	
+	wxMenuItem* m_menuNetToggle;
+	m_menuNetToggle = new wxMenuItem( m_menuSettings, ID_NETWORKTOGGLE, wxString( _("Use &Neural Network") ) + wxT('\t') + wxT("Alt-N"), _("Enable use of Neural Network"), wxITEM_CHECK );
+	m_menuSettings->Append( m_menuNetToggle );
+	m_menuNetToggle->Check( true );
+	
+	m_menuSettings->AppendSeparator();
+	
 	wxMenuItem* m_menuPassToggle;
 	m_menuPassToggle = new wxMenuItem( m_menuSettings, ID_PASSTOGGLE, wxString( _("Engine &passes") ) , _("Allows the engine to pass"), wxITEM_CHECK );
 	m_menuSettings->Append( m_menuPassToggle );
@@ -162,12 +170,12 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	menuItemResignToggle->Check( true );
 	
 	wxMenuItem* m_menuItemPonder;
-	m_menuItemPonder = new wxMenuItem( m_menuSettings, ID_PONDERTOGGLE, wxString( _("Engine &ponders") ) , _("Allows the engine to think during the opponents time"), wxITEM_CHECK );
+	m_menuItemPonder = new wxMenuItem( m_menuSettings, ID_PONDERTOGGLE, wxString( _("Engine p&onders") ) , _("Allows the engine to think during the opponents time"), wxITEM_CHECK );
 	m_menuSettings->Append( m_menuItemPonder );
 	m_menuItemPonder->Check( true );
 	
 	wxMenuItem* menuItemSound;
-	menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound") ) , _("Enable or disable sound"), wxITEM_CHECK );
+	menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound enabled") ) , _("Enable or disable sound"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItemSound );
 	menuItemSound->Check( true );
 	
@@ -270,7 +278,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("17 x 17"), _("19 x 19"), _("25 x 25"), _("29 x 29"), _("33 x 33"), _("37 x 37") };
 	int m_radioBoxBoardSizeNChoices = sizeof( m_radioBoxBoardSizeChoices ) / sizeof( wxString );
 	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 3, wxRA_SPECIFY_ROWS );
-	m_radioBoxBoardSize->SetSelection( 3 );
+	m_radioBoxBoardSize->SetSelection( 4 );
 	bSizer12->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	
@@ -316,7 +324,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer9->Add( sbSizer5, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	
-	bSizer11->Add( bSizer9, 1, wxALL, 5 );
+	bSizer11->Add( bSizer9, 1, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
@@ -325,16 +333,26 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	int m_radioBoxColorNChoices = sizeof( m_radioBoxColorChoices ) / sizeof( wxString );
 	m_radioBoxColor = new wxRadioBox( this, wxID_ANY, _("Your color"), wxDefaultPosition, wxDefaultSize, m_radioBoxColorNChoices, m_radioBoxColorChoices, 1, wxRA_SPECIFY_ROWS );
 	m_radioBoxColor->SetSelection( 0 );
-	bSizer10->Add( m_radioBoxColor, 0, wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer10->Add( m_radioBoxColor, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxString m_radioBoxLevelChoices[] = { _("100 simulations"), _("500 simulations"), _("1000 simulations"), _("5000 simulations"), _("10000 simulations"), _("20000 simulations"), _("Unlimited") };
 	int m_radioBoxLevelNChoices = sizeof( m_radioBoxLevelChoices ) / sizeof( wxString );
 	m_radioBoxLevel = new wxRadioBox( this, wxID_ANY, _("Engine max level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLevelNChoices, m_radioBoxLevelChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxLevel->SetSelection( 6 );
+	m_radioBoxLevel->SetSelection( 0 );
 	bSizer10->Add( m_radioBoxLevel, 1, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
+	wxStaticBoxSizer* sbSizer6;
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Engine settings") ), wxVERTICAL );
 	
-	bSizer11->Add( bSizer10, 4, wxALL|wxEXPAND, 5 );
+	m_checkNeuralNet = new wxCheckBox( sbSizer6->GetStaticBox(), wxID_ANY, _("Use Neural Network"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkNeuralNet->SetValue(true); 
+	sbSizer6->Add( m_checkNeuralNet, 0, wxALL, 5 );
+	
+	
+	bSizer10->Add( sbSizer6, 1, wxEXPAND, 5 );
+	
+	
+	bSizer11->Add( bSizer10, 4, wxEXPAND, 5 );
 	
 	
 	bSizer7->Add( bSizer11, 4, wxEXPAND, 5 );
@@ -346,7 +364,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_sdbSizer1->AddButton( m_sdbSizer1Cancel );
 	m_sdbSizer1->Realize();
 	
-	bSizer7->Add( m_sdbSizer1, 0, wxALIGN_RIGHT|wxALL|wxEXPAND, 2 );
+	bSizer7->Add( m_sdbSizer1, 0, wxALIGN_LEFT|wxALL, 2 );
 	
 	
 	this->SetSizer( bSizer7 );
@@ -368,11 +386,15 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.4.6"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.6.2"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
-	m_staticTextVersion->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	m_staticTextVersion->SetFont( wxFont( 11, 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer9->Add( m_staticTextVersion, 0, wxALL|wxEXPAND, 10 );
+	
+	m_staticTextEngine = new wxStaticText( this, wxID_ANY, _("OpenCL/BLAS Engine goes here and can be a very long string"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextEngine->Wrap( 400 );
+	bSizer9->Add( m_staticTextEngine, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2016 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText5->Wrap( -1 );
@@ -382,7 +404,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText9->Wrap( -1 );
 	bSizer9->Add( m_staticText9, 0, wxALL|wxEXPAND, 5 );
 	
-	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("https://www.sjeng.org/leela"), wxT("https://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_hyperlink3 = new wxHyperlinkCtrl( this, wxID_ANY, _("https://sjeng.org/leela"), wxT("https://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	bSizer9->Add( m_hyperlink3, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	m_button1 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -391,115 +413,10 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	this->SetSizer( bSizer9 );
 	this->Layout();
+	bSizer9->Fit( this );
 }
 
 TAboutDialog::~TAboutDialog()
-{
-}
-
-BEGIN_EVENT_TABLE( TNagDialog, wxDialog )
-	EVT_INIT_DIALOG( TNagDialog::_wxFB_doInit )
-	EVT_BUTTON( wxID_OK, TNagDialog::_wxFB_doOK )
-END_EVENT_TABLE()
-
-TNagDialog::TNagDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxBoxSizer* bSizer10;
-	bSizer10 = new wxBoxSizer( wxVERTICAL );
-	
-	m_staticText8 = new wxStaticText( this, wxID_ANY, _("If you like Leela lite, you might also like:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText8->Wrap( -1 );
-	bSizer10->Add( m_staticText8, 0, wxALL, 5 );
-	
-	m_staticText9 = new wxStaticText( this, wxID_ANY, _("Leela - full version"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText9->Wrap( -1 );
-	m_staticText9->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	bSizer10->Add( m_staticText9, 0, wxALIGN_CENTER|wxALL, 5 );
-	
-	m_staticText81 = new wxStaticText( this, wxID_ANY, _("including 19 x 19 and top levels"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	m_staticText81->Wrap( -1 );
-	m_staticText81->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	bSizer10->Add( m_staticText81, 0, wxALIGN_CENTER|wxALL, 5 );
-	
-	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, wxEmptyString, wxT("http://www.sjeng.org/leela"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-	m_hyperlink1->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxEmptyString ) );
-	
-	bSizer10->Add( m_hyperlink1, 0, wxALIGN_CENTER|wxALL, 5 );
-	
-	m_button2 = new wxButton( this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer10->Add( m_button2, 0, wxALIGN_CENTER|wxALL, 5 );
-	
-	
-	this->SetSizer( bSizer10 );
-	this->Layout();
-	
-	this->Centre( wxBOTH );
-}
-
-TNagDialog::~TNagDialog()
-{
-}
-
-BEGIN_EVENT_TABLE( TCopyProtectionDialog, wxDialog )
-	EVT_BUTTON( wxID_OK, TCopyProtectionDialog::_wxFB_doOK )
-END_EVENT_TABLE()
-
-TCopyProtectionDialog::TCopyProtectionDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxBoxSizer* bSizer10;
-	bSizer10 = new wxBoxSizer( wxVERTICAL );
-	
-	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Please enter your name and serial number:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText12->Wrap( -1 );
-	bSizer10->Add( m_staticText12, 0, wxALL|wxEXPAND, 5 );
-	
-	wxFlexGridSizer* fgSizer1;
-	fgSizer1 = new wxFlexGridSizer( 2, 2, 0, 0 );
-	fgSizer1->AddGrowableCol( 0 );
-	fgSizer1->AddGrowableCol( 1 );
-	fgSizer1->SetFlexibleDirection( wxBOTH );
-	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	m_staticText14->Wrap( -1 );
-	fgSizer1->Add( m_staticText14, 0, wxALIGN_CENTER|wxALL|wxEXPAND, 5 );
-	
-	m_textCtrlName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textCtrlName->SetMaxLength( 0 ); 
-	fgSizer1->Add( m_textCtrlName, 1, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND, 5 );
-	
-	m_staticText15 = new wxStaticText( this, wxID_ANY, _("Code"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	m_staticText15->Wrap( -1 );
-	fgSizer1->Add( m_staticText15, 0, wxALIGN_RIGHT|wxALL|wxEXPAND, 5 );
-	
-	m_textCtrlCode = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textCtrlCode->SetMaxLength( 0 ); 
-	fgSizer1->Add( m_textCtrlCode, 2, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL|wxEXPAND, 5 );
-	
-	
-	bSizer10->Add( fgSizer1, 1, wxALL|wxEXPAND, 5 );
-	
-	m_sdbSizer2 = new wxStdDialogButtonSizer();
-	m_sdbSizer2OK = new wxButton( this, wxID_OK );
-	m_sdbSizer2->AddButton( m_sdbSizer2OK );
-	m_sdbSizer2Cancel = new wxButton( this, wxID_CANCEL );
-	m_sdbSizer2->AddButton( m_sdbSizer2Cancel );
-	m_sdbSizer2->Realize();
-	
-	bSizer10->Add( m_sdbSizer2, 0, wxALL|wxEXPAND, 5 );
-	
-	
-	this->SetSizer( bSizer10 );
-	this->Layout();
-}
-
-TCopyProtectionDialog::~TCopyProtectionDialog()
 {
 }
 
@@ -519,7 +436,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	wxStaticBoxSizer* sbSizer4;
 	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Black clock (minutes:seconds)") ), wxHORIZONTAL );
 	
-	m_spinCtrlBlackMins = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 120,-1 ), wxSP_ARROW_KEYS, 0, 999, 30 );
+	m_spinCtrlBlackMins = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), wxSP_ARROW_KEYS, 0, 999, 30 );
 	sbSizer4->Add( m_spinCtrlBlackMins, 1, wxALL|wxEXPAND, 5 );
 	
 	m_spinCtrlBlackSecs = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
@@ -531,7 +448,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("White clock (minutes:seconds)") ), wxHORIZONTAL );
 	
-	m_spinCtrlWhiteMins = new wxSpinCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 120,-1 ), wxSP_ARROW_KEYS, 0, 999, 30 );
+	m_spinCtrlWhiteMins = new wxSpinCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), wxSP_ARROW_KEYS, 0, 999, 30 );
 	sbSizer6->Add( m_spinCtrlWhiteMins, 1, wxALL|wxEXPAND, 5 );
 	
 	m_spinCtrlWhiteSecs = new wxSpinCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 59, 0 );
@@ -552,6 +469,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	
 	this->SetSizer( bSizer9 );
 	this->Layout();
+	bSizer9->Fit( this );
 }
 
 TClockAdjustDialog::~TClockAdjustDialog()
@@ -580,6 +498,7 @@ TRatedSizeDialog::TRatedSizeDialog( wxWindow* parent, wxWindowID id, const wxStr
 	
 	this->SetSizer( bSizer10 );
 	this->Layout();
+	bSizer10->Fit( this );
 }
 
 TRatedSizeDialog::~TRatedSizeDialog()
@@ -600,6 +519,7 @@ TCalculateDialog::TCalculateDialog( wxWindow* parent, wxWindowID id, const wxStr
 	
 	this->SetSizer( bSizer11 );
 	this->Layout();
+	bSizer11->Fit( this );
 }
 
 TCalculateDialog::~TCalculateDialog()
