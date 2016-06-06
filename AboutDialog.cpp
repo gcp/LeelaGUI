@@ -11,7 +11,7 @@ TAboutDialog( parent )
 }
 
 void AboutDialog::doInit( wxInitDialogEvent& event ) {
-    m_staticTextVersion->SetLabel(wxString(_("Leela version ")) + wxString(wxT(PROGRAM_VERSION)));    
+    m_staticTextVersion->SetLabel(wxString(_("Leela version ")) + wxString(wxT(PROGRAM_VERSION)));
     m_staticTextEngine->SetLabel(wxString(Network::get_Network()->get_backend()));
     Fit();
 }
