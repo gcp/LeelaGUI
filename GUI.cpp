@@ -265,7 +265,6 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bSizer7;
 	bSizer7 = new wxBoxSizer( wxVERTICAL );
 	
-	bSizer7->SetMinSize( wxSize( 260,250 ) ); 
 	wxBoxSizer* bSizer11;
 	bSizer11 = new wxBoxSizer( wxHORIZONTAL );
 	
@@ -275,56 +274,56 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bSizer12;
 	bSizer12 = new wxBoxSizer( wxVERTICAL );
 	
-	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("17 x 17"), _("19 x 19"), _("25 x 25"), _("29 x 29"), _("33 x 33"), _("37 x 37") };
+	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("17 x 17"), _("19 x 19"), _("25 x 25") };
 	int m_radioBoxBoardSizeNChoices = sizeof( m_radioBoxBoardSizeChoices ) / sizeof( wxString );
 	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 3, wxRA_SPECIFY_ROWS );
-	m_radioBoxBoardSize->SetSelection( 4 );
+	m_radioBoxBoardSize->SetSelection( 5 );
 	bSizer12->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	
-	bSizer9->Add( bSizer12, 1, wxEXPAND, 5 );
+	bSizer9->Add( bSizer12, 0, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer2;
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Komi (+0.5)") ), wxHORIZONTAL );
 	
+	m_spinCtrlKomi = new wxSpinCtrl( sbSizer2->GetStaticBox(), ID_KOMISPIN, wxT("7"), wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 0, 15, 0 );
+	sbSizer2->Add( m_spinCtrlKomi, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	m_staticText2 = new wxStaticText( sbSizer2->GetStaticBox(), wxID_ANY, _("Komi"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText2->Wrap( -1 );
-	sbSizer2->Add( m_staticText2, 1, wxALIGN_CENTER, 5 );
-	
-	m_spinCtrlKomi = new wxSpinCtrl( sbSizer2->GetStaticBox(), ID_KOMISPIN, wxT("7"), wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 0, 15, 0 );
-	sbSizer2->Add( m_spinCtrlKomi, 1, wxALIGN_CENTER, 5 );
+	sbSizer2->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	
-	bSizer9->Add( sbSizer2, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer9->Add( sbSizer2, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer3;
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Handicap") ), wxHORIZONTAL );
 	
+	m_spinCtrlHandicap = new wxSpinCtrl( sbSizer3->GetStaticBox(), ID_HANDICAPSPIN, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 0, 100, 0 );
+	sbSizer3->Add( m_spinCtrlHandicap, 0, wxALIGN_CENTER|wxALL, 5 );
+	
 	m_staticText3 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, _("Handicap"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText3->Wrap( -1 );
-	sbSizer3->Add( m_staticText3, 1, wxALIGN_CENTER, 5 );
-	
-	m_spinCtrlHandicap = new wxSpinCtrl( sbSizer3->GetStaticBox(), ID_HANDICAPSPIN, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 0, 100, 0 );
-	sbSizer3->Add( m_spinCtrlHandicap, 1, wxALIGN_CENTER, 5 );
+	sbSizer3->Add( m_staticText3, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	
-	bSizer9->Add( sbSizer3, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer9->Add( sbSizer3, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer5;
 	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Time for game") ), wxHORIZONTAL );
 	
+	m_spinCtrlTime = new wxSpinCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 1, 720, 90 );
+	sbSizer5->Add( m_spinCtrlTime, 0, wxALIGN_CENTER|wxALL, 5 );
+	
 	m_staticText13 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Minutes"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText13->Wrap( -1 );
-	sbSizer5->Add( m_staticText13, 1, wxALIGN_CENTER, 5 );
-	
-	m_spinCtrlTime = new wxSpinCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxSP_ARROW_KEYS, 1, 720, 90 );
-	sbSizer5->Add( m_spinCtrlTime, 1, wxALIGN_CENTER, 5 );
+	sbSizer5->Add( m_staticText13, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	
-	bSizer9->Add( sbSizer5, 4, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer9->Add( sbSizer5, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	
-	bSizer11->Add( bSizer9, 1, wxALL|wxEXPAND, 5 );
+	bSizer11->Add( bSizer9, 0, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
@@ -339,7 +338,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	int m_radioBoxLevelNChoices = sizeof( m_radioBoxLevelChoices ) / sizeof( wxString );
 	m_radioBoxLevel = new wxRadioBox( this, wxID_ANY, _("Engine max level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLevelNChoices, m_radioBoxLevelChoices, 1, wxRA_SPECIFY_COLS );
 	m_radioBoxLevel->SetSelection( 0 );
-	bSizer10->Add( m_radioBoxLevel, 1, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer10->Add( m_radioBoxLevel, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Engine settings") ), wxVERTICAL );
@@ -349,13 +348,13 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	sbSizer6->Add( m_checkNeuralNet, 0, wxALL, 5 );
 	
 	
-	bSizer10->Add( sbSizer6, 1, wxEXPAND, 5 );
+	bSizer10->Add( sbSizer6, 0, wxEXPAND, 5 );
 	
 	
-	bSizer11->Add( bSizer10, 4, wxEXPAND, 5 );
+	bSizer11->Add( bSizer10, 0, wxEXPAND, 5 );
 	
 	
-	bSizer7->Add( bSizer11, 4, wxEXPAND, 5 );
+	bSizer7->Add( bSizer11, 1, wxEXPAND, 5 );
 	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );
@@ -369,6 +368,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
+	bSizer7->Fit( this );
 }
 
 TNewGameDialog::~TNewGameDialog()

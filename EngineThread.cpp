@@ -21,7 +21,7 @@ void * TEngineThread::Entry() {
         std::auto_ptr<UCTSearch> search(new UCTSearch(*m_state));
 
         int who = m_state->get_to_move();
-        search->set_visit_limit(m_maxvisits);
+        search->set_playout_limit(m_maxvisits);
         search->set_runflag(&m_runflag);
         search->set_analyzing(m_analyseflag);
         search->set_quiet(m_quiet);

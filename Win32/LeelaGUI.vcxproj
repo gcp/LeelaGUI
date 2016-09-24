@@ -96,11 +96,11 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_core.lib;wxmsw31u_qa.lib;wxmsw31u_xrc.lib;wxpng.lib;wxregexu.lib;wxzlib.lib;libopenblas.dll.a;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>PGOptimization</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <Manifest />
     <Manifest>
@@ -110,6 +110,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Leela\AttribScores.cpp" />
     <ClCompile Include="..\..\Leela\Attributes.cpp" />
+    <ClCompile Include="..\..\Leela\Book.cpp" />
     <ClCompile Include="..\..\Leela\FastBoard.cpp" />
     <ClCompile Include="..\..\Leela\FastState.cpp" />
     <ClCompile Include="..\..\Leela\FullBoard.cpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Leela\AttribScores.h" />
     <ClInclude Include="..\..\Leela\Attributes.h" />
+    <ClInclude Include="..\..\Leela\BookData.h" />
     <ClInclude Include="..\..\Leela\config.h" />
     <ClInclude Include="..\..\Leela\FastBoard.h" />
     <ClInclude Include="..\..\Leela\FastState.h" />

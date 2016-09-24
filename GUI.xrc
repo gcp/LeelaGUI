@@ -254,25 +254,23 @@
 	</object>
 	<object class="wxDialog" name="TNewGameDialog">
 		<style>wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</style>
-		<size>449,489</size>
 		<title>New Game</title>
 		<object class="wxBoxSizer">
-			<minsize>260,250</minsize>
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<option>4</option>
+				<option>1</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxBoxSizer">
 					<orient>wxHORIZONTAL</orient>
 					<object class="sizeritem">
-						<option>1</option>
+						<option>0</option>
 						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
-								<option>1</option>
+								<option>0</option>
 								<flag>wxEXPAND</flag>
 								<border>5</border>
 								<object class="wxBoxSizer">
@@ -284,16 +282,13 @@
 										<object class="wxRadioBox" name="m_radioBoxBoardSize">
 											<style>wxRA_SPECIFY_ROWS</style>
 											<label>Board size</label>
-											<selection>4</selection>
+											<selection>5</selection>
 											<content>
 												<item>9 x 9</item>
 												<item>13 x 13</item>
 												<item>17 x 17</item>
 												<item>19 x 19</item>
 												<item>25 x 25</item>
-												<item>29 x 29</item>
-												<item>33 x 33</item>
-												<item>37 x 37</item>
 											</content>
 											<dimension>3</dimension>
 										</object>
@@ -301,25 +296,15 @@
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>4</option>
+								<option>0</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">
 									<orient>wxHORIZONTAL</orient>
 									<label>Komi (+0.5)</label>
 									<object class="sizeritem">
-										<option>1</option>
-										<flag>wxALIGN_CENTER</flag>
-										<border>5</border>
-										<object class="wxStaticText" name="m_staticText2">
-											<style>wxALIGN_CENTRE</style>
-											<label>Komi</label>
-											<wrap>-1</wrap>
-										</object>
-									</object>
-									<object class="sizeritem">
-										<option>1</option>
-										<flag>wxALIGN_CENTER</flag>
+										<option>0</option>
+										<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlKomi">
 											<style>wxSP_ARROW_KEYS</style>
@@ -329,28 +314,28 @@
 											<max>15</max>
 										</object>
 									</object>
+									<object class="sizeritem">
+										<option>0</option>
+										<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+										<border>5</border>
+										<object class="wxStaticText" name="m_staticText2">
+											<style>wxALIGN_CENTRE</style>
+											<label>Komi</label>
+											<wrap>-1</wrap>
+										</object>
+									</object>
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>4</option>
+								<option>0</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">
 									<orient>wxHORIZONTAL</orient>
 									<label>Handicap</label>
 									<object class="sizeritem">
-										<option>1</option>
-										<flag>wxALIGN_CENTER</flag>
-										<border>5</border>
-										<object class="wxStaticText" name="m_staticText3">
-											<style>wxALIGN_CENTRE</style>
-											<label>Handicap</label>
-											<wrap>-1</wrap>
-										</object>
-									</object>
-									<object class="sizeritem">
-										<option>1</option>
-										<flag>wxALIGN_CENTER</flag>
+										<option>0</option>
+										<flag>wxALIGN_CENTER|wxALL</flag>
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlHandicap">
 											<style>wxSP_ARROW_KEYS</style>
@@ -360,28 +345,28 @@
 											<max>100</max>
 										</object>
 									</object>
+									<object class="sizeritem">
+										<option>0</option>
+										<flag>wxALIGN_CENTER|wxALL</flag>
+										<border>5</border>
+										<object class="wxStaticText" name="m_staticText3">
+											<style>wxALIGN_CENTRE</style>
+											<label>Handicap</label>
+											<wrap>-1</wrap>
+										</object>
+									</object>
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>4</option>
+								<option>0</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">
 									<orient>wxHORIZONTAL</orient>
 									<label>Time for game</label>
 									<object class="sizeritem">
-										<option>1</option>
-										<flag>wxALIGN_CENTER</flag>
-										<border>5</border>
-										<object class="wxStaticText" name="m_staticText13">
-											<style>wxALIGN_CENTRE</style>
-											<label>Minutes</label>
-											<wrap>-1</wrap>
-										</object>
-									</object>
-									<object class="sizeritem">
-										<option>1</option>
-										<flag>wxALIGN_CENTER</flag>
+										<option>0</option>
+										<flag>wxALIGN_CENTER|wxALL</flag>
 										<border>5</border>
 										<object class="wxSpinCtrl" name="m_spinCtrlTime">
 											<style>wxSP_ARROW_KEYS</style>
@@ -391,12 +376,22 @@
 											<max>720</max>
 										</object>
 									</object>
+									<object class="sizeritem">
+										<option>0</option>
+										<flag>wxALIGN_CENTER|wxALL</flag>
+										<border>5</border>
+										<object class="wxStaticText" name="m_staticText13">
+											<style>wxALIGN_CENTRE</style>
+											<label>Minutes</label>
+											<wrap>-1</wrap>
+										</object>
+									</object>
 								</object>
 							</object>
 						</object>
 					</object>
 					<object class="sizeritem">
-						<option>4</option>
+						<option>0</option>
 						<flag>wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxBoxSizer">
@@ -417,7 +412,7 @@
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>1</option>
+								<option>0</option>
 								<flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
 								<border>5</border>
 								<object class="wxRadioBox" name="m_radioBoxLevel">
@@ -437,7 +432,7 @@
 								</object>
 							</object>
 							<object class="sizeritem">
-								<option>1</option>
+								<option>0</option>
 								<flag>wxEXPAND</flag>
 								<border>5</border>
 								<object class="wxStaticBoxSizer">

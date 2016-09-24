@@ -909,7 +909,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         try {
             tree->load_from_file(path.ToStdString());
              wxLogDebug("Read %d moves", tree->count_mainline_moves());
-            m_State = tree->get_mainline();
+            m_State = tree->follow_mainline_state();
         } catch (...) {
         }
 

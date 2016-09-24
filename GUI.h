@@ -28,8 +28,8 @@ class TBoardPanel;
 #include <wx/toolbar.h>
 #include <wx/frame.h>
 #include <wx/radiobox.h>
-#include <wx/stattext.h>
 #include <wx/spinctrl.h>
+#include <wx/stattext.h>
 #include <wx/statbox.h>
 #include <wx/checkbox.h>
 #include <wx/button.h>
@@ -200,12 +200,12 @@ class TNewGameDialog : public wxDialog
 		};
 		
 		wxRadioBox* m_radioBoxBoardSize;
-		wxStaticText* m_staticText2;
 		wxSpinCtrl* m_spinCtrlKomi;
-		wxStaticText* m_staticText3;
+		wxStaticText* m_staticText2;
 		wxSpinCtrl* m_spinCtrlHandicap;
-		wxStaticText* m_staticText13;
+		wxStaticText* m_staticText3;
 		wxSpinCtrl* m_spinCtrlTime;
+		wxStaticText* m_staticText13;
 		wxRadioBox* m_radioBoxColor;
 		wxRadioBox* m_radioBoxLevel;
 		wxCheckBox* m_checkNeuralNet;
@@ -222,7 +222,7 @@ class TNewGameDialog : public wxDialog
 	
 	public:
 		
-		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 449,489 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE ); 
+		TNewGameDialog( wxWindow* parent, wxWindowID id = ID_NEWGAME, const wxString& title = _("New Game"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE ); 
 		~TNewGameDialog();
 	
 };
