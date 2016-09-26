@@ -834,8 +834,10 @@ void MainFrame::doPass(wxCommandEvent& event) {
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
-void MainFrame::doUndo(wxCommandEvent& event) {
-    stopEngine();
+void MainFrame::doRealUndo() {
+    bool wasPondering = m_pondering;
+    bool wasRunning = stopEngine();
+    bool wasAnalyzing = wasRunning && !wasPondering;
 
     if (m_State.undo_move()) {
         wxLogDebug("Undoing one move");
@@ -849,10 +851,14 @@ void MainFrame::doUndo(wxCommandEvent& event) {
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+
+    if (wasAnalyzing) doAnalyze(myevent /* dummy */);
 }
 
-void MainFrame::doForward(wxCommandEvent& event) {
-    stopEngine();
+void MainFrame::doRealForward() {
+    bool wasPondering = m_pondering;
+    bool wasRunning = stopEngine();
+    bool wasAnalyzing = wasRunning && !wasPondering;
 
     if (m_State.forward_move()) {
         wxLogDebug("Forward one move");
@@ -864,6 +870,8 @@ void MainFrame::doForward(wxCommandEvent& event) {
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+
+    if (wasAnalyzing) doAnalyze(myevent /* dummy */);
 }
 
 void MainFrame::doBack10(wxCommandEvent& event) {
@@ -1029,4 +1037,17 @@ void MainFrame::doPonderToggle(wxCommandEvent& event) {
         stopEngine();
     }
     wxConfig::Get()->Write(wxT("ponderEnabled"), m_ponderEnabled);
+}
+
+void MainFrame::doKeyDown(wxKeyEvent& event) {
+    auto keycode = event.GetKeyCode();
+    if (keycode == WXK_LEFT) {
+        doRealUndo();
+    } else if (keycode == WXK_RIGHT) {
+        doRealForward();
+    } else if (keycode == WXK_TAB) {
+        HandleAsNavigationKey(event);
+    } else {
+        event.Skip();
+    }
 }

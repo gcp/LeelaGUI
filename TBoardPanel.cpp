@@ -3,6 +3,7 @@
 #include "MainFrame.h"
 
 BEGIN_EVENT_TABLE(TBoardPanel, wxPanel)	
+    EVT_KEY_DOWN(TBoardPanel::doKeyDown)
     EVT_PAINT(TBoardPanel::doPaint)
     EVT_ERASE_BACKGROUND(TBoardPanel::doErase)
     EVT_LEFT_DOWN(TBoardPanel::doLeftMouse) 
@@ -10,7 +11,7 @@ END_EVENT_TABLE()
 
 TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
                          const wxSize& size, long style,const wxString& name)
-    : wxPanel(parent, winid, pos, size, style, name) {        
+    : wxPanel(parent, winid, pos, size, style, name) {
 
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
         
@@ -425,4 +426,13 @@ void TBoardPanel::lockState() {
 
 void TBoardPanel::unlockState() {
     m_stateLock = false;
+}
+
+void TBoardPanel::doKeyDown(wxKeyEvent& event) {
+    auto keycode = event.GetKeyCode();
+    if (keycode == WXK_LEFT || keycode == WXK_RIGHT) {
+        static_cast<MainFrame*>(GetParent())->doKeyDown(event);
+    } else {
+        event.Skip();
+    }
 }

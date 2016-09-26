@@ -12,7 +12,7 @@ public:
                wxWindowID winid = wxID_ANY,
                const wxPoint& pos = wxDefaultPosition,
                const wxSize& size = wxDefaultSize,
-               long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+               long style = wxNO_BORDER | wxWANTS_CHARS,
                const wxString& name = wxPanelNameStr);
                    
     void setState(GameState * brd);               
@@ -34,6 +34,7 @@ private:
     void doPaint(wxPaintEvent& event);
     void doErase(wxEraseEvent& event);
     void doLeftMouse(wxMouseEvent& event);
+    void doKeyDown(wxKeyEvent& event);
     
     GameState * m_State;
     bool m_stateLock;
@@ -45,7 +46,7 @@ private:
     bool m_showTerritory;   // on game end
     bool m_showInfluence;
     bool m_showMoyo;    
-    std::vector<int> m_Hatch;            
+    std::vector<int> m_Hatch;
 };
 
 #endif

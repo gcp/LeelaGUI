@@ -15,6 +15,7 @@
 
 BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_ACTIVATE( TMainFrame::_wxFB_doActivate )
+	EVT_KEY_DOWN( TMainFrame::_wxFB_doKeyDown )
 	EVT_PAINT( TMainFrame::_wxFB_doPaint )
 	EVT_SIZE( TMainFrame::_wxFB_doResize )
 	EVT_MENU( ID_NEWGAME, TMainFrame::_wxFB_doNewGame )
@@ -52,13 +53,13 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 	
-	m_panelBoard = new TBoardPanel( this, ID_BOARDPANEL, wxDefaultPosition, wxSize( -1,-1 ), wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL );
+	m_panelBoard = new TBoardPanel( this, ID_BOARDPANEL, wxDefaultPosition, wxSize( -1,-1 ), wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL|wxWANTS_CHARS );
 	bSizer2->Add( m_panelBoard, 1, wxEXPAND | wxALL, 1 );
 	
 	
 	this->SetSizer( bSizer2 );
 	this->Layout();
-	m_statusBar = this->CreateStatusBar( 2, wxST_SIZEGRIP, ID_DEFAULT );
+	m_statusBar = this->CreateStatusBar( 2, wxST_SIZEGRIP|wxWANTS_CHARS, ID_DEFAULT );
 	m_menubar1 = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
 	wxMenuItem* menuItemNewGame;

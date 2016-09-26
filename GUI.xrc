@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxFrame" name="TMainFrame">
-		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
+		<style>wxDEFAULT_FRAME_STYLE|wxWANTS_CHARS</style>
 		<size>520,630</size>
 		<title>Leela</title>
 		<aui_managed>0</aui_managed>
 		<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
-			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
+			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL|wxWANTS_CHARS</style>
 		</object>
 		<object class="wxStatusBar" name="m_statusBar">
-			<style>wxST_SIZEGRIP</style>
+			<style>wxST_SIZEGRIP|wxWANTS_CHARS</style>
 			<fields>2</fields>
 		</object>
 		<object class="wxMenuBar" name="m_menubar1">

@@ -48,6 +48,7 @@ class TMainFrame : public wxFrame
 		
 		// Private event handlers
 		void _wxFB_doActivate( wxActivateEvent& event ){ doActivate( event ); }
+		void _wxFB_doKeyDown( wxKeyEvent& event ){ doKeyDown( event ); }
 		void _wxFB_doPaint( wxPaintEvent& event ){ doPaint( event ); }
 		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
 		void _wxFB_doNewGame( wxCommandEvent& event ){ doNewGame( event ); }
@@ -138,6 +139,7 @@ class TMainFrame : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void doActivate( wxActivateEvent& event ) { event.Skip(); }
+		virtual void doKeyDown( wxKeyEvent& event ) { event.Skip(); }
 		virtual void doPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void doResize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void doNewGame( wxCommandEvent& event ) { event.Skip(); }
@@ -170,7 +172,7 @@ class TMainFrame : public wxFrame
 	
 	public:
 		
-		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 520,630 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("LeelaGUI") );
+		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 520,630 ), long style = wxDEFAULT_FRAME_STYLE|wxWANTS_CHARS, const wxString& name = wxT("LeelaGUI") );
 		
 		~TMainFrame();
 	

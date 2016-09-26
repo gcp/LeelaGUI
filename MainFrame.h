@@ -31,8 +31,6 @@ class MainFrame : public TMainFrame {
 	virtual void doPass(wxCommandEvent& event);	
 	virtual void doNewRatedGame(wxCommandEvent& event);
         virtual void doSetRatedSize(wxCommandEvent& event);
-	virtual void doUndo(wxCommandEvent& event);
-	virtual void doForward(wxCommandEvent& event);
 	virtual void doGoRules(wxCommandEvent& event);
 	virtual void doHelpAbout(wxCommandEvent& event);	
 	virtual void doHomePage(wxCommandEvent& event);
@@ -52,6 +50,11 @@ class MainFrame : public TMainFrame {
 	virtual void doResign(wxCommandEvent& event);
 	virtual void doAnalyze(wxCommandEvent& event);
         virtual void doAdjustClocks(wxCommandEvent& event);
+        virtual void doKeyDown( wxKeyEvent& event ) override;
+        virtual void doUndo(wxCommandEvent& event) { doRealUndo(); };
+        virtual void doForward(wxCommandEvent& event) { doRealForward(); };
+        void doRealUndo();
+        void doRealForward();
 
 	void startEngine();
 	void startPonder();
@@ -80,6 +83,7 @@ class MainFrame : public TMainFrame {
         bool m_ponderedOnce;
 	std::unique_ptr<TEngineThread> m_engineThread;
         friend class TEngineThread;
+        friend class TBoardPanel;
 };
 
 #endif
