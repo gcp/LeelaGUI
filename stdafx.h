@@ -43,12 +43,14 @@
 #include <wx/dialog.h>
 #include <wx/hyperlink.h>
 #include <wx/sound.h>
+#include <wx/display.h>
 
 // STD headers
 #include <utility>
 #include <memory>
 #include <vector>
 #include <set>
+#include <string>
 #include <map>
 #include <algorithm>
 #include <functional>

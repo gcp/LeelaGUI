@@ -2,6 +2,8 @@
 #include "TBoardPanel.h"
 #include "MainFrame.h"
 
+wxDEFINE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
+
 BEGIN_EVENT_TABLE(TBoardPanel, wxPanel)	
     EVT_KEY_DOWN(TBoardPanel::doKeyDown)
     EVT_PAINT(TBoardPanel::doPaint)
@@ -12,6 +14,8 @@ END_EVENT_TABLE()
 TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
                          const wxSize& size, long style,const wxString& name)
     : wxPanel(parent, winid, pos, size, style, name) {
+
+    Bind(wxEVT_DISPLAY_MAINLINE, &TBoardPanel::doDisplayMainline, this);    
 
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
         
@@ -435,4 +439,8 @@ void TBoardPanel::doKeyDown(wxKeyEvent& event) {
     } else {
         event.Skip();
     }
+}
+
+void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
+
 }

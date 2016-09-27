@@ -53,6 +53,8 @@ class MainFrame : public TMainFrame {
         virtual void doKeyDown( wxKeyEvent& event ) override;
         virtual void doUndo(wxCommandEvent& event) { doRealUndo(); };
         virtual void doForward(wxCommandEvent& event) { doRealForward(); };
+        virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) override;
+        virtual void doCloseChild( wxWindowDestroyEvent& event );
         void doRealUndo();
         void doRealForward();
 
@@ -82,6 +84,7 @@ class MainFrame : public TMainFrame {
 	bool m_disputing;
         bool m_ponderedOnce;
 	std::unique_ptr<TEngineThread> m_engineThread;
+        TAnalysisWindow* m_analysisWindow{nullptr};
         friend class TEngineThread;
         friend class TBoardPanel;
 };

@@ -68,10 +68,6 @@
 					<help>Force the computer to move now</help>
 				</object>
 				<object class="separator" />
-				<object class="wxMenuItem" name="menuItem6">
-					<label>_Pass\tAlt-P</label>
-					<help>Pass</help>
-				</object>
 				<object class="wxMenuItem" name="menuItem20">
 					<label>_Resign\tAlt-R</label>
 					<help>Resign the game</help>
@@ -85,8 +81,14 @@
 			<object class="wxMenu" name="m_menuAnalyze">
 				<label>_Analyze</label>
 				<object class="wxMenuItem" name="menuItemAnalyze">
-					<label>_Start/Stop analysis\tCtrl-A</label>
+					<label>_Start/Stop analysis\tF2</label>
 					<help>Start analyzing</help>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuItemAnalysisWindow">
+					<label>Analysis _Window\tCtrl-A</label>
+					<help></help>
+					<checkable>1</checkable>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menuSettings">
@@ -676,6 +678,25 @@
 					<style>wxALIGN_CENTRE</style>
 					<label>Calculating, please hold...</label>
 					<wrap>-1</wrap>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxFrame" name="TAnalysisWindow">
+		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
+		<size>500,300</size>
+		<title>Analysis</title>
+		<centered>1</centered>
+		<aui_managed>0</aui_managed>
+		<object class="wxPanel" name="m_panel3">
+			<style>wxTAB_TRAVERSAL</style>
+			<object class="wxBoxSizer">
+				<orient>wxVERTICAL</orient>
+				<object class="sizeritem">
+					<option>1</option>
+					<flag>wxEXPAND</flag>
+					<border>5</border>
+					<object class="wxGrid" name="m_moveGrid" />
 				</object>
 			</object>
 		</object>

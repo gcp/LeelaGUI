@@ -15,6 +15,7 @@
 
 BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_ACTIVATE( TMainFrame::_wxFB_doActivate )
+	EVT_CLOSE( TMainFrame::_wxFB_doClose )
 	EVT_KEY_DOWN( TMainFrame::_wxFB_doKeyDown )
 	EVT_PAINT( TMainFrame::_wxFB_doPaint )
 	EVT_SIZE( TMainFrame::_wxFB_doResize )
@@ -29,10 +30,10 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_BACK10, TMainFrame::_wxFB_doBack10 )
 	EVT_MENU( ID_FWD10, TMainFrame::_wxFB_doForward10 )
 	EVT_MENU( ID_FORCE, TMainFrame::_wxFB_doForceMove )
-	EVT_MENU( ID_PASS, TMainFrame::_wxFB_doPass )
 	EVT_MENU( ID_RESIGN, TMainFrame::_wxFB_doResign )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
+	EVT_MENU( ID_ANALYSISWINDOWTOGGLE, TMainFrame::_wxFB_doShowHideAnalysisWindow )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
 	EVT_MENU( ID_NETWORKTOGGLE, TMainFrame::_wxFB_doNetToggle )
@@ -119,10 +120,6 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menu2->AppendSeparator();
 	
-	wxMenuItem* menuItem6;
-	menuItem6 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("&Pass") ) + wxT('\t') + wxT("Alt-P"), _("Pass"), wxITEM_NORMAL );
-	m_menu2->Append( menuItem6 );
-	
 	wxMenuItem* menuItem20;
 	menuItem20 = new wxMenuItem( m_menu2, ID_RESIGN, wxString( _("&Resign") ) + wxT('\t') + wxT("Alt-R"), _("Resign the game"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem20 );
@@ -137,8 +134,14 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menuAnalyze = new wxMenu();
 	wxMenuItem* menuItemAnalyze;
-	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("Ctrl-A"), _("Start analyzing"), wxITEM_NORMAL );
+	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("F2"), _("Start analyzing"), wxITEM_NORMAL );
 	m_menuAnalyze->Append( menuItemAnalyze );
+	
+	m_menuAnalyze->AppendSeparator();
+	
+	wxMenuItem* m_menuItemAnalysisWindow;
+	m_menuItemAnalysisWindow = new wxMenuItem( m_menuAnalyze, ID_ANALYSISWINDOWTOGGLE, wxString( _("Analysis &Window") ) + wxT('\t') + wxT("Ctrl-A"), wxEmptyString, wxITEM_CHECK );
+	m_menuAnalyze->Append( m_menuItemAnalysisWindow );
 	
 	m_menubar1->Append( m_menuAnalyze, _("&Analyze") ); 
 	
@@ -524,5 +527,71 @@ TCalculateDialog::TCalculateDialog( wxWindow* parent, wxWindowID id, const wxStr
 }
 
 TCalculateDialog::~TCalculateDialog()
+{
+}
+
+BEGIN_EVENT_TABLE( TAnalysisWindow, wxFrame )
+	EVT_CLOSE( TAnalysisWindow::_wxFB_doClose )
+	EVT_GRID_SELECT_CELL( TAnalysisWindow::_wxFB_doSelectCell )
+END_EVENT_TABLE()
+
+TAnalysisWindow::TAnalysisWindow( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxVERTICAL );
+	
+	m_panel3 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer121;
+	bSizer121 = new wxBoxSizer( wxVERTICAL );
+	
+	m_moveGrid = new wxGrid( m_panel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	
+	// Grid
+	m_moveGrid->CreateGrid( 8, 5 );
+	m_moveGrid->EnableEditing( false );
+	m_moveGrid->EnableGridLines( true );
+	m_moveGrid->EnableDragGridSize( false );
+	m_moveGrid->SetMargins( 0, 0 );
+	
+	// Columns
+	m_moveGrid->AutoSizeColumns();
+	m_moveGrid->EnableDragColMove( false );
+	m_moveGrid->EnableDragColSize( true );
+	m_moveGrid->SetColLabelSize( 30 );
+	m_moveGrid->SetColLabelValue( 0, _("Move") );
+	m_moveGrid->SetColLabelValue( 1, _("Simulations") );
+	m_moveGrid->SetColLabelValue( 2, _("Win%") );
+	m_moveGrid->SetColLabelValue( 3, _("Net Prob%") );
+	m_moveGrid->SetColLabelValue( 4, _("PV") );
+	m_moveGrid->SetColLabelAlignment( wxALIGN_LEFT, wxALIGN_CENTRE );
+	
+	// Rows
+	m_moveGrid->AutoSizeRows();
+	m_moveGrid->EnableDragRowSize( false );
+	m_moveGrid->SetRowLabelSize( 0 );
+	m_moveGrid->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Label Appearance
+	
+	// Cell Defaults
+	m_moveGrid->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	bSizer121->Add( m_moveGrid, 1, wxEXPAND, 5 );
+	
+	
+	m_panel3->SetSizer( bSizer121 );
+	m_panel3->Layout();
+	bSizer121->Fit( m_panel3 );
+	bSizer12->Add( m_panel3, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	this->SetSizer( bSizer12 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+TAnalysisWindow::~TAnalysisWindow()
 {
 }

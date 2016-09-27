@@ -6,6 +6,8 @@
 #include "FastBoard.h"
 #include "GameState.h"
 
+wxDECLARE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
+
 class TBoardPanel : public wxPanel {    
 public:
     TBoardPanel(wxWindow *parent,
@@ -35,6 +37,7 @@ private:
     void doErase(wxEraseEvent& event);
     void doLeftMouse(wxMouseEvent& event);
     void doKeyDown(wxKeyEvent& event);
+    void doDisplayMainline(wxCommandEvent& event);
     
     GameState * m_State;
     bool m_stateLock;

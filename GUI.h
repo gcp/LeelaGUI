@@ -35,6 +35,7 @@ class TBoardPanel;
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/hyperlink.h>
+#include <wx/grid.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +49,7 @@ class TMainFrame : public wxFrame
 		
 		// Private event handlers
 		void _wxFB_doActivate( wxActivateEvent& event ){ doActivate( event ); }
+		void _wxFB_doClose( wxCloseEvent& event ){ doClose( event ); }
 		void _wxFB_doKeyDown( wxKeyEvent& event ){ doKeyDown( event ); }
 		void _wxFB_doPaint( wxPaintEvent& event ){ doPaint( event ); }
 		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
@@ -62,10 +64,10 @@ class TMainFrame : public wxFrame
 		void _wxFB_doBack10( wxCommandEvent& event ){ doBack10( event ); }
 		void _wxFB_doForward10( wxCommandEvent& event ){ doForward10( event ); }
 		void _wxFB_doForceMove( wxCommandEvent& event ){ doForceMove( event ); }
-		void _wxFB_doPass( wxCommandEvent& event ){ doPass( event ); }
 		void _wxFB_doResign( wxCommandEvent& event ){ doResign( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
+		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
 		void _wxFB_doNetToggle( wxCommandEvent& event ){ doNetToggle( event ); }
@@ -96,10 +98,10 @@ class TMainFrame : public wxFrame
 			ID_BACK10,
 			ID_FWD10,
 			ID_FORCE,
-			ID_PASS,
 			ID_RESIGN,
 			ID_SCORE,
 			ID_ANALYZE,
+			ID_ANALYSISWINDOWTOGGLE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
 			ID_NETWORKTOGGLE,
@@ -110,7 +112,8 @@ class TMainFrame : public wxFrame
 			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
-			ID_HELPABOUT
+			ID_HELPABOUT,
+			ID_PASS
 		};
 		
 		TBoardPanel* m_panelBoard;
@@ -139,6 +142,7 @@ class TMainFrame : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void doActivate( wxActivateEvent& event ) { event.Skip(); }
+		virtual void doClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void doKeyDown( wxKeyEvent& event ) { event.Skip(); }
 		virtual void doPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void doResize( wxSizeEvent& event ) { event.Skip(); }
@@ -153,10 +157,10 @@ class TMainFrame : public wxFrame
 		virtual void doBack10( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doForward10( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doForceMove( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doPass( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doResign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAnalyze( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doNetToggle( wxCommandEvent& event ) { event.Skip(); }
@@ -345,6 +349,36 @@ class TCalculateDialog : public wxDialog
 		
 		TCalculateDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Calculation in progress"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TCalculateDialog();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TAnalysisWindow
+///////////////////////////////////////////////////////////////////////////////
+class TAnalysisWindow : public wxFrame 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doClose( wxCloseEvent& event ){ doClose( event ); }
+		void _wxFB_doSelectCell( wxGridEvent& event ){ doSelectCell( event ); }
+		
+	
+	protected:
+		wxPanel* m_panel3;
+		wxGrid* m_moveGrid;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doClose( wxCloseEvent& event ) { event.Skip(); }
+		virtual void doSelectCell( wxGridEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		TAnalysisWindow( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analysis"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~TAnalysisWindow();
 	
 };
 

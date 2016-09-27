@@ -15,6 +15,7 @@
 #include "ClockAdjustDialog.h"
 #include "RatedSizeDialog.h"
 #include "CalculateDialog.h"
+#include "AnalysisWindow.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
@@ -30,6 +31,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
     Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
     Connect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
+    Connect(wxEVT_DESTROY, wxWindowDestroyEventHandler(MainFrame::doCloseChild));
+    Bind(wxEVT_DISPLAY_MAINLINE, [=](wxCommandEvent& event) {
+        m_panelBoard->GetEventHandler()->AddPendingEvent(event);
+    });
 
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);
@@ -68,6 +73,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_menuSettings->FindItem(ID_SOUNDSWITCH)->Check(m_soundEnabled);
     m_menuSettings->FindItem(ID_RESIGNTOGGLE)->Check(m_resignEnabled);
     m_menuSettings->FindItem(ID_PONDERTOGGLE)->Check(m_ponderEnabled);
+    m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
 
     // set global message area
     Utils::setGUIQueue(this->GetEventHandler(), EVT_STATUS_UPDATE);
@@ -90,6 +96,7 @@ MainFrame::~MainFrame() {
     Disconnect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
     Disconnect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
     Disconnect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
+    Disconnect(wxEVT_DESTROY, wxWindowDestroyEventHandler(MainFrame::doCloseChild));
 
     Hide();
 }
@@ -131,6 +138,12 @@ void MainFrame::doSoundToggle(wxCommandEvent& event) {
 void MainFrame::doNetToggle(wxCommandEvent& event) {
     m_netsEnabled = !m_netsEnabled;
     wxConfig::Get()->Write(wxT("netsEnabled"), m_netsEnabled);
+
+    bool wasPondering = m_pondering;
+    bool wasRunning = stopEngine();
+    bool wasAnalyzing = wasRunning && !wasPondering;
+
+    if (wasAnalyzing) doAnalyze(wxCommandEvent());
 }
 
 void MainFrame::startEngine() {
@@ -1049,5 +1062,25 @@ void MainFrame::doKeyDown(wxKeyEvent& event) {
         HandleAsNavigationKey(event);
     } else {
         event.Skip();
+    }
+}
+
+void MainFrame::doShowHideAnalysisWindow(wxCommandEvent& event) {
+    if (!m_analysisWindow) {
+        m_analysisWindow = new AnalysisWindow(this);
+        m_analysisWindow->Show();
+    } else {
+        if (!m_analysisWindow->IsShown()) {
+            m_analysisWindow->Show();
+        } else {
+            m_analysisWindow->Hide();
+        }
+    }
+}
+
+void MainFrame::doCloseChild( wxWindowDestroyEvent& event ) {
+    if (event.GetWindow() == m_analysisWindow) {
+        m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
+        m_analysisWindow = nullptr;
     }
 }
