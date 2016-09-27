@@ -9,6 +9,8 @@
 #include "Matcher.h"
 #include "AttribScores.h"
 #include "SGFTree.h"
+#include "GTP.h"
+#include "SMP.h"
 #include "EngineThread.h"
 #include "AboutDialog.h"
 #include "NewGameDialog.h"
@@ -32,9 +34,15 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
     Connect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
     Connect(wxEVT_DESTROY, wxWindowDestroyEventHandler(MainFrame::doCloseChild));
+    // Forward mainline updates to the board panel
     Bind(wxEVT_DISPLAY_MAINLINE, [=](wxCommandEvent& event) {
         m_panelBoard->GetEventHandler()->AddPendingEvent(event);
     });
+
+    cfg_allow_pondering = true;
+    cfg_num_threads = std::min(SMP::get_num_cpus(), MAX_CPUS);
+    cfg_enable_nets = true;
+    cfg_max_playouts = INT_MAX;
 
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);
@@ -221,6 +229,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
 
     stopEngine();
     m_panelBoard->unlockState();
+    m_panelBoard->clearPV();
 
     if (m_analyzing) {
         m_analyzing = false;

@@ -29,6 +29,7 @@ public:
     void doTerritory();     
     void lockState();
     void unlockState();
+    void clearPV();
                                       
 private:
     DECLARE_EVENT_TABLE()
@@ -50,6 +51,7 @@ private:
     bool m_showInfluence;
     bool m_showMoyo;    
     std::vector<int> m_Hatch;
+    std::vector<int> m_PV;
 };
 
 #endif

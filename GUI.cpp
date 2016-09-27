@@ -281,7 +281,7 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxString m_radioBoxBoardSizeChoices[] = { _("9 x 9"), _("13 x 13"), _("17 x 17"), _("19 x 19"), _("25 x 25") };
 	int m_radioBoxBoardSizeNChoices = sizeof( m_radioBoxBoardSizeChoices ) / sizeof( wxString );
 	m_radioBoxBoardSize = new wxRadioBox( this, wxID_ANY, _("Board size"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoardSizeNChoices, m_radioBoxBoardSizeChoices, 3, wxRA_SPECIFY_ROWS );
-	m_radioBoxBoardSize->SetSelection( 5 );
+	m_radioBoxBoardSize->SetSelection( 3 );
 	bSizer12->Add( m_radioBoxBoardSize, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
 	
@@ -532,7 +532,9 @@ TCalculateDialog::~TCalculateDialog()
 
 BEGIN_EVENT_TABLE( TAnalysisWindow, wxFrame )
 	EVT_CLOSE( TAnalysisWindow::_wxFB_doClose )
-	EVT_GRID_SELECT_CELL( TAnalysisWindow::_wxFB_doSelectCell )
+	EVT_GRID_CELL_LEFT_CLICK( TAnalysisWindow::_wxFB_doLeftClick )
+	EVT_GRID_CELL_LEFT_DCLICK( TAnalysisWindow::_wxFB_doDeselect )
+	EVT_GRID_CELL_RIGHT_CLICK( TAnalysisWindow::_wxFB_doDeselect )
 END_EVENT_TABLE()
 
 TAnalysisWindow::TAnalysisWindow( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )

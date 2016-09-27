@@ -284,7 +284,7 @@
 										<object class="wxRadioBox" name="m_radioBoxBoardSize">
 											<style>wxRA_SPECIFY_ROWS</style>
 											<label>Board size</label>
-											<selection>5</selection>
+											<selection>3</selection>
 											<content>
 												<item>9 x 9</item>
 												<item>13 x 13</item>

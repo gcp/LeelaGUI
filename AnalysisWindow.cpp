@@ -95,16 +95,26 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
                 m_moveGrid->SetCellAlignment(currrow, currcol,
                                              wxALIGN_CENTRE, wxALIGN_CENTRE);
             }
-            m_moveGrid->SetCellValue(currrow, currcol, value);
             if (label.Cmp("PV") == 0) {
+                wxString padValue(value);
+                // Make sure column fits at least 5 moves (3+1 chars)
+                if (value.Length() < 5*4) {
+                    padValue.Pad(20 - value.Length());
+                }
+                m_moveGrid->SetCellValue(currrow, currcol, padValue);
                 m_moveGrid->AutoSizeColumn(currcol);
+            } else {
+                m_moveGrid->SetCellValue(currrow, currcol, value);
             }
         }
     }
 
     if (!mHasAutoSized) {
         m_moveGrid->AutoSize();
-        Fit();
+        // Make sure we won't obscure anything when scrollbar appears
+        wxSize bestSize = GetBestSize();
+        bestSize.IncBy(0, wxSystemSettings::GetMetric(wxSYS_HSCROLL_Y));
+        SetSize(bestSize);
         mHasAutoSized = true;
     }
 
@@ -114,19 +124,34 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
     //grid->SetCellBackgroundColour(3, 3, *wxLIGHT_GREY);
 }
 
-void AnalysisWindow::doSelectCell(wxGridEvent& event) {
-    int row = event.GetRow();
-    int gridCols = m_moveGrid->GetNumberCols();
-    wxString pv;
-
-    for (int i = 0; i < gridCols; i++) {
-        if (m_moveGrid->GetColLabelValue(i).Cmp("PV") == 0) {
-            pv = m_moveGrid->GetCellValue(row, i);
-            break;
-        }
-    }
+void AnalysisWindow::doDeselect(wxGridEvent& event) {
+    m_moveGrid->ClearSelection();
 
     wxCommandEvent* cmd = new wxCommandEvent(wxEVT_DISPLAY_MAINLINE);
-    cmd->SetString(pv);
+    cmd->SetString("");
     GetParent()->GetEventHandler()->QueueEvent(cmd);
+}
+
+void AnalysisWindow::doLeftClick(wxGridEvent& event) {
+    int row = event.GetRow();
+    int col = event.GetCol();
+
+    if (m_moveGrid->IsInSelection(row, col)) {
+        doDeselect(event);
+    } else {
+        m_moveGrid->SelectRow(row);
+        int gridCols = m_moveGrid->GetNumberCols();
+        wxString pv;
+
+        for (int i = 0; i < gridCols; i++) {
+            if (m_moveGrid->GetColLabelValue(i).Cmp("PV") == 0) {
+                pv = m_moveGrid->GetCellValue(row, i);
+                break;
+            }
+        }
+
+        wxCommandEvent* cmd = new wxCommandEvent(wxEVT_DISPLAY_MAINLINE);
+        cmd->SetString(pv);
+        GetParent()->GetEventHandler()->QueueEvent(cmd);
+    }
 }

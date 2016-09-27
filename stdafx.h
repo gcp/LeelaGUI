@@ -44,6 +44,7 @@
 #include <wx/hyperlink.h>
 #include <wx/sound.h>
 #include <wx/display.h>
+#include <wx/tokenzr.h>
 
 // STD headers
 #include <utility>

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TBoardPanel.h"
 #include "MainFrame.h"
+#include "SGFTree.h"
 
 wxDEFINE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
 
@@ -15,7 +16,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
                          const wxSize& size, long style,const wxString& name)
     : wxPanel(parent, winid, pos, size, style, name) {
 
-    Bind(wxEVT_DISPLAY_MAINLINE, &TBoardPanel::doDisplayMainline, this);    
+    Bind(wxEVT_DISPLAY_MAINLINE, &TBoardPanel::doDisplayMainline, this);
 
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
         
@@ -71,8 +72,10 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_State = NULL;
     m_playerColor = FastBoard::BLACK;    
     m_Hatch.resize(FastBoard::MAXSQ);
+    m_PV.resize(FastBoard::MAXSQ);
     
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
+    clearPV();
 }
 
 void TBoardPanel::setState(GameState * state) {
@@ -158,8 +161,10 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     }  
     
     // board coordinates
-    int fontSize = cellDim / 4;
-    wxFont cfont(fontSize, wxFONTFAMILY_SWISS, wxNORMAL, wxNORMAL);
+    int coordFontSize = cellDim / 4;
+    int pvFontSize = (int)(cellDim / 2.5f);
+    wxFont cfont(coordFontSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    wxFont pvfont(pvFontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     dc.SetFont(cfont);
     dc.SetBackgroundMode(wxTRANSPARENT);
     dc.SetTextForeground(*wxBLACK);
@@ -168,8 +173,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         int x = 0;
         int xoff = cellDim + (x - 1) * cellDim;
         int yoff = cellDim + y  * cellDim;   
-        xoff = xoff + cellDim / 2 - fontSize;  
-        yoff = yoff - fontSize; 
+        xoff = xoff + cellDim / 2 - coordFontSize;  
+        yoff = yoff - coordFontSize; 
         int xoff2 = xoff + cellDim * boardSize;
         wxString text;
         text.Printf("%2d", boardSize - y);
@@ -180,8 +185,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         int y = 0;
         int yoff = cellDim + (y - 1) * cellDim;
         int xoff = cellDim + x  * cellDim;   
-        yoff = yoff + cellDim / 2 - fontSize;  
-        xoff = xoff - fontSize; 
+        yoff = yoff + cellDim / 2 - coordFontSize;  
+        xoff = xoff - coordFontSize; 
         int yoff2 = yoff + cellDim * boardSize;
         wxString text;
         if (x < 25) {
@@ -243,7 +248,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     dc.SetBrush(rbrush);
     wxPen wDeadPenThick(*wxBLACK, 2, wxSOLID);
     wxPen bDeadPenThick(*wxWHITE, 2, wxSOLID);
-        
+    dc.SetFont(pvfont);
+
     for (int y = 0; y < boardSize; y++) {
         for (int x = 0; x < boardSize; x++) {           
             // engine board is inverted vertically
@@ -262,6 +268,16 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             } else if (cell == FastBoard::WHITE) {
                 dc.SetPen(penThin);
                 dc.DrawBitmap(wstone, xxoff, yyoff, true);
+            } else {
+                // Part of the mainline
+                if (m_PV[vtx] > 0) {
+                    wxString text;
+                    text.Printf("%d", m_PV[vtx]);
+                    wxRect rect = dc.GetTextExtent(text);
+                    int cx = xoff - (rect.GetWidth() / 2);
+                    int cy = yoff - (rect.GetHeight() / 2);
+                    dc.DrawText(text, cx, cy);
+                }
             }
         
             if (cell != FastBoard::EMPTY) {                                                
@@ -442,5 +458,24 @@ void TBoardPanel::doKeyDown(wxKeyEvent& event) {
 }
 
 void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
+    wxString pv = event.GetString();
 
+    // Clear past PV
+    clearPV();
+    int pv_move_counter = 0;
+
+    wxStringTokenizer tokenizer(pv);
+    while (tokenizer.HasMoreTokens()) {
+        pv_move_counter++;
+
+        wxString move = tokenizer.GetNextToken();
+        int vertex = m_State->board.text_to_move(move.ToStdString());
+        m_PV[vertex] = pv_move_counter;
+    }
+
+    Refresh();
+}
+
+void TBoardPanel::clearPV() {
+    std::fill(m_PV.begin(), m_PV.end(), 0);
 }
