@@ -2,6 +2,7 @@
 #include "TBoardPanel.h"
 #include "MainFrame.h"
 #include "SGFTree.h"
+#include "MCOTable.h"
 
 wxDEFINE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
 
@@ -66,7 +67,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_cellDim = 0;    
     
     m_showMoyo = false;
-    m_showInfluence = false;
+    m_showOwner = false;
     m_showTerritory = false;
     m_stateLock = false;
     m_State = NULL;
@@ -74,8 +75,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_Hatch.resize(FastBoard::MAXSQ);
     m_PV.resize(FastBoard::MAXSQ);
     
-    std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
-    clearPV();
+    clearViz();
 }
 
 void TBoardPanel::setState(GameState * state) {
@@ -124,16 +124,15 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     wxPen penThin(*wxBLACK, 1, wxSOLID);
     wxPen penEmpty(*wxBLACK, 0, wxTRANSPARENT);        
     
-    // stones    
+    // stones
     wxBrush bbrush(*wxBLACK, wxSOLID);
-    wxBrush rbrush(*wxRED, wxSOLID);        
+    wxBrush rbrush(*wxRED, wxSOLID);
     int stoneSize = ((cellDim * 19)/ 40);
-    int stoneDiam = std::max(1, ((cellDim * 19 * 2)/ 40)); 
-    int shadowOff = stoneSize / 4;   
-    
+    int stoneDiam = std::max(1, ((cellDim * 19 * 2)/ 40));
+
     // bitmaps
-    wxBitmap wstone = wxBitmap(m_whiteStone.Scale(stoneDiam, stoneDiam));
-    wxBitmap bstone = wxBitmap(m_blackStone.Scale(stoneDiam, stoneDiam));            	
+    wxBitmap wstone = wxBitmap(m_whiteStone.Scale(stoneDiam, stoneDiam, wxIMAGE_QUALITY_HIGH));
+    wxBitmap bstone = wxBitmap(m_blackStone.Scale(stoneDiam, stoneDiam, wxIMAGE_QUALITY_HIGH));
 
     // emtpy fill
     wxBrush ebrush(*wxBLACK, wxTRANSPARENT);
@@ -210,13 +209,13 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     // moyo/territory/influence
     if (!m_showTerritory) {
         if (m_showMoyo) {
-            doMoyo();            
-        } else if (m_showInfluence) {
-            doInfluence();
-        }      
+            doMoyo();
+        } else if (m_showOwner) {
+            doOwner();
+        }
     }
     
-    if (m_showMoyo || m_showInfluence || m_showTerritory) {
+    if (m_showMoyo || m_showTerritory) {
         wxBrush bmbrush(*wxBLACK, wxCROSSDIAG_HATCH);
         wxBrush wmbrush(*wxWHITE, wxCROSSDIAG_HATCH);          
         
@@ -243,8 +242,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             }
         }    
     }
-    
-    // stones    
+
+    // stones
     dc.SetBrush(rbrush);
     wxPen wDeadPenThick(*wxBLACK, 2, wxSOLID);
     wxPen bDeadPenThick(*wxWHITE, 2, wxSOLID);
@@ -262,32 +261,54 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             int xxoff = (xoff - (stoneDiam/2));
             int yyoff = (yoff - (stoneDiam/2));                        
             
-            if (cell == FastBoard::BLACK) {        
-                dc.SetPen(penThin);                                                                                                
-                dc.DrawBitmap(bstone, xxoff, yyoff, true);                
+            dc.SetPen(penThin);
+            if (cell == FastBoard::BLACK) {
+                dc.DrawBitmap(bstone, xxoff, yyoff, true);
             } else if (cell == FastBoard::WHITE) {
-                dc.SetPen(penThin);
                 dc.DrawBitmap(wstone, xxoff, yyoff, true);
-            } else {
-                // Part of the mainline
+            }  else if (m_showOwner) {
+                float ratio = 2.0f * fabs(0.5f - m_Owner[vtx]);
+                int miniDiam = (stoneDiam * ratio) - 1;
+                if (miniDiam >= 3) {
+                    int xxxoff = (xoff - (miniDiam/2));
+                    int yyyoff = (yoff - (miniDiam/2));
+
+                    wxImage* refStone = nullptr;
+                    if (m_Owner[vtx] > 0.5f) {
+                        refStone = &m_blackStone;
+                    } else {
+                        refStone = &m_whiteStone;
+                    }
+                    wxBitmap mini = wxBitmap(refStone->Scale(miniDiam, miniDiam,
+                                                             wxIMAGE_QUALITY_HIGH));
+                    dc.DrawBitmap(mini, xxxoff, yyyoff, true);
+                }
+            }
+
+            if (cell == FastBoard::EMPTY) {
+               // Part of the mainline
                 if (m_PV[vtx] > 0) {
                     wxString text;
                     text.Printf("%d", m_PV[vtx]);
                     wxRect rect = dc.GetTextExtent(text);
                     int cx = xoff - (rect.GetWidth() / 2);
                     int cy = yoff - (rect.GetHeight() / 2);
+                    dc.SetTextForeground(*wxWHITE);                    
+                    dc.DrawText(text, cx-1, cy-1);
+                    dc.DrawText(text, cx+1, cy+1);
+                    dc.DrawText(text, cx-1, cy+1);
+                    dc.DrawText(text, cx+1, cy-1);
+                    dc.SetTextForeground(*wxBLACK);
                     dc.DrawText(text, cx, cy);
                 }
-            }
-        
-            if (cell != FastBoard::EMPTY) {                                                
-                if (m_State->get_last_move() == vtx) {                         
+            } else if (cell != FastBoard::EMPTY) {
+                if (m_State->get_last_move() == vtx) {
                     dc.DrawCircle(xoff, yoff, stoneSize/3);
                 }
             }
-            
+
             int bxoff = (xoff - (cellDim/2));
-            int byoff = (yoff - (cellDim/2)); 
+            int byoff = (yoff - (cellDim/2));
             
             if (m_showTerritory) {
                 // dead stone
@@ -376,7 +397,7 @@ void TBoardPanel::setShowTerritory(bool val) {
 }
 
 void TBoardPanel::setShowInfluence(bool val) {
-    m_showInfluence = val;
+    m_showOwner = val;
     
     Refresh();
 }
@@ -387,8 +408,8 @@ void TBoardPanel::setShowMoyo(bool val) {
     Refresh();
 }
 
-bool TBoardPanel::getShowInfluence() {
-    return m_showInfluence  ;
+bool TBoardPanel::getShowOwner() {
+    return m_showOwner;
 }
 
 bool TBoardPanel::getShowMoyo() {
@@ -410,17 +431,21 @@ void TBoardPanel::doMoyo() {
     }
 }
 
-void TBoardPanel::doInfluence() {
-    std::vector<int> moyo = m_State->board.influence();
-    
-    m_Hatch.resize(FastBoard::MAXSQ);    
-    std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
-    
-    for (int i = 0; i < moyo.size(); i++) {
-        if (moyo[i] > 0) {
-            m_Hatch[i] = FastBoard::BLACK;
-        } else if (moyo[i] < 0) {
-            m_Hatch[i] = FastBoard::WHITE;
+void TBoardPanel::doOwner() {
+    if (!MCOwnerTable::get_MCO()->is_primed()) {
+        Playout::mc_owner(*m_State, 32);
+    }
+
+    m_Owner.resize(FastBoard::MAXSQ);
+    std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
+
+    int boardsize = m_State->board.get_boardsize();
+
+    for (int x = 0; x < boardsize; x++) {
+        for (int y = 0; y < boardsize; y++) {
+            int vertex = m_State->board.get_vertex(x, y);
+            m_Owner[vertex] =
+                MCOwnerTable::get_MCO()->get_blackown(FastBoard::BLACK, vertex);
         }
     }
 }
@@ -461,7 +486,7 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
     wxString pv = event.GetString();
 
     // Clear past PV
-    clearPV();
+    std::fill(m_PV.begin(), m_PV.end(), 0);
     int pv_move_counter = 0;
 
     wxStringTokenizer tokenizer(pv);
@@ -476,6 +501,8 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
     Refresh();
 }
 
-void TBoardPanel::clearPV() {
+void TBoardPanel::clearViz() {
     std::fill(m_PV.begin(), m_PV.end(), 0);
+    std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
+    std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
 }

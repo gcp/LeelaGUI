@@ -22,14 +22,14 @@ public:
     void setShowInfluence(bool val);
     void setShowMoyo(bool val);
     void setShowTerritory(bool val);
-    bool getShowInfluence();
+    bool getShowOwner();
     bool getShowMoyo();
     void doMoyo();
-    void doInfluence();   
+    void doOwner();   
     void doTerritory();     
     void lockState();
     void unlockState();
-    void clearPV();
+    void clearViz();
                                       
 private:
     DECLARE_EVENT_TABLE()
@@ -48,10 +48,11 @@ private:
     int m_cellDim;
     int m_playerColor;
     bool m_showTerritory;   // on game end
-    bool m_showInfluence;
+    bool m_showOwner;
     bool m_showMoyo;    
     std::vector<int> m_Hatch;
     std::vector<int> m_PV;
+    std::vector<float> m_Owner;
 };
 
 #endif

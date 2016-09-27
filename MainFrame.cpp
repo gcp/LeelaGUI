@@ -18,6 +18,7 @@
 #include "RatedSizeDialog.h"
 #include "CalculateDialog.h"
 #include "AnalysisWindow.h"
+#include "MCOTable.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
@@ -197,9 +198,9 @@ bool MainFrame::stopEngine() {
 }
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
-    m_panelBoard->setShowInfluence(!m_panelBoard->getShowInfluence());
+    m_panelBoard->setShowInfluence(!m_panelBoard->getShowOwner());
     
-    if (m_panelBoard->getShowInfluence()) {
+    if (m_panelBoard->getShowOwner()) {
         m_panelBoard->setShowMoyo(false);
         wxMenuItem * moyo = m_menuSettings->FindItem(ID_SHOWMOYO);
         moyo->Check(false);
@@ -229,7 +230,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
 
     stopEngine();
     m_panelBoard->unlockState();
-    m_panelBoard->clearPV();
+    m_panelBoard->clearViz();
 
     if (m_analyzing) {
         m_analyzing = false;
@@ -331,6 +332,8 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_State.place_free_handicap(mydialog.getHandicap());
         calcdialog.Hide();
         ::wxEndBusyCursor();
+        MCOwnerTable::clear();
+        m_panelBoard->clearViz();
         m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0, 0);
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();
