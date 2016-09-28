@@ -91,7 +91,6 @@ void TBoardPanel::setPlayerColor(int color) {
 
 void TBoardPanel::doPaint(wxPaintEvent& event) {
     wxAutoBufferedPaintDC dc(this);
-
     PrepareDC(dc);
 
     wxSize sz = GetClientSize();
@@ -113,7 +112,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
 
     for (int y = 0; y < yc; y++) {
         for (int x = 0; x < xc; x++) {
-            dc.DrawBitmap(m_tileFull, x * tileW, y * tileH, false);
+            dc.DrawBitmap(m_tileFull, x * tileW, y * tileH);
         }
     }
 
@@ -132,7 +131,10 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         doProbabilities();
         // Background image bitmap
         wxImage backgroundImg(cellDim * boardSize, cellDim * boardSize);
-        backgroundImg.SetAlpha();
+        size_t alphaSize = cellDim * boardSize * cellDim * boardSize;
+        unsigned char* alphaBuff = (unsigned char*)calloc(alphaSize, 1);
+        backgroundImg.SetAlpha(alphaBuff);
+
         wxGraphicsContext *gc = wxGraphicsContext::Create(backgroundImg);
 
         gc->SetPen(penEmpty);
@@ -149,7 +151,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                 int yoff = y * cellDim;
 
                 float val = std::min(1.0f, 2.0f * m_Probabilities[vtx]);
-                if (val > 0.005f) {
+                if (val > 0.01f) {
                     val = std::pow(val, 0.25f);
                     int red = 255 * val;
                     int green = 0;
@@ -160,9 +162,9 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                     if (val > 0.45f || cellDim < 9) {
                         gc->DrawRectangle(xoff, yoff, cellDim, cellDim);
                     } else if (val > 0.30f) {
-                        gc->DrawRectangle(xoff + 2, yoff + 2, cellDim - 2, cellDim - 2);
+                        gc->DrawRectangle(xoff + 2, yoff + 2, cellDim - 4, cellDim - 4);
                     } else {
-                        gc->DrawRectangle(xoff + 4, yoff + 4, cellDim - 4, cellDim - 4);
+                        gc->DrawRectangle(xoff + 4, yoff + 4, cellDim - 8, cellDim - 8);
                     }
                 }
             }
@@ -172,7 +174,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
 
         wxGraphicsBitmap bg = gc->CreateBitmapFromImage(backgroundImg.Blur(cellDim / 2.5f));
         mgc->DrawBitmap(bg, cellDim / 2, cellDim / 2,
-                            backgroundImg.GetWidth(), backgroundImg.GetHeight());
+                        backgroundImg.GetWidth(), backgroundImg.GetHeight());
         delete gc;
     }
 
@@ -190,7 +192,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
 
     // emtpy fill
     wxBrush ebrush(*wxBLACK, wxTRANSPARENT);
-    
+
     // board outline
     dc.SetBrush(ebrush);
     dc.SetPen(penThick);
@@ -378,11 +380,11 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                 }
             }
         }
-    }              
-        
+    }
+
     dc.SetBrush(wxNullBrush);
-    dc.SetPen(wxNullPen);  
-    dc.SetFont(wxNullFont);          
+    dc.SetPen(wxNullPen);
+    dc.SetFont(wxNullFont);
 }
 
 void TBoardPanel::doErase(wxEraseEvent& event) {    
