@@ -225,6 +225,12 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
     m_panelBoard->Refresh();
 }
 
+void MainFrame::doToggleProbabilities(wxCommandEvent& event) {
+    m_panelBoard->setShowProbabilities(!m_panelBoard->getShowProabilities());
+
+    m_panelBoard->Refresh();
+}
+
 void MainFrame::doNewMove(wxCommandEvent & event) {
     wxLogDebug(_("New move arrived"));
 

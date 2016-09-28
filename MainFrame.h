@@ -55,6 +55,7 @@ class MainFrame : public TMainFrame {
         virtual void doForward(wxCommandEvent& event) { doRealForward(); };
         virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) override;
         virtual void doCloseChild( wxWindowDestroyEvent& event );
+        virtual void doToggleProbabilities( wxCommandEvent& event ) override;
         void doRealUndo();
         void doRealForward();
 

@@ -3,6 +3,7 @@
 #include "MainFrame.h"
 #include "SGFTree.h"
 #include "MCOTable.h"
+#include "Network.h"
 
 wxDEFINE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
 
@@ -69,12 +70,14 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_showMoyo = false;
     m_showOwner = false;
     m_showTerritory = false;
+    m_showProbabilities = false;
     m_stateLock = false;
     m_State = NULL;
     m_playerColor = FastBoard::BLACK;    
     m_Hatch.resize(FastBoard::MAXSQ);
     m_PV.resize(FastBoard::MAXSQ);
-    
+    m_Probabilities.resize(FastBoard::MAXSQ);
+
     clearViz();
 }
 
@@ -88,42 +91,93 @@ void TBoardPanel::setPlayerColor(int color) {
 
 void TBoardPanel::doPaint(wxPaintEvent& event) {
     wxAutoBufferedPaintDC dc(this);
-        
-    PrepareDC(dc);                	
-        
+
+    PrepareDC(dc);
+
     wxSize sz = GetClientSize();
+    wxLogDebug("width: %d height: %d", sz.GetWidth(), sz.GetHeight());
+
+    int boardSize = m_State->board.get_boardsize();
+
+    int minDim = std::min(sz.GetWidth(), sz.GetHeight());
+    int cellDim = minDim / ((boardSize - 1) + 2);
+    m_cellDim = cellDim;
+
+    wxLogDebug("cell size: %d", cellDim);
+
+    // Tiled background
     int tileW = m_tileFull.GetWidth();
     int tileH = m_tileFull.GetHeight();
-            
-    wxLogDebug("width: %d height: %d", sz.GetWidth(), sz.GetHeight());        
-        
     int xc = (sz.GetWidth() / tileW) + 1;
     int yc = (sz.GetHeight() / tileH) + 1;
-            
+
     for (int y = 0; y < yc; y++) {
         for (int x = 0; x < xc; x++) {
-            dc.DrawBitmap(m_tileFull, x * tileW, y * tileH, false);             
+            dc.DrawBitmap(m_tileFull, x * tileW, y * tileH, false);
         }
-    }      
+    }
 
     if (m_State == NULL) {
         wxLogDebug("Paint on empty state");
         return;
     }
-    
-    int boardSize = m_State->board.get_boardsize();
-    
-    int minDim = std::min(sz.GetWidth(), sz.GetHeight());
-    int cellDim = minDim / ((boardSize - 1) + 2);
-    
-    m_cellDim = cellDim;
-    
-    wxLogDebug("cell size: %d", cellDim);
-            
+
     wxPen penThick(*wxBLACK, 2, wxSOLID);
     wxPen penThin(*wxBLACK, 1, wxSOLID);
-    wxPen penEmpty(*wxBLACK, 0, wxTRANSPARENT);        
-    
+    wxPen penEmpty(*wxBLACK, 0, wxTRANSPARENT);
+
+    wxGraphicsContext *mgc = wxGraphicsContext::Create(dc);
+
+    if (m_showProbabilities) {
+        doProbabilities();
+        // Background image bitmap
+        wxImage backgroundImg(cellDim * boardSize, cellDim * boardSize);
+        backgroundImg.SetAlpha();
+        wxGraphicsContext *gc = wxGraphicsContext::Create(backgroundImg);
+
+        gc->SetPen(penEmpty);
+        wxBrush brush(wxColour(255, 255, 255, wxALPHA_TRANSPARENT));
+        gc->SetBrush(brush);
+        gc->DrawRectangle(0, 0, boardSize * cellDim, boardSize * cellDim);
+
+        for (int y = 0; y < boardSize; y++) {
+            for (int x = 0; x < boardSize; x++) {
+                // engine board is inverted vertically
+                int vtx = m_State->board.get_vertex(x, boardSize - y - 1);
+
+                int xoff = x * cellDim;
+                int yoff = y * cellDim;
+
+                float val = std::min(1.0f, 2.0f * m_Probabilities[vtx]);
+                if (val > 0.005f) {
+                    val = std::pow(val, 0.25f);
+                    int red = 255 * val;
+                    int green = 0;
+                    int blue = 255 * (1.0f - val);
+
+                    wxBrush brush(wxColour(red, green, blue, 192));
+                    gc->SetBrush(brush);
+                    if (val > 0.45f || cellDim < 9) {
+                        gc->DrawRectangle(xoff, yoff, cellDim, cellDim);
+                    } else if (val > 0.30f) {
+                        gc->DrawRectangle(xoff + 2, yoff + 2, cellDim - 2, cellDim - 2);
+                    } else {
+                        gc->DrawRectangle(xoff + 4, yoff + 4, cellDim - 4, cellDim - 4);
+                    }
+                }
+            }
+        }
+
+        gc->Flush();
+
+        wxGraphicsBitmap bg = gc->CreateBitmapFromImage(backgroundImg.Blur(cellDim / 2.5f));
+        mgc->DrawBitmap(bg, cellDim / 2, cellDim / 2,
+                            backgroundImg.GetWidth(), backgroundImg.GetHeight());
+        delete gc;
+    }
+
+    delete mgc;
+
     // stones
     wxBrush bbrush(*wxBLACK, wxSOLID);
     wxBrush rbrush(*wxRED, wxSOLID);
@@ -214,7 +268,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             doOwner();
         }
     }
-    
+
     if (m_showMoyo || m_showTerritory) {
         wxBrush bmbrush(*wxBLACK, wxCROSSDIAG_HATCH);
         wxBrush wmbrush(*wxWHITE, wxCROSSDIAG_HATCH);          
@@ -416,6 +470,16 @@ bool TBoardPanel::getShowMoyo() {
     return m_showMoyo;
 }
 
+void TBoardPanel::setShowProbabilities(bool val) {
+    m_showProbabilities = val;
+
+    Refresh();
+}
+
+bool TBoardPanel::getShowProabilities() {
+    return m_showProbabilities;
+}
+
 void TBoardPanel::doMoyo() {
     std::vector<int> moyo = m_State->board.moyo();
     
@@ -501,8 +565,21 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
     Refresh();
 }
 
+void TBoardPanel::doProbabilities() {
+    m_Owner.resize(FastBoard::MAXSQ);
+    std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
+
+    auto vec = Network::get_Network()->get_scored_moves(
+        m_State, Network::Ensemble::AVERAGE_ALL);
+
+    for (const auto& pair : vec) {
+        m_Probabilities[pair.second] = pair.first;
+    }
+}
+
 void TBoardPanel::clearViz() {
     std::fill(m_PV.begin(), m_PV.end(), 0);
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
     std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
+    std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
 }

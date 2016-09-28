@@ -36,6 +36,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_ANALYSISWINDOWTOGGLE, TMainFrame::_wxFB_doShowHideAnalysisWindow )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
+	EVT_MENU( ID_MOVE_PROBABLITIES, TMainFrame::_wxFB_doToggleProbabilities )
 	EVT_MENU( ID_NETWORKTOGGLE, TMainFrame::_wxFB_doNetToggle )
 	EVT_MENU( ID_PASSTOGGLE, TMainFrame::_wxFB_doPassToggle )
 	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
@@ -147,12 +148,16 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menuSettings = new wxMenu();
 	wxMenuItem* menuItem15;
-	menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("Ctrl-T"), _("Show Territory"), wxITEM_CHECK );
+	menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F3"), _("Show Territory"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItem15 );
 	
 	wxMenuItem* menuItem16;
 	menuItem16 = new wxMenuItem( m_menuSettings, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("Ctrl-M"), _("Show Moyo"), wxITEM_CHECK );
 	m_menuSettings->Append( menuItem16 );
+	
+	wxMenuItem* m_menuItem27;
+	m_menuItem27 = new wxMenuItem( m_menuSettings, ID_MOVE_PROBABLITIES, wxString( _("Show Move Proba&bilities") ) + wxT('\t') + wxT("F4"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
+	m_menuSettings->Append( m_menuItem27 );
 	
 	m_menuSettings->AppendSeparator();
 	

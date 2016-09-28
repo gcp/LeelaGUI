@@ -94,13 +94,18 @@
 			<object class="wxMenu" name="m_menuSettings">
 				<label>_Settings</label>
 				<object class="wxMenuItem" name="menuItem15">
-					<label>Show _Territory\tCtrl-T</label>
+					<label>Show _Territory\tF3</label>
 					<help>Show Territory</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItem16">
 					<label>Show _Moyo\tCtrl-M</label>
 					<help>Show Moyo</help>
+					<checkable>1</checkable>
+				</object>
+				<object class="wxMenuItem" name="m_menuItem27">
+					<label>Show Move Proba_bilities\tF4</label>
+					<help>Show the likelihood of each move being played by a professional player</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />

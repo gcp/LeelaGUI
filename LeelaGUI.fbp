@@ -547,7 +547,7 @@
                         <property name="label">Show &amp;Territory</property>
                         <property name="name">menuItem15</property>
                         <property name="permission">none</property>
-                        <property name="shortcut">Ctrl-T</property>
+                        <property name="shortcut">F3</property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doToggleTerritory</event>
                         <event name="OnUpdateUI"></event>
@@ -565,6 +565,21 @@
                         <property name="shortcut">Ctrl-M</property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doToggleMoyo</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Show the likelihood of each move being played by a professional player</property>
+                        <property name="id">ID_MOVE_PROBABLITIES</property>
+                        <property name="kind">wxITEM_CHECK</property>
+                        <property name="label">Show Move Proba&amp;bilities</property>
+                        <property name="name">m_menuItem27</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut">F4</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doToggleProbabilities</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                     <object class="separator" expanded="1">

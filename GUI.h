@@ -70,6 +70,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
+		void _wxFB_doToggleProbabilities( wxCommandEvent& event ){ doToggleProbabilities( event ); }
 		void _wxFB_doNetToggle( wxCommandEvent& event ){ doNetToggle( event ); }
 		void _wxFB_doPassToggle( wxCommandEvent& event ){ doPassToggle( event ); }
 		void _wxFB_doResignToggle( wxCommandEvent& event ){ doResignToggle( event ); }
@@ -104,6 +105,7 @@ class TMainFrame : public wxFrame
 			ID_ANALYSISWINDOWTOGGLE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
+			ID_MOVE_PROBABLITIES,
 			ID_NETWORKTOGGLE,
 			ID_PASSTOGGLE,
 			ID_RESIGNTOGGLE,
@@ -163,6 +165,7 @@ class TMainFrame : public wxFrame
 		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doToggleProbabilities( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doNetToggle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doPassToggle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doResignToggle( wxCommandEvent& event ) { event.Skip(); }

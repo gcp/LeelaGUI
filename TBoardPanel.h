@@ -22,10 +22,10 @@ public:
     void setShowInfluence(bool val);
     void setShowMoyo(bool val);
     void setShowTerritory(bool val);
+    void setShowProbabilities(bool val);
     bool getShowOwner();
     bool getShowMoyo();
-    void doMoyo();
-    void doOwner();   
+    bool getShowProabilities();
     void doTerritory();     
     void lockState();
     void unlockState();
@@ -39,7 +39,10 @@ private:
     void doLeftMouse(wxMouseEvent& event);
     void doKeyDown(wxKeyEvent& event);
     void doDisplayMainline(wxCommandEvent& event);
-    
+    void doMoyo();
+    void doOwner();
+    void doProbabilities();
+
     GameState * m_State;
     bool m_stateLock;
     wxBitmap m_tileFull;  
@@ -49,10 +52,12 @@ private:
     int m_playerColor;
     bool m_showTerritory;   // on game end
     bool m_showOwner;
-    bool m_showMoyo;    
+    bool m_showMoyo;
+    bool m_showProbabilities;
     std::vector<int> m_Hatch;
     std::vector<int> m_PV;
     std::vector<float> m_Owner;
+    std::vector<float> m_Probabilities;
 };
 
 #endif

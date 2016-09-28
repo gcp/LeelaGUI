@@ -45,6 +45,7 @@
 #include <wx/sound.h>
 #include <wx/display.h>
 #include <wx/tokenzr.h>
+#include <wx/graphics.h>
 
 // STD headers
 #include <utility>
