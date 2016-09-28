@@ -92,7 +92,7 @@
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menuSettings">
-				<label>_Settings</label>
+				<label>_Tools</label>
 				<object class="wxMenuItem" name="menuItem15">
 					<label>Show _Territory\tF3</label>
 					<help>Show Territory</help>
@@ -109,36 +109,9 @@
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
-				<object class="wxMenuItem" name="m_menuNetToggle">
-					<label>Use _Neural Network\tAlt-N</label>
-					<help>Enable use of Neural Network</help>
-					<checked>1</checked>
-					<checkable>1</checkable>
-				</object>
-				<object class="separator" />
-				<object class="wxMenuItem" name="m_menuPassToggle">
-					<label>Engine _passes</label>
-					<help>Allows the engine to pass</help>
-					<checked>1</checked>
-					<checkable>1</checkable>
-				</object>
-				<object class="wxMenuItem" name="menuItemResignToggle">
-					<label>Engine _resigns</label>
-					<help>Allows the engine to resign or not</help>
-					<checked>1</checked>
-					<checkable>1</checkable>
-				</object>
-				<object class="wxMenuItem" name="m_menuItemPonder">
-					<label>Engine p_onders</label>
-					<help>Allows the engine to think during the opponents time</help>
-					<checked>1</checked>
-					<checkable>1</checkable>
-				</object>
-				<object class="wxMenuItem" name="menuItemSound">
-					<label>_Sound enabled</label>
-					<help>Enable or disable sound</help>
-					<checked>1</checked>
-					<checkable>1</checkable>
+				<object class="wxMenuItem" name="m_menuItem28">
+					<label>S_ettings...\tCtrl-E</label>
+					<help></help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuItemAdjustClocks">
@@ -702,6 +675,129 @@
 					<flag>wxEXPAND</flag>
 					<border>5</border>
 					<object class="wxGrid" name="m_moveGrid" />
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TSettingsDialog">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<title>Settings</title>
+		<centered>1</centered>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND | wxALL</flag>
+				<border>5</border>
+				<object class="wxPanel" name="m_panel4">
+					<style>wxTAB_TRAVERSAL</style>
+					<object class="wxBoxSizer">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxBOTTOM|wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxStaticBoxSizer">
+								<orient>wxVERTICAL</orient>
+								<label>Engine Settings</label>
+								<object class="sizeritem">
+									<option>1</option>
+									<flag>wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxGridSizer">
+										<rows>0</rows>
+										<cols>2</cols>
+										<vgap>0</vgap>
+										<hgap>0</hgap>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALL</flag>
+											<border>5</border>
+											<object class="wxCheckBox" name="m_checkBoxPasses">
+												<label>Allow Passes</label>
+												<checked>1</checked>
+											</object>
+										</object>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALL</flag>
+											<border>5</border>
+											<object class="wxCheckBox" name="m_checkBoxPondering">
+												<label>Pondering</label>
+												<checked>1</checked>
+											</object>
+										</object>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALL</flag>
+											<border>5</border>
+											<object class="wxCheckBox" name="m_checkBoxResignations">
+												<label>Resignations</label>
+												<checked>1</checked>
+											</object>
+										</object>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALL</flag>
+											<border>5</border>
+											<object class="wxCheckBox" name="m_checkBoxNeuralNet">
+												<label>Neural Networks</label>
+												<checked>1</checked>
+											</object>
+										</object>
+									</object>
+								</object>
+							</object>
+						</object>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxBOTTOM|wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxStaticBoxSizer">
+								<orient>wxVERTICAL</orient>
+								<label>Interface Settings</label>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxALL</flag>
+									<border>5</border>
+									<object class="wxCheckBox" name="m_checkBoxSound">
+										<label>Sound</label>
+										<checked>1</checked>
+									</object>
+								</object>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxALL</flag>
+									<border>5</border>
+									<object class="wxCheckBox" name="m_checkBoxDPIScaling">
+										<label>Allow DPI Scaling (needs restart)</label>
+										<checked>0</checked>
+									</object>
+								</object>
+							</object>
+						</object>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxStdDialogButtonSizer">
+								<object class="button">
+									<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+									<border>5</border>
+									<object class="wxButton" name="wxID_OK">
+										<label>&amp;OK</label>
+									</object>
+								</object>
+								<object class="button">
+									<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+									<border>5</border>
+									<object class="wxButton" name="wxID_CANCEL">
+										<label>&amp;Cancel</label>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
 				</object>
 			</object>
 		</object>

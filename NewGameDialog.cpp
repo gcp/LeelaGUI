@@ -37,7 +37,6 @@ void NewGameDialog::doCancel( wxCommandEvent& event ) {
 }
 
 void NewGameDialog::doOK( wxCommandEvent& event ) {
-    // XXX: save settings
     int size = m_radioBoxBoardSize->GetSelection();
     wxConfig::Get()->Write(wxT("DefaultBoardSize"), size);
 

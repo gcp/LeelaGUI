@@ -52,6 +52,7 @@
     <IntDir>$(Configuration)\</IntDir>
     <IncludePath>C:\Projects\OpenBLAS\dist\include;C:\boost\boost_1_60_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Projects\OpenBLAS\dist\lib;C:\boost\boost_1_60_0\stage\lib;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -89,6 +90,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -101,10 +103,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Manifest />
     <Manifest>
-      <AdditionalManifestFiles>$(SolutionDir)DeclareDPIAware.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -166,6 +169,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\RatedSizeDialog.cpp" />
+    <ClCompile Include="..\SettingsDialog.cpp" />
     <ClCompile Include="..\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -217,6 +221,7 @@
     <ClInclude Include="..\MainFrame.h" />
     <ClInclude Include="..\NewGameDialog.h" />
     <ClInclude Include="..\RatedSizeDialog.h" />
+    <ClInclude Include="..\SettingsDialog.h" />
     <ClInclude Include="..\stdafx.h" />
     <ClInclude Include="..\TBoardPanel.h" />
     <ClInclude Include="resource.h" />
@@ -271,9 +276,6 @@
     <None Include="wx\msw\pntright.cur" />
     <None Include="wx\msw\rightarr.cur" />
     <None Include="wx\msw\roller.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="DeclareDPIAware.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

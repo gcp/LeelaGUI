@@ -37,11 +37,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
 	EVT_MENU( ID_MOVE_PROBABLITIES, TMainFrame::_wxFB_doToggleProbabilities )
-	EVT_MENU( ID_NETWORKTOGGLE, TMainFrame::_wxFB_doNetToggle )
-	EVT_MENU( ID_PASSTOGGLE, TMainFrame::_wxFB_doPassToggle )
-	EVT_MENU( ID_RESIGNTOGGLE, TMainFrame::_wxFB_doResignToggle )
-	EVT_MENU( ID_PONDERTOGGLE, TMainFrame::_wxFB_doPonderToggle )
-	EVT_MENU( ID_SOUNDSWITCH, TMainFrame::_wxFB_doSoundToggle )
+	EVT_MENU( ID_SETTINGS_MENU, TMainFrame::_wxFB_doSettingsDialog )
 	EVT_MENU( ID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
 	EVT_MENU( ID_HOMEPAGE, TMainFrame::_wxFB_doHomePage )
@@ -161,32 +157,9 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menuSettings->AppendSeparator();
 	
-	wxMenuItem* m_menuNetToggle;
-	m_menuNetToggle = new wxMenuItem( m_menuSettings, ID_NETWORKTOGGLE, wxString( _("Use &Neural Network") ) + wxT('\t') + wxT("Alt-N"), _("Enable use of Neural Network"), wxITEM_CHECK );
-	m_menuSettings->Append( m_menuNetToggle );
-	m_menuNetToggle->Check( true );
-	
-	m_menuSettings->AppendSeparator();
-	
-	wxMenuItem* m_menuPassToggle;
-	m_menuPassToggle = new wxMenuItem( m_menuSettings, ID_PASSTOGGLE, wxString( _("Engine &passes") ) , _("Allows the engine to pass"), wxITEM_CHECK );
-	m_menuSettings->Append( m_menuPassToggle );
-	m_menuPassToggle->Check( true );
-	
-	wxMenuItem* menuItemResignToggle;
-	menuItemResignToggle = new wxMenuItem( m_menuSettings, ID_RESIGNTOGGLE, wxString( _("Engine &resigns") ) , _("Allows the engine to resign or not"), wxITEM_CHECK );
-	m_menuSettings->Append( menuItemResignToggle );
-	menuItemResignToggle->Check( true );
-	
-	wxMenuItem* m_menuItemPonder;
-	m_menuItemPonder = new wxMenuItem( m_menuSettings, ID_PONDERTOGGLE, wxString( _("Engine p&onders") ) , _("Allows the engine to think during the opponents time"), wxITEM_CHECK );
-	m_menuSettings->Append( m_menuItemPonder );
-	m_menuItemPonder->Check( true );
-	
-	wxMenuItem* menuItemSound;
-	menuItemSound = new wxMenuItem( m_menuSettings, ID_SOUNDSWITCH, wxString( _("&Sound enabled") ) , _("Enable or disable sound"), wxITEM_CHECK );
-	m_menuSettings->Append( menuItemSound );
-	menuItemSound->Check( true );
+	wxMenuItem* m_menuItem28;
+	m_menuItem28 = new wxMenuItem( m_menuSettings, ID_SETTINGS_MENU, wxString( _("S&ettings...") ) + wxT('\t') + wxT("Ctrl-E"), wxEmptyString, wxITEM_NORMAL );
+	m_menuSettings->Append( m_menuItem28 );
 	
 	m_menuSettings->AppendSeparator();
 	
@@ -194,7 +167,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuItemAdjustClocks = new wxMenuItem( m_menuSettings, ID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuSettings->Append( m_menuItemAdjustClocks );
 	
-	m_menubar1->Append( m_menuSettings, _("&Settings") ); 
+	m_menubar1->Append( m_menuSettings, _("&Tools") ); 
 	
 	m_menu3 = new wxMenu();
 	wxMenuItem* menuItem13;
@@ -600,5 +573,90 @@ TAnalysisWindow::TAnalysisWindow( wxWindow* parent, wxWindowID id, const wxStrin
 }
 
 TAnalysisWindow::~TAnalysisWindow()
+{
+}
+
+BEGIN_EVENT_TABLE( TSettingsDialog, wxDialog )
+	EVT_INIT_DIALOG( TSettingsDialog::_wxFB_doInit )
+	EVT_BUTTON( wxID_CANCEL, TSettingsDialog::_wxFB_doCancel )
+	EVT_BUTTON( wxID_OK, TSettingsDialog::_wxFB_doOK )
+END_EVENT_TABLE()
+
+TSettingsDialog::TSettingsDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer13;
+	bSizer13 = new wxBoxSizer( wxVERTICAL );
+	
+	m_panel4 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer7;
+	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( m_panel4, wxID_ANY, _("Engine Settings") ), wxVERTICAL );
+	
+	wxGridSizer* gSizer1;
+	gSizer1 = new wxGridSizer( 0, 2, 0, 0 );
+	
+	m_checkBoxPasses = new wxCheckBox( sbSizer7->GetStaticBox(), ID_PASSTOGGLE, _("Allow Passes"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxPasses->SetValue(true); 
+	gSizer1->Add( m_checkBoxPasses, 0, wxALL, 5 );
+	
+	m_checkBoxPondering = new wxCheckBox( sbSizer7->GetStaticBox(), ID_PONDERTOGGLE, _("Pondering"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxPondering->SetValue(true); 
+	gSizer1->Add( m_checkBoxPondering, 0, wxALL, 5 );
+	
+	m_checkBoxResignations = new wxCheckBox( sbSizer7->GetStaticBox(), ID_RESIGNTOGGLE, _("Resignations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxResignations->SetValue(true); 
+	gSizer1->Add( m_checkBoxResignations, 0, wxALL, 5 );
+	
+	m_checkBoxNeuralNet = new wxCheckBox( sbSizer7->GetStaticBox(), ID_NETWORKTOGGLE, _("Neural Networks"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxNeuralNet->SetValue(true); 
+	gSizer1->Add( m_checkBoxNeuralNet, 0, wxALL, 5 );
+	
+	
+	sbSizer7->Add( gSizer1, 1, wxEXPAND, 5 );
+	
+	
+	bSizer15->Add( sbSizer7, 0, wxBOTTOM|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer9;
+	sbSizer9 = new wxStaticBoxSizer( new wxStaticBox( m_panel4, wxID_ANY, _("Interface Settings") ), wxVERTICAL );
+	
+	m_checkBoxSound = new wxCheckBox( sbSizer9->GetStaticBox(), ID_SOUNDSWITCH, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxSound->SetValue(true); 
+	sbSizer9->Add( m_checkBoxSound, 0, wxALL, 5 );
+	
+	m_checkBoxDPIScaling = new wxCheckBox( sbSizer9->GetStaticBox(), ID_DPISCALING, _("Allow DPI Scaling (needs restart)"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer9->Add( m_checkBoxDPIScaling, 0, wxALL, 5 );
+	
+	
+	bSizer15->Add( sbSizer9, 0, wxBOTTOM|wxEXPAND, 5 );
+	
+	m_sdbSizer3 = new wxStdDialogButtonSizer();
+	m_sdbSizer3OK = new wxButton( m_panel4, wxID_OK );
+	m_sdbSizer3->AddButton( m_sdbSizer3OK );
+	m_sdbSizer3Cancel = new wxButton( m_panel4, wxID_CANCEL );
+	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
+	m_sdbSizer3->Realize();
+	
+	bSizer15->Add( m_sdbSizer3, 0, wxEXPAND, 5 );
+	
+	
+	m_panel4->SetSizer( bSizer15 );
+	m_panel4->Layout();
+	bSizer15->Fit( m_panel4 );
+	bSizer13->Add( m_panel4, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	this->SetSizer( bSizer13 );
+	this->Layout();
+	bSizer13->Fit( this );
+	
+	this->Centre( wxBOTH );
+}
+
+TSettingsDialog::~TSettingsDialog()
 {
 }

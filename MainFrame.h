@@ -38,14 +38,9 @@ class MainFrame : public TMainFrame {
         virtual void doSaveSGF(wxCommandEvent& event);
         virtual void doBack10(wxCommandEvent& event);
 	virtual void doForward10(wxCommandEvent& event);
-        virtual void doNetToggle(wxCommandEvent& event);
-	virtual void doSoundToggle(wxCommandEvent& event);
 	virtual void doForceMove(wxCommandEvent& event);
 	virtual void doToggleTerritory(wxCommandEvent& event);
 	virtual void doToggleMoyo(wxCommandEvent& event);
-	virtual void doResignToggle(wxCommandEvent& event);
-	virtual void doPassToggle(wxCommandEvent& event);
-        virtual void doPonderToggle(wxCommandEvent& event);
 	virtual void doStatusUpdate(wxCommandEvent& event);
 	virtual void doResign(wxCommandEvent& event);
 	virtual void doAnalyze(wxCommandEvent& event);
@@ -56,6 +51,7 @@ class MainFrame : public TMainFrame {
         virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) override;
         virtual void doCloseChild( wxWindowDestroyEvent& event );
         virtual void doToggleProbabilities( wxCommandEvent& event ) override;
+        virtual void doSettingsDialog( wxCommandEvent& event ) override;
         void doRealUndo();
         void doRealForward();
 

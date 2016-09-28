@@ -2,6 +2,7 @@
 #include "GUI.h"
 #include "MainFrame.h"
 #include "TBoardPanel.h"
+#include "SettingsDialog.h"
 #include "Zobrist.h"
 #include "Random.h"
 #include "Utils.h"
@@ -77,11 +78,6 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
 
-    m_menuSettings->FindItem(ID_NETWORKTOGGLE)->Check(m_netsEnabled);
-    m_menuSettings->FindItem(ID_PASSTOGGLE)->Check(m_passEnabled);
-    m_menuSettings->FindItem(ID_SOUNDSWITCH)->Check(m_soundEnabled);
-    m_menuSettings->FindItem(ID_RESIGNTOGGLE)->Check(m_resignEnabled);
-    m_menuSettings->FindItem(ID_PONDERTOGGLE)->Check(m_ponderEnabled);
     m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
 
     // set global message area
@@ -137,22 +133,6 @@ void MainFrame::doBoardUpdate(wxCommandEvent& event) {
 
 void MainFrame::doExit(wxCommandEvent & event) {
     Close();
-}
-
-void MainFrame::doSoundToggle(wxCommandEvent& event) {
-    m_soundEnabled = !m_soundEnabled;
-    wxConfig::Get()->Write(wxT("soundEnabled"), m_soundEnabled);
-}
-
-void MainFrame::doNetToggle(wxCommandEvent& event) {
-    m_netsEnabled = !m_netsEnabled;
-    wxConfig::Get()->Write(wxT("netsEnabled"), m_netsEnabled);
-
-    bool wasPondering = m_pondering;
-    bool wasRunning = stopEngine();
-    bool wasAnalyzing = wasRunning && !wasPondering;
-
-    if (wasAnalyzing) doAnalyze(wxCommandEvent());
 }
 
 void MainFrame::startEngine() {
@@ -321,6 +301,26 @@ void MainFrame::doBoardResize(wxSizeEvent& event) {
     event.Skip();
 }
 
+void MainFrame::doSettingsDialog(wxCommandEvent& event) {
+    bool wasPondering = m_pondering;
+    bool wasRunning = stopEngine();
+    bool wasAnalyzing = wasRunning && !wasPondering;    
+
+    SettingsDialog mydialog(this);
+
+    if (mydialog.ShowModal() == wxID_OK) {
+        wxLogDebug("OK clicked");
+
+        m_netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), 1);
+        m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), 1);
+        m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1);
+        m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1);
+        m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1);
+    }
+
+    if (wasAnalyzing) doAnalyze(wxCommandEvent());
+}
+
 void MainFrame::doNewGame(wxCommandEvent& event) {
     stopEngine();
 
@@ -345,7 +345,6 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_playerColor = mydialog.getPlayerColor();
         // XXX
         m_netsEnabled = mydialog.getNetsEnabled();
-        m_menuSettings->FindItem(ID_NETWORKTOGGLE)->Check(m_netsEnabled);
         wxConfig::Get()->Write(wxT("netsEnabled"), m_netsEnabled);
         // XXX
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -1012,16 +1011,6 @@ void MainFrame::doForceMove(wxCommandEvent& event) {
     }
 }
 
-void MainFrame::doPassToggle(wxCommandEvent& event) {
-    m_passEnabled = !m_passEnabled;
-    wxConfig::Get()->Write(wxT("passEnabled"), m_passEnabled);
-}
-
-void MainFrame::doResignToggle(wxCommandEvent& event) {
-    m_resignEnabled = !m_resignEnabled;
-    wxConfig::Get()->Write(wxT("resignEnabled"), m_resignEnabled);
-}
-
 void MainFrame::doResign(wxCommandEvent& event) {
     if (m_State.get_to_move() == m_playerColor) {
         stopEngine();
@@ -1060,14 +1049,6 @@ void MainFrame::doAdjustClocks(wxCommandEvent& event) {
 
         m_State.set_timecontrol(mydialog.getTimeControl());
     }
-}
-
-void MainFrame::doPonderToggle(wxCommandEvent& event) {
-    m_ponderEnabled = !m_ponderEnabled;
-    if (!m_ponderEnabled) {
-        stopEngine();
-    }
-    wxConfig::Get()->Write(wxT("ponderEnabled"), m_ponderEnabled);
 }
 
 void MainFrame::doKeyDown(wxKeyEvent& event) {

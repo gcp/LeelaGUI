@@ -71,11 +71,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
 		void _wxFB_doToggleProbabilities( wxCommandEvent& event ){ doToggleProbabilities( event ); }
-		void _wxFB_doNetToggle( wxCommandEvent& event ){ doNetToggle( event ); }
-		void _wxFB_doPassToggle( wxCommandEvent& event ){ doPassToggle( event ); }
-		void _wxFB_doResignToggle( wxCommandEvent& event ){ doResignToggle( event ); }
-		void _wxFB_doPonderToggle( wxCommandEvent& event ){ doPonderToggle( event ); }
-		void _wxFB_doSoundToggle( wxCommandEvent& event ){ doSoundToggle( event ); }
+		void _wxFB_doSettingsDialog( wxCommandEvent& event ){ doSettingsDialog( event ); }
 		void _wxFB_doAdjustClocks( wxCommandEvent& event ){ doAdjustClocks( event ); }
 		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
 		void _wxFB_doHomePage( wxCommandEvent& event ){ doHomePage( event ); }
@@ -106,11 +102,7 @@ class TMainFrame : public wxFrame
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
 			ID_MOVE_PROBABLITIES,
-			ID_NETWORKTOGGLE,
-			ID_PASSTOGGLE,
-			ID_RESIGNTOGGLE,
-			ID_PONDERTOGGLE,
-			ID_SOUNDSWITCH,
+			ID_SETTINGS_MENU,
 			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
@@ -166,11 +158,7 @@ class TMainFrame : public wxFrame
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleProbabilities( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doNetToggle( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doPassToggle( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doResignToggle( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doPonderToggle( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doSoundToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doSettingsDialog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAdjustClocks( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doGoRules( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doHomePage( wxCommandEvent& event ) { event.Skip(); }
@@ -384,6 +372,55 @@ class TAnalysisWindow : public wxFrame
 		TAnalysisWindow( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analysis"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~TAnalysisWindow();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TSettingsDialog
+///////////////////////////////////////////////////////////////////////////////
+class TSettingsDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doInit( wxInitDialogEvent& event ){ doInit( event ); }
+		void _wxFB_doCancel( wxCommandEvent& event ){ doCancel( event ); }
+		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_PASSTOGGLE = 1000,
+			ID_PONDERTOGGLE,
+			ID_RESIGNTOGGLE,
+			ID_NETWORKTOGGLE,
+			ID_SOUNDSWITCH,
+			ID_DPISCALING
+		};
+		
+		wxPanel* m_panel4;
+		wxCheckBox* m_checkBoxPasses;
+		wxCheckBox* m_checkBoxPondering;
+		wxCheckBox* m_checkBoxResignations;
+		wxCheckBox* m_checkBoxNeuralNet;
+		wxCheckBox* m_checkBoxSound;
+		wxCheckBox* m_checkBoxDPIScaling;
+		wxStdDialogButtonSizer* m_sdbSizer3;
+		wxButton* m_sdbSizer3OK;
+		wxButton* m_sdbSizer3Cancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doInit( wxInitDialogEvent& event ) { event.Skip(); }
+		virtual void doCancel( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doOK( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		TSettingsDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~TSettingsDialog();
 	
 };
 
