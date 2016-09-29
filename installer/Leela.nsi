@@ -1,6 +1,6 @@
-!define LEELABIN  "Leela062.exe"
-!define LEELAOCL  "Leela062_OpenCL.exe"
-!define VERSION   "0.6.2"
+!define LEELABIN  "Leela070.exe"
+!define LEELAOCL  "Leela070_OpenCL.exe"
+!define VERSION   "0.7.0"
 
 !if "${NSIS_PACKEDVERSION}" >= 0x3000000
 Unicode true
@@ -8,13 +8,7 @@ Unicode true
 
 !searchparse "ver: ${VERSION}.0.0.0." "ver: " V1 . V2 . V3 . V4 .
 
-!if ${V4} != 0
-!define VERSIONNAME "${VERSION}"
-!else if ${V3} != 0
 !define VERSIONNAME "${V1}.${V2}.${V3}"
-!else
-!define VERSIONNAME "${V1}.${V2}"
-!endif
 
 ;
 ; General options
@@ -35,13 +29,8 @@ Unicode true
 	RequestExecutionLevel   user
 	ManifestDPIAware        true
 
-	!if ${V4} != 0
-	OutFile "setupLeela${V1}${V2}${V3}${V4}.exe"
-	!else if ${V3} != 0
 	OutFile "setupLeela${V1}${V2}${V3}.exe"
-	!else
-	OutFile "setupLeela${V1}${V2}.exe"
-	!endif
+
 
 !include "MUI.nsh"
 !include "Sections.nsh"
@@ -134,6 +123,7 @@ Section "Leela" leela
 	File "bin\${LEELABIN}"
 	File "bin\libgcc_s_dw2-1.dll"
 	File "bin\libopenblas.dll"
+    File "license.rtf"
 	;File "bin\libgfortran-3.dll"
 	;File "bin\libquadmath-0.dll"
 
@@ -248,6 +238,7 @@ Section "Uninstall"
 	;;Delete "$INSTDIR\libquadmath-0.dll"
 	Delete "$INSTDIR\OpenCL.dll"
 	Delete "$INSTDIR\Leela Homepage.url"
+    Delete "$INSTDIR\license.rtf"
 	Delete "$INSTDIR\Uninstall.exe"
 
 	;Remove the installation directory
