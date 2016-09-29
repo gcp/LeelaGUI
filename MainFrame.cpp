@@ -146,6 +146,7 @@ void MainFrame::startEngine() {
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             wxLogDebug("Error starting engine");
         } else {
+            m_engineThread->SetPriority(wxPRIORITY_MIN);
             // lock the board
             if (!m_pondering && !m_analyzing) {
                 m_panelBoard->lockState();

@@ -4,11 +4,18 @@
 
 !if "${NSIS_PACKEDVERSION}" >= 0x3000000
 Unicode true
+ManifestDPIAware true
 !endif
 
-!searchparse "ver: ${VERSION}.0.0.0." "ver: " V1 . V2 . V3 . V4 .
+!searchparse "ver: ${VERSION}...." "ver: " V1 . V2 . V3 . V4 .
 
+!if "${V4}" != ""
+!define VERSIONNAME "${VERSION}"
+!else if "${V3}" != ""
 !define VERSIONNAME "${V1}.${V2}.${V3}"
+!else
+!define VERSIONNAME "${V1}.${V2}"
+!endif
 
 ;
 ; General options
@@ -27,17 +34,22 @@ Unicode true
 	ShowUninstDetails       hide
 	ShowInstDetails         hide
 	RequestExecutionLevel   user
-	ManifestDPIAware        true
 
+	!if "${V4}" != ""
+	OutFile "setupLeela${V1}${V2}${V3}${V4}.exe"
+	!else if "${V3}" != ""
 	OutFile "setupLeela${V1}${V2}${V3}.exe"
+	!else
+	OutFile "setupLeela${V1}${V2}.exe"
+	!endif
 
-
-!include "MUI.nsh"
+!include "MUI2.nsh"
 !include "Sections.nsh"
 
 ;
 ; File info options
 ;
+	!searchparse "ver: ${VERSION}.0.0.0." "ver: " V1 . V2 . V3 . V4 .
 	VIProductVersion "${V1}.${V2}.${V3}.${V4}"
 	VIAddVersionKey "FileDescription" "Leela installer"
 	VIAddVersionKey "ProductName" "Leela"
@@ -123,9 +135,9 @@ Section "Leela" leela
 	File "bin\${LEELABIN}"
 	File "bin\libgcc_s_dw2-1.dll"
 	File "bin\libopenblas.dll"
-    File "license.rtf"
 	;File "bin\libgfortran-3.dll"
 	;File "bin\libquadmath-0.dll"
+	File "license.rtf"
 
 	;create desktop shortcut
 	CreateShortCut "$DESKTOP\Leela.lnk" "$INSTDIR\${LEELABIN}" ""
@@ -174,7 +186,7 @@ Section "-common" common
 	;create start menu shortcuts
 	CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Leela Homepage.lnk" "$INSTDIR\Leela Homepage.url" \
 									"" "" 0 SW_SHOWNORMAL \
-									"" "https://sjeng.org/leela"
+									"" "https://www.sjeng.org/leela"
 	CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 	!insertmacro MUI_STARTMENU_WRITE_END
 
@@ -200,9 +212,9 @@ Section "-common" common
 	WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
 										 "NoRepair" 1
 	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
-									 "HelpLink" "http://www.sjeng.org"
+									 "HelpLink" "https://www.sjeng.org"
 	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Leela" \
-									 "URLInfoAbout" "http://www.sjeng.org"
+									 "URLInfoAbout" "https://www.sjeng.org"
 SectionEnd
 
 Function .onInit
@@ -234,11 +246,11 @@ Section "Uninstall"
 	Delete "$INSTDIR\${LEELAOCL}"
 	Delete "$INSTDIR\libgcc_s_dw2-1.dll"
 	Delete "$INSTDIR\libopenblas.dll"
-	;;Delete "$INSTDIR\libgfortran-3.dll"
-	;;Delete "$INSTDIR\libquadmath-0.dll"
+	;Delete "$INSTDIR\libgfortran-3.dll"
+	;Delete "$INSTDIR\libquadmath-0.dll"
 	Delete "$INSTDIR\OpenCL.dll"
 	Delete "$INSTDIR\Leela Homepage.url"
-    Delete "$INSTDIR\license.rtf"
+	Delete "$INSTDIR\license.rtf"
 	Delete "$INSTDIR\Uninstall.exe"
 
 	;Remove the installation directory

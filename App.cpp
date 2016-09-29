@@ -10,6 +10,8 @@ bool IsWindowsVistaOrHigher() {
     return osvi.dwMajorVersion >= 6;
 }
 
+typedef BOOL (WINAPI *SetProcDPICall)(void);
+
 IMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
@@ -20,7 +22,15 @@ bool MyApp::OnInit()
     bool dpiScale = wxConfig::Get()->Read(wxT("dpiscaleEnabled"), (long)0);
     if (!dpiScale) {
         if (IsWindowsVistaOrHigher()) {
-            SetProcessDPIAware();
+            HINSTANCE dllHandle = LoadLibrary(wxT("user32.dll"));
+            if (dllHandle) {
+                SetProcDPICall procDPI = (SetProcDPICall)GetProcAddress(
+                    dllHandle, "SetProcessDPIAware");
+                if (procDPI) {
+                    procDPI();
+                }
+                FreeLibrary(dllHandle);
+            }
         }
     }
 
