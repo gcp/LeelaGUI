@@ -147,7 +147,7 @@ void MainFrame::startEngine() {
             wxLogDebug("Error starting engine");
         } else {
             // lock the board
-            if (!m_pondering) {
+            if (!m_pondering && !m_analyzing) {
                 m_panelBoard->lockState();
             }
 
@@ -218,10 +218,9 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     m_panelBoard->unlockState();
     m_panelBoard->clearViz();
 
+    // User move entry while we analyze
     if (m_analyzing) {
         m_analyzing = false;
-        m_ponderedOnce = true;
-        return;
     }
 
     if (m_pondering) {
@@ -269,8 +268,8 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             wxLogDebug("Computer to move");
             startEngine();
         } else {
-            if (m_ponderEnabled && !m_ratedGame && !m_analyzing && !m_ponderedOnce
-                && !m_visitLimit) {
+            if (m_ponderEnabled && !m_ratedGame && !m_analyzing
+                && !m_ponderedOnce && !m_visitLimit) {
                 m_pondering = true;
                 startEngine();
             }
@@ -986,27 +985,16 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 }
 
 void MainFrame::doForceMove(wxCommandEvent& event) {
+    m_ratedGame = false;
+    m_ponderedOnce = true;
+    bool wasAnalyzing = m_analyzing;
+    bool wasPondering = m_pondering;
     bool wasRunning = stopEngine();
-    if (wasRunning) {
+    if (!wasRunning || wasAnalyzing || wasPondering) {
         m_analyzing = false;
-
-        if (m_pondering) {
-            m_pondering = false;
-            m_playerColor = !m_State.get_to_move();
-            m_panelBoard->setPlayerColor(m_playerColor);
-            m_ratedGame = false;
-            m_analyzing = false;
-
-            startEngine();
-        }
-    } else {
+        m_pondering = false;
         m_playerColor = !m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
-
-        m_ratedGame = false;
-        m_analyzing = false;
-	m_pondering = false;
-
         startEngine();
     }
 }
@@ -1023,20 +1011,20 @@ void MainFrame::doResign(wxCommandEvent& event) {
 }
 
 void MainFrame::doAnalyze(wxCommandEvent& event) {
+    m_ratedGame = false;
+    bool wasAnalyzing = m_analyzing && !m_pondering;
+    bool wasGameMove = !m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
-    if (wasRunning) {
-        if (m_pondering) {
-            m_pondering = false;
-            m_analyzing = true;
-            startEngine();
-        }
-    } else {
+    m_ponderedOnce |= wasRunning;
+    m_pondering = false;
+
+    if (wasGameMove && wasRunning) {
+        wxQueueEvent(GetEventHandler(), new wxCommandEvent(EVT_NEW_MOVE));
+    }
+    if (!wasAnalyzing || !wasRunning) {
         m_analyzing = true;
-        m_pondering = false;
-        m_ratedGame = false;
         startEngine();
     }
-    m_ponderedOnce = true;
 }
 
 void MainFrame::doAdjustClocks(wxCommandEvent& event) {
