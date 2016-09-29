@@ -68,6 +68,10 @@
 					<help>Force the computer to move now</help>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuItem24">
+					<label>_Pass\tAlt-P</label>
+					<help></help>
+				</object>
 				<object class="wxMenuItem" name="menuItem20">
 					<label>_Resign\tAlt-R</label>
 					<help>Resign the game</help>

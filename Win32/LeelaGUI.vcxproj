@@ -14,12 +14,13 @@
     <ProjectGuid>{9302BF69-D79E-4267-A192-53452C07A84D}</ProjectGuid>
     <RootNamespace>LeelaGUI</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>5.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -52,7 +53,6 @@
     <IntDir>$(Configuration)\</IntDir>
     <IncludePath>C:\Projects\OpenBLAS\dist\include;C:\boost\boost_1_60_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Projects\OpenBLAS\dist\lib;C:\boost\boost_1_60_0\stage\lib;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
-    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -101,9 +101,8 @@
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>PGOptimization</LinkTimeCodeGeneration>
     </Link>
     <Manifest />
     <Manifest>

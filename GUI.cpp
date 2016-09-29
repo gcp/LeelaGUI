@@ -30,6 +30,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_BACK10, TMainFrame::_wxFB_doBack10 )
 	EVT_MENU( ID_FWD10, TMainFrame::_wxFB_doForward10 )
 	EVT_MENU( ID_FORCE, TMainFrame::_wxFB_doForceMove )
+	EVT_MENU( ID_PASS, TMainFrame::_wxFB_doPass )
 	EVT_MENU( ID_RESIGN, TMainFrame::_wxFB_doResign )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
@@ -116,6 +117,10 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu2->Append( menuItem18 );
 	
 	m_menu2->AppendSeparator();
+	
+	wxMenuItem* m_menuItem24;
+	m_menuItem24 = new wxMenuItem( m_menu2, ID_PASS, wxString( _("&Pass") ) + wxT('\t') + wxT("Alt-P"), wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem24 );
 	
 	wxMenuItem* menuItem20;
 	menuItem20 = new wxMenuItem( m_menu2, ID_RESIGN, wxString( _("&Resign") ) + wxT('\t') + wxT("Alt-R"), _("Resign the game"), wxITEM_NORMAL );

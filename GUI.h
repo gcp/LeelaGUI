@@ -64,6 +64,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doBack10( wxCommandEvent& event ){ doBack10( event ); }
 		void _wxFB_doForward10( wxCommandEvent& event ){ doForward10( event ); }
 		void _wxFB_doForceMove( wxCommandEvent& event ){ doForceMove( event ); }
+		void _wxFB_doPass( wxCommandEvent& event ){ doPass( event ); }
 		void _wxFB_doResign( wxCommandEvent& event ){ doResign( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
@@ -95,6 +96,7 @@ class TMainFrame : public wxFrame
 			ID_BACK10,
 			ID_FWD10,
 			ID_FORCE,
+			ID_PASS,
 			ID_RESIGN,
 			ID_SCORE,
 			ID_ANALYZE,
@@ -106,8 +108,7 @@ class TMainFrame : public wxFrame
 			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
 			ID_HOMEPAGE,
-			ID_HELPABOUT,
-			ID_PASS
+			ID_HELPABOUT
 		};
 		
 		TBoardPanel* m_panelBoard;
@@ -151,6 +152,7 @@ class TMainFrame : public wxFrame
 		virtual void doBack10( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doForward10( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doForceMove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPass( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doResign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAnalyze( wxCommandEvent& event ) { event.Skip(); }
