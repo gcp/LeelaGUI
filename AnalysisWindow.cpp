@@ -66,6 +66,13 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
         m_moveGrid->SetTable(new wxGridStringTable(rows, cols), true, wxGrid::wxGridSelectRows);
     }
 
+    double topWinRate = 0.0f;
+
+    wxFont base;
+    if (rows > 0 && cols > 0) {
+        base = m_moveGrid->GetCellFont(0, 0).GetBaseFont();
+    }
+
     for (size_t currrow = 0; currrow < data->size(); currrow++) {
         const auto& cellPair = (*data)[currrow];
         for (size_t currcol = 0; currcol < cellPair.size(); currcol++) {
@@ -73,6 +80,8 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
             const auto value = wxString(cellPair[currcol].second);
 
             const wxString& oldlabel = m_moveGrid->GetColLabelValue(currcol);
+
+            m_moveGrid->SetCellFont(currrow, currcol, base);
 
             if (oldlabel.Cmp(label) != 0) {
                 m_moveGrid->SetColLabelValue(currcol, label);
@@ -105,6 +114,20 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
                 m_moveGrid->AutoSizeColumn(currcol);
             } else {
                 m_moveGrid->SetCellValue(currrow, currcol, value);
+            }
+
+            if (label.Cmp("Win%") == 0) {
+                if (currrow == 0) {
+                    value.ToCDouble(&topWinRate);
+                } else {
+                    double compareVal;
+                    value.ToCDouble(&compareVal);
+                    if (compareVal > topWinRate) {
+                        wxFont bold(base);
+                        bold.SetWeight(wxFONTWEIGHT_BOLD);
+                        m_moveGrid->SetCellFont(currrow, currcol, bold);
+                    }
+                }
             }
         }
     }

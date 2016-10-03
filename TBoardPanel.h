@@ -54,6 +54,7 @@ private:
     bool m_showOwner;
     bool m_showMoyo;
     bool m_showProbabilities;
+    uint64_t m_DisplayedStateHash;
     std::vector<int> m_Hatch;
     std::vector<int> m_PV;
     std::vector<float> m_Owner;

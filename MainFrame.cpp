@@ -382,12 +382,12 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     if (m_ratedSize == 9) {
         rank = wxConfig::Get()->Read(wxT("LastRank9"), (long)-30);
     } else if (m_ratedSize == 19) {
-        rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-9);
+        rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-10);
     }
 
     wxLogDebug("Last rank was: %d", rank);
 
-    wxString mess = wxString(_("Rank: "));
+    wxString mess = wxString(_("Your rank: "));
     mess += rankToString(rank);
     m_statusBar->SetStatusText(mess, 1);
 
@@ -754,7 +754,7 @@ void MainFrame::ratedGameEnd(bool won) {
             wxConfig::Get()->Write(wxT("LastRank19"), rank);                        
         }
                 
-        wxString mess = wxString(_("Rank: "));
+        wxString mess = wxString(_("Your rank: "));
         mess += rankToString(rank);    
         m_statusBar->SetStatusText(mess, 1);
         

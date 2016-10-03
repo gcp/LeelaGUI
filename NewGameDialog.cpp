@@ -19,10 +19,10 @@ void NewGameDialog::doInit( wxInitDialogEvent& event ) {
     int komi = wxConfig::Get()->Read(wxT("DefaultKomi"), (long)7);
     m_spinCtrlKomi->SetValue(komi);
     
-    int simulations = wxConfig::Get()->Read(wxT("DefaultSimulations"), (long)4);
+    int simulations = wxConfig::Get()->Read(wxT("DefaultSimulations"), (long)6);
     m_radioBoxLevel->SetSelection(simulations);
     
-    int minutes = wxConfig::Get()->Read(wxT("DefaultMinutes"), (long)30);
+    int minutes = wxConfig::Get()->Read(wxT("DefaultMinutes"), (long)20);
     m_spinCtrlTime->SetValue(minutes);
     
     int color = wxConfig::Get()->Read(wxT("DefaultColor"), (long)0);

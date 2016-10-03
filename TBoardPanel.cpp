@@ -77,6 +77,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_Hatch.resize(FastBoard::MAXSQ);
     m_PV.resize(FastBoard::MAXSQ);
     m_Probabilities.resize(FastBoard::MAXSQ);
+    m_DisplayedStateHash = 0;
 
     clearViz();
 }
@@ -130,8 +131,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     if (m_showProbabilities) {
         doProbabilities();
         // Background image bitmap
-        wxImage backgroundImg(cellDim * boardSize, cellDim * boardSize);
-        size_t alphaSize = cellDim * boardSize * cellDim * boardSize;
+        wxImage backgroundImg(cellDim * (boardSize + 2), cellDim * (boardSize + 2));
+        size_t alphaSize = cellDim * (boardSize + 2) * cellDim  * (boardSize + 2);
         unsigned char* alphaBuff = (unsigned char*)calloc(alphaSize, 1);
         backgroundImg.SetAlpha(alphaBuff);
 
@@ -140,15 +141,15 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         gc->SetPen(penEmpty);
         wxBrush brush(wxColour(255, 255, 255, wxALPHA_TRANSPARENT));
         gc->SetBrush(brush);
-        gc->DrawRectangle(0, 0, boardSize * cellDim, boardSize * cellDim);
+        gc->DrawRectangle(0, 0, (boardSize + 2) * cellDim, (boardSize + 2) * cellDim);
 
         for (int y = 0; y < boardSize; y++) {
             for (int x = 0; x < boardSize; x++) {
                 // engine board is inverted vertically
                 int vtx = m_State->board.get_vertex(x, boardSize - y - 1);
 
-                int xoff = x * cellDim;
-                int yoff = y * cellDim;
+                int xoff = (x + 1) * cellDim;
+                int yoff = (y + 1) * cellDim;
 
                 float val = std::min(1.0f, 2.0f * m_Probabilities[vtx]);
                 if (val > 0.01f) {
@@ -173,7 +174,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         gc->Flush();
 
         wxGraphicsBitmap bg = gc->CreateBitmapFromImage(backgroundImg.Blur(cellDim / 2.5f));
-        mgc->DrawBitmap(bg, cellDim / 2, cellDim / 2,
+        mgc->DrawBitmap(bg, -cellDim / 2, -cellDim / 2,
                         backgroundImg.GetWidth(), backgroundImg.GetHeight());
         delete gc;
     }
@@ -513,7 +514,7 @@ void TBoardPanel::doOwner() {
             m_Owner[vertex] =
                 MCOwnerTable::get_MCO()->get_blackown(FastBoard::BLACK, vertex);
         }
-    }
+    }    
 }
 
 void TBoardPanel::doTerritory() {
@@ -568,14 +569,17 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
 }
 
 void TBoardPanel::doProbabilities() {
-    m_Owner.resize(FastBoard::MAXSQ);
-    std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
+    if (m_State->board.get_hash() != m_DisplayedStateHash) {
+        m_Probabilities.resize(FastBoard::MAXSQ);
+        std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
 
-    auto vec = Network::get_Network()->get_scored_moves(
-        m_State, Network::Ensemble::AVERAGE_ALL);
+        auto vec = Network::get_Network()->get_scored_moves(
+            m_State, Network::Ensemble::AVERAGE_ALL);
 
-    for (const auto& pair : vec) {
-        m_Probabilities[pair.second] = pair.first;
+        for (const auto& pair : vec) {
+            m_Probabilities[pair.second] = pair.first;
+        }
+        m_DisplayedStateHash = m_State->board.get_hash();
     }
 }
 
