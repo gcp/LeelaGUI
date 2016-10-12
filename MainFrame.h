@@ -64,6 +64,8 @@ class MainFrame : public TMainFrame {
 	void ratedGameEnd(bool won);
 	wxString rankToString(int rank);
 	void updateStatusBar(char *str);
+        void setActiveMenus();
+        void gameNoLongerCounts();
 
 	GameState m_State;
 	GameState m_ponderState;

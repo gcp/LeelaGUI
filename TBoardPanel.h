@@ -19,13 +19,13 @@ public:
                    
     void setState(GameState * brd);               
     void setPlayerColor(int color);
-    void setShowInfluence(bool val);
+    void setShowOwner(bool val);
     void setShowMoyo(bool val);
     void setShowTerritory(bool val);
     void setShowProbabilities(bool val);
     bool getShowOwner();
     bool getShowMoyo();
-    bool getShowProabilities();
+    bool getShowProbabilities();
     void doTerritory();     
     void lockState();
     void unlockState();

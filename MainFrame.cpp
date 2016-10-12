@@ -45,6 +45,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     cfg_num_threads = std::min(SMP::get_num_cpus(), MAX_CPUS);
     cfg_enable_nets = true;
     cfg_max_playouts = INT_MAX;
+    GTP::setup_default_parameters();
 
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);
@@ -79,6 +80,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_panelBoard->setPlayerColor(m_playerColor);
 
     m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
+    setActiveMenus();
 
     // set global message area
     Utils::setGUIQueue(this->GetEventHandler(), EVT_STATUS_UPDATE);
@@ -179,12 +181,13 @@ bool MainFrame::stopEngine() {
 }
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
-    m_panelBoard->setShowInfluence(!m_panelBoard->getShowOwner());
+    m_panelBoard->setShowOwner(!m_panelBoard->getShowOwner());
     
     if (m_panelBoard->getShowOwner()) {
         m_panelBoard->setShowMoyo(false);
-        wxMenuItem * moyo = m_menuSettings->FindItem(ID_SHOWMOYO);
+        wxMenuItem * moyo = m_menuTools->FindItem(ID_SHOWMOYO);
         moyo->Check(false);
+        gameNoLongerCounts();
     }
     
     m_panelBoard->setShowTerritory(false);
@@ -196,8 +199,8 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
     m_panelBoard->setShowMoyo(!m_panelBoard->getShowMoyo());
     
     if (m_panelBoard->getShowMoyo()) {
-        m_panelBoard->setShowInfluence(false);
-        wxMenuItem * influence = m_menuSettings->FindItem(ID_SHOWTERRITORY);
+        m_panelBoard->setShowOwner(false);
+        wxMenuItem * influence = m_menuTools->FindItem(ID_SHOWTERRITORY);
         influence->Check(false);
     }
     
@@ -207,7 +210,11 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
 }
 
 void MainFrame::doToggleProbabilities(wxCommandEvent& event) {
-    m_panelBoard->setShowProbabilities(!m_panelBoard->getShowProabilities());
+    m_panelBoard->setShowProbabilities(!m_panelBoard->getShowProbabilities());
+
+    if (m_panelBoard->getShowProbabilities()) {
+        gameNoLongerCounts();
+    }
 
     m_panelBoard->Refresh();
 }
@@ -346,17 +353,27 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         // XXX
         m_netsEnabled = mydialog.getNetsEnabled();
         wxConfig::Get()->Write(wxT("netsEnabled"), m_netsEnabled);
+        setActiveMenus();
         // XXX
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
 	m_pondering = false;
         m_disputing = false;
-        m_ratedGame = false;
+        gameNoLongerCounts();
 
         wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
         myevent.SetEventObject(this);
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    }
+}
+
+void MainFrame::setActiveMenus() {
+    int boardsize = m_State.board.get_boardsize();
+    if (boardsize != 19) {
+        m_menuTools->FindItem(ID_MOVE_PROBABLITIES)->Enable(false);
+    } else {
+        m_menuTools->FindItem(ID_MOVE_PROBABLITIES)->Enable(true);
     }
 }
 
@@ -391,7 +408,10 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     mess += rankToString(rank);
     m_statusBar->SetStatusText(mess, 1);
 
-    this->SetTitle(_("Leela - ") + mess); 
+    this->SetTitle(_("Leela - ") + mess);
+    if (m_analysisWindow) {
+        m_analysisWindow->Hide();
+    }
 
     int used_rank = rank;
     int handicap;
@@ -713,6 +733,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_ratedGame = true;
+        setActiveMenus();
     }
 
     wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
@@ -864,6 +885,11 @@ void MainFrame::doPass(wxCommandEvent& event) {
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
 
+void MainFrame::gameNoLongerCounts() {
+    m_ratedGame = false;
+    this->SetTitle(_("Leela"));
+}
+
 void MainFrame::doRealUndo() {
     bool wasPondering = m_pondering;
     bool wasRunning = stopEngine();
@@ -876,7 +902,7 @@ void MainFrame::doRealUndo() {
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
 
-    m_ratedGame = false;
+    gameNoLongerCounts();
 
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
@@ -986,7 +1012,7 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 }
 
 void MainFrame::doForceMove(wxCommandEvent& event) {
-    m_ratedGame = false;
+    gameNoLongerCounts();
     m_ponderedOnce = true;
     bool wasAnalyzing = m_analyzing;
     bool wasPondering = m_pondering;
@@ -1012,7 +1038,7 @@ void MainFrame::doResign(wxCommandEvent& event) {
 }
 
 void MainFrame::doAnalyze(wxCommandEvent& event) {
-    m_ratedGame = false;
+    gameNoLongerCounts();
     bool wasAnalyzing = m_analyzing && !m_pondering;
     bool wasGameMove = !m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
@@ -1054,6 +1080,7 @@ void MainFrame::doKeyDown(wxKeyEvent& event) {
 }
 
 void MainFrame::doShowHideAnalysisWindow(wxCommandEvent& event) {
+    gameNoLongerCounts();
     if (!m_analysisWindow) {
         m_analysisWindow = new AnalysisWindow(this);
         m_analysisWindow->Show();

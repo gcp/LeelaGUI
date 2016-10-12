@@ -18,6 +18,7 @@ protected:
     virtual void doOK( wxCommandEvent& event );
     virtual void doInit( wxInitDialogEvent& event );
     virtual void doHandicapUpdate( wxSpinEvent& event );
+    virtual void doRadioBox( wxCommandEvent& event );
     
 public:
     /** Constructor */
@@ -31,6 +32,8 @@ public:
     int getPlayerColor();
     int getTimeControl();
     bool getNetsEnabled();
+
+    void checkNetsEnabled();
 };
 
 #endif // __NewGameDialog__

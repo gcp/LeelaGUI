@@ -117,7 +117,7 @@ class TMainFrame : public wxFrame
 		wxMenu* m_menu1;
 		wxMenu* m_menu2;
 		wxMenu* m_menuAnalyze;
-		wxMenu* m_menuSettings;
+		wxMenu* m_menuTools;
 		wxMenu* m_menu3;
 		wxToolBar* m_toolBar1;
 		wxToolBarToolBase* m_tool1; 
@@ -185,6 +185,7 @@ class TNewGameDialog : public wxDialog
 		
 		// Private event handlers
 		void _wxFB_doInit( wxInitDialogEvent& event ){ doInit( event ); }
+		void _wxFB_doRadioBox( wxCommandEvent& event ){ doRadioBox( event ); }
 		void _wxFB_doHandicapUpdate( wxSpinEvent& event ){ doHandicapUpdate( event ); }
 		void _wxFB_doCancel( wxCommandEvent& event ){ doCancel( event ); }
 		void _wxFB_doOK( wxCommandEvent& event ){ doOK( event ); }
@@ -214,6 +215,7 @@ class TNewGameDialog : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void doInit( wxInitDialogEvent& event ) { event.Skip(); }
+		virtual void doRadioBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doHandicapUpdate( wxSpinEvent& event ) { event.Skip(); }
 		virtual void doCancel( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doOK( wxCommandEvent& event ) { event.Skip(); }

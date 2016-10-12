@@ -453,7 +453,7 @@ void TBoardPanel::setShowTerritory(bool val) {
     Refresh();
 }
 
-void TBoardPanel::setShowInfluence(bool val) {
+void TBoardPanel::setShowOwner(bool val) {
     m_showOwner = val;
     
     Refresh();
@@ -479,7 +479,7 @@ void TBoardPanel::setShowProbabilities(bool val) {
     Refresh();
 }
 
-bool TBoardPanel::getShowProabilities() {
+bool TBoardPanel::getShowProbabilities() {
     return m_showProbabilities;
 }
 

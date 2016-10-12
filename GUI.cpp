@@ -147,32 +147,32 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menubar1->Append( m_menuAnalyze, _("&Analyze") ); 
 	
-	m_menuSettings = new wxMenu();
+	m_menuTools = new wxMenu();
 	wxMenuItem* menuItem15;
-	menuItem15 = new wxMenuItem( m_menuSettings, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F3"), _("Show Territory"), wxITEM_CHECK );
-	m_menuSettings->Append( menuItem15 );
+	menuItem15 = new wxMenuItem( m_menuTools, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F3"), _("Show Territory"), wxITEM_CHECK );
+	m_menuTools->Append( menuItem15 );
 	
 	wxMenuItem* menuItem16;
-	menuItem16 = new wxMenuItem( m_menuSettings, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("Ctrl-M"), _("Show Moyo"), wxITEM_CHECK );
-	m_menuSettings->Append( menuItem16 );
+	menuItem16 = new wxMenuItem( m_menuTools, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("Ctrl-M"), _("Show Moyo"), wxITEM_CHECK );
+	m_menuTools->Append( menuItem16 );
 	
-	wxMenuItem* m_menuItem27;
-	m_menuItem27 = new wxMenuItem( m_menuSettings, ID_MOVE_PROBABLITIES, wxString( _("Show Move Proba&bilities") ) + wxT('\t') + wxT("F4"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
-	m_menuSettings->Append( m_menuItem27 );
+	wxMenuItem* m_menuItemMoveProbabilities;
+	m_menuItemMoveProbabilities = new wxMenuItem( m_menuTools, ID_MOVE_PROBABLITIES, wxString( _("Show Move Proba&bilities") ) + wxT('\t') + wxT("F4"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
+	m_menuTools->Append( m_menuItemMoveProbabilities );
 	
-	m_menuSettings->AppendSeparator();
+	m_menuTools->AppendSeparator();
 	
 	wxMenuItem* m_menuItem28;
-	m_menuItem28 = new wxMenuItem( m_menuSettings, ID_SETTINGS_MENU, wxString( _("S&ettings...") ) + wxT('\t') + wxT("Ctrl-E"), wxEmptyString, wxITEM_NORMAL );
-	m_menuSettings->Append( m_menuItem28 );
+	m_menuItem28 = new wxMenuItem( m_menuTools, ID_SETTINGS_MENU, wxString( _("S&ettings...") ) + wxT('\t') + wxT("Ctrl-E"), wxEmptyString, wxITEM_NORMAL );
+	m_menuTools->Append( m_menuItem28 );
 	
-	m_menuSettings->AppendSeparator();
+	m_menuTools->AppendSeparator();
 	
 	wxMenuItem* m_menuItemAdjustClocks;
-	m_menuItemAdjustClocks = new wxMenuItem( m_menuSettings, ID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuSettings->Append( m_menuItemAdjustClocks );
+	m_menuItemAdjustClocks = new wxMenuItem( m_menuTools, ID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuTools->Append( m_menuItemAdjustClocks );
 	
-	m_menubar1->Append( m_menuSettings, _("&Tools") ); 
+	m_menubar1->Append( m_menuTools, _("&Tools") ); 
 	
 	m_menu3 = new wxMenu();
 	wxMenuItem* menuItem13;
@@ -240,6 +240,7 @@ TMainFrame::~TMainFrame()
 
 BEGIN_EVENT_TABLE( TNewGameDialog, wxDialog )
 	EVT_INIT_DIALOG( TNewGameDialog::_wxFB_doInit )
+	EVT_RADIOBOX( wxID_ANY, TNewGameDialog::_wxFB_doRadioBox )
 	EVT_SPINCTRL( ID_HANDICAPSPIN, TNewGameDialog::_wxFB_doHandicapUpdate )
 	EVT_BUTTON( wxID_CANCEL, TNewGameDialog::_wxFB_doCancel )
 	EVT_BUTTON( wxID_OK, TNewGameDialog::_wxFB_doOK )
@@ -327,15 +328,15 @@ TNewGameDialog::TNewGameDialog( wxWindow* parent, wxWindowID id, const wxString&
 	m_radioBoxLevel->SetSelection( 6 );
 	bSizer10->Add( m_radioBoxLevel, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 	
-	wxStaticBoxSizer* sbSizer6;
-	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Engine settings") ), wxVERTICAL );
+	wxStaticBoxSizer* sbSizerEngineSettings;
+	sbSizerEngineSettings = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Engine settings (19 x 19)") ), wxVERTICAL );
 	
-	m_checkNeuralNet = new wxCheckBox( sbSizer6->GetStaticBox(), wxID_ANY, _("Use Neural Network"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkNeuralNet = new wxCheckBox( sbSizerEngineSettings->GetStaticBox(), wxID_ANY, _("Use Neural Network"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkNeuralNet->SetValue(true); 
-	sbSizer6->Add( m_checkNeuralNet, 0, wxALL, 5 );
+	sbSizerEngineSettings->Add( m_checkNeuralNet, 0, wxALL, 5 );
 	
 	
-	bSizer10->Add( sbSizer6, 0, wxEXPAND, 5 );
+	bSizer10->Add( sbSizerEngineSettings, 0, wxEXPAND, 5 );
 	
 	
 	bSizer11->Add( bSizer10, 0, wxEXPAND, 5 );

@@ -30,6 +30,8 @@ void NewGameDialog::doInit( wxInitDialogEvent& event ) {
 
     bool nets = wxConfig::Get()->Read(wxT("netsEnabled"), (bool)1);
     m_checkNeuralNet->SetValue(nets);
+
+    checkNetsEnabled();
 }
 
 void NewGameDialog::doCancel( wxCommandEvent& event ) {
@@ -126,4 +128,18 @@ void NewGameDialog::doHandicapUpdate( wxSpinEvent& event ) {
 
 bool NewGameDialog::getNetsEnabled() {
     return m_checkNeuralNet->GetValue();
+}
+
+void NewGameDialog::doRadioBox(wxCommandEvent& event) {
+    checkNetsEnabled();
+}
+
+void NewGameDialog::checkNetsEnabled() {
+    wxString sboardsize = m_radioBoxBoardSize->GetStringSelection();
+
+    if (sboardsize != "19 x 19") {
+        m_checkNeuralNet->Enable(false);
+    } else {
+        m_checkNeuralNet->Enable(true);
+    }
 }
