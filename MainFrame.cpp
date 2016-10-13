@@ -226,11 +226,6 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     m_panelBoard->unlockState();
     m_panelBoard->clearViz();
 
-    // User move entry while we analyze
-    if (m_analyzing) {
-        m_analyzing = false;
-    }
-
     if (m_pondering) {
         m_pondering = false;
         m_ponderedOnce = true;
@@ -272,15 +267,22 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             }
         }
     } else {
-        if (m_State.get_to_move() != m_playerColor) {
-            wxLogDebug("Computer to move");
-            startEngine();
-        } else {
-            if (m_ponderEnabled && !m_ratedGame && !m_analyzing
-                && !m_ponderedOnce && !m_visitLimit) {
-                m_pondering = true;
+        if (!m_analyzing) {
+            if (m_State.get_to_move() != m_playerColor) {
+                wxLogDebug("Computer to move");
                 startEngine();
+            } else {
+                if (m_ponderEnabled && !m_ratedGame && !m_analyzing
+                    && !m_ponderedOnce && !m_visitLimit) {
+                    m_pondering = true;
+                    startEngine();
+                }
             }
+        }  else {
+            startEngine();
+            m_panelBoard->unlockState();
+            m_playerColor = m_State.get_to_move();
+            m_panelBoard->setPlayerColor(m_playerColor);
         }
         m_panelBoard->setShowTerritory(false);
     }
@@ -1045,13 +1047,18 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
     m_ponderedOnce |= wasRunning;
     m_pondering = false;
 
-    if (wasGameMove && wasRunning) {
-        wxQueueEvent(GetEventHandler(), new wxCommandEvent(EVT_NEW_MOVE));
-    }
+    //if (wasGameMove && wasRunning) {
+    //    wxQueueEvent(GetEventHandler(), new wxCommandEvent(EVT_NEW_MOVE));
+    //}
     if (!wasAnalyzing || !wasRunning) {
         m_analyzing = true;
         startEngine();
+    } else if (wasAnalyzing) {
+        m_analyzing = false;
     }
+    m_panelBoard->unlockState();
+    m_playerColor = m_State.get_to_move();
+    m_panelBoard->setPlayerColor(m_playerColor);
 }
 
 void MainFrame::doAdjustClocks(wxCommandEvent& event) {

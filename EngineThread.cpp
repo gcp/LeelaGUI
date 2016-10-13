@@ -18,7 +18,8 @@ TEngineThread::TEngineThread(GameState * state, MainFrame * frame)
 
 void * TEngineThread::Entry() {
     {
-        std::auto_ptr<UCTSearch> search(new UCTSearch(*m_state));
+        GameState work_state(*m_state);
+        std::unique_ptr<UCTSearch> search(new UCTSearch(work_state));
 
         int who = m_state->get_to_move();
         search->set_playout_limit(m_maxvisits);
