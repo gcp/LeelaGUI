@@ -569,8 +569,7 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
 }
 
 void TBoardPanel::doProbabilities() {
-    if (m_State->board.get_hash() != m_DisplayedStateHash) {
-        m_Probabilities.resize(FastBoard::MAXSQ);
+    if (m_State->board.get_hash() != m_DisplayedStateHash) {        
         std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
 
         auto vec = Network::get_Network()->get_scored_moves(
@@ -588,4 +587,5 @@ void TBoardPanel::clearViz() {
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
     std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
     std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
+    m_DisplayedStateHash = 0;
 }
