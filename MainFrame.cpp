@@ -892,13 +892,15 @@ void MainFrame::gameNoLongerCounts() {
     this->SetTitle(_("Leela"));
 }
 
-void MainFrame::doRealUndo() {
+void MainFrame::doRealUndo(int count) {
     bool wasPondering = m_pondering;
     bool wasRunning = stopEngine();
     bool wasAnalyzing = wasRunning && !wasPondering;
 
-    if (m_State.undo_move()) {
-        wxLogDebug("Undoing one move");
+    for (int i = 0; i < count; i++) {
+        if (m_State.undo_move()) {
+            wxLogDebug("Undoing one move");
+        }
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
@@ -913,13 +915,15 @@ void MainFrame::doRealUndo() {
     if (wasAnalyzing) doAnalyze(myevent /* dummy */);
 }
 
-void MainFrame::doRealForward() {
+void MainFrame::doRealForward(int count) {
     bool wasPondering = m_pondering;
     bool wasRunning = stopEngine();
     bool wasAnalyzing = wasRunning && !wasPondering;
 
-    if (m_State.forward_move()) {
-        wxLogDebug("Forward one move");
+    for (int i = 0; i < count; i++) {
+        if (m_State.forward_move()) {
+            wxLogDebug("Forward one move");
+        }
     }
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
@@ -933,15 +937,11 @@ void MainFrame::doRealForward() {
 }
 
 void MainFrame::doBack10(wxCommandEvent& event) {
-    for (int i = 0; i < 10; i++) {
-        doUndo(event);
-    }
+    doRealUndo(10);
 }
 
 void MainFrame::doForward10(wxCommandEvent& event) {
-    for (int i = 0; i < 10; i++) {
-        doForward(event);
-    }
+    doRealForward(10);
 }
 
 void MainFrame::doGoRules(wxCommandEvent& event) {

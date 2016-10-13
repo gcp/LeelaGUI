@@ -52,8 +52,8 @@ class MainFrame : public TMainFrame {
         virtual void doCloseChild( wxWindowDestroyEvent& event );
         virtual void doToggleProbabilities( wxCommandEvent& event ) override;
         virtual void doSettingsDialog( wxCommandEvent& event ) override;
-        void doRealUndo();
-        void doRealForward();
+        void doRealUndo(int count = 1);
+        void doRealForward(int count = 1);
 
 	void startEngine();
 	void startPonder();
