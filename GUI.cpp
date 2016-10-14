@@ -34,6 +34,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_RESIGN, TMainFrame::_wxFB_doResign )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
+	EVT_MENU( ID_MAINLINE, TMainFrame::_wxFB_doMainLine )
 	EVT_MENU( ID_ANALYSISWINDOWTOGGLE, TMainFrame::_wxFB_doShowHideAnalysisWindow )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
@@ -62,25 +63,25 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menubar1 = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
 	wxMenuItem* menuItemNewGame;
-	menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("&New game...") ) + wxT('\t') + wxT("Ctrl-N"), _("Start a new game"), wxITEM_NORMAL );
+	menuItemNewGame = new wxMenuItem( m_menu1, ID_NEWGAME, wxString( _("&New Game...") ) + wxT('\t') + wxT("Ctrl-N"), _("Start a new game"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemNewGame );
 	
 	wxMenuItem* menuItemNewRated;
-	menuItemNewRated = new wxMenuItem( m_menu1, ID_NEWRATED, wxString( _("New &rated game") ) + wxT('\t') + wxT("Ctrl-R"), _("Starts a new rated game"), wxITEM_NORMAL );
+	menuItemNewRated = new wxMenuItem( m_menu1, ID_NEWRATED, wxString( _("New &Rated Game") ) + wxT('\t') + wxT("Ctrl-R"), _("Starts a new rated game"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemNewRated );
 	
 	wxMenuItem* m_menuItemRatedSize;
-	m_menuItemRatedSize = new wxMenuItem( m_menu1, ID_RATEDSIZE, wxString( _("Set rated &board size...") ) + wxT('\t') + wxT("Ctrl-B"), _("Change the board size for rated games"), wxITEM_NORMAL );
+	m_menuItemRatedSize = new wxMenuItem( m_menu1, ID_RATEDSIZE, wxString( _("Set Rated &Board Size...") ) + wxT('\t') + wxT("Ctrl-B"), _("Change the board size for rated games"), wxITEM_NORMAL );
 	m_menu1->Append( m_menuItemRatedSize );
 	
 	m_menu1->AppendSeparator();
 	
 	wxMenuItem* menuItem11;
-	menuItem11 = new wxMenuItem( m_menu1, ID_OPEN, wxString( _("&Open game...") ) + wxT('\t') + wxT("Ctrl-O"), _("Opens a game from disk"), wxITEM_NORMAL );
+	menuItem11 = new wxMenuItem( m_menu1, ID_OPEN, wxString( _("&Open Game...") ) + wxT('\t') + wxT("Ctrl-O"), _("Opens a game from disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem11 );
 	
 	wxMenuItem* menuItem12;
-	menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("&Save game...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
+	menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("&Save Game...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem12 );
 	
 	m_menu1->AppendSeparator();
@@ -103,17 +104,17 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu2->AppendSeparator();
 	
 	wxMenuItem* menuItem131;
-	menuItem131 = new wxMenuItem( m_menu2, ID_BACK10, wxString( _("Go &back 10 moves") ) + wxT('\t') + wxT("Alt-B"), _("Undo 10 moves"), wxITEM_NORMAL );
+	menuItem131 = new wxMenuItem( m_menu2, ID_BACK10, wxString( _("Go &Back 10 Moves") ) + wxT('\t') + wxT("Alt-B"), _("Undo 10 moves"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem131 );
 	
 	wxMenuItem* menuItem141;
-	menuItem141 = new wxMenuItem( m_menu2, ID_FWD10, wxString( _("Go for&ward 10 moves") ) + wxT('\t') + wxT("Alt-F"), _("Forward 10 moves"), wxITEM_NORMAL );
+	menuItem141 = new wxMenuItem( m_menu2, ID_FWD10, wxString( _("Go For&ward 10 Moves") ) + wxT('\t') + wxT("Alt-F"), _("Forward 10 moves"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem141 );
 	
 	m_menu2->AppendSeparator();
 	
 	wxMenuItem* menuItem18;
-	menuItem18 = new wxMenuItem( m_menu2, ID_FORCE, wxString( _("Force &computer move") ) + wxT('\t') + wxT("Ctrl-F"), _("Force the computer to move now"), wxITEM_NORMAL );
+	menuItem18 = new wxMenuItem( m_menu2, ID_FORCE, wxString( _("Force &Computer Move") ) + wxT('\t') + wxT("Ctrl-F"), _("Force the computer to move now"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem18 );
 	
 	m_menu2->AppendSeparator();
@@ -129,15 +130,21 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu2->AppendSeparator();
 	
 	wxMenuItem* menuItem5;
-	menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score game") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
+	menuItem5 = new wxMenuItem( m_menu2, ID_SCORE, wxString( _("&Score Game") ) + wxT('\t') + wxT("Alt-S"), _("Score the position"), wxITEM_NORMAL );
 	m_menu2->Append( menuItem5 );
 	
 	m_menubar1->Append( m_menu2, _("&Game") ); 
 	
 	m_menuAnalyze = new wxMenu();
 	wxMenuItem* menuItemAnalyze;
-	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop analysis") ) + wxT('\t') + wxT("F2"), _("Start analyzing"), wxITEM_NORMAL );
+	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop Analysis") ) + wxT('\t') + wxT("F2"), _("Start analyzing"), wxITEM_NORMAL );
 	m_menuAnalyze->Append( menuItemAnalyze );
+	
+	m_menuAnalyze->AppendSeparator();
+	
+	wxMenuItem* m_menuItemMainline;
+	m_menuItemMainline = new wxMenuItem( m_menuAnalyze, ID_MAINLINE, wxString( _("Revert to &Mainline") ) + wxT('\t') + wxT("Alt-M"), _("Revert board position to mainline"), wxITEM_NORMAL );
+	m_menuAnalyze->Append( m_menuItemMainline );
 	
 	m_menuAnalyze->AppendSeparator();
 	
@@ -169,7 +176,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuTools->AppendSeparator();
 	
 	wxMenuItem* m_menuItemAdjustClocks;
-	m_menuItemAdjustClocks = new wxMenuItem( m_menuTools, ID_ADJUSTCLOCKS, wxString( _("&Adjust clocks...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItemAdjustClocks = new wxMenuItem( m_menuTools, ID_ADJUSTCLOCKS, wxString( _("&Adjust Clocks...") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuTools->Append( m_menuItemAdjustClocks );
 	
 	m_menubar1->Append( m_menuTools, _("&Tools") ); 
@@ -215,6 +222,8 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_toolBar1->AddSeparator(); 
 	
 	m_toolForce = m_toolBar1->AddTool( ID_FORCE, _("Force computer move"), wxBitmap( wxT("IDB_FORCE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move"), NULL ); 
+	
+	m_toolMainline = m_toolBar1->AddTool( ID_MAINLINE, _("Revert to Mainline"), wxBitmap( wxT("IDB_PARENT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Revert to Mainline"), _("Revert to Mainline"), NULL ); 
 	
 	m_toolAnalyze = m_toolBar1->AddTool( ID_ANALYZE, _("tool"), wxBitmap( wxT("IDB_ANALYZE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis"), NULL ); 
 	

@@ -68,6 +68,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doResign( wxCommandEvent& event ){ doResign( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
+		void _wxFB_doMainLine( wxCommandEvent& event ){ doMainLine( event ); }
 		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
@@ -100,6 +101,7 @@ class TMainFrame : public wxFrame
 			ID_RESIGN,
 			ID_SCORE,
 			ID_ANALYZE,
+			ID_MAINLINE,
 			ID_ANALYSISWINDOWTOGGLE,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
@@ -129,6 +131,7 @@ class TMainFrame : public wxFrame
 		wxToolBarToolBase* m_tool15; 
 		wxToolBarToolBase* m_tool9; 
 		wxToolBarToolBase* m_toolForce; 
+		wxToolBarToolBase* m_toolMainline; 
 		wxToolBarToolBase* m_toolAnalyze; 
 		wxToolBarToolBase* m_tool2; 
 		wxToolBarToolBase* m_tool3; 
@@ -156,6 +159,7 @@ class TMainFrame : public wxFrame
 		virtual void doResign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAnalyze( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doMainLine( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }

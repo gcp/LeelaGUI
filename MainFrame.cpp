@@ -76,6 +76,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     m_State.init_game(m_ratedSize, 7.5f);
     m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
+    m_AnchorState = m_State;
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
 
@@ -139,12 +140,7 @@ void MainFrame::doExit(wxCommandEvent & event) {
 
 void MainFrame::startEngine() {
     if (!m_engineThread) {
-        if (!m_pondering) {
-            m_engineThread.reset(new TEngineThread(&m_State, this));
-        } else {
-            m_ponderState = m_State;
-            m_engineThread.reset(new TEngineThread(&m_ponderState, this));
-        }
+        m_engineThread.reset(new TEngineThread(&m_State, this));
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             wxLogDebug("Error starting engine");
         } else {
@@ -268,6 +264,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         }
     } else {
         if (!m_analyzing) {
+            m_AnchorState = m_State;
             if (m_State.get_to_move() != m_playerColor) {
                 wxLogDebug("Computer to move");
                 startEngine();
@@ -350,6 +347,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         MCOwnerTable::clear();
         m_panelBoard->clearViz();
         m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0, 0);
+        m_AnchorState = m_State;
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();
         // XXX
@@ -730,6 +728,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         ::wxEndBusyCursor();
         // max 60 minutes per game
         m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
+        m_AnchorState = m_State;
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -979,6 +978,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         } catch (...) {
         }
 
+        m_AnchorState = m_State;
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
@@ -1047,10 +1047,8 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
     m_ponderedOnce |= wasRunning;
     m_pondering = false;
 
-    //if (wasGameMove && wasRunning) {
-    //    wxQueueEvent(GetEventHandler(), new wxCommandEvent(EVT_NEW_MOVE));
-    //}
     if (!wasAnalyzing || !wasRunning) {
+        m_AnchorState = m_State;
         m_analyzing = true;
         startEngine();
     } else if (wasAnalyzing) {
@@ -1105,4 +1103,16 @@ void MainFrame::doCloseChild( wxWindowDestroyEvent& event ) {
         m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
         m_analysisWindow = nullptr;
     }
+}
+
+void MainFrame::doMainLine(wxCommandEvent& event) {
+    m_State = m_AnchorState;
+    m_panelBoard->unlockState();
+    m_playerColor = m_State.get_to_move();
+    m_panelBoard->setPlayerColor(m_playerColor);
+
+    //signal board change
+    wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
+    myevent.SetEventObject(this);
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }

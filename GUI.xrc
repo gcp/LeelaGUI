@@ -17,24 +17,24 @@
 			<object class="wxMenu" name="m_menu1">
 				<label>_File</label>
 				<object class="wxMenuItem" name="menuItemNewGame">
-					<label>_New game...\tCtrl-N</label>
+					<label>_New Game...\tCtrl-N</label>
 					<help>Start a new game</help>
 				</object>
 				<object class="wxMenuItem" name="menuItemNewRated">
-					<label>New _rated game\tCtrl-R</label>
+					<label>New _Rated Game\tCtrl-R</label>
 					<help>Starts a new rated game</help>
 				</object>
 				<object class="wxMenuItem" name="m_menuItemRatedSize">
-					<label>Set rated _board size...\tCtrl-B</label>
+					<label>Set Rated _Board Size...\tCtrl-B</label>
 					<help>Change the board size for rated games</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem11">
-					<label>_Open game...\tCtrl-O</label>
+					<label>_Open Game...\tCtrl-O</label>
 					<help>Opens a game from disk</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem12">
-					<label>_Save game...\tCtrl-S</label>
+					<label>_Save Game...\tCtrl-S</label>
 					<help>Save a game to disk</help>
 				</object>
 				<object class="separator" />
@@ -55,16 +55,16 @@
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem131">
-					<label>Go _back 10 moves\tAlt-B</label>
+					<label>Go _Back 10 Moves\tAlt-B</label>
 					<help>Undo 10 moves</help>
 				</object>
 				<object class="wxMenuItem" name="menuItem141">
-					<label>Go for_ward 10 moves\tAlt-F</label>
+					<label>Go For_ward 10 Moves\tAlt-F</label>
 					<help>Forward 10 moves</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem18">
-					<label>Force _computer move\tCtrl-F</label>
+					<label>Force _Computer Move\tCtrl-F</label>
 					<help>Force the computer to move now</help>
 				</object>
 				<object class="separator" />
@@ -78,15 +78,20 @@
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="menuItem5">
-					<label>_Score game\tAlt-S</label>
+					<label>_Score Game\tAlt-S</label>
 					<help>Score the position</help>
 				</object>
 			</object>
 			<object class="wxMenu" name="m_menuAnalyze">
 				<label>_Analyze</label>
 				<object class="wxMenuItem" name="menuItemAnalyze">
-					<label>_Start/Stop analysis\tF2</label>
+					<label>_Start/Stop Analysis\tF2</label>
 					<help>Start analyzing</help>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuItemMainline">
+					<label>Revert to _Mainline\tAlt-M</label>
+					<help>Revert board position to mainline</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuItemAnalysisWindow">
@@ -119,7 +124,7 @@
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuItemAdjustClocks">
-					<label>_Adjust clocks...</label>
+					<label>_Adjust Clocks...</label>
 					<help></help>
 				</object>
 			</object>
@@ -200,6 +205,12 @@
 				<label>Force computer move</label>
 				<tooltip>Force computer move</tooltip>
 				<longhelp>Force computer move</longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_toolMainline">
+				<label>Revert to Mainline</label>
+				<tooltip>Revert to Mainline</tooltip>
+				<longhelp>Revert to Mainline</longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_toolAnalyze">

@@ -276,7 +276,7 @@
                         <property name="help">Start a new game</property>
                         <property name="id">ID_NEWGAME</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;New game...</property>
+                        <property name="label">&amp;New Game...</property>
                         <property name="name">menuItemNewGame</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Ctrl-N</property>
@@ -291,7 +291,7 @@
                         <property name="help">Starts a new rated game</property>
                         <property name="id">ID_NEWRATED</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">New &amp;rated game</property>
+                        <property name="label">New &amp;Rated Game</property>
                         <property name="name">menuItemNewRated</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Ctrl-R</property>
@@ -306,7 +306,7 @@
                         <property name="help">Change the board size for rated games</property>
                         <property name="id">ID_RATEDSIZE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Set rated &amp;board size...</property>
+                        <property name="label">Set Rated &amp;Board Size...</property>
                         <property name="name">m_menuItemRatedSize</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Ctrl-B</property>
@@ -325,7 +325,7 @@
                         <property name="help">Opens a game from disk</property>
                         <property name="id">ID_OPEN</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Open game...</property>
+                        <property name="label">&amp;Open Game...</property>
                         <property name="name">menuItem11</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Ctrl-O</property>
@@ -340,7 +340,7 @@
                         <property name="help">Save a game to disk</property>
                         <property name="id">ID_SAVE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Save game...</property>
+                        <property name="label">&amp;Save Game...</property>
                         <property name="name">menuItem12</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Ctrl-S</property>
@@ -413,7 +413,7 @@
                         <property name="help">Undo 10 moves</property>
                         <property name="id">ID_BACK10</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Go &amp;back 10 moves</property>
+                        <property name="label">Go &amp;Back 10 Moves</property>
                         <property name="name">menuItem131</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Alt-B</property>
@@ -428,7 +428,7 @@
                         <property name="help">Forward 10 moves</property>
                         <property name="id">ID_FWD10</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Go for&amp;ward 10 moves</property>
+                        <property name="label">Go For&amp;ward 10 Moves</property>
                         <property name="name">menuItem141</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Alt-F</property>
@@ -447,7 +447,7 @@
                         <property name="help">Force the computer to move now</property>
                         <property name="id">ID_FORCE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Force &amp;computer move</property>
+                        <property name="label">Force &amp;Computer Move</property>
                         <property name="name">menuItem18</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Ctrl-F</property>
@@ -500,7 +500,7 @@
                         <property name="help">Score the position</property>
                         <property name="id">ID_SCORE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Score game</property>
+                        <property name="label">&amp;Score Game</property>
                         <property name="name">menuItem5</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Alt-S</property>
@@ -520,7 +520,7 @@
                         <property name="help">Start analyzing</property>
                         <property name="id">ID_ANALYZE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Start/Stop analysis</property>
+                        <property name="label">&amp;Start/Stop Analysis</property>
                         <property name="name">menuItemAnalyze</property>
                         <property name="permission">none</property>
                         <property name="shortcut">F2</property>
@@ -530,6 +530,25 @@
                     </object>
                     <object class="separator" expanded="1">
                         <property name="name">m_separator11</property>
+                        <property name="permission">none</property>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Revert board position to mainline</property>
+                        <property name="id">ID_MAINLINE</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Revert to &amp;Mainline</property>
+                        <property name="name">m_menuItemMainline</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut">Alt-M</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doMainLine</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="separator" expanded="1">
+                        <property name="name">m_separator111</property>
                         <property name="permission">none</property>
                     </object>
                     <object class="wxMenuItem" expanded="1">
@@ -627,7 +646,7 @@
                         <property name="help"></property>
                         <property name="id">ID_ADJUSTCLOCKS</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Adjust clocks...</property>
+                        <property name="label">&amp;Adjust Clocks...</property>
                         <property name="name">m_menuItemAdjustClocks</property>
                         <property name="permission">none</property>
                         <property name="shortcut"></property>
@@ -954,6 +973,27 @@
                     <property name="permission">protected</property>
                     <property name="statusbar">Force computer move</property>
                     <property name="tooltip">Force computer move</property>
+                    <event name="OnAuiToolBarBeginDrag"></event>
+                    <event name="OnAuiToolBarMiddleClick"></event>
+                    <event name="OnAuiToolBarOverflowClick"></event>
+                    <event name="OnAuiToolBarRightClick"></event>
+                    <event name="OnAuiToolBarToolDropDown"></event>
+                    <event name="OnMenuSelection"></event>
+                    <event name="OnToolClicked"></event>
+                    <event name="OnToolEnter"></event>
+                    <event name="OnToolRClicked"></event>
+                    <event name="OnUpdateUI"></event>
+                </object>
+                <object class="tool" expanded="1">
+                    <property name="bitmap">Load From Resource; IDB_PARENT</property>
+                    <property name="context_menu">0</property>
+                    <property name="id">ID_MAINLINE</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">Revert to Mainline</property>
+                    <property name="name">m_toolMainline</property>
+                    <property name="permission">protected</property>
+                    <property name="statusbar">Revert to Mainline</property>
+                    <property name="tooltip">Revert to Mainline</property>
                     <event name="OnAuiToolBarBeginDrag"></event>
                     <event name="OnAuiToolBarMiddleClick"></event>
                     <event name="OnAuiToolBarOverflowClick"></event>

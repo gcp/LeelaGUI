@@ -52,6 +52,7 @@ class MainFrame : public TMainFrame {
         virtual void doCloseChild( wxWindowDestroyEvent& event );
         virtual void doToggleProbabilities( wxCommandEvent& event ) override;
         virtual void doSettingsDialog( wxCommandEvent& event ) override;
+        virtual void doMainLine( wxCommandEvent& event ) override;
         void doRealUndo(int count = 1);
         void doRealForward(int count = 1);
 
@@ -68,7 +69,7 @@ class MainFrame : public TMainFrame {
         void gameNoLongerCounts();
 
 	GameState m_State;
-	GameState m_ponderState;
+        GameState m_AnchorState;
 	int m_playerColor;
 	int m_visitLimit;
         int m_ratedSize;
