@@ -1,6 +1,6 @@
-!define LEELABIN  "Leela070.exe"
-!define LEELAOCL  "Leela070_OpenCL.exe"
-!define VERSION   "0.7.0"
+!define LEELABIN  "Leela073.exe"
+!define LEELAOCL  "Leela073_OpenCL.exe"
+!define VERSION   "0.7.3"
 
 !if "${NSIS_PACKEDVERSION}" >= 0x3000000
 Unicode true
@@ -327,8 +327,8 @@ Section "Leela" leela
   SetOutPath $INSTDIR
 
   File "bin\${LEELABIN}"
-  File "bin\libgcc_s_dw2-1.dll"
-  File "bin\libopenblas.dll"
+  ;;File "bin\libgcc_s_dw2-1.dll"
+  ;;File "bin\libopenblas.dll"
   ;File "bin\libgfortran-3.dll"
   ;File "bin\libquadmath-0.dll"
   File "license.rtf"
@@ -473,8 +473,8 @@ Section "Uninstall"
   ;Delete Files
   Delete "$INSTDIR\${LEELABIN}"
   Delete "$INSTDIR\${LEELAOCL}"
-  Delete "$INSTDIR\libgcc_s_dw2-1.dll"
-  Delete "$INSTDIR\libopenblas.dll"
+  ;;Delete "$INSTDIR\libgcc_s_dw2-1.dll"
+  ;;Delete "$INSTDIR\libopenblas.dll"
   ;;Delete "$INSTDIR\libgfortran-3.dll"
   ;;Delete "$INSTDIR\libquadmath-0.dll"
   Delete "$INSTDIR\OpenCL.dll"
