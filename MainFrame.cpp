@@ -982,6 +982,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
+        setActiveMenus();
 
         //signal board change
         wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
