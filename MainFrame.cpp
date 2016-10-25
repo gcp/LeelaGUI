@@ -45,7 +45,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     cfg_num_threads = std::min(SMP::get_num_cpus(), MAX_CPUS);
     cfg_enable_nets = true;
     cfg_max_playouts = INT_MAX;
-    GTP::setup_default_parameters();
+    cfg_lagbuffer_cs = 50;
 
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);
