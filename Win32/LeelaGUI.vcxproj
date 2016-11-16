@@ -45,14 +45,14 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.0.109\windows\mkl\include;C:\boost\boost_1_60_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.0.109\windows\mkl\lib\ia32_win;C:\boost\boost_1_60_0\stage\lib;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries\windows\mkl\include;C:\boost\boost_1_62_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries\windows\mkl\lib\ia32_win;C:\boost\boost_1_62_0\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
-    <IncludePath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.0.109\windows\mkl\include;C:\boost\boost_1_60_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.0.109\windows\mkl\lib\ia32_win;C:\boost\boost_1_60_0\stage\lib;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.1.143\windows\mkl\include;C:\boost\boost_1_62_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries\windows\mkl\lib\ia32_win;C:\boost\boost_1_62_0\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "GameState.h"
-#include <boost/atomic.hpp>
+#include <atomic>
 
 class MainFrame;
 
@@ -28,7 +28,7 @@ class TEngineThread : public wxThread {
         bool m_analyseflag;
         bool m_quiet;
         bool m_nopass;
-        boost::atomic<bool> m_runflag;
+        std::atomic<bool> m_runflag;
 };
 
 #endif

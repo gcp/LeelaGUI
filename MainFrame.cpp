@@ -41,11 +41,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         m_panelBoard->GetEventHandler()->AddPendingEvent(event);
     });
 
-    cfg_allow_pondering = true;
-    cfg_num_threads = std::min(SMP::get_num_cpus(), MAX_CPUS);
-    cfg_enable_nets = true;
-    cfg_max_playouts = INT_MAX;
-    cfg_lagbuffer_cs = 50;
+    GTP::setup_default_parameters();
 
     std::auto_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);
@@ -73,6 +69,15 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     if (m_ratedSize != 9 && m_ratedSize != 19) {
         m_ratedSize = 9;
     }
+
+#ifdef USE_OPENCL
+    m_State.init_game(19, 7.5f);
+    if (!GTP::perform_self_test(m_State)) {
+        ::wxMessageBox(_("OpenCL self-test failed. Check your graphics drivers."),
+                       _("Leela"), wxOK | wxICON_EXCLAMATION, this);
+        Close();
+    }
+#endif
 
     m_State.init_game(m_ratedSize, 7.5f);
     m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);

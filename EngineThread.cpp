@@ -3,6 +3,8 @@
 #include "EngineThread.h"
 #include "UCTSearch.h"
 #include "MainFrame.h"
+#include <boost/thread.hpp>
+#include <boost/thread/detail/tss_hooks.hpp>
 
 TEngineThread::TEngineThread(GameState * state, MainFrame * frame)
     : wxThread(wxTHREAD_JOINABLE)
@@ -53,6 +55,7 @@ void TEngineThread::OnExit() {
         wxQueueEvent(m_frame->GetEventHandler(),
                      new wxCommandEvent(EVT_NEW_MOVE));
     }
+    boost::on_thread_exit();
 }
 
 void TEngineThread::limit_visits(int visits) {
