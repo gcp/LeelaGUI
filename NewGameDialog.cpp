@@ -75,7 +75,9 @@ int NewGameDialog::getHandicap() {
 
 int NewGameDialog::getBoardsize() {
     wxString sboardsize = m_radioBoxBoardSize->GetStringSelection();
-    if (sboardsize == "9 x 9") {
+    if (sboardsize == "7 x 7") {
+        return 7;
+    } else if (sboardsize == "9 x 9") {
         return 9;
     } else if (sboardsize == "13 x 13") {
         return 13;
