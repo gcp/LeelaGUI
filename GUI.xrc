@@ -509,7 +509,7 @@
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText5">
 					<style>wxALIGN_CENTRE</style>
-					<label>Copyright (C) 2007-2016 Gian-Carlo Pascutto</label>
+					<label>Copyright (C) 2007-2017 Gian-Carlo Pascutto</label>
 					<wrap>-1</wrap>
 				</object>
 			</object>
@@ -661,12 +661,13 @@
 	</object>
 	<object class="wxDialog" name="TCalculateDialog">
 		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>216,65</size>
 		<title>Calculation in progress</title>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<option>0</option>
-				<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+				<option>1</option>
+				<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticTextCalculating">
 					<style>wxALIGN_CENTRE</style>

@@ -32,6 +32,7 @@ void NewGameDialog::doInit( wxInitDialogEvent& event ) {
     m_checkNeuralNet->SetValue(nets);
 
     checkNetsEnabled();
+    checkHandicapRange();
 }
 
 void NewGameDialog::doCancel( wxCommandEvent& event ) {
@@ -134,6 +135,7 @@ bool NewGameDialog::getNetsEnabled() {
 
 void NewGameDialog::doRadioBox(wxCommandEvent& event) {
     checkNetsEnabled();
+    checkHandicapRange();
 }
 
 void NewGameDialog::checkNetsEnabled() {
@@ -143,5 +145,17 @@ void NewGameDialog::checkNetsEnabled() {
         m_checkNeuralNet->Enable(false);
     } else {
         m_checkNeuralNet->Enable(true);
+    }
+}
+
+void NewGameDialog::checkHandicapRange() {
+    wxString sboardsize = m_radioBoxBoardSize->GetStringSelection();
+
+    if (sboardsize == "7 x 7") {
+        m_spinCtrlHandicap->SetRange(0, 4);
+    } else if (sboardsize == "9 x 9") {
+        m_spinCtrlHandicap->SetRange(0, 9);
+    } else {
+        m_spinCtrlHandicap->SetRange(0, 100);
     }
 }

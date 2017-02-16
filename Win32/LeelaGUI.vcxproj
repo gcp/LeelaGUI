@@ -21,7 +21,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v140_xp</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -124,6 +124,7 @@
     <ClCompile Include="..\..\Leela\MCOTable.cpp" />
     <ClCompile Include="..\..\Leela\Network.cpp" />
     <ClCompile Include="..\..\Leela\NN.cpp" />
+    <ClCompile Include="..\..\Leela\NNValue.cpp" />
     <ClCompile Include="..\..\Leela\OpenCL.cpp" />
     <ClCompile Include="..\..\Leela\Playout.cpp" />
     <ClCompile Include="..\..\Leela\PNNode.cpp" />

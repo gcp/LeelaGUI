@@ -25,6 +25,9 @@ DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
 DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
 DEFINE_EVENT_TYPE(EVT_STATUS_UPDATE)
 
+#define MAX_RANK  13
+#define MIN_RANK -30
+
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
           :TMainFrame(frame, wxID_ANY, title) {
 
@@ -425,8 +428,8 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     // Correct for neural network enabled
     if (m_ratedSize == 19) {
         if (m_netsEnabled) {
-            // Estimate it as being worth 6 stones
-            used_rank = rank - 6;
+            // Estimate it as being worth 7 stones
+            used_rank = rank - 7;
         }
     }
 
@@ -565,155 +568,158 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
             handicap = -4;
         }
     } else if (m_ratedSize == 19) {
-        if (used_rank == -36) {
-            simulations = 5000;
-            handicap = 33;
+        if (used_rank == -37) {
+            simulations = 2500;
+            handicap = 36;
+        } else if (used_rank == -36) {
+            simulations = 2500;
+            handicap = 35;
         } else if (used_rank == -35) {
-            simulations = 5000;
-            handicap = 32;
+            simulations = 2500;
+            handicap = 34;
         } else if (used_rank == -34) {
-            simulations = 5000;
-            handicap = 31;
+            simulations = 2500;
+            handicap = 33;
         } else if (used_rank == -33) {
-            simulations = 5000;
-            handicap = 30;
+            simulations = 2500;
+            handicap = 32;
         } else if (used_rank == -32) {
-            simulations = 5000;
-            handicap = 29;
+            simulations = 2500;
+            handicap = 31;
         } else if (used_rank == -31) {
-            simulations = 5000;
-            handicap = 28;
+            simulations = 2500;
+            handicap = 30;
         } else if (used_rank == -30) {
-            simulations = 5000;
-            handicap = 27;
+            simulations = 2500;
+            handicap = 29;
         } else if (used_rank == -29) {
-            simulations = 5000;
-            handicap = 27;
+            simulations = 2500;
+            handicap = 28;
         } else if (used_rank == -28) {
-            simulations = 5000;
-            handicap = 26;
+            simulations = 2500;
+            handicap = 27;
         } else if (used_rank == -27) {
-            simulations = 5000;
-            handicap = 25;
+            simulations = 2500;
+            handicap = 26;
         } else if (used_rank == -26) {
-            simulations = 5000;
-            handicap = 24;
+            simulations = 2500;
+            handicap = 25;
         } else if (used_rank == -25) {
-            simulations = 5000;
-            handicap = 23;
+            simulations = 2500;
+            handicap = 24;
         } else if (used_rank == -24) {
-            simulations = 5000;
-            handicap = 22;
+            simulations = 2500;
+            handicap = 23;
         } else if (used_rank == -23) {
-            simulations = 5000;
-            handicap = 21;
+            simulations = 2500;
+            handicap = 22;
         } else if (used_rank == -22) {
-            simulations = 5000;
-            handicap = 20;
+            simulations = 2500;
+            handicap = 21;
         } else if (used_rank == -21) {
-            simulations = 5000;
-            handicap = 19;
+            simulations = 2500;
+            handicap = 20;
         } else if (used_rank == -20) {
-            simulations = 5000;
-            handicap = 18;
+            simulations = 2500;
+            handicap = 19;
         } else if (used_rank == -19) {
-            simulations = 5000;
-            handicap = 17;
+            simulations = 2500;
+            handicap = 18;
         } else if (used_rank == -18) {
-            simulations = 5000;
-            handicap = 16;
+            simulations = 2500;
+            handicap = 17;
         } else if (used_rank == -17) {
-            simulations = 5000;
-            handicap = 15;
+            simulations = 2500;
+            handicap = 16;
         } else if (used_rank == -16) {
-            simulations = 5000;
-            handicap = 14;
+            simulations = 2500;
+            handicap = 15;
         } else if (used_rank == -15) {
-            simulations = 5000;
-            handicap = 13;
+            simulations = 2500;
+            handicap = 14;
         } else if (used_rank == -14) {
-            simulations = 5000;
-            handicap = 12;
+            simulations = 2500;
+            handicap = 13;
         } else if (used_rank == -13) {
-            simulations = 5000;
-            handicap = 11;
+            simulations = 2500;
+            handicap = 12;
         } else if (used_rank == -12) {
-            simulations = 5000;
-            handicap = 10;
+            simulations = 2500;
+            handicap = 11;
         } else if (used_rank == -11) {
-            simulations = 5000;
-            handicap = 9;
+            simulations = 2500;
+            handicap = 10;
         } else if (used_rank == -10) {
-            simulations = 5000;
-            handicap = 8;
+            simulations = 2500;
+            handicap = 9;
         } else if (used_rank == -9) {
-            simulations = 5000;
+            simulations = 2500;
+            handicap = 8;
+        } else if (used_rank == -8) {                // 1 kyu
+            simulations = 2500;
             handicap = 7;
-        } else if (used_rank == -8) {
-            simulations = 5000;
+        } else if (used_rank == -7) {                // 1 dan
+            simulations = 2500;
             handicap = 6;
-        } else if (used_rank == -7) {
-            simulations = 5000;
-            handicap = 5;
         } else if (used_rank == -6) {
-            simulations = 5000;
-            handicap = 4;
+            simulations = 2500;
+            handicap = 5;
         } else if (used_rank == -5) {
-            simulations = 5000;
-            handicap = 3;
+            simulations = 2500;
+            handicap = 4;
         } else if (used_rank == -4) {
-            simulations = 5000;
-            handicap = 2;
+            simulations = 2500;
+            handicap = 3;
         } else if (used_rank == -3) {
             simulations = 2500;
+            handicap = 2;
+        } else if (used_rank == -2) {                // 6 dan
+            simulations = 2500;
             handicap = 0;
-        } else if (used_rank == -2) {
+        } else if (used_rank == -1) { // 1 kyu       // 7 dan
             simulations = 5000;
             handicap = 0;
-        } else if (used_rank == -1) {
+        } else if (used_rank == 0) {  // 1 dan       // 1 pro
             simulations = 10000;
-            handicap = 0;
-        } else if (used_rank == 0) {
-            simulations = 20000;
             handicap = 0;
         } else if (used_rank == 1) {
-            simulations =  5000;
+            simulations =  2500;
             handicap = -2;
         } else if (used_rank == 2) {
-            simulations = 10000;
+            simulations =  5000;
             handicap = -2;
         } else if (used_rank == 3) {
-            simulations =  7500;
+            simulations =  3750;
             handicap = -3;
         } else if (used_rank == 4) {
-            simulations = 10000;
+            simulations =  5000;
             handicap = -4;
         } else if (used_rank == 5) {
-            simulations = 10000;
+            simulations =  5000;
             handicap = -6;
         } else if (used_rank == 6) {
-            simulations = 10000;
+            simulations =  5000;
             handicap = -8;
         } else if (used_rank == 7) {
-            simulations = 10000;
+            simulations =  5000;
             handicap = -12;
         } else if (used_rank == 8) {
-            simulations = 10000;
+            simulations =  5000;
             handicap = -14;
         } else if (used_rank == 9) {
-            simulations = 15000;
+            simulations =  7500;
             handicap = -16;
         } else if (used_rank == 10) {
-            simulations = 15000;
+            simulations =  7500;
             handicap = -18;
         } else if (used_rank == 11) {
-            simulations = 15000;
+            simulations =  7500;
             handicap = -20;
         } else if (used_rank == 12) {
-            simulations = 20000;
+            simulations = 10000;
             handicap = -22;
         } else if (used_rank == 13) {
-            simulations = 20000;
+            simulations = 10000;
             handicap = -24;
         }
     }
@@ -761,13 +767,13 @@ void MainFrame::ratedGameEnd(bool won) {
                
         if (won) {
             rank = rank + 1;
-            rank = std::min(13, rank);
+            rank = std::min(MAX_RANK, rank);
                                     
             //mess += wxT("Promoting from") + wxString(" ") + rankToString(rank-1) + wxString("\n");
             //mess += wxT("to") + wxString(" ") + rankToString(rank);
         } else {
             rank = rank - 1;
-            rank = std::max(-30, rank);
+            rank = std::max(MIN_RANK, rank);
                                     
             //mess += wxT("Demoting from") + wxString(" ") + rankToString(rank+1) + wxString("\n");
             //mess += wxT("to") + wxString(" ") + rankToString(rank);

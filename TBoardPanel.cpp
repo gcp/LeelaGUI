@@ -562,7 +562,9 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
 
         wxString move = tokenizer.GetNextToken();
         int vertex = m_State->board.text_to_move(move.ToStdString());
-        m_PV[vertex] = pv_move_counter;
+        if (m_PV[vertex] == 0) {
+            m_PV[vertex] = pv_move_counter;
+        }
     }
 
     Refresh();

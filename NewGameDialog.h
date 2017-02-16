@@ -34,6 +34,7 @@ public:
     bool getNetsEnabled();
 
     void checkNetsEnabled();
+    void checkHandicapRange();
 };
 
 #endif // __NewGameDialog__

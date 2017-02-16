@@ -393,7 +393,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticTextEngine->Wrap( 400 );
 	bSizer9->Add( m_staticTextEngine, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2016 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Copyright (C) 2007-2017 Gian-Carlo Pascutto"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticText5->Wrap( -1 );
 	bSizer9->Add( m_staticText5, 0, wxALL|wxEXPAND, 5 );
 	
@@ -511,12 +511,11 @@ TCalculateDialog::TCalculateDialog( wxWindow* parent, wxWindowID id, const wxStr
 	
 	m_staticTextCalculating = new wxStaticText( this, wxID_ANY, _("Calculating, please hold..."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextCalculating->Wrap( -1 );
-	bSizer11->Add( m_staticTextCalculating, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	bSizer11->Add( m_staticTextCalculating, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer11 );
 	this->Layout();
-	bSizer11->Fit( this );
 }
 
 TCalculateDialog::~TCalculateDialog()

@@ -346,7 +346,7 @@ class TCalculateDialog : public wxDialog
 	
 	public:
 		
-		TCalculateDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Calculation in progress"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		TCalculateDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Calculation in progress"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 216,65 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TCalculateDialog();
 	
 };
