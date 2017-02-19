@@ -10,7 +10,7 @@ TNewGameDialog( parent )
 }
 
 void NewGameDialog::doInit( wxInitDialogEvent& event ) {    
-    int size = wxConfig::Get()->Read(wxT("DefaultBoardSize"), (long)3);
+    int size = wxConfig::Get()->Read(wxT("DefaultBoardSize"), (long)4);
     m_radioBoxBoardSize->SetSelection(size);
     
     int handicap = wxConfig::Get()->Read(wxT("DefaultHandicap"), (long)0);
