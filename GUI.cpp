@@ -34,11 +34,12 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_RESIGN, TMainFrame::_wxFB_doResign )
 	EVT_MENU( ID_SCORE, TMainFrame::_wxFB_doScore )
 	EVT_MENU( ID_ANALYZE, TMainFrame::_wxFB_doAnalyze )
+	EVT_MENU( ID_SETHOME, TMainFrame::_wxFB_doSetMainline )
 	EVT_MENU( ID_MAINLINE, TMainFrame::_wxFB_doMainLine )
 	EVT_MENU( ID_ANALYSISWINDOWTOGGLE, TMainFrame::_wxFB_doShowHideAnalysisWindow )
+	EVT_MENU( ID_MOVE_PROBABLITIES, TMainFrame::_wxFB_doToggleProbabilities )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
-	EVT_MENU( ID_MOVE_PROBABLITIES, TMainFrame::_wxFB_doToggleProbabilities )
 	EVT_MENU( ID_SETTINGS_MENU, TMainFrame::_wxFB_doSettingsDialog )
 	EVT_MENU( ID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
@@ -137,10 +138,14 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menuAnalyze = new wxMenu();
 	wxMenuItem* menuItemAnalyze;
-	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("&Start/Stop Analysis") ) + wxT('\t') + wxT("F2"), _("Start analyzing"), wxITEM_NORMAL );
+	menuItemAnalyze = new wxMenuItem( m_menuAnalyze, ID_ANALYZE, wxString( _("Start/Stop &Analysis") ) + wxT('\t') + wxT("F2"), _("Start analyzing"), wxITEM_NORMAL );
 	m_menuAnalyze->Append( menuItemAnalyze );
 	
 	m_menuAnalyze->AppendSeparator();
+	
+	wxMenuItem* m_menuItemStoreMainline;
+	m_menuItemStoreMainline = new wxMenuItem( m_menuAnalyze, ID_SETHOME, wxString( _("&Store Mainline") ) + wxT('\t') + wxT("Ctrl-M"), _("Store this variation as the mainline"), wxITEM_NORMAL );
+	m_menuAnalyze->Append( m_menuItemStoreMainline );
 	
 	wxMenuItem* m_menuItemMainline;
 	m_menuItemMainline = new wxMenuItem( m_menuAnalyze, ID_MAINLINE, wxString( _("Revert to &Mainline") ) + wxT('\t') + wxT("Alt-M"), _("Revert board position to mainline"), wxITEM_NORMAL );
@@ -155,17 +160,17 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menubar1->Append( m_menuAnalyze, _("&Analyze") ); 
 	
 	m_menuTools = new wxMenu();
+	wxMenuItem* m_menuItemMoveProbabilities;
+	m_menuItemMoveProbabilities = new wxMenuItem( m_menuTools, ID_MOVE_PROBABLITIES, wxString( _("Show Move Proba&bilities") ) + wxT('\t') + wxT("F3"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
+	m_menuTools->Append( m_menuItemMoveProbabilities );
+	
 	wxMenuItem* menuItem15;
-	menuItem15 = new wxMenuItem( m_menuTools, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F3"), _("Show Territory"), wxITEM_CHECK );
+	menuItem15 = new wxMenuItem( m_menuTools, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F4"), _("Show Territory"), wxITEM_CHECK );
 	m_menuTools->Append( menuItem15 );
 	
 	wxMenuItem* menuItem16;
-	menuItem16 = new wxMenuItem( m_menuTools, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("Ctrl-M"), _("Show Moyo"), wxITEM_CHECK );
+	menuItem16 = new wxMenuItem( m_menuTools, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("F5"), _("Show Moyo"), wxITEM_CHECK );
 	m_menuTools->Append( menuItem16 );
-	
-	wxMenuItem* m_menuItemMoveProbabilities;
-	m_menuItemMoveProbabilities = new wxMenuItem( m_menuTools, ID_MOVE_PROBABLITIES, wxString( _("Show Move Proba&bilities") ) + wxT('\t') + wxT("F4"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
-	m_menuTools->Append( m_menuItemMoveProbabilities );
 	
 	m_menuTools->AppendSeparator();
 	
@@ -223,7 +228,9 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_toolForce = m_toolBar1->AddTool( ID_FORCE, _("Force computer move"), wxBitmap( wxT("IDB_FORCE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move"), NULL ); 
 	
-	m_toolMainline = m_toolBar1->AddTool( ID_MAINLINE, _("Revert to Mainline"), wxBitmap( wxT("IDB_PARENT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Revert to Mainline"), _("Revert to Mainline"), NULL ); 
+	m_toolSetHome = m_toolBar1->AddTool( ID_SETHOME, _("Store Mainline"), wxBitmap( wxT("IDB_SETHOME"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Stores this variation as the mainline"), _("Stores this variation as the mainline"), NULL ); 
+	
+	m_toolMainline = m_toolBar1->AddTool( ID_MAINLINE, _("Revert to mainline"), wxBitmap( wxT("IDB_PARENT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Revert to mainline"), _("Revert to mainline"), NULL ); 
 	
 	m_toolAnalyze = m_toolBar1->AddTool( ID_ANALYZE, _("tool"), wxBitmap( wxT("IDB_ANALYZE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis"), NULL ); 
 	
@@ -383,7 +390,7 @@ TAboutDialog::TAboutDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.6.2"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Leela version 0.9.1"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
 	m_staticTextVersion->SetFont( wxFont( 11, 70, 90, 92, false, wxEmptyString ) );
 	
@@ -511,7 +518,7 @@ TCalculateDialog::TCalculateDialog( wxWindow* parent, wxWindowID id, const wxStr
 	
 	m_staticTextCalculating = new wxStaticText( this, wxID_ANY, _("Calculating, please hold..."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextCalculating->Wrap( -1 );
-	bSizer11->Add( m_staticTextCalculating, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5 );
+	bSizer11->Add( m_staticTextCalculating, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer11 );
@@ -672,5 +679,66 @@ TSettingsDialog::TSettingsDialog( wxWindow* parent, wxWindowID id, const wxStrin
 }
 
 TSettingsDialog::~TSettingsDialog()
+{
+}
+
+BEGIN_EVENT_TABLE( TScoreDialog, wxDialog )
+	EVT_BUTTON( wxID_ANY, TScoreDialog::_wxFB_doAccept )
+	EVT_BUTTON( wxID_ANY, TScoreDialog::_wxFB_doDispute )
+END_EVENT_TABLE()
+
+TScoreDialog::TScoreDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxVERTICAL );
+	
+	m_panel4 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer17;
+	bSizer17 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticTextScore = new wxStaticText( m_panel4, wxID_ANY, _("Final Score:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextScore->Wrap( -1 );
+	bSizer17->Add( m_staticTextScore, 1, wxALL|wxEXPAND, 5 );
+	
+	m_staticTextMessage = new wxStaticText( m_panel4, wxID_ANY, _("Black wins by 0.0"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextMessage->Wrap( -1 );
+	bSizer17->Add( m_staticTextMessage, 1, wxALL|wxEXPAND, 5 );
+	
+	m_staticTextConfidence = new wxStaticText( m_panel4, wxID_ANY, _("I'm fairly sure I scored this correctly."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextConfidence->Wrap( -1 );
+	bSizer17->Add( m_staticTextConfidence, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer16->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonOK = new wxButton( m_panel4, wxID_ANY, _("&Accept"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonOK->SetDefault(); 
+	bSizer16->Add( m_buttonOK, 0, wxALL|wxEXPAND, 5 );
+	
+	m_buttonDispute = new wxButton( m_panel4, wxID_ANY, _("&Play On"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer16->Add( m_buttonDispute, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	bSizer17->Add( bSizer16, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_panel4->SetSizer( bSizer17 );
+	m_panel4->Layout();
+	bSizer17->Fit( m_panel4 );
+	bSizer15->Add( m_panel4, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	this->SetSizer( bSizer15 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+TScoreDialog::~TScoreDialog()
 {
 }

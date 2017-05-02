@@ -53,6 +53,7 @@ class MainFrame : public TMainFrame {
         virtual void doToggleProbabilities( wxCommandEvent& event ) override;
         virtual void doSettingsDialog( wxCommandEvent& event ) override;
         virtual void doMainLine( wxCommandEvent& event ) override;
+        virtual void doSetMainline( wxCommandEvent& event ) override;
         void doRealUndo(int count = 1);
         void doRealForward(int count = 1);
 
@@ -60,8 +61,8 @@ class MainFrame : public TMainFrame {
 	void startPonder();
 	bool stopEngine();
 	// true = user accepts score
-	bool scoreDialog(float komi, float score, float prekomi, float handicap);
-	void scoreGame(bool & won, float & komi, float & handicap, float & score, float & prescore);
+	bool scoreDialog(float komi, float handicap, float score, float prekomi);
+	bool scoreGame(float & komi, float & handicap, float & score, float & prescore);
 	void ratedGameEnd(bool won);
 	wxString rankToString(int rank);
 	void updateStatusBar(char *str);

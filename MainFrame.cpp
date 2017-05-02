@@ -12,6 +12,7 @@
 #include "SGFTree.h"
 #include "GTP.h"
 #include "SMP.h"
+#include "Network.h"
 #include "EngineThread.h"
 #include "AboutDialog.h"
 #include "NewGameDialog.h"
@@ -19,6 +20,7 @@
 #include "RatedSizeDialog.h"
 #include "CalculateDialog.h"
 #include "AnalysisWindow.h"
+#include "ScoreDialog.h"
 #include "MCOTable.h"
 
 DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
@@ -252,9 +254,8 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
 
     if (m_State.get_passes() >= 2 || m_State.get_last_move() == FastBoard::RESIGN) {
         float komi, score, prekomi, handicap;
-        bool won;
-        scoreGame(won, komi, handicap, score, prekomi);
-        bool accepts = scoreDialog(komi, score, prekomi, handicap);
+        bool won = scoreGame(komi, handicap, score, prekomi);
+        bool accepts = scoreDialog(komi, handicap, score, prekomi);
         if (accepts || m_State.get_last_move() == FastBoard::RESIGN) {
             ratedGameEnd(won);
         } else {
@@ -796,78 +797,100 @@ void MainFrame::ratedGameEnd(bool won) {
     }               
 }
 
-void MainFrame::scoreGame(bool & won, float & komi, float & handicap, 
+bool MainFrame::scoreGame(float & komi, float & handicap,
                           float & score, float & prekomi) {
+    bool won;
     stopEngine();
 
     if (m_State.get_last_move() == FastBoard::RESIGN) {
         komi = m_State.get_komi();
         handicap = m_State.get_handicap();
-        
+
         int size = m_State.board.get_boardsize() * m_State.board.get_boardsize();
         if (m_State.get_to_move() == FastBoard::WHITE) {
             score = -size;
         } else {
             score = size;
-        }        
-        prekomi = score + komi + handicap;        
+        }
+        prekomi = score + komi + handicap;
     } else {
         komi = m_State.get_komi();
         score = m_State.final_score();
         handicap = m_State.get_handicap();
-        prekomi = score + komi + handicap;        
-    }      
-    
+        prekomi = score + komi + handicap;
+    }
+
     won = (score > 0.0f && m_playerColor == FastBoard::BLACK)
           || (score < 0.0f && m_playerColor == FastBoard::WHITE);
 
     m_panelBoard->doTerritory();
     m_panelBoard->setShowTerritory(true);
+
+    return won;
 }
 
-bool MainFrame::scoreDialog(float komi, float score, float prekomi, float handicap) {
+bool MainFrame::scoreDialog(float komi, float handicap,
+                            float score, float prekomi) {
     wxString mess;
-    
-    if (score > 0.0f) {        
+
+    if (score > 0.0f) {
         if (m_State.get_last_move() == FastBoard::RESIGN) {
             mess.Printf(_("BLACK wins by resignation"));
         } else {
             if (handicap > 0.5f) {
-                mess.Printf(_("Final score:\nBLACK wins by %.0f - %.1f (komi) - %0.f (handicap)\n= %.1f points"), prekomi, komi, handicap, score);        
+                mess.Printf(_("BLACK wins by %.0f - %.1f (komi) - %0.f (handicap)\n= %.1f points"), prekomi, komi, handicap, score);        
             } else {
-                mess.Printf(_("Final score:\nBLACK wins by %.0f - %.1f (komi)\n= %.1f points"), prekomi, komi, score);        
+                mess.Printf(_("BLACK wins by %.0f - %.1f (komi)\n= %.1f points"), prekomi, komi, score);        
             }
-        }            
+        }
     } else {
         // avoid minus zero
         prekomi = prekomi - 0.001f;
         score = score - 0.001f;
-        if (m_State.get_last_move() == FastBoard::RESIGN) {   
+        if (m_State.get_last_move() == FastBoard::RESIGN) {
             mess.Printf(_("WHITE wins by resignation"));
         } else {
             if (handicap > 0.5f) {
-                mess.Printf(_("Final score:\nWHITE wins by %.0f + %.1f (komi) + %0.f (handicap)\n= %.1f points"), -prekomi, komi, handicap, -score);
+                mess.Printf(_("WHITE wins by %.0f + %.1f (komi) + %0.f (handicap)\n= %.1f points"), -prekomi, komi, handicap, -score);
             } else {
-                mess.Printf(_("Final score:\nWHITE wins by %.0f + %.1f (komi)\n= %.1f points"), -prekomi, komi, -score);
+                mess.Printf(_("WHITE wins by %.0f + %.1f (komi)\n= %.1f points"), -prekomi, komi, -score);
             }
-        }            
-    }   
-    
-    int result = ::wxMessageBox(mess, _("Game score"), wxOK | wxCANCEL, this);            
-    
-    if (result == wxOK) {
-        return true;
-    } else {
-        return false;
+        }
     }
+
+    wxString confidence("");
+    if (m_State.board.get_boardsize() == 19) {
+        float net_score = Network::get_Network()->get_value(&m_State,
+                                                            Network::Ensemble::AVERAGE_ALL);
+        net_score = (m_State.get_to_move() == FastBoard::BLACK) ?
+                    net_score : (1.0f - net_score);
+        if (m_State.get_last_move() != FastBoard::RESIGN) {
+            if ((score > 0.0f && net_score < 0.5f)
+                || (score < 0.0f && net_score > 0.5f)) {
+                confidence = _("I am not sure I am scoring this correctly.");
+            }
+        }
+    }
+
+    ScoreDialog mydialog(this, mess, confidence);
+
+    if (mydialog.ShowModal() == wxID_OK) {
+        bool result = mydialog.Accepted();
+        if (result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-void MainFrame::doScore(wxCommandEvent& event) {   
+void MainFrame::doScore(wxCommandEvent& event) {
     float komi, score, prekomi, handicap;
-    bool won;
-    
-    scoreGame(won, komi, handicap, score, prekomi);
-    scoreDialog(komi, score, prekomi, handicap);       
+
+    bool won = scoreGame(komi, handicap, score, prekomi);
+    scoreDialog(komi, handicap, score, prekomi);
 }
 
 wxString MainFrame::rankToString(int rank) {
@@ -915,8 +938,12 @@ void MainFrame::doRealUndo(int count) {
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
+    m_panelBoard->clearViz();
 
     gameNoLongerCounts();
+
+    this->SetTitle(_("Leela") +
+                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
 
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
@@ -938,6 +965,10 @@ void MainFrame::doRealForward(int count) {
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
+    m_panelBoard->clearViz();
+
+    this->SetTitle(_("Leela") +
+                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
 
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
@@ -993,6 +1024,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
+        m_panelBoard->clearViz();
         setActiveMenus();
 
         //signal board change
@@ -1060,7 +1092,6 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
     m_pondering = false;
 
     if (!wasAnalyzing || !wasRunning) {
-        m_AnchorState = m_State;
         m_analyzing = true;
         startEngine();
     } else if (wasAnalyzing) {
@@ -1127,4 +1158,8 @@ void MainFrame::doMainLine(wxCommandEvent& event) {
     wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+}
+
+void MainFrame::doSetMainline( wxCommandEvent& event ) {
+    m_AnchorState = m_State;
 }

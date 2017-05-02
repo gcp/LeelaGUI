@@ -68,11 +68,12 @@ class TMainFrame : public wxFrame
 		void _wxFB_doResign( wxCommandEvent& event ){ doResign( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
+		void _wxFB_doSetMainline( wxCommandEvent& event ){ doSetMainline( event ); }
 		void _wxFB_doMainLine( wxCommandEvent& event ){ doMainLine( event ); }
 		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
+		void _wxFB_doToggleProbabilities( wxCommandEvent& event ){ doToggleProbabilities( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
-		void _wxFB_doToggleProbabilities( wxCommandEvent& event ){ doToggleProbabilities( event ); }
 		void _wxFB_doSettingsDialog( wxCommandEvent& event ){ doSettingsDialog( event ); }
 		void _wxFB_doAdjustClocks( wxCommandEvent& event ){ doAdjustClocks( event ); }
 		void _wxFB_doGoRules( wxCommandEvent& event ){ doGoRules( event ); }
@@ -101,11 +102,12 @@ class TMainFrame : public wxFrame
 			ID_RESIGN,
 			ID_SCORE,
 			ID_ANALYZE,
+			ID_SETHOME,
 			ID_MAINLINE,
 			ID_ANALYSISWINDOWTOGGLE,
+			ID_MOVE_PROBABLITIES,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
-			ID_MOVE_PROBABLITIES,
 			ID_SETTINGS_MENU,
 			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
@@ -131,6 +133,7 @@ class TMainFrame : public wxFrame
 		wxToolBarToolBase* m_tool15; 
 		wxToolBarToolBase* m_tool9; 
 		wxToolBarToolBase* m_toolForce; 
+		wxToolBarToolBase* m_toolSetHome; 
 		wxToolBarToolBase* m_toolMainline; 
 		wxToolBarToolBase* m_toolAnalyze; 
 		wxToolBarToolBase* m_tool2; 
@@ -159,11 +162,12 @@ class TMainFrame : public wxFrame
 		virtual void doResign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAnalyze( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doSetMainline( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doMainLine( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doToggleProbabilities( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doToggleProbabilities( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doSettingsDialog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAdjustClocks( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doGoRules( wxCommandEvent& event ) { event.Skip(); }
@@ -429,6 +433,39 @@ class TSettingsDialog : public wxDialog
 		
 		TSettingsDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TSettingsDialog();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TScoreDialog
+///////////////////////////////////////////////////////////////////////////////
+class TScoreDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_doAccept( wxCommandEvent& event ){ doAccept( event ); }
+		void _wxFB_doDispute( wxCommandEvent& event ){ doDispute( event ); }
+		
+	
+	protected:
+		wxPanel* m_panel4;
+		wxStaticText* m_staticTextScore;
+		wxStaticText* m_staticTextMessage;
+		wxStaticText* m_staticTextConfidence;
+		wxButton* m_buttonOK;
+		wxButton* m_buttonDispute;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void doAccept( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doDispute( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		TScoreDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Game Score"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 392,205 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP ); 
+		~TScoreDialog();
 	
 };
 

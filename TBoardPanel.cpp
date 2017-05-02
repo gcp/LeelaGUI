@@ -306,22 +306,31 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     wxPen bDeadPenThick(*wxWHITE, 2, wxSOLID);
     dc.SetFont(pvfont);
 
+    // PV coloring
+    bool btm = m_State->board.get_to_move() == FastBoard::BLACK;
+
     for (int y = 0; y < boardSize; y++) {
-        for (int x = 0; x < boardSize; x++) {           
+        for (int x = 0; x < boardSize; x++) {
             // engine board is inverted vertically
             int vtx = m_State->board.get_vertex(x, boardSize - y - 1);
             int cell = m_State->board.get_square(vtx);
-            
+
             int xoff = (cellDim + x * cellDim) - 1;
             int yoff = (cellDim + y * cellDim) - 1;
-            
+
             int xxoff = (xoff - (stoneDiam/2));
-            int yyoff = (yoff - (stoneDiam/2));                        
-            
+            int yyoff = (yoff - (stoneDiam/2));
+
             dc.SetPen(penThin);
-            if (cell == FastBoard::BLACK) {
+            if (cell == FastBoard::BLACK
+                || (cell == FastBoard::EMPTY
+                   && ((btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 1))
+                   || (!btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 0))))) {
                 dc.DrawBitmap(bstone, xxoff, yyoff, true);
-            } else if (cell == FastBoard::WHITE) {
+            } else if (cell == FastBoard::WHITE
+                       || cell == FastBoard::EMPTY
+                       && ((!btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 1))
+                           || (btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 0)))) {
                 dc.DrawBitmap(wstone, xxoff, yyoff, true);
             }  else if (m_showOwner) {
                 float ratio = 2.0f * fabs(0.5f - m_Owner[vtx]);
@@ -342,23 +351,28 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                 }
             }
 
-            if (cell == FastBoard::EMPTY) {
-               // Part of the mainline
-                if (m_PV[vtx] > 0) {
-                    wxString text;
-                    text.Printf("%d", m_PV[vtx]);
-                    wxRect rect = dc.GetTextExtent(text);
-                    int cx = xoff - (rect.GetWidth() / 2);
-                    int cy = yoff - (rect.GetHeight() / 2);
-                    dc.SetTextForeground(*wxWHITE);                    
-                    dc.DrawText(text, cx-1, cy-1);
-                    dc.DrawText(text, cx+1, cy+1);
-                    dc.DrawText(text, cx-1, cy+1);
-                    dc.DrawText(text, cx+1, cy-1);
+            // Part of the mainline
+            if (m_PV[vtx] > 0) {
+                wxString text;
+                text.Printf("%d", m_PV[vtx]);
+                wxRect rect = dc.GetTextExtent(text);
+                int cx = xoff - (rect.GetWidth() / 2);
+                int cy = yoff - (rect.GetHeight() / 2);
+                /*dc.SetTextForeground(*wxWHITE);
+                dc.DrawText(text, cx-1, cy-1);
+                dc.DrawText(text, cx+1, cy+1);
+                dc.DrawText(text, cx-1, cy+1);
+                dc.DrawText(text, cx+1, cy-1);*/
+                if ((btm && m_PV[vtx] % 2 == 1)
+                    || (!btm && m_PV[vtx] % 2 == 0)) {
+                    dc.SetTextForeground(*wxWHITE);
+                } else {
                     dc.SetTextForeground(*wxBLACK);
-                    dc.DrawText(text, cx, cy);
                 }
-            } else if (cell != FastBoard::EMPTY) {
+                dc.DrawText(text, cx, cy);
+            }
+
+            if (cell != FastBoard::EMPTY) {
                 if (m_State->get_last_move() == vtx) {
                     dc.DrawCircle(xoff, yoff, stoneSize/3);
                 }

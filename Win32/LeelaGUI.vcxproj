@@ -91,6 +91,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -168,6 +169,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\RatedSizeDialog.cpp" />
+    <ClCompile Include="..\ScoreDialog.cpp" />
     <ClCompile Include="..\SettingsDialog.cpp" />
     <ClCompile Include="..\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -220,6 +222,7 @@
     <ClInclude Include="..\MainFrame.h" />
     <ClInclude Include="..\NewGameDialog.h" />
     <ClInclude Include="..\RatedSizeDialog.h" />
+    <ClInclude Include="..\ScoreDialog.h" />
     <ClInclude Include="..\SettingsDialog.h" />
     <ClInclude Include="..\stdafx.h" />
     <ClInclude Include="..\TBoardPanel.h" />

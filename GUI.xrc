@@ -85,10 +85,14 @@
 			<object class="wxMenu" name="m_menuAnalyze">
 				<label>_Analyze</label>
 				<object class="wxMenuItem" name="menuItemAnalyze">
-					<label>_Start/Stop Analysis\tF2</label>
+					<label>Start/Stop _Analysis\tF2</label>
 					<help>Start analyzing</help>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuItemStoreMainline">
+					<label>_Store Mainline\tCtrl-M</label>
+					<help>Store this variation as the mainline</help>
+				</object>
 				<object class="wxMenuItem" name="m_menuItemMainline">
 					<label>Revert to _Mainline\tAlt-M</label>
 					<help>Revert board position to mainline</help>
@@ -102,19 +106,19 @@
 			</object>
 			<object class="wxMenu" name="m_menuTools">
 				<label>_Tools</label>
+				<object class="wxMenuItem" name="m_menuItemMoveProbabilities">
+					<label>Show Move Proba_bilities\tF3</label>
+					<help>Show the likelihood of each move being played by a professional player</help>
+					<checkable>1</checkable>
+				</object>
 				<object class="wxMenuItem" name="menuItem15">
-					<label>Show _Territory\tF3</label>
+					<label>Show _Territory\tF4</label>
 					<help>Show Territory</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItem16">
-					<label>Show _Moyo\tCtrl-M</label>
+					<label>Show _Moyo\tF5</label>
 					<help>Show Moyo</help>
-					<checkable>1</checkable>
-				</object>
-				<object class="wxMenuItem" name="m_menuItemMoveProbabilities">
-					<label>Show Move Proba_bilities\tF4</label>
-					<help>Show the likelihood of each move being played by a professional player</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="separator" />
@@ -207,10 +211,16 @@
 				<longhelp>Force computer move</longhelp>
 				<bitmap />
 			</object>
+			<object class="tool" name="m_toolSetHome">
+				<label>Store Mainline</label>
+				<tooltip>Stores this variation as the mainline</tooltip>
+				<longhelp>Stores this variation as the mainline</longhelp>
+				<bitmap />
+			</object>
 			<object class="tool" name="m_toolMainline">
-				<label>Revert to Mainline</label>
-				<tooltip>Revert to Mainline</tooltip>
-				<longhelp>Revert to Mainline</longhelp>
+				<label>Revert to mainline</label>
+				<tooltip>Revert to mainline</tooltip>
+				<longhelp>Revert to mainline</longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_toolAnalyze">
@@ -667,7 +677,7 @@
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<option>1</option>
-				<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticTextCalculating">
 					<style>wxALIGN_CENTRE</style>
@@ -810,6 +820,86 @@
 									<border>5</border>
 									<object class="wxButton" name="wxID_CANCEL">
 										<label>&amp;Cancel</label>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="TScoreDialog">
+		<style>wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP</style>
+		<size>392,205</size>
+		<title>Game Score</title>
+		<centered>1</centered>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND | wxALL</flag>
+				<border>5</border>
+				<object class="wxPanel" name="m_panel4">
+					<style>wxTAB_TRAVERSAL</style>
+					<object class="wxBoxSizer">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<option>1</option>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxStaticText" name="m_staticTextScore">
+								<label>Final Score:</label>
+								<wrap>-1</wrap>
+							</object>
+						</object>
+						<object class="sizeritem">
+							<option>1</option>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxStaticText" name="m_staticTextMessage">
+								<style>wxALIGN_CENTRE</style>
+								<label>Black wins by 0.0</label>
+								<wrap>-1</wrap>
+							</object>
+						</object>
+						<object class="sizeritem">
+							<option>1</option>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxStaticText" name="m_staticTextConfidence">
+								<label>I&apos;m fairly sure I scored this correctly.</label>
+								<wrap>-1</wrap>
+							</object>
+						</object>
+						<object class="sizeritem">
+							<option>1</option>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxBoxSizer">
+								<orient>wxHORIZONTAL</orient>
+								<object class="spacer">
+									<option>1</option>
+									<flag>wxEXPAND</flag>
+									<border>5</border>
+									<size>0,0</size>
+								</object>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxButton" name="m_buttonOK">
+										<label>_Accept</label>
+										<default>1</default>
+									</object>
+								</object>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxButton" name="m_buttonDispute">
+										<label>_Play On</label>
+										<default>0</default>
 									</object>
 								</object>
 							</object>
