@@ -418,7 +418,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
 
     this->SetTitle(_("Leela - ") + mess);
     if (m_analysisWindow) {
-        m_analysisWindow->Hide();
+        m_analysisWindow->Close();
     }
 
     int used_rank = rank;
