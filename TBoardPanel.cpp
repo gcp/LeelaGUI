@@ -151,18 +151,29 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                 int xoff = (x + 1) * cellDim;
                 int yoff = (y + 1) * cellDim;
 
-                float val = std::min(1.0f, 2.0f * m_Probabilities[vtx]);
-                if (val > 0.01f) {
-                    val = std::pow(val, 0.25f);
-                    int red = 255 * val;
-                    int green = 0;
-                    int blue = 255 * (1.0f - val);
+                float val = m_Probabilities[vtx];
+                if (val > 0.005f) {
+                    int red, green, blue;
+                    float frac = val / m_MaxProbability;
+                    frac = std::max(0.0f, std::min(1.0f, frac));
+                    if (val > m_MaxProbability / 4.0f) {
+                        red = 255;
+                        green = 255 * (1.0f - frac);
+                        blue =  0;
+                        frac = 0.75f + frac / 4.0f;
+                    } else {
+                        // 0.0 blue -- 0.25 yellow -- 1.0 red
+                        red = 255 * (frac * 2.0f);
+                        green = 255 * (frac * 2.0f);
+                        blue = 255 - (255.0f * (frac * 2.0f));
+                        frac = 0.25f + frac * 3.0f;
+                    }
 
-                    wxBrush brush(wxColour(red, green, blue, 192));
+                    wxBrush brush(wxColour(red, green, blue, (unsigned char)(255.0f * frac)));
                     gc->SetBrush(brush);
-                    if (val > 0.45f || cellDim < 9) {
+                    if (val > 0.20f || cellDim < 9) {
                         gc->DrawRectangle(xoff, yoff, cellDim, cellDim);
-                    } else if (val > 0.30f) {
+                    } else if (val > 0.05f) {
                         gc->DrawRectangle(xoff + 2, yoff + 2, cellDim - 4, cellDim - 4);
                     } else {
                         gc->DrawRectangle(xoff + 4, yoff + 4, cellDim - 8, cellDim - 8);
@@ -585,14 +596,18 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
 }
 
 void TBoardPanel::doProbabilities() {
-    if (m_State->board.get_hash() != m_DisplayedStateHash) {        
+    if (m_State->board.get_hash() != m_DisplayedStateHash) {
         std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
+        m_MaxProbability = 0.0f;
 
         auto vec = Network::get_Network()->get_scored_moves(
             m_State, Network::Ensemble::AVERAGE_ALL);
 
         for (const auto& pair : vec) {
             m_Probabilities[pair.second] = pair.first;
+            if (pair.first > m_MaxProbability) {
+                m_MaxProbability = pair.first;
+            }
         }
         m_DisplayedStateHash = m_State->board.get_hash();
     }
@@ -604,4 +619,5 @@ void TBoardPanel::clearViz() {
     std::fill(m_Owner.begin(), m_Owner.end(), 0.5f);
     std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
     m_DisplayedStateHash = 0;
+    m_MaxProbability = 0.0f;
 }

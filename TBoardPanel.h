@@ -59,6 +59,7 @@ private:
     std::vector<int> m_PV;
     std::vector<float> m_Owner;
     std::vector<float> m_Probabilities;
+    float m_MaxProbability;
 };
 
 #endif
