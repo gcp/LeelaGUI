@@ -2,8 +2,6 @@
 #include "AnalysisWindow.h"
 #include "Utils.h"
 
-#include <boost/foreach.hpp>
-
 wxDEFINE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
 
 AnalysisWindow::AnalysisWindow( wxWindow* parent )
@@ -15,9 +13,10 @@ AnalysisWindow::AnalysisWindow( wxWindow* parent )
 
     m_moveGrid->SetCellValue(0, 0, "pass");
     m_moveGrid->SetCellValue(0, 1, "0");
-    m_moveGrid->SetCellValue(0, 2, "-");
-    m_moveGrid->SetCellValue(0, 3, "0.0");
-    m_moveGrid->SetCellValue(0, 4, "pass pass");
+    m_moveGrid->SetCellValue(0, 2, "0");
+    m_moveGrid->SetCellValue(0, 3, "-");
+    m_moveGrid->SetCellValue(0, 4, "0.0");
+    m_moveGrid->SetCellValue(0, 5, "pass pass");
     m_moveGrid->AutoSize();
     m_moveGrid->SetSelectionMode(wxGrid::wxGridSelectRows);
 
@@ -140,11 +139,6 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
         SetSize(bestSize);
         mHasAutoSized = true;
     }
-
-    // Colours can be specified for grid cell contents
-    //grid->SetCellValue(3, 3, "green on grey");
-    //grid->SetCellTextColour(3, 3, *wxGREEN);
-    //grid->SetCellBackgroundColour(3, 3, *wxLIGHT_GREY);
 }
 
 void AnalysisWindow::doDeselect(wxGridEvent& event) {

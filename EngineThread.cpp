@@ -53,7 +53,7 @@ void * TEngineThread::Entry() {
 void TEngineThread::OnExit() {
     if (!m_analyseflag) {
         wxQueueEvent(m_frame->GetEventHandler(),
-                     new wxCommandEvent(EVT_NEW_MOVE));
+                     new wxCommandEvent(wxEVT_NEW_MOVE));
     }
     boost::on_thread_exit();
 }

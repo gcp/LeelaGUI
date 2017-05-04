@@ -23,9 +23,9 @@
 #include "ScoreDialog.h"
 #include "MCOTable.h"
 
-DEFINE_EVENT_TYPE(EVT_NEW_MOVE)
-DEFINE_EVENT_TYPE(EVT_BOARD_UPDATE)
-DEFINE_EVENT_TYPE(EVT_STATUS_UPDATE)
+wxDEFINE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
 
 #define MAX_RANK  13
 #define MIN_RANK -30
@@ -37,10 +37,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     wxLog::SetTimestamp("");
 
-    Connect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
-    Connect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
-    Connect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
-    Connect(wxEVT_DESTROY, wxWindowDestroyEventHandler(MainFrame::doCloseChild));
+    Bind(wxEVT_NEW_MOVE, &MainFrame::doNewMove, this);
+    Bind(wxEVT_BOARD_UPDATE, &MainFrame::doBoardUpdate, this);
+    Bind(wxEVT_STATUS_UPDATE, &MainFrame::doStatusUpdate, this);
+    Bind(wxEVT_DESTROY, &MainFrame::doCloseChild, this);
     // Forward mainline updates to the board panel
     Bind(wxEVT_DISPLAY_MAINLINE, [=](wxCommandEvent& event) {
         m_panelBoard->GetEventHandler()->AddPendingEvent(event);
@@ -94,7 +94,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     setActiveMenus();
 
     // set global message area
-    Utils::setGUIQueue(this->GetEventHandler(), EVT_STATUS_UPDATE);
+    Utils::setGUIQueue(this->GetEventHandler(), wxEVT_STATUS_UPDATE);
 
     SetIcon(wxICON(aaaa));
 
@@ -111,10 +111,10 @@ MainFrame::~MainFrame() {
     delete wxLog::SetActiveTarget(new wxLogStderr(NULL));
     m_panelBoard->setState(NULL);
 
-    Disconnect(EVT_NEW_MOVE, wxCommandEventHandler(MainFrame::doNewMove));
-    Disconnect(EVT_BOARD_UPDATE, wxCommandEventHandler(MainFrame::doBoardUpdate));
-    Disconnect(EVT_STATUS_UPDATE, wxCommandEventHandler(MainFrame::doStatusUpdate));
-    Disconnect(wxEVT_DESTROY, wxWindowDestroyEventHandler(MainFrame::doCloseChild));
+    Unbind(wxEVT_NEW_MOVE, &MainFrame::doNewMove, this);
+    Unbind(wxEVT_BOARD_UPDATE, &MainFrame::doBoardUpdate, this);
+    Unbind(wxEVT_STATUS_UPDATE, &MainFrame::doStatusUpdate, this);
+    Unbind(wxEVT_DESTROY, &MainFrame::doCloseChild, this);
 
     Hide();
 }
@@ -294,7 +294,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     }
 
     // signal update of visible board
-    wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
+    wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
@@ -371,7 +371,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_disputing = false;
         gameNoLongerCounts();
 
-        wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+        wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
         myevent.SetEventObject(this);
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
     }
@@ -749,7 +749,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         setActiveMenus();
     }
 
-    wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+    wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
@@ -915,7 +915,7 @@ void MainFrame::doPass(wxCommandEvent& event) {
     m_State.play_pass();
     //::wxLogMessage("User passes");
 
-    wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+    wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }
@@ -945,7 +945,7 @@ void MainFrame::doRealUndo(int count) {
     this->SetTitle(_("Leela") +
                    _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
 
-    wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
+    wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 
@@ -970,7 +970,7 @@ void MainFrame::doRealForward(int count) {
     this->SetTitle(_("Leela") +
                    _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
 
-    wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
+    wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 
@@ -1028,7 +1028,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         setActiveMenus();
 
         //signal board change
-        wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
+        wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
         myevent.SetEventObject(this);
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
     }
@@ -1077,7 +1077,7 @@ void MainFrame::doResign(wxCommandEvent& event) {
         stopEngine();
 
         m_State.play_move(FastBoard::RESIGN);
-        wxCommandEvent myevent(EVT_NEW_MOVE, GetId());
+        wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
         myevent.SetEventObject(this);
         ::wxPostEvent(GetEventHandler(), myevent);
     }
@@ -1155,7 +1155,7 @@ void MainFrame::doMainLine(wxCommandEvent& event) {
     m_panelBoard->setPlayerColor(m_playerColor);
 
     //signal board change
-    wxCommandEvent myevent(EVT_BOARD_UPDATE, GetId());
+    wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
 }

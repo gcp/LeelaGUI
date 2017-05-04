@@ -3846,9 +3846,9 @@
                                     <property name="close_button">1</property>
                                     <property name="col_label_horiz_alignment">wxALIGN_LEFT</property>
                                     <property name="col_label_size">30</property>
-                                    <property name="col_label_values">&quot;Move&quot; &quot;Simulations&quot; &quot;Win%&quot; &quot;Net Prob%&quot; &quot;PV&quot;</property>
+                                    <property name="col_label_values">&quot;Move&quot; &quot;Effort%&quot; &quot;Simulations&quot; &quot;Win%&quot; &quot;Net Prob%&quot; &quot;PV&quot;</property>
                                     <property name="col_label_vert_alignment">wxALIGN_CENTRE</property>
-                                    <property name="cols">5</property>
+                                    <property name="cols">6</property>
                                     <property name="column_sizes"></property>
                                     <property name="context_help"></property>
                                     <property name="context_menu">1</property>

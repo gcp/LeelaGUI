@@ -7,11 +7,11 @@
 
 wxDEFINE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
 
-BEGIN_EVENT_TABLE(TBoardPanel, wxPanel)	
+BEGIN_EVENT_TABLE(TBoardPanel, wxPanel)
     EVT_KEY_DOWN(TBoardPanel::doKeyDown)
     EVT_PAINT(TBoardPanel::doPaint)
     EVT_ERASE_BACKGROUND(TBoardPanel::doErase)
-    EVT_LEFT_DOWN(TBoardPanel::doLeftMouse) 
+    EVT_LEFT_DOWN(TBoardPanel::doLeftMouse)
 END_EVENT_TABLE()
 
 TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
@@ -458,7 +458,7 @@ void TBoardPanel::doLeftMouse(wxMouseEvent& event) {
         if (m_State->legal_move(vtx)) {
             m_State->play_move(vtx);                                                         
             
-            wxCommandEvent event(EVT_NEW_MOVE, GetId());
+            wxCommandEvent event(wxEVT_NEW_MOVE, GetId());
             event.SetEventObject(this);                        
             ::wxPostEvent(GetEventHandler(), event);
             

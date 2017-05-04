@@ -8,9 +8,9 @@
 #include "GameState.h"
 #include "EngineThread.h"
 
-DECLARE_EVENT_TYPE(EVT_NEW_MOVE, wxID_ANY)
-DECLARE_EVENT_TYPE(EVT_BOARD_UPDATE, wxID_ANY)
-DECLARE_EVENT_TYPE(EVT_STATUS_UPDATE, wxID_ANY)
+wxDECLARE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
 
 class MainFrame : public TMainFrame {
     public:

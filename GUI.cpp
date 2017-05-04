@@ -550,7 +550,7 @@ TAnalysisWindow::TAnalysisWindow( wxWindow* parent, wxWindowID id, const wxStrin
 	m_moveGrid = new wxGrid( m_panel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	
 	// Grid
-	m_moveGrid->CreateGrid( 8, 5 );
+	m_moveGrid->CreateGrid( 8, 6 );
 	m_moveGrid->EnableEditing( false );
 	m_moveGrid->EnableGridLines( true );
 	m_moveGrid->EnableDragGridSize( false );
@@ -562,10 +562,11 @@ TAnalysisWindow::TAnalysisWindow( wxWindow* parent, wxWindowID id, const wxStrin
 	m_moveGrid->EnableDragColSize( true );
 	m_moveGrid->SetColLabelSize( 30 );
 	m_moveGrid->SetColLabelValue( 0, _("Move") );
-	m_moveGrid->SetColLabelValue( 1, _("Simulations") );
-	m_moveGrid->SetColLabelValue( 2, _("Win%") );
-	m_moveGrid->SetColLabelValue( 3, _("Net Prob%") );
-	m_moveGrid->SetColLabelValue( 4, _("PV") );
+	m_moveGrid->SetColLabelValue( 1, _("Effort%") );
+	m_moveGrid->SetColLabelValue( 2, _("Simulations") );
+	m_moveGrid->SetColLabelValue( 3, _("Win%") );
+	m_moveGrid->SetColLabelValue( 4, _("Net Prob%") );
+	m_moveGrid->SetColLabelValue( 5, _("PV") );
 	m_moveGrid->SetColLabelAlignment( wxALIGN_LEFT, wxALIGN_CENTRE );
 	
 	// Rows
