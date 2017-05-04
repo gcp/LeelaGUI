@@ -72,6 +72,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doMainLine( wxCommandEvent& event ){ doMainLine( event ); }
 		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
 		void _wxFB_doToggleProbabilities( wxCommandEvent& event ){ doToggleProbabilities( event ); }
+		void _wxFB_doToggleBestMoves( wxCommandEvent& event ){ doToggleBestMoves( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
 		void _wxFB_doToggleMoyo( wxCommandEvent& event ){ doToggleMoyo( event ); }
 		void _wxFB_doSettingsDialog( wxCommandEvent& event ){ doSettingsDialog( event ); }
@@ -105,7 +106,8 @@ class TMainFrame : public wxFrame
 			ID_SETHOME,
 			ID_MAINLINE,
 			ID_ANALYSISWINDOWTOGGLE,
-			ID_MOVE_PROBABLITIES,
+			ID_MOVE_PROBABILITIES,
+			ID_BEST_MOVES,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
 			ID_SETTINGS_MENU,
@@ -166,6 +168,7 @@ class TMainFrame : public wxFrame
 		virtual void doMainLine( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleProbabilities( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doToggleBestMoves( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleMoyo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doSettingsDialog( wxCommandEvent& event ) { event.Skip(); }

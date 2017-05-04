@@ -23,9 +23,11 @@ public:
     void setShowMoyo(bool val);
     void setShowTerritory(bool val);
     void setShowProbabilities(bool val);
+    void setShowBestMoves(bool val);
     bool getShowOwner();
     bool getShowMoyo();
     bool getShowProbabilities();
+    bool getShowBestMoves();
     void doTerritory();     
     void lockState();
     void unlockState();
@@ -39,6 +41,7 @@ private:
     void doLeftMouse(wxMouseEvent& event);
     void doKeyDown(wxKeyEvent& event);
     void doDisplayMainline(wxCommandEvent& event);
+    void doBestMovesUpdate(wxCommandEvent& event);
     void doMoyo();
     void doOwner();
     void doProbabilities();
@@ -54,6 +57,7 @@ private:
     bool m_showOwner;
     bool m_showMoyo;
     bool m_showProbabilities;
+    bool m_showBestMoves;
     uint64_t m_DisplayedStateHash;
     std::vector<int> m_Hatch;
     std::vector<int> m_PV;

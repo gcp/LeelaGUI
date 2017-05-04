@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #include "AnalysisWindow.h"
 #include "Utils.h"
-
-wxDEFINE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
+#include "MainFrame.h"
 
 AnalysisWindow::AnalysisWindow( wxWindow* parent )
     : TAnalysisWindow(parent) {
 
     Bind(wxEVT_ANALYSIS_UPDATE, &AnalysisWindow::doUpdate, this);
-
-    Utils::setAnalysisQueue(this->GetEventHandler(), wxEVT_ANALYSIS_UPDATE);
 
     m_moveGrid->SetCellValue(0, 0, "pass");
     m_moveGrid->SetCellValue(0, 1, "0");
@@ -36,7 +33,6 @@ AnalysisWindow::AnalysisWindow( wxWindow* parent )
 }
 
 void AnalysisWindow::doClose( wxCloseEvent& event ) {
-    Utils::setAnalysisQueue(nullptr, 0);
     // Don't unbind the event handler. Destroy will empty it
     // and free any pending events with data.
     event.Skip();

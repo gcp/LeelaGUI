@@ -19,6 +19,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     : wxPanel(parent, winid, pos, size, style, name) {
 
     Bind(wxEVT_DISPLAY_MAINLINE, &TBoardPanel::doDisplayMainline, this);
+    Bind(wxEVT_BESTMOVES_UPDATE, &TBoardPanel::doBestMovesUpdate, this);
 
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
         
@@ -71,6 +72,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_showOwner = false;
     m_showTerritory = false;
     m_showProbabilities = false;
+    m_showBestMoves = false;
     m_stateLock = false;
     m_State = NULL;
     m_playerColor = FastBoard::BLACK;    
@@ -128,8 +130,10 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
 
     wxGraphicsContext *mgc = wxGraphicsContext::Create(dc);
 
-    if (m_showProbabilities) {
-        doProbabilities();
+    if (m_showProbabilities || m_showBestMoves) {
+        if (m_showProbabilities) {
+            doProbabilities();
+        }
         // Background image bitmap
         wxImage backgroundImg(cellDim * (boardSize + 2), cellDim * (boardSize + 2));
         size_t alphaSize = cellDim * (boardSize + 2) * cellDim  * (boardSize + 2);
@@ -500,12 +504,24 @@ bool TBoardPanel::getShowMoyo() {
 
 void TBoardPanel::setShowProbabilities(bool val) {
     m_showProbabilities = val;
+    m_DisplayedStateHash = 0;
 
     Refresh();
 }
 
 bool TBoardPanel::getShowProbabilities() {
     return m_showProbabilities;
+}
+
+void TBoardPanel::setShowBestMoves(bool val) {
+    m_showBestMoves = val;
+    m_DisplayedStateHash = 0;
+
+    Refresh();
+}
+
+bool TBoardPanel::getShowBestMoves() {
+    return m_showBestMoves;
 }
 
 void TBoardPanel::doMoyo() {
@@ -620,4 +636,29 @@ void TBoardPanel::clearViz() {
     std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
     m_DisplayedStateHash = 0;
     m_MaxProbability = 0.0f;
+}
+
+void TBoardPanel::doBestMovesUpdate(wxCommandEvent& event) {
+    void* rawdataptr = event.GetClientData();
+    if (!rawdataptr) return;
+
+    // Take ownership of the data
+    auto data = reinterpret_cast<std::vector<std::pair<std::string, float>>*>(rawdataptr);
+    std::unique_ptr<std::remove_pointer<decltype(data)>::type> dataptr(data);
+
+    if (m_showBestMoves) {
+        std::fill(m_Probabilities.begin(), m_Probabilities.end(), 0.0f);
+        m_MaxProbability = 0.0f;
+
+        for (const auto& pair : *data) {
+            std::string move = pair.first;
+            int vertex = m_State->board.text_to_move(move);
+            m_Probabilities[vertex] = pair.second;
+            if (pair.second > m_MaxProbability) {
+                m_MaxProbability = pair.second;
+            }
+        }
+        m_DisplayedStateHash = m_State->board.get_hash();
+        Refresh();
+    }
 }

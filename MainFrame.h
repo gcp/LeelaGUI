@@ -11,6 +11,8 @@
 wxDECLARE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
 
 class MainFrame : public TMainFrame {
     public:
@@ -51,6 +53,7 @@ class MainFrame : public TMainFrame {
         virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) override;
         virtual void doCloseChild( wxWindowDestroyEvent& event );
         virtual void doToggleProbabilities( wxCommandEvent& event ) override;
+        virtual void doToggleBestMoves( wxCommandEvent& event ) override;
         virtual void doSettingsDialog( wxCommandEvent& event ) override;
         virtual void doMainLine( wxCommandEvent& event ) override;
         virtual void doSetMainline( wxCommandEvent& event ) override;

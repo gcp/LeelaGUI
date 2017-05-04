@@ -107,17 +107,22 @@
 			<object class="wxMenu" name="m_menuTools">
 				<label>_Tools</label>
 				<object class="wxMenuItem" name="m_menuItemMoveProbabilities">
-					<label>Show Move Proba_bilities\tF3</label>
+					<label>Show Network _Probabilities\tF3</label>
 					<help>Show the likelihood of each move being played by a professional player</help>
 					<checkable>1</checkable>
 				</object>
+				<object class="wxMenuItem" name="m_menuItemBestMoves">
+					<label>Show _Best Moves\tF4</label>
+					<help>Color the best moves on the board</help>
+					<checkable>1</checkable>
+				</object>
 				<object class="wxMenuItem" name="menuItem15">
-					<label>Show _Territory\tF4</label>
+					<label>Show _Territory\tF5</label>
 					<help>Show Territory</help>
 					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="menuItem16">
-					<label>Show _Moyo\tF5</label>
+					<label>Show _Moyo\tF6</label>
 					<help>Show Moyo</help>
 					<checkable>1</checkable>
 				</object>

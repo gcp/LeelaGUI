@@ -26,6 +26,8 @@
 wxDEFINE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
 
 #define MAX_RANK  13
 #define MIN_RANK -30
@@ -44,6 +46,24 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     // Forward mainline updates to the board panel
     Bind(wxEVT_DISPLAY_MAINLINE, [=](wxCommandEvent& event) {
         m_panelBoard->GetEventHandler()->AddPendingEvent(event);
+    });
+    // Forward top moves to board panel
+    Bind(wxEVT_BESTMOVES_UPDATE, [=](wxCommandEvent& event) {
+        m_panelBoard->GetEventHandler()->AddPendingEvent(event);
+    });
+    // Forward to analysis window, if it exists
+    Bind(wxEVT_ANALYSIS_UPDATE, [=](wxCommandEvent& event) {
+        if (m_analysisWindow) {
+            m_analysisWindow->GetEventHandler()->AddPendingEvent(event);
+        } else {
+            // Need to free up the analysis data
+            if (!event.GetClientData()) return;
+
+            using TRowVector = std::vector<std::pair<std::string, std::string>>;
+            using TDataVector = std::vector<TRowVector>;
+
+            delete reinterpret_cast<TDataVector*>(event.GetClientData());
+        }
     });
 
     GTP::setup_default_parameters();
@@ -93,8 +113,13 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
     setActiveMenus();
 
-    // set global message area
+    // set us as the global message receiver
     Utils::setGUIQueue(this->GetEventHandler(), wxEVT_STATUS_UPDATE);
+
+    // send analysis events here
+    Utils::setAnalysisQueue(this->GetEventHandler(),
+                            wxEVT_ANALYSIS_UPDATE,
+                            wxEVT_BESTMOVES_UPDATE);
 
     SetIcon(wxICON(aaaa));
 
@@ -220,6 +245,28 @@ void MainFrame::doToggleProbabilities(wxCommandEvent& event) {
 
     if (m_panelBoard->getShowProbabilities()) {
         gameNoLongerCounts();
+    }
+
+    if (m_panelBoard->getShowBestMoves()) {
+        m_panelBoard->setShowBestMoves(false);
+        wxMenuItem * bm = m_menuTools->FindItem(ID_BEST_MOVES);
+        bm->Check(false);
+    }
+
+    m_panelBoard->Refresh();
+}
+
+void MainFrame::doToggleBestMoves(wxCommandEvent& event) {
+    m_panelBoard->setShowBestMoves(!m_panelBoard->getShowBestMoves());
+
+    if (m_panelBoard->getShowBestMoves()) {
+        gameNoLongerCounts();
+    }
+
+    if (m_panelBoard->getShowProbabilities()) {
+        m_panelBoard->setShowProbabilities(false);
+        wxMenuItem * prob = m_menuTools->FindItem(ID_MOVE_PROBABILITIES);
+        prob->Check(false);
     }
 
     m_panelBoard->Refresh();
@@ -380,9 +427,9 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
 void MainFrame::setActiveMenus() {
     int boardsize = m_State.board.get_boardsize();
     if (boardsize != 19) {
-        m_menuTools->FindItem(ID_MOVE_PROBABLITIES)->Enable(false);
+        m_menuTools->FindItem(ID_MOVE_PROBABILITIES)->Enable(false);
     } else {
-        m_menuTools->FindItem(ID_MOVE_PROBABLITIES)->Enable(true);
+        m_menuTools->FindItem(ID_MOVE_PROBABILITIES)->Enable(true);
     }
 }
 
@@ -921,8 +968,10 @@ void MainFrame::doPass(wxCommandEvent& event) {
 }
 
 void MainFrame::gameNoLongerCounts() {
-    m_ratedGame = false;
-    this->SetTitle(_("Leela"));
+    if (m_ratedGame) {
+        this->SetTitle(_("Leela"));
+        m_ratedGame = false;
+    }
 }
 
 void MainFrame::doRealUndo(int count) {

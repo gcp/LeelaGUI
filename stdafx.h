@@ -56,6 +56,7 @@
 #include <map>
 #include <algorithm>
 #include <functional>
+#include <type_traits>
 
 // Boost headers
 #include <boost/lexical_cast.hpp>

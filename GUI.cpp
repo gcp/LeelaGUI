@@ -37,7 +37,8 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_SETHOME, TMainFrame::_wxFB_doSetMainline )
 	EVT_MENU( ID_MAINLINE, TMainFrame::_wxFB_doMainLine )
 	EVT_MENU( ID_ANALYSISWINDOWTOGGLE, TMainFrame::_wxFB_doShowHideAnalysisWindow )
-	EVT_MENU( ID_MOVE_PROBABLITIES, TMainFrame::_wxFB_doToggleProbabilities )
+	EVT_MENU( ID_MOVE_PROBABILITIES, TMainFrame::_wxFB_doToggleProbabilities )
+	EVT_MENU( ID_BEST_MOVES, TMainFrame::_wxFB_doToggleBestMoves )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
 	EVT_MENU( ID_SETTINGS_MENU, TMainFrame::_wxFB_doSettingsDialog )
@@ -161,15 +162,19 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_menuTools = new wxMenu();
 	wxMenuItem* m_menuItemMoveProbabilities;
-	m_menuItemMoveProbabilities = new wxMenuItem( m_menuTools, ID_MOVE_PROBABLITIES, wxString( _("Show Move Proba&bilities") ) + wxT('\t') + wxT("F3"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
+	m_menuItemMoveProbabilities = new wxMenuItem( m_menuTools, ID_MOVE_PROBABILITIES, wxString( _("Show Network &Probabilities") ) + wxT('\t') + wxT("F3"), _("Show the likelihood of each move being played by a professional player"), wxITEM_CHECK );
 	m_menuTools->Append( m_menuItemMoveProbabilities );
 	
+	wxMenuItem* m_menuItemBestMoves;
+	m_menuItemBestMoves = new wxMenuItem( m_menuTools, ID_BEST_MOVES, wxString( _("Show &Best Moves") ) + wxT('\t') + wxT("F4"), _("Color the best moves on the board"), wxITEM_CHECK );
+	m_menuTools->Append( m_menuItemBestMoves );
+	
 	wxMenuItem* menuItem15;
-	menuItem15 = new wxMenuItem( m_menuTools, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F4"), _("Show Territory"), wxITEM_CHECK );
+	menuItem15 = new wxMenuItem( m_menuTools, ID_SHOWTERRITORY, wxString( _("Show &Territory") ) + wxT('\t') + wxT("F5"), _("Show Territory"), wxITEM_CHECK );
 	m_menuTools->Append( menuItem15 );
 	
 	wxMenuItem* menuItem16;
-	menuItem16 = new wxMenuItem( m_menuTools, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("F5"), _("Show Moyo"), wxITEM_CHECK );
+	menuItem16 = new wxMenuItem( m_menuTools, ID_SHOWMOYO, wxString( _("Show &Moyo") ) + wxT('\t') + wxT("F6"), _("Show Moyo"), wxITEM_CHECK );
 	m_menuTools->Append( menuItem16 );
 	
 	m_menuTools->AppendSeparator();
