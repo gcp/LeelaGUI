@@ -127,7 +127,7 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
         }
     }
 
-    if (!mHasAutoSized) {
+    if (!mHasAutoSized && !mHasUserSized) {
         m_moveGrid->AutoSize();
         // Make sure we won't obscure anything when scrollbar appears
         wxSize bestSize = GetBestSize();
@@ -167,4 +167,12 @@ void AnalysisWindow::doLeftClick(wxGridEvent& event) {
         cmd->SetString(pv);
         GetParent()->GetEventHandler()->QueueEvent(cmd);
     }
+}
+
+
+void AnalysisWindow::doResize( wxSizeEvent& event ) {
+    if (mHasAutoSized) {
+        mHasUserSized = true;
+    }
+    event.Skip();
 }

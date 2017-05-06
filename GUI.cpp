@@ -542,6 +542,7 @@ TCalculateDialog::~TCalculateDialog()
 
 BEGIN_EVENT_TABLE( TAnalysisWindow, wxFrame )
 	EVT_CLOSE( TAnalysisWindow::_wxFB_doClose )
+	EVT_SIZE( TAnalysisWindow::_wxFB_doResize )
 	EVT_GRID_CELL_LEFT_CLICK( TAnalysisWindow::_wxFB_doLeftClick )
 	EVT_GRID_CELL_LEFT_DCLICK( TAnalysisWindow::_wxFB_doDeselect )
 	EVT_GRID_CELL_RIGHT_CLICK( TAnalysisWindow::_wxFB_doDeselect )

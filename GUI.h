@@ -372,6 +372,7 @@ class TAnalysisWindow : public wxFrame
 		
 		// Private event handlers
 		void _wxFB_doClose( wxCloseEvent& event ){ doClose( event ); }
+		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
 		void _wxFB_doLeftClick( wxGridEvent& event ){ doLeftClick( event ); }
 		void _wxFB_doDeselect( wxGridEvent& event ){ doDeselect( event ); }
 		
@@ -382,6 +383,7 @@ class TAnalysisWindow : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void doClose( wxCloseEvent& event ) { event.Skip(); }
+		virtual void doResize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void doLeftClick( wxGridEvent& event ) { event.Skip(); }
 		virtual void doDeselect( wxGridEvent& event ) { event.Skip(); }
 		

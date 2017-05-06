@@ -22,10 +22,12 @@ class AnalysisWindow : public TAnalysisWindow
 	//// end generated class members
         private:
             virtual void doClose( wxCloseEvent& event ) override;
-            virtual void doUpdate( wxCommandEvent& event );            
+            virtual void doUpdate( wxCommandEvent& event );
             virtual void doDeselect( wxGridEvent& event ) override;
             virtual void doLeftClick( wxGridEvent& event ) override;
+            virtual void doResize( wxSizeEvent& event ) override;
             bool mHasAutoSized{false};
+            bool mHasUserSized{false};
 };
 
 #endif // __AnalysisWindow__
