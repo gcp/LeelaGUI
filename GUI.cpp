@@ -8,6 +8,7 @@
 #include "stdafx.h"
 
 #include "TBoardPanel.h"
+#include "TScorePanel.h"
 
 #include "GUI.h"
 
@@ -37,6 +38,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_SETHOME, TMainFrame::_wxFB_doSetMainline )
 	EVT_MENU( ID_MAINLINE, TMainFrame::_wxFB_doMainLine )
 	EVT_MENU( ID_ANALYSISWINDOWTOGGLE, TMainFrame::_wxFB_doShowHideAnalysisWindow )
+	EVT_MENU( ID_SCOREHISTOGRAMTOGGLE, TMainFrame::_wxFB_doShowHideScoreHistogram )
 	EVT_MENU( ID_MOVE_PROBABILITIES, TMainFrame::_wxFB_doToggleProbabilities )
 	EVT_MENU( ID_BEST_MOVES, TMainFrame::_wxFB_doToggleBestMoves )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
@@ -157,6 +159,10 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxMenuItem* m_menuItemAnalysisWindow;
 	m_menuItemAnalysisWindow = new wxMenuItem( m_menuAnalyze, ID_ANALYSISWINDOWTOGGLE, wxString( _("Analysis &Window") ) + wxT('\t') + wxT("Ctrl-A"), wxEmptyString, wxITEM_CHECK );
 	m_menuAnalyze->Append( m_menuItemAnalysisWindow );
+	
+	wxMenuItem* m_menuItemHistogram;
+	m_menuItemHistogram = new wxMenuItem( m_menuAnalyze, ID_SCOREHISTOGRAMTOGGLE, wxString( _("Show &Histogram") ) + wxT('\t') + wxT("Ctrl-H"), wxEmptyString, wxITEM_CHECK );
+	m_menuAnalyze->Append( m_menuItemHistogram );
 	
 	m_menubar1->Append( m_menuAnalyze, _("&Analyze") ); 
 	
@@ -746,5 +752,26 @@ TScoreDialog::TScoreDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 }
 
 TScoreDialog::~TScoreDialog()
+{
+}
+
+TScoreHistogram::TScoreHistogram( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer18;
+	bSizer18 = new wxBoxSizer( wxVERTICAL );
+	
+	m_DrawPanel = new TScorePanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL );
+	bSizer18->Add( m_DrawPanel, 1, wxALL|wxEXPAND, 1 );
+	
+	
+	this->SetSizer( bSizer18 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+TScoreHistogram::~TScoreHistogram()
 {
 }

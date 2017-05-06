@@ -21,6 +21,7 @@
 #include "CalculateDialog.h"
 #include "AnalysisWindow.h"
 #include "ScoreDialog.h"
+#include "ScoreHistogram.h"
 #include "MCOTable.h"
 
 wxDEFINE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
@@ -28,6 +29,7 @@ wxDEFINE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_EVALUATION_UPDATE, wxCommandEvent);
 
 #define MAX_RANK  13
 #define MIN_RANK -30
@@ -63,6 +65,17 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
             using TDataVector = std::vector<TRowVector>;
 
             delete reinterpret_cast<TDataVector*>(event.GetClientData());
+        }
+    });
+    // Forward to histogram window, if it exists
+    Bind(wxEVT_EVALUATION_UPDATE, [=](wxCommandEvent& event) {
+        if (m_scoreHistogramWindow) {
+            m_scoreHistogramWindow->GetEventHandler()->AddPendingEvent(event);
+        } else {
+            // Need to free up the analysis data
+            if (!event.GetClientData()) return;
+
+            delete reinterpret_cast<std::tuple<int, float, float, float>*>(event.GetClientData());
         }
     });
 
@@ -402,6 +415,9 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         ::wxEndBusyCursor();
         MCOwnerTable::clear();
         m_panelBoard->clearViz();
+        if (m_scoreHistogramWindow) {
+            m_scoreHistogramWindow->ClearHistogram();
+        }
         m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0, 0);
         m_AnchorState = m_State;
         m_visitLimit = mydialog.getSimulations();
@@ -467,6 +483,9 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     this->SetTitle(_("Leela - ") + mess);
     if (m_analysisWindow) {
         m_analysisWindow->Close();
+    }
+    if (m_scoreHistogramWindow) {
+        m_scoreHistogramWindow->Close();
     }
 
     int used_rank = rank;
@@ -1074,6 +1093,9 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_panelBoard->clearViz();
+        if (m_scoreHistogramWindow) {
+            m_scoreHistogramWindow->ClearHistogram();
+        }
         setActiveMenus();
 
         //signal board change
@@ -1190,10 +1212,27 @@ void MainFrame::doShowHideAnalysisWindow(wxCommandEvent& event) {
     }
 }
 
+void MainFrame::doShowHideScoreHistogram( wxCommandEvent& event ) {
+    if (!m_scoreHistogramWindow) {
+        m_scoreHistogramWindow = new ScoreHistogram(this);
+        m_scoreHistogramWindow->Show();
+    } else {
+        if (!m_scoreHistogramWindow->IsShown()) {
+            m_scoreHistogramWindow->Show();
+        } else {
+            m_scoreHistogramWindow->Hide();
+        }
+    }
+}
+
 void MainFrame::doCloseChild( wxWindowDestroyEvent& event ) {
     if (event.GetWindow() == m_analysisWindow) {
         m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
         m_analysisWindow = nullptr;
+    }
+    if (event.GetWindow() == m_scoreHistogramWindow) {
+        m_menuAnalyze->FindItem(ID_SCOREHISTOGRAMTOGGLE)->Check(false);
+        m_scoreHistogramWindow = nullptr;
     }
 }
 

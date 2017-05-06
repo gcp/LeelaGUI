@@ -8,11 +8,15 @@
 #include "GameState.h"
 #include "EngineThread.h"
 
+class AnalysisWindow;
+class ScoreHistogram;
+
 wxDECLARE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_EVALUATION_UPDATE, wxCommandEvent);
 
 class MainFrame : public TMainFrame {
     public:
@@ -57,6 +61,7 @@ class MainFrame : public TMainFrame {
         virtual void doSettingsDialog( wxCommandEvent& event ) override;
         virtual void doMainLine( wxCommandEvent& event ) override;
         virtual void doSetMainline( wxCommandEvent& event ) override;
+        virtual void doShowHideScoreHistogram( wxCommandEvent& event ) override;
         void doRealUndo(int count = 1);
         void doRealForward(int count = 1);
 
@@ -88,7 +93,8 @@ class MainFrame : public TMainFrame {
 	bool m_disputing;
         bool m_ponderedOnce;
 	std::unique_ptr<TEngineThread> m_engineThread;
-        TAnalysisWindow* m_analysisWindow{nullptr};
+        AnalysisWindow* m_analysisWindow{nullptr};
+        ScoreHistogram* m_scoreHistogramWindow{nullptr};
         friend class TEngineThread;
         friend class TBoardPanel;
 };

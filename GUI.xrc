@@ -103,6 +103,11 @@
 					<help></help>
 					<checkable>1</checkable>
 				</object>
+				<object class="wxMenuItem" name="m_menuItemHistogram">
+					<label>Show _Histogram\tCtrl-H</label>
+					<help></help>
+					<checkable>1</checkable>
+				</object>
 			</object>
 			<object class="wxMenu" name="m_menuTools">
 				<label>_Tools</label>
@@ -912,6 +917,16 @@
 					</object>
 				</object>
 			</object>
+		</object>
+	</object>
+	<object class="wxFrame" name="TScoreHistogram">
+		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
+		<size>500,300</size>
+		<title>Score Histogram</title>
+		<centered>1</centered>
+		<aui_managed>0</aui_managed>
+		<object class="wxPanel" name="m_DrawPanel" subclass="TScorePanel">
+			<style>wxFULL_REPAINT_ON_RESIZE|wxTAB_TRAVERSAL</style>
 		</object>
 	</object>
 </resource>

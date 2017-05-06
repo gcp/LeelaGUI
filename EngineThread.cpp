@@ -45,6 +45,18 @@ void * TEngineThread::Entry() {
         if (!m_analyseflag) {
             m_state->play_move(who, move);
         }
+
+        // Broadcast result from search
+        auto event = new wxCommandEvent(wxEVT_EVALUATION_UPDATE);
+        auto scores = search->get_scores();
+        auto movenum = work_state.get_movenum();
+        auto scoretuple = std::make_tuple(movenum,
+                                          std::get<0>(scores),
+                                          std::get<1>(scores),
+                                          std::get<2>(scores));
+        event->SetClientData((void*)new auto(scoretuple));
+
+        wxQueueEvent(m_frame->GetEventHandler(), event);
     }
 
     return NULL;

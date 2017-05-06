@@ -12,6 +12,7 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
 class TBoardPanel;
+class TScorePanel;
 
 #include <wx/panel.h>
 #include <wx/gdicmn.h>
@@ -71,6 +72,7 @@ class TMainFrame : public wxFrame
 		void _wxFB_doSetMainline( wxCommandEvent& event ){ doSetMainline( event ); }
 		void _wxFB_doMainLine( wxCommandEvent& event ){ doMainLine( event ); }
 		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
+		void _wxFB_doShowHideScoreHistogram( wxCommandEvent& event ){ doShowHideScoreHistogram( event ); }
 		void _wxFB_doToggleProbabilities( wxCommandEvent& event ){ doToggleProbabilities( event ); }
 		void _wxFB_doToggleBestMoves( wxCommandEvent& event ){ doToggleBestMoves( event ); }
 		void _wxFB_doToggleTerritory( wxCommandEvent& event ){ doToggleTerritory( event ); }
@@ -106,6 +108,7 @@ class TMainFrame : public wxFrame
 			ID_SETHOME,
 			ID_MAINLINE,
 			ID_ANALYSISWINDOWTOGGLE,
+			ID_SCOREHISTOGRAMTOGGLE,
 			ID_MOVE_PROBABILITIES,
 			ID_BEST_MOVES,
 			ID_SHOWTERRITORY,
@@ -167,6 +170,7 @@ class TMainFrame : public wxFrame
 		virtual void doSetMainline( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doMainLine( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doShowHideScoreHistogram( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleProbabilities( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleBestMoves( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doToggleTerritory( wxCommandEvent& event ) { event.Skip(); }
@@ -469,6 +473,24 @@ class TScoreDialog : public wxDialog
 		
 		TScoreDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Game Score"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 392,205 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP ); 
 		~TScoreDialog();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TScoreHistogram
+///////////////////////////////////////////////////////////////////////////////
+class TScoreHistogram : public wxFrame 
+{
+	private:
+	
+	protected:
+		TScorePanel* m_DrawPanel;
+	
+	public:
+		
+		TScoreHistogram( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Score Histogram"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~TScoreHistogram();
 	
 };
 

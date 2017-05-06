@@ -24,7 +24,6 @@ class ScoreDialog : public TScoreDialog
                              wxString confidence );
                 bool Accepted() { return mAccepts; };
 	//// end generated class members
-
 };
 
 #endif // __ScoreDialog__
