@@ -1,6 +1,8 @@
 #include "ScoreHistogram.h"
 #include "MainFrame.h"
 
+std::vector<std::tuple<int, float, float, float>> ScoreHistogram::m_scores;
+
 ScoreHistogram::ScoreHistogram( wxWindow* parent )
 :
 TScoreHistogram( parent )
