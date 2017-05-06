@@ -17,6 +17,8 @@ wxDECLARE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
 wxDECLARE_EVENT(wxEVT_EVALUATION_UPDATE, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_SET_MOVENUM, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_PURGE_VIZ, wxCommandEvent);
 
 class MainFrame : public TMainFrame {
     public:
@@ -62,12 +64,16 @@ class MainFrame : public TMainFrame {
         virtual void doMainLine( wxCommandEvent& event ) override;
         virtual void doSetMainline( wxCommandEvent& event ) override;
         virtual void doShowHideScoreHistogram( wxCommandEvent& event ) override;
+        void doEvalUpdate(wxCommandEvent& event);
         void doRealUndo(int count = 1);
         void doRealForward(int count = 1);
+        void doPostMoveChange(bool wasAnalyzing);
+        void gotoMoveNum(wxCommandEvent& event);
+        void broadcastCurrentMove();
 
 	void startEngine();
 	void startPonder();
-	bool stopEngine();
+	bool stopEngine(bool update_score = true);
 	// true = user accepts score
 	bool scoreDialog(float komi, float handicap, float score, float prekomi);
 	bool scoreGame(float & komi, float & handicap, float & score, float & prescore);

@@ -1,5 +1,6 @@
 #include "ScoreHistogram.h"
 #include "MainFrame.h"
+#include "TScorePanel.h"
 
 std::vector<std::tuple<int, float, float, float>> ScoreHistogram::m_scores;
 
@@ -8,6 +9,9 @@ ScoreHistogram::ScoreHistogram( wxWindow* parent )
 TScoreHistogram( parent )
 {
     Bind(wxEVT_EVALUATION_UPDATE, &ScoreHistogram::doNewScore, this);
+    Bind(wxEVT_SET_MOVENUM, [=](wxCommandEvent& event) {
+        m_DrawPanel->GetEventHandler()->AddPendingEvent(event);
+    });
 }
 
 void ScoreHistogram::doNewScore(wxCommandEvent& event) {

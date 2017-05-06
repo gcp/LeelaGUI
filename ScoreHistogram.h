@@ -22,7 +22,6 @@ class ScoreHistogram : public TScoreHistogram
 	//// end generated class members
         private:
             void doNewScore(wxCommandEvent& event);
-            void doPaint(wxPaintEvent& event);
 
             static std::vector<std::tuple<int, float, float, float>> m_scores;
             friend class TScorePanel;

@@ -15,9 +15,11 @@ public:
 private:
     DECLARE_EVENT_TABLE()
 
+    int m_CurrentMove{-1};
+
     void doPaint(wxPaintEvent& event);
     void doErase(wxEraseEvent& event);
-    void doLeftMouse(wxMouseEvent& event);
+    void doMouse(wxMouseEvent& event);
     void doKeyDown(wxKeyEvent& event);
 };
 

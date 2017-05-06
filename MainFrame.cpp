@@ -30,6 +30,7 @@ wxDEFINE_EVENT(wxEVT_STATUS_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_ANALYSIS_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_EVALUATION_UPDATE, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_SET_MOVENUM, wxCommandEvent);
 
 #define MAX_RANK  13
 #define MIN_RANK -30
@@ -45,6 +46,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Bind(wxEVT_BOARD_UPDATE, &MainFrame::doBoardUpdate, this);
     Bind(wxEVT_STATUS_UPDATE, &MainFrame::doStatusUpdate, this);
     Bind(wxEVT_DESTROY, &MainFrame::doCloseChild, this);
+    // Receive movenum changes (from history panel)
+    Bind(wxEVT_SET_MOVENUM, &MainFrame::gotoMoveNum, this);
+    // Forward to histogram window, if it exists
+    Bind(wxEVT_EVALUATION_UPDATE, &MainFrame::doEvalUpdate, this);
     // Forward mainline updates to the board panel
     Bind(wxEVT_DISPLAY_MAINLINE, [=](wxCommandEvent& event) {
         m_panelBoard->GetEventHandler()->AddPendingEvent(event);
@@ -65,17 +70,6 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
             using TDataVector = std::vector<TRowVector>;
 
             delete reinterpret_cast<TDataVector*>(event.GetClientData());
-        }
-    });
-    // Forward to histogram window, if it exists
-    Bind(wxEVT_EVALUATION_UPDATE, [=](wxCommandEvent& event) {
-        if (m_scoreHistogramWindow) {
-            m_scoreHistogramWindow->GetEventHandler()->AddPendingEvent(event);
-        } else {
-            // Need to free up the analysis data
-            if (!event.GetClientData()) return;
-
-            delete reinterpret_cast<std::tuple<int, float, float, float>*>(event.GetClientData());
         }
     });
 
@@ -149,6 +143,7 @@ MainFrame::~MainFrame() {
     delete wxLog::SetActiveTarget(new wxLogStderr(NULL));
     m_panelBoard->setState(NULL);
 
+    Unbind(wxEVT_EVALUATION_UPDATE, &MainFrame::doEvalUpdate, this);
     Unbind(wxEVT_NEW_MOVE, &MainFrame::doNewMove, this);
     Unbind(wxEVT_BOARD_UPDATE, &MainFrame::doBoardUpdate, this);
     Unbind(wxEVT_STATUS_UPDATE, &MainFrame::doStatusUpdate, this);
@@ -216,8 +211,11 @@ void MainFrame::startEngine() {
     }
 }
 
-bool MainFrame::stopEngine() {
+bool MainFrame::stopEngine(bool update_score) {
     if (!m_engineThread) return false;
+    if (!update_score) {
+        m_engineThread->kill_score_update();
+    }
     m_engineThread->stop_engine();
     m_engineThread->Wait();
     m_engineThread.reset(nullptr);
@@ -357,6 +355,7 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    broadcastCurrentMove();
 }
 
 void MainFrame::doPaint(wxPaintEvent& event) {    
@@ -397,7 +396,7 @@ void MainFrame::doSettingsDialog(wxCommandEvent& event) {
 }
 
 void MainFrame::doNewGame(wxCommandEvent& event) {
-    stopEngine();
+    stopEngine(false);
 
     NewGameDialog mydialog(this);
 
@@ -437,6 +436,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
         myevent.SetEventObject(this);
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+        broadcastCurrentMove();
     }
 }
 
@@ -461,7 +461,7 @@ void MainFrame::doSetRatedSize(wxCommandEvent& event) {
 }
 
 void MainFrame::doNewRatedGame(wxCommandEvent& event) {
-    stopEngine();
+    stopEngine(false);
 
     m_analyzing = false;
     m_disputing = false;
@@ -818,6 +818,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    broadcastCurrentMove();
 }
 
 void MainFrame::ratedGameEnd(bool won) {
@@ -984,6 +985,7 @@ void MainFrame::doPass(wxCommandEvent& event) {
     wxCommandEvent myevent(wxEVT_NEW_MOVE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    broadcastCurrentMove();
 }
 
 void MainFrame::gameNoLongerCounts() {
@@ -1003,21 +1005,7 @@ void MainFrame::doRealUndo(int count) {
             wxLogDebug("Undoing one move");
         }
     }
-    m_playerColor = m_State.get_to_move();
-    m_panelBoard->setPlayerColor(m_playerColor);
-    m_panelBoard->setShowTerritory(false);
-    m_panelBoard->clearViz();
-
-    gameNoLongerCounts();
-
-    this->SetTitle(_("Leela") +
-                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
-
-    wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
-    myevent.SetEventObject(this);
-    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
-
-    if (wasAnalyzing) doAnalyze(myevent /* dummy */);
+    doPostMoveChange(wasAnalyzing);
 }
 
 void MainFrame::doRealForward(int count) {
@@ -1030,17 +1018,22 @@ void MainFrame::doRealForward(int count) {
             wxLogDebug("Forward one move");
         }
     }
+    doPostMoveChange(wasAnalyzing);
+}
+
+void MainFrame::doPostMoveChange(bool wasAnalyzing) {
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
     m_panelBoard->clearViz();
 
     this->SetTitle(_("Leela") +
-                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
+        _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
 
     wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    broadcastCurrentMove();
 
     if (wasAnalyzing) doAnalyze(myevent /* dummy */);
 }
@@ -1068,7 +1061,7 @@ void MainFrame::doHelpAbout(wxCommandEvent& event) {
 }
 
 void MainFrame::doOpenSGF(wxCommandEvent& event) {
-    stopEngine();
+    stopEngine(false);
 
     wxString caption = _("Choose a file");
     wxString wildcard = _("Go games (*.sgf)|*.sgf");
@@ -1096,12 +1089,14 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         if (m_scoreHistogramWindow) {
             m_scoreHistogramWindow->ClearHistogram();
         }
+
         setActiveMenus();
 
         //signal board change
         wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
         myevent.SetEventObject(this);
         ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+        broadcastCurrentMove();
     }
 }
 
@@ -1236,6 +1231,14 @@ void MainFrame::doCloseChild( wxWindowDestroyEvent& event ) {
     }
 }
 
+void MainFrame::broadcastCurrentMove() {
+    if (m_scoreHistogramWindow) {
+        wxCommandEvent* cmd = new wxCommandEvent(wxEVT_SET_MOVENUM);
+        cmd->SetInt(m_State.get_movenum());
+        m_scoreHistogramWindow->GetEventHandler()->QueueEvent(cmd);
+    }
+}
+
 void MainFrame::doMainLine(wxCommandEvent& event) {
     m_State = m_AnchorState;
     m_panelBoard->unlockState();
@@ -1246,8 +1249,31 @@ void MainFrame::doMainLine(wxCommandEvent& event) {
     wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
     ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    broadcastCurrentMove();
 }
 
 void MainFrame::doSetMainline( wxCommandEvent& event ) {
     m_AnchorState = m_State;
+}
+
+void MainFrame::gotoMoveNum(wxCommandEvent& event) {
+    int movenum = event.GetInt();
+
+    int current_move = m_State.get_movenum();
+    if (movenum > current_move) {
+        doRealForward(movenum - current_move);
+    } else if (movenum < current_move) {
+        doRealUndo(current_move - movenum);
+    }
+}
+
+void MainFrame::doEvalUpdate(wxCommandEvent& event) {
+    if (m_scoreHistogramWindow) {
+        m_scoreHistogramWindow->GetEventHandler()->AddPendingEvent(event);
+    } else {
+        // Need to free up the analysis data
+        if (!event.GetClientData()) return;
+
+        delete reinterpret_cast<std::tuple<int, float, float, float>*>(event.GetClientData());
+    }
 }

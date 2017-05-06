@@ -7,12 +7,17 @@ BEGIN_EVENT_TABLE(TScorePanel, wxPanel)
     EVT_KEY_DOWN(TScorePanel::doKeyDown)
     EVT_PAINT(TScorePanel::doPaint)
     EVT_ERASE_BACKGROUND(TScorePanel::doErase)
-    EVT_LEFT_DOWN(TScorePanel::doLeftMouse)
+    EVT_MOUSE_EVENTS(TScorePanel::doMouse)
 END_EVENT_TABLE()
 
 TScorePanel::TScorePanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     const wxSize& size, long style,const wxString& name)
     : wxPanel(parent, winid, pos, size, style, name) {
+
+    Bind(wxEVT_SET_MOVENUM, [=](wxCommandEvent& event) {
+        m_CurrentMove = event.GetInt();
+        Refresh();
+    });
 
     SetBackgroundStyle(wxBG_STYLE_PAINT);
 }
@@ -37,7 +42,6 @@ void TScorePanel::doPaint(wxPaintEvent& event) {
 
     // Get Data
     auto parent = static_cast<ScoreHistogram*>(GetParent());
-
     auto data = parent->m_scores;
     // Sort by move number
     std::sort(data.begin(), data.end());
@@ -55,7 +59,9 @@ void TScorePanel::doPaint(wxPaintEvent& event) {
         gc->FillPath(path);
 
         // Centerline
-        gc->SetPen(*wxGREY_PEN);
+        wxPen centerPen(*wxGREY_PEN);
+        centerPen.SetWidth(2);
+        gc->SetPen(centerPen);
         path = gc->CreatePath();
         path.MoveToPoint(0.0, height/2.0);
         path.AddLineToPoint(width, height/2.0);
@@ -88,6 +94,15 @@ void TScorePanel::doPaint(wxPaintEvent& event) {
                 gc->StrokePath(path);
                 tuple_idx++;
             }
+            // Current move
+            if (m_CurrentMove >= 0) {
+                double current_x = ((double)m_CurrentMove/max_move) * width;
+                gc->SetPen(*wxGREY_PEN);
+                path = gc->CreatePath();
+                path.MoveToPoint(current_x, 0.0);
+                path.AddLineToPoint(current_x, height);
+                gc->StrokePath(path);
+            }
         }
 
         // Legend
@@ -114,9 +129,32 @@ void TScorePanel::doErase(wxEraseEvent& event) {
     //event.Skip();
 }
 
-void TScorePanel::doLeftMouse(wxMouseEvent& event) {
-    int startX = event.GetX();
-    int startY = event.GetY();
+void TScorePanel::doMouse(wxMouseEvent& event) {
+    if (event.LeftDown() || (event.Dragging() && event.LeftIsDown())) {
+        int startX = event.GetX();
+        int startY = event.GetY();
+
+        wxSize sz = GetClientSize();
+
+        auto parent = static_cast<ScoreHistogram*>(GetParent());
+        auto data = parent->m_scores;
+        // Sort by move number
+        std::sort(data.begin(), data.end());
+
+        if (!data.empty()) {
+            float max_move = std::get<0>(data.back());
+            int move_selected = std::lround(((float)startX / (float)sz.GetWidth()) * max_move);
+
+            auto my_window_parent = GetParent();
+            auto mainframe =  my_window_parent->GetParent();
+            wxCommandEvent* cmd = new wxCommandEvent(wxEVT_SET_MOVENUM);
+            cmd->SetInt(move_selected);
+            mainframe->GetEventHandler()->QueueEvent(cmd);
+
+            m_CurrentMove = move_selected;
+            Refresh();
+        }
+    }
 
     event.Skip();
 }

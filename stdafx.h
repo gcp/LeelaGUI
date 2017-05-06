@@ -58,6 +58,7 @@
 #include <functional>
 #include <type_traits>
 #include <tuple>
+#include <cmath>
 
 // Boost headers
 #include <boost/lexical_cast.hpp>

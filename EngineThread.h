@@ -17,6 +17,7 @@ class TEngineThread : public wxThread {
         void set_quiet(bool flag);
         void set_nets(bool flag);
         void stop_engine(void);
+        void kill_score_update(void);
         virtual void * Entry() override;
         virtual void OnExit() override;
     private:
@@ -28,6 +29,7 @@ class TEngineThread : public wxThread {
         bool m_analyseflag;
         bool m_quiet;
         bool m_nopass;
+        bool m_update_score;
         std::atomic<bool> m_runflag;
 };
 

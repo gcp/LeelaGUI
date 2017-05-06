@@ -16,6 +16,7 @@ TEngineThread::TEngineThread(GameState * state, MainFrame * frame)
     m_nopass = false;
     m_quiet = false;
     m_nets = true;
+    m_update_score = true;
 }
 
 void * TEngineThread::Entry() {
@@ -46,17 +47,19 @@ void * TEngineThread::Entry() {
             m_state->play_move(who, move);
         }
 
-        // Broadcast result from search
-        auto event = new wxCommandEvent(wxEVT_EVALUATION_UPDATE);
-        auto scores = search->get_scores();
-        auto movenum = work_state.get_movenum();
-        auto scoretuple = std::make_tuple(movenum,
-                                          std::get<0>(scores),
-                                          std::get<1>(scores),
-                                          std::get<2>(scores));
-        event->SetClientData((void*)new auto(scoretuple));
+        if (m_update_score) {
+            // Broadcast result from search
+            auto event = new wxCommandEvent(wxEVT_EVALUATION_UPDATE);
+            auto scores = search->get_scores();
+            auto movenum = work_state.get_movenum();
+            auto scoretuple = std::make_tuple(movenum,
+                                              std::get<0>(scores),
+                                              std::get<1>(scores),
+                                              std::get<2>(scores));
+            event->SetClientData((void*)new auto(scoretuple));
 
-        wxQueueEvent(m_frame->GetEventHandler(), event);
+            wxQueueEvent(m_frame->GetEventHandler(), event);
+        }
     }
 
     return NULL;
@@ -96,4 +99,8 @@ void TEngineThread::set_quiet(bool flag) {
 
 void TEngineThread::set_nets(bool flag) {
     m_nets = flag;
+}
+
+void TEngineThread::kill_score_update(void) {
+    m_update_score = false;
 }
