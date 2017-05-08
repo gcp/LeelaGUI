@@ -62,7 +62,8 @@ class MainFrame : public TMainFrame {
         virtual void doToggleBestMoves( wxCommandEvent& event ) override;
         virtual void doSettingsDialog( wxCommandEvent& event ) override;
         virtual void doMainLine( wxCommandEvent& event ) override;
-        virtual void doSetMainline( wxCommandEvent& event ) override;
+        virtual void doPushPosition( wxCommandEvent& event ) override;
+        virtual void doPopPosition( wxCommandEvent& event ) override;
         virtual void doShowHideScoreHistogram( wxCommandEvent& event ) override;
         void doEvalUpdate(wxCommandEvent& event);
         void doRealUndo(int count = 1);
@@ -84,7 +85,7 @@ class MainFrame : public TMainFrame {
         void gameNoLongerCounts();
 
 	GameState m_State;
-        GameState m_AnchorState;
+        std::vector<GameState> m_StateStack;
 	int m_playerColor;
 	int m_visitLimit;
         int m_ratedSize;

@@ -2,7 +2,7 @@
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxFrame" name="TMainFrame">
 		<style>wxDEFAULT_FRAME_STYLE|wxWANTS_CHARS</style>
-		<size>520,630</size>
+		<size>527,630</size>
 		<title>Leela</title>
 		<aui_managed>0</aui_managed>
 		<object class="wxPanel" name="m_panelBoard" subclass="TBoardPanel">
@@ -90,12 +90,17 @@
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuItemStoreMainline">
-					<label>_Store Mainline\tCtrl-M</label>
-					<help>Store this variation as the mainline</help>
+					<label>_Store Position (Push)\tShift-P</label>
+					<help>Store this position on the stack</help>
+				</object>
+				<object class="wxMenuItem" name="m_menuPopVariation">
+					<label>_Forget Position (Pop)\tCtrl-P</label>
+					<help>Remove the top position from the stack</help>
+					<enabled>0</enabled>
 				</object>
 				<object class="wxMenuItem" name="m_menuItemMainline">
-					<label>Revert to _Mainline\tAlt-M</label>
-					<help>Revert board position to mainline</help>
+					<label>R_evert to Stored\tAlt-M</label>
+					<help>Revert board position to the top of the stack</help>
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="m_menuItemAnalysisWindow">
@@ -159,7 +164,7 @@
 				</object>
 			</object>
 		</object>
-		<object class="wxToolBar" name="m_toolBar1">
+		<object class="wxToolBar" name="m_toolBar">
 			<style>wxTB_FLAT|wxTB_HORIZONTAL</style>
 			<bitmapsize>-1,-1</bitmapsize>
 			<margins>-1,-1</margins>
@@ -221,16 +226,22 @@
 				<longhelp>Force computer move</longhelp>
 				<bitmap />
 			</object>
-			<object class="tool" name="m_toolSetHome">
-				<label>Store Mainline</label>
-				<tooltip>Stores this variation as the mainline</tooltip>
-				<longhelp>Stores this variation as the mainline</longhelp>
+			<object class="tool" name="m_toolPushPos">
+				<label>Store Position</label>
+				<tooltip>Remember this position on the stack</tooltip>
+				<longhelp>Remember this position on the stack</longhelp>
+				<bitmap />
+			</object>
+			<object class="tool" name="m_toolPopPos">
+				<label>Remove Position</label>
+				<tooltip>Remove the top position from the stack</tooltip>
+				<longhelp>Remove the top position from the stack</longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_toolMainline">
 				<label>Revert to mainline</label>
-				<tooltip>Revert to mainline</tooltip>
-				<longhelp>Revert to mainline</longhelp>
+				<tooltip>Revert to stored position</tooltip>
+				<longhelp>Revert to stored position</longhelp>
 				<bitmap />
 			</object>
 			<object class="tool" name="m_toolAnalyze">

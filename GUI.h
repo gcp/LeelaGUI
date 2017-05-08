@@ -69,7 +69,8 @@ class TMainFrame : public wxFrame
 		void _wxFB_doResign( wxCommandEvent& event ){ doResign( event ); }
 		void _wxFB_doScore( wxCommandEvent& event ){ doScore( event ); }
 		void _wxFB_doAnalyze( wxCommandEvent& event ){ doAnalyze( event ); }
-		void _wxFB_doSetMainline( wxCommandEvent& event ){ doSetMainline( event ); }
+		void _wxFB_doPushPosition( wxCommandEvent& event ){ doPushPosition( event ); }
+		void _wxFB_doPopPosition( wxCommandEvent& event ){ doPopPosition( event ); }
 		void _wxFB_doMainLine( wxCommandEvent& event ){ doMainLine( event ); }
 		void _wxFB_doShowHideAnalysisWindow( wxCommandEvent& event ){ doShowHideAnalysisWindow( event ); }
 		void _wxFB_doShowHideScoreHistogram( wxCommandEvent& event ){ doShowHideScoreHistogram( event ); }
@@ -105,7 +106,8 @@ class TMainFrame : public wxFrame
 			ID_RESIGN,
 			ID_SCORE,
 			ID_ANALYZE,
-			ID_SETHOME,
+			ID_PUSHPOS,
+			ID_POPPOS,
 			ID_MAINLINE,
 			ID_ANALYSISWINDOWTOGGLE,
 			ID_SCOREHISTOGRAMTOGGLE,
@@ -128,7 +130,7 @@ class TMainFrame : public wxFrame
 		wxMenu* m_menuAnalyze;
 		wxMenu* m_menuTools;
 		wxMenu* m_menu3;
-		wxToolBar* m_toolBar1;
+		wxToolBar* m_toolBar;
 		wxToolBarToolBase* m_tool1; 
 		wxToolBarToolBase* m_tool12; 
 		wxToolBarToolBase* m_tool4; 
@@ -138,7 +140,8 @@ class TMainFrame : public wxFrame
 		wxToolBarToolBase* m_tool15; 
 		wxToolBarToolBase* m_tool9; 
 		wxToolBarToolBase* m_toolForce; 
-		wxToolBarToolBase* m_toolSetHome; 
+		wxToolBarToolBase* m_toolPushPos; 
+		wxToolBarToolBase* m_toolPopPos; 
 		wxToolBarToolBase* m_toolMainline; 
 		wxToolBarToolBase* m_toolAnalyze; 
 		wxToolBarToolBase* m_tool2; 
@@ -167,7 +170,8 @@ class TMainFrame : public wxFrame
 		virtual void doResign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doScore( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doAnalyze( wxCommandEvent& event ) { event.Skip(); }
-		virtual void doSetMainline( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPushPosition( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPopPosition( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doMainLine( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doShowHideAnalysisWindow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doShowHideScoreHistogram( wxCommandEvent& event ) { event.Skip(); }
@@ -184,7 +188,7 @@ class TMainFrame : public wxFrame
 	
 	public:
 		
-		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 520,630 ), long style = wxDEFAULT_FRAME_STYLE|wxWANTS_CHARS, const wxString& name = wxT("LeelaGUI") );
+		TMainFrame( wxWindow* parent, wxWindowID id = ID_MAINFRAME, const wxString& title = _("Leela"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 527,630 ), long style = wxDEFAULT_FRAME_STYLE|wxWANTS_CHARS, const wxString& name = wxT("LeelaGUI") );
 		
 		~TMainFrame();
 	

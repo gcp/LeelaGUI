@@ -44,7 +44,7 @@
             <property name="minimum_size"></property>
             <property name="name">TMainFrame</property>
             <property name="pos"></property>
-            <property name="size">520,630</property>
+            <property name="size">527,630</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass"></property>
             <property name="title">Leela</property>
@@ -536,25 +536,40 @@
                         <property name="bitmap"></property>
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
-                        <property name="help">Store this variation as the mainline</property>
-                        <property name="id">ID_SETHOME</property>
+                        <property name="help">Store this position on the stack</property>
+                        <property name="id">ID_PUSHPOS</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Store Mainline</property>
+                        <property name="label">&amp;Store Position (Push)</property>
                         <property name="name">m_menuItemStoreMainline</property>
                         <property name="permission">none</property>
-                        <property name="shortcut">Ctrl-M</property>
+                        <property name="shortcut">Shift-P</property>
                         <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">doSetMainline</event>
+                        <event name="OnMenuSelection">doPushPosition</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">0</property>
+                        <property name="help">Remove the top position from the stack</property>
+                        <property name="id">ID_POPPOS</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">&amp;Forget Position (Pop)</property>
+                        <property name="name">m_menuPopVariation</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut">Ctrl-P</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doPopPosition</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
-                        <property name="help">Revert board position to mainline</property>
+                        <property name="help">Revert board position to the top of the stack</property>
                         <property name="id">ID_MAINLINE</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Revert to &amp;Mainline</property>
+                        <property name="label">R&amp;evert to Stored</property>
                         <property name="name">m_menuItemMainline</property>
                         <property name="permission">none</property>
                         <property name="shortcut">Alt-M</property>
@@ -792,7 +807,7 @@
                 <property name="minimize_button">0</property>
                 <property name="minimum_size"></property>
                 <property name="moveable">1</property>
-                <property name="name">m_toolBar1</property>
+                <property name="name">m_toolBar</property>
                 <property name="packing">1</property>
                 <property name="pane_border">1</property>
                 <property name="pane_position"></property>
@@ -1030,15 +1045,36 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="1">
-                    <property name="bitmap">Load From Resource; IDB_SETHOME</property>
+                    <property name="bitmap">Load From Resource; IDB_PLUS</property>
                     <property name="context_menu">0</property>
-                    <property name="id">ID_SETHOME</property>
+                    <property name="id">ID_PUSHPOS</property>
                     <property name="kind">wxITEM_NORMAL</property>
-                    <property name="label">Store Mainline</property>
-                    <property name="name">m_toolSetHome</property>
+                    <property name="label">Store Position</property>
+                    <property name="name">m_toolPushPos</property>
                     <property name="permission">protected</property>
-                    <property name="statusbar">Stores this variation as the mainline</property>
-                    <property name="tooltip">Stores this variation as the mainline</property>
+                    <property name="statusbar">Remember this position on the stack</property>
+                    <property name="tooltip">Remember this position on the stack</property>
+                    <event name="OnAuiToolBarBeginDrag"></event>
+                    <event name="OnAuiToolBarMiddleClick"></event>
+                    <event name="OnAuiToolBarOverflowClick"></event>
+                    <event name="OnAuiToolBarRightClick"></event>
+                    <event name="OnAuiToolBarToolDropDown"></event>
+                    <event name="OnMenuSelection"></event>
+                    <event name="OnToolClicked"></event>
+                    <event name="OnToolEnter"></event>
+                    <event name="OnToolRClicked"></event>
+                    <event name="OnUpdateUI"></event>
+                </object>
+                <object class="tool" expanded="1">
+                    <property name="bitmap">Load From Resource; IDB_MINUS</property>
+                    <property name="context_menu">0</property>
+                    <property name="id">ID_POPPOS</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">Remove Position</property>
+                    <property name="name">m_toolPopPos</property>
+                    <property name="permission">protected</property>
+                    <property name="statusbar">Remove the top position from the stack</property>
+                    <property name="tooltip">Remove the top position from the stack</property>
                     <event name="OnAuiToolBarBeginDrag"></event>
                     <event name="OnAuiToolBarMiddleClick"></event>
                     <event name="OnAuiToolBarOverflowClick"></event>
@@ -1058,8 +1094,8 @@
                     <property name="label">Revert to mainline</property>
                     <property name="name">m_toolMainline</property>
                     <property name="permission">protected</property>
-                    <property name="statusbar">Revert to mainline</property>
-                    <property name="tooltip">Revert to mainline</property>
+                    <property name="statusbar">Revert to stored position</property>
+                    <property name="tooltip">Revert to stored position</property>
                     <event name="OnAuiToolBarBeginDrag"></event>
                     <event name="OnAuiToolBarMiddleClick"></event>
                     <event name="OnAuiToolBarOverflowClick"></event>

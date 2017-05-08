@@ -73,7 +73,9 @@ IDB_FORCE               BITMAP                  "C:\\Projects\\LeelaGUI\\img\\ex
 
 IDB_ANALYZE             BITMAP                  "C:\\Projects\\LeelaGUI\\img\\analyze.bmp"
 
-IDB_SETHOME             BITMAP                  "C:\\Projects\\LeelaGUI\\img\\sethome.bmp"
+IDB_PLUS                BITMAP                  "C:\\Projects\\LeelaGUI\\img\\plus.bmp"
+
+IDB_MINUS               BITMAP                  "C:\\Projects\\LeelaGUI\\img\\minus.bmp"
 
 IDB_PARENT              BITMAP                  "C:\\Projects\\LeelaGUI\\img\\goparent3.bmp"
 

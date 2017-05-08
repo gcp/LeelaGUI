@@ -113,12 +113,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     m_State.init_game(m_ratedSize, 7.5f);
     m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
-    m_AnchorState = m_State;
+    m_StateStack.clear();
     m_panelBoard->setState(&m_State);
     m_panelBoard->setPlayerColor(m_playerColor);
-
     m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(false);
-    setActiveMenus();
 
     // set us as the global message receiver
     Utils::setGUIQueue(this->GetEventHandler(), wxEVT_STATUS_UPDATE);
@@ -135,6 +133,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     wxCommandEvent evt;
     doNewRatedGame(evt);
+
+    setActiveMenus();
 }
 
 MainFrame::~MainFrame() {
@@ -331,7 +331,6 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
         }
     } else {
         if (!m_analyzing) {
-            m_AnchorState = m_State;
             if (m_State.get_to_move() != m_playerColor) {
                 wxLogDebug("Computer to move");
                 startEngine();
@@ -349,6 +348,11 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
             m_panelBoard->setPlayerColor(m_playerColor);
         }
         m_panelBoard->setShowTerritory(false);
+    }
+
+    if (!m_ratedGame) {
+        this->SetTitle(_("Leela") +
+                       _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
     }
 
     // signal update of visible board
@@ -418,7 +422,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
             m_scoreHistogramWindow->ClearHistogram();
         }
         m_State.set_timecontrol(mydialog.getTimeControl() * 60 * 100, 0, 0, 0);
-        m_AnchorState = m_State;
+        m_StateStack.clear();
         m_visitLimit = mydialog.getSimulations();
         m_playerColor = mydialog.getPlayerColor();
         // XXX
@@ -446,6 +450,17 @@ void MainFrame::setActiveMenus() {
         m_menuTools->FindItem(ID_MOVE_PROBABILITIES)->Enable(false);
     } else {
         m_menuTools->FindItem(ID_MOVE_PROBABILITIES)->Enable(true);
+    }
+    if (m_StateStack.empty()) {
+        m_menuAnalyze->FindItem(ID_POPPOS)->Enable(false);
+        m_menuAnalyze->FindItem(ID_MAINLINE)->Enable(false);
+        GetToolBar()->EnableTool(ID_POPPOS, false);
+        GetToolBar()->EnableTool(ID_MAINLINE, false);
+    } else {
+        m_menuAnalyze->FindItem(ID_POPPOS)->Enable(true);
+        m_menuAnalyze->FindItem(ID_MAINLINE)->Enable(true);
+        GetToolBar()->EnableTool(ID_POPPOS, true);
+        GetToolBar()->EnableTool(ID_MAINLINE, true);
     }
 }
 
@@ -806,7 +821,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         ::wxEndBusyCursor();
         // max 60 minutes per game
         m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
-        m_AnchorState = m_State;
+        m_StateStack.clear();
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -990,7 +1005,8 @@ void MainFrame::doPass(wxCommandEvent& event) {
 
 void MainFrame::gameNoLongerCounts() {
     if (m_ratedGame) {
-        this->SetTitle(_("Leela"));
+        this->SetTitle(_("Leela") +
+                       _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
         m_ratedGame = false;
     }
 }
@@ -1081,7 +1097,8 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         } catch (...) {
         }
 
-        m_AnchorState = m_State;
+        m_StateStack.clear();
+        m_StateStack.push_back(m_State);
         m_playerColor = m_State.get_to_move();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
@@ -1158,6 +1175,10 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
     m_pondering = false;
 
     if (!wasAnalyzing || !wasRunning) {
+        if (!wasAnalyzing) {
+            m_StateStack.push_back(m_State);
+            setActiveMenus();
+        }
         m_analyzing = true;
         startEngine();
     } else if (wasAnalyzing) {
@@ -1240,10 +1261,13 @@ void MainFrame::broadcastCurrentMove() {
 }
 
 void MainFrame::doMainLine(wxCommandEvent& event) {
-    m_State = m_AnchorState;
+    assert(!m_StateStack.empty());
+    if (m_StateStack.empty()) return;
+    m_State = m_StateStack.back();
     m_panelBoard->unlockState();
     m_playerColor = m_State.get_to_move();
     m_panelBoard->setPlayerColor(m_playerColor);
+    gameNoLongerCounts();
 
     //signal board change
     wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
@@ -1252,8 +1276,18 @@ void MainFrame::doMainLine(wxCommandEvent& event) {
     broadcastCurrentMove();
 }
 
-void MainFrame::doSetMainline( wxCommandEvent& event ) {
-    m_AnchorState = m_State;
+void MainFrame::doPushPosition( wxCommandEvent& event ) {
+    m_StateStack.push_back(m_State);
+    setActiveMenus();
+}
+
+void MainFrame::doPopPosition( wxCommandEvent& event ) {
+    assert(!m_StateStack.empty());
+    if (m_StateStack.empty()) return;
+    doMainLine(event);
+    m_StateStack.pop_back();
+    gameNoLongerCounts();
+    setActiveMenus();
 }
 
 void MainFrame::gotoMoveNum(wxCommandEvent& event) {
