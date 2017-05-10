@@ -348,6 +348,40 @@
                         <event name="OnMenuSelection">doSaveSGF</event>
                         <event name="OnUpdateUI"></event>
                     </object>
+                    <object class="separator" expanded="1">
+                        <property name="name">m_separator12</property>
+                        <property name="permission">none</property>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Copy SGF to clipboard</property>
+                        <property name="id">ID_COPYCLIPBOARD</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Copy SGF</property>
+                        <property name="name">m_menuItem30</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut">Ctrl-C</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doCopyClipboard</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help">Paste SGF from clipboard</property>
+                        <property name="id">ID_PASTECLIPBOARD</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Paste SGF</property>
+                        <property name="name">m_menuItem31</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut">Ctrl-V</property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">doPasteClipboard</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
                     <object class="separator" expanded="0">
                         <property name="name">m_separator2</property>
                         <property name="permission">none</property>

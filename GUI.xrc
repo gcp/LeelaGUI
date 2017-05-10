@@ -38,6 +38,15 @@
 					<help>Save a game to disk</help>
 				</object>
 				<object class="separator" />
+				<object class="wxMenuItem" name="m_menuItem30">
+					<label>Copy SGF\tCtrl-C</label>
+					<help>Copy SGF to clipboard</help>
+				</object>
+				<object class="wxMenuItem" name="m_menuItem31">
+					<label>Paste SGF\tCtrl-V</label>
+					<help>Paste SGF from clipboard</help>
+				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="menuItemExit">
 					<label>E_xit\tAlt-F4</label>
 					<help>Exit the program</help>

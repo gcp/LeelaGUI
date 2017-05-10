@@ -29,7 +29,8 @@ static float tuple_getter(scoretuple_t tuple, int idx) {
         return std::get<1>(tuple);
     } else if (idx == 2) {
         return std::get<2>(tuple);
-    } else if (idx == 3) {
+    } else {
+        assert(idx == 3);
         return std::get<3>(tuple);
     }
 }

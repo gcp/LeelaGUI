@@ -10,6 +10,7 @@
 #include "Matcher.h"
 #include "AttribScores.h"
 #include "SGFTree.h"
+#include "SGFParser.h"
 #include "GTP.h"
 #include "SMP.h"
 #include "Network.h"
@@ -822,6 +823,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         // max 60 minutes per game
         m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
         m_StateStack.clear();
+        MCOwnerTable::clear();
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -1004,9 +1006,9 @@ void MainFrame::doPass(wxCommandEvent& event) {
 }
 
 void MainFrame::gameNoLongerCounts() {
+    this->SetTitle(_("Leela") +
+                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
     if (m_ratedGame) {
-        this->SetTitle(_("Leela") +
-                       _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
         m_ratedGame = false;
     }
 }
@@ -1039,12 +1041,13 @@ void MainFrame::doRealForward(int count) {
 
 void MainFrame::doPostMoveChange(bool wasAnalyzing) {
     m_playerColor = m_State.get_to_move();
+    MCOwnerTable::clear();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
     m_panelBoard->clearViz();
 
     this->SetTitle(_("Leela") +
-        _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
+                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
 
     wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
@@ -1100,13 +1103,14 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
         m_StateStack.clear();
         m_StateStack.push_back(m_State);
         m_playerColor = m_State.get_to_move();
+        MCOwnerTable::clear();
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_panelBoard->clearViz();
         if (m_scoreHistogramWindow) {
             m_scoreHistogramWindow->ClearHistogram();
         }
-
+        gameNoLongerCounts();
         setActiveMenus();
 
         //signal board change
@@ -1309,5 +1313,51 @@ void MainFrame::doEvalUpdate(wxCommandEvent& event) {
         if (!event.GetClientData()) return;
 
         delete reinterpret_cast<std::tuple<int, float, float, float>*>(event.GetClientData());
+    }
+}
+void MainFrame::doCopyClipboard(wxCommandEvent& event) {
+    if (wxTheClipboard->Open()) {
+        std::string sgfgame = SGFTree::state_to_string(&m_State, !m_playerColor);
+        auto data = new wxTextDataObject(wxString(sgfgame));
+        wxTheClipboard->SetData(data);
+        wxTheClipboard->Flush();
+        wxTheClipboard->Close();
+    }
+}
+
+void MainFrame::doPasteClipboard(wxCommandEvent& event) {
+    if (wxTheClipboard->Open()) {
+        if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
+            wxTextDataObject data;
+            wxTheClipboard->GetData(data);
+            std::string sgfstring = data.GetText().ToStdString();
+            std::istringstream strm(sgfstring);
+            std::unique_ptr<SGFTree> sgftree(new SGFTree);
+            auto games = SGFParser::chop_stream(strm);
+            if (!games.empty()) {
+                sgftree->load_from_string(games[0]);
+                m_State = sgftree->follow_mainline_state();
+
+                m_StateStack.clear();
+                m_StateStack.push_back(m_State);
+                m_playerColor = m_State.get_to_move();
+                MCOwnerTable::clear();
+                m_panelBoard->setPlayerColor(m_playerColor);
+                m_panelBoard->setShowTerritory(false);
+                m_panelBoard->clearViz();
+                if (m_scoreHistogramWindow) {
+                    m_scoreHistogramWindow->ClearHistogram();
+                }
+                gameNoLongerCounts();
+                setActiveMenus();
+
+                //signal board change
+                wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
+                myevent.SetEventObject(this);
+                ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+                broadcastCurrentMove();
+            }
+        }
+        wxTheClipboard->Close();
     }
 }

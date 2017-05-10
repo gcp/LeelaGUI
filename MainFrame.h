@@ -65,6 +65,8 @@ class MainFrame : public TMainFrame {
         virtual void doPushPosition( wxCommandEvent& event ) override;
         virtual void doPopPosition( wxCommandEvent& event ) override;
         virtual void doShowHideScoreHistogram( wxCommandEvent& event ) override;
+        virtual void doCopyClipboard( wxCommandEvent& event ) override;
+        virtual void doPasteClipboard( wxCommandEvent& event ) override;
         void doEvalUpdate(wxCommandEvent& event);
         void doRealUndo(int count = 1);
         void doRealForward(int count = 1);

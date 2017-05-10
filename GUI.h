@@ -59,6 +59,8 @@ class TMainFrame : public wxFrame
 		void _wxFB_doSetRatedSize( wxCommandEvent& event ){ doSetRatedSize( event ); }
 		void _wxFB_doOpenSGF( wxCommandEvent& event ){ doOpenSGF( event ); }
 		void _wxFB_doSaveSGF( wxCommandEvent& event ){ doSaveSGF( event ); }
+		void _wxFB_doCopyClipboard( wxCommandEvent& event ){ doCopyClipboard( event ); }
+		void _wxFB_doPasteClipboard( wxCommandEvent& event ){ doPasteClipboard( event ); }
 		void _wxFB_doExit( wxCommandEvent& event ){ doExit( event ); }
 		void _wxFB_doUndo( wxCommandEvent& event ){ doUndo( event ); }
 		void _wxFB_doForward( wxCommandEvent& event ){ doForward( event ); }
@@ -96,6 +98,8 @@ class TMainFrame : public wxFrame
 			ID_RATEDSIZE,
 			ID_OPEN,
 			ID_SAVE,
+			ID_COPYCLIPBOARD,
+			ID_PASTECLIPBOARD,
 			ID_EXIT,
 			ID_UNDO,
 			ID_REDO,
@@ -160,6 +164,8 @@ class TMainFrame : public wxFrame
 		virtual void doSetRatedSize( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doOpenSGF( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doSaveSGF( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doCopyClipboard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void doPasteClipboard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doExit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doUndo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void doForward( wxCommandEvent& event ) { event.Skip(); }

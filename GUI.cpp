@@ -25,6 +25,8 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_RATEDSIZE, TMainFrame::_wxFB_doSetRatedSize )
 	EVT_MENU( ID_OPEN, TMainFrame::_wxFB_doOpenSGF )
 	EVT_MENU( ID_SAVE, TMainFrame::_wxFB_doSaveSGF )
+	EVT_MENU( ID_COPYCLIPBOARD, TMainFrame::_wxFB_doCopyClipboard )
+	EVT_MENU( ID_PASTECLIPBOARD, TMainFrame::_wxFB_doPasteClipboard )
 	EVT_MENU( ID_EXIT, TMainFrame::_wxFB_doExit )
 	EVT_MENU( ID_UNDO, TMainFrame::_wxFB_doUndo )
 	EVT_MENU( ID_REDO, TMainFrame::_wxFB_doForward )
@@ -88,6 +90,16 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxMenuItem* menuItem12;
 	menuItem12 = new wxMenuItem( m_menu1, ID_SAVE, wxString( _("&Save Game...") ) + wxT('\t') + wxT("Ctrl-S"), _("Save a game to disk"), wxITEM_NORMAL );
 	m_menu1->Append( menuItem12 );
+	
+	m_menu1->AppendSeparator();
+	
+	wxMenuItem* m_menuItem30;
+	m_menuItem30 = new wxMenuItem( m_menu1, ID_COPYCLIPBOARD, wxString( _("Copy SGF") ) + wxT('\t') + wxT("Ctrl-C"), _("Copy SGF to clipboard"), wxITEM_NORMAL );
+	m_menu1->Append( m_menuItem30 );
+	
+	wxMenuItem* m_menuItem31;
+	m_menuItem31 = new wxMenuItem( m_menu1, ID_PASTECLIPBOARD, wxString( _("Paste SGF") ) + wxT('\t') + wxT("Ctrl-V"), _("Paste SGF from clipboard"), wxITEM_NORMAL );
+	m_menu1->Append( m_menuItem31 );
 	
 	m_menu1->AppendSeparator();
 	

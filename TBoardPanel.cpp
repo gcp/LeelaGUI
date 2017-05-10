@@ -541,7 +541,7 @@ void TBoardPanel::doMoyo() {
 
 void TBoardPanel::doOwner() {
     if (!MCOwnerTable::get_MCO()->is_primed()) {
-        Playout::mc_owner(*m_State, 32);
+        Playout::mc_owner(*m_State);
     }
 
     m_Owner.resize(FastBoard::MAXSQ);

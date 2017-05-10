@@ -46,6 +46,7 @@
 #include <wx/display.h>
 #include <wx/tokenzr.h>
 #include <wx/graphics.h>
+#include <wx/clipbrd.h>
 
 // STD headers
 #include <utility>
