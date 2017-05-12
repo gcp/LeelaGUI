@@ -45,6 +45,8 @@ void * TEngineThread::Entry() {
 
         if (!m_analyseflag) {
             m_state->play_move(who, move);
+            // Update clocks if not analyzing
+            m_state->set_timecontrol(work_state.get_timecontrol());
         }
 
         if (m_update_score) {

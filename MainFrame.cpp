@@ -1196,7 +1196,7 @@ void MainFrame::doAnalyze(wxCommandEvent& event) {
 void MainFrame::doAdjustClocks(wxCommandEvent& event) {
     ClockAdjustDialog mydialog(this);
 
-    mydialog.setTimeControl(*(m_State.get_timecontrol()));
+    mydialog.setTimeControl(m_State.get_timecontrol());
 
     if (mydialog.ShowModal() == wxID_OK) {
         wxLogDebug("Adjust clocks clicked");
