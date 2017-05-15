@@ -90,7 +90,7 @@ int NewGameDialog::getBoardsize() {
         return 25;
     }
 
-    throw std::exception("Invalid board size selection");
+    throw std::runtime_error("Invalid board size selection");
 }
 
 int NewGameDialog::getSimulations() {
@@ -112,7 +112,7 @@ int NewGameDialog::getSimulations() {
         return 0;
     }
     
-    throw std::exception("Invalid simulations level selection");
+    throw std::runtime_error("Invalid simulations level selection");
 }
 
 int NewGameDialog::getPlayerColor() {

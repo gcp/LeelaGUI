@@ -76,7 +76,9 @@ void TEngineThread::OnExit() {
         wxQueueEvent(m_frame->GetEventHandler(),
                      new wxCommandEvent(wxEVT_NEW_MOVE));
     }
+#ifdef WIN32
     boost::on_thread_exit();
+#endif
 }
 
 void TEngineThread::limit_visits(int visits) {

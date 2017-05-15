@@ -76,7 +76,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     GTP::setup_default_parameters();
 
-    std::auto_ptr<Random> rng(new Random(5489UL));
+    std::unique_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);
     AttribScores::get_attribscores();
     Matcher::get_Matcher();
@@ -127,7 +127,13 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
                             wxEVT_ANALYSIS_UPDATE,
                             wxEVT_BESTMOVES_UPDATE);
 
+#ifdef WIN32
     SetIcon(wxICON(aaaa));
+#else
+    wxIcon aaaa;
+    aaaa.CopyFromBitmap(*bin2c_leela_mock_ico);
+    SetIcon(aaaa);
+#endif
 
     SetSize(530, 640);
     Center();
@@ -398,7 +404,8 @@ void MainFrame::doSettingsDialog(wxCommandEvent& event) {
         m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1);
     }
 
-    if (wasAnalyzing) doAnalyze(wxCommandEvent());
+    wxCommandEvent dummy;
+    if (wasAnalyzing) doAnalyze(dummy);
 }
 
 void MainFrame::doNewGame(wxCommandEvent& event) {
@@ -1093,7 +1100,7 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
 
         wxLogDebug("Opening: " + path);
 
-        std::auto_ptr<SGFTree> tree(new SGFTree);
+        std::unique_ptr<SGFTree> tree(new SGFTree);
         try {
             tree->load_from_file(path.ToStdString());
              wxLogDebug("Read %d moves", tree->count_mainline_moves());
@@ -1174,7 +1181,6 @@ void MainFrame::doResign(wxCommandEvent& event) {
 void MainFrame::doAnalyze(wxCommandEvent& event) {
     gameNoLongerCounts();
     bool wasAnalyzing = m_analyzing && !m_pondering;
-    bool wasGameMove = !m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
     m_ponderedOnce |= wasRunning;
     m_pondering = false;

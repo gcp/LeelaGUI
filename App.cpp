@@ -1,7 +1,11 @@
 #include "stdafx.h"
 #include "App.h"
 #include "MainFrame.h"
+#ifndef WIN32
+#include "images.h"
+#endif
 
+#ifdef WIN32
 bool IsWindowsVistaOrHigher() {
     OSVERSIONINFO osvi;
     ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
@@ -11,14 +15,22 @@ bool IsWindowsVistaOrHigher() {
 }
 
 typedef BOOL (WINAPI *SetProcDPICall)(void);
+#endif
 
 IMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
+#ifndef WIN32
+    wxImage::AddHandler(new wxPNGHandler());
+    wxImage::AddHandler(new wxBMPHandler());
+    bin2c_init_IMAGES_HPP();
+#endif
+
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));
     wxConfig::Set(config);
 
+#ifdef WIN32
     bool dpiScale = wxConfig::Get()->Read(wxT("dpiscaleEnabled"), (long)0);
     if (!dpiScale) {
         if (IsWindowsVistaOrHigher()) {
@@ -33,12 +45,15 @@ bool MyApp::OnInit()
             }
         }
     }
+#endif
 
     MainFrame* frame = new MainFrame(NULL, _("Leela"));
 
     frame->Show();
 
+#ifdef WIN32
     SetTopWindow(frame);
+#endif
 
     return true;
 }

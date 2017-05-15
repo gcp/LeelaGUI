@@ -2,6 +2,7 @@
 #define STDAFX_H_INCLUDED
 
 // basic wxWidgets headers
+#include <wx/wx.h>
 #include <wx/wxprec.h>
 
 // extended wxWidgets headers
@@ -63,5 +64,10 @@
 
 // Boost headers
 #include <boost/lexical_cast.hpp>
+
+// Resources
+#ifndef WIN32
+#include "images.h"
+#endif
 
 #endif // STDAFX_H_INCLUDED

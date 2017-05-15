@@ -65,7 +65,11 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
 
     wxFont base;
     if (rows > 0 && cols > 0) {
-        base = m_moveGrid->GetCellFont(0, 0).GetBaseFont();
+#ifdef WIN32
+         base = m_moveGrid->GetCellFont(0, 0).GetBaseFont();
+#else
+        base = m_moveGrid->GetCellFont(0, 0);
+#endif
     }
 
     for (size_t currrow = 0; currrow < data->size(); currrow++) {
@@ -191,7 +195,7 @@ void AnalysisWindow::doContextMenu(wxGridEvent& event) {
 
 void AnalysisWindow::onContextMenuClick(wxCommandEvent& event) {
     void *data = static_cast<wxMenu *>(event.GetEventObject())->GetClientData();
-    int row = reinterpret_cast<int>(data);
+    size_t row = reinterpret_cast<size_t>(data);
     switch(event.GetId()) {
     case ID_COPYPV:
         if (wxTheClipboard->Open()) {
@@ -232,7 +236,8 @@ void AnalysisWindow::onContextMenuClick(wxCommandEvent& event) {
         }
         break;
     case ID_DESELECTLINE:
-        doDeselect(wxGridEvent());
+        wxGridEvent dummy;
+        doDeselect(dummy);
         break;
     }
 }
