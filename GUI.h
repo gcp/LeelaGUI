@@ -385,6 +385,7 @@ class TAnalysisWindow : public wxFrame
 		void _wxFB_doResize( wxSizeEvent& event ){ doResize( event ); }
 		void _wxFB_doLeftClick( wxGridEvent& event ){ doLeftClick( event ); }
 		void _wxFB_doDeselect( wxGridEvent& event ){ doDeselect( event ); }
+		void _wxFB_doContextMenu( wxGridEvent& event ){ doContextMenu( event ); }
 		
 	
 	protected:
@@ -396,6 +397,7 @@ class TAnalysisWindow : public wxFrame
 		virtual void doResize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void doLeftClick( wxGridEvent& event ) { event.Skip(); }
 		virtual void doDeselect( wxGridEvent& event ) { event.Skip(); }
+		virtual void doContextMenu( wxGridEvent& event ) { event.Skip(); }
 		
 	
 	public:

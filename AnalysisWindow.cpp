@@ -95,11 +95,11 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
                 }
             }
 
-            if (label.Cmp("Move") == 0) {
+            if (label.Cmp(_T("Move")) == 0) {
                 m_moveGrid->SetCellAlignment(currrow, currcol,
                                              wxALIGN_CENTRE, wxALIGN_CENTRE);
             }
-            if (label.Cmp("PV") == 0) {
+            if (label.Cmp(_T("PV")) == 0) {
                 wxString padValue(value);
                 // Make sure column fits at least 5 moves (3+1 chars)
                 if (value.Length() < 5*4) {
@@ -111,7 +111,7 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
                 m_moveGrid->SetCellValue(currrow, currcol, value);
             }
 
-            if (label.Cmp("Win%") == 0) {
+            if (label.Cmp(_T("Win%")) == 0) {
                 if (currrow == 0) {
                     value.ToCDouble(&topWinRate);
                 } else {
@@ -157,7 +157,7 @@ void AnalysisWindow::doLeftClick(wxGridEvent& event) {
         wxString pv;
 
         for (int i = 0; i < gridCols; i++) {
-            if (m_moveGrid->GetColLabelValue(i).Cmp("PV") == 0) {
+            if (m_moveGrid->GetColLabelValue(i).Cmp(_("PV")) == 0) {
                 pv = m_moveGrid->GetCellValue(row, i);
                 break;
             }
@@ -175,4 +175,64 @@ void AnalysisWindow::doResize( wxSizeEvent& event ) {
         mHasUserSized = true;
     }
     event.Skip();
+}
+
+void AnalysisWindow::doContextMenu(wxGridEvent& event) {
+    int row = event.GetRow();
+    wxMenu mnu;
+    mnu.SetClientData((void*)row);
+    mnu.Append(ID_COPYPV,   "Copy PV");
+    mnu.Append(ID_COPYLINE, "Copy entire line");
+    mnu.AppendSeparator();
+    mnu.Append(ID_DESELECTLINE, "Deselect line");
+    mnu.Bind(wxEVT_COMMAND_MENU_SELECTED, &AnalysisWindow::onContextMenuClick, this);
+    PopupMenu(&mnu);
+}
+
+void AnalysisWindow::onContextMenuClick(wxCommandEvent& event) {
+    void *data = static_cast<wxMenu *>(event.GetEventObject())->GetClientData();
+    int row = reinterpret_cast<int>(data);
+    switch(event.GetId()) {
+    case ID_COPYPV:
+        if (wxTheClipboard->Open()) {
+            int gridCols = m_moveGrid->GetNumberCols();
+            wxString pvstring;
+
+            for (int i = 0; i < gridCols; i++) {
+                if (m_moveGrid->GetColLabelValue(i).Cmp(_T("PV")) == 0) {
+                    pvstring = m_moveGrid->GetCellValue(row, i);
+                    break;
+                }
+            }
+
+            auto data = new wxTextDataObject(pvstring);
+            wxTheClipboard->SetData(data);
+            wxTheClipboard->Flush();
+            wxTheClipboard->Close();
+        }
+        break;
+    case ID_COPYLINE:
+        if (wxTheClipboard->Open()) {
+            int gridCols = m_moveGrid->GetNumberCols();
+            wxString pvstring;
+
+            for (int i = 0; i < gridCols; i++) {
+                pvstring.Append(m_moveGrid->GetColLabelValue(i));
+                pvstring.Append(": ");
+                pvstring.Append(m_moveGrid->GetCellValue(row, i));
+                if (i != gridCols - 1) {
+                    pvstring.Append(", ");
+                }
+            }
+
+            auto data = new wxTextDataObject(pvstring);
+            wxTheClipboard->SetData(data);
+            wxTheClipboard->Flush();
+            wxTheClipboard->Close();
+        }
+        break;
+    case ID_DESELECTLINE:
+        doDeselect(wxGridEvent());
+        break;
+    }
 }

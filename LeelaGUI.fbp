@@ -4010,7 +4010,7 @@
                                     <event name="OnGridCellChange"></event>
                                     <event name="OnGridCellLeftClick">doLeftClick</event>
                                     <event name="OnGridCellLeftDClick">doDeselect</event>
-                                    <event name="OnGridCellRightClick">doDeselect</event>
+                                    <event name="OnGridCellRightClick">doContextMenu</event>
                                     <event name="OnGridCellRightDClick"></event>
                                     <event name="OnGridCmdCellChange"></event>
                                     <event name="OnGridCmdCellLeftClick"></event>

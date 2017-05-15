@@ -21,11 +21,19 @@ class AnalysisWindow : public TAnalysisWindow
 		AnalysisWindow( wxWindow* parent );
 	//// end generated class members
         private:
+            enum {
+                ID_COPYPV = 2000,
+                ID_COPYLINE,
+                ID_DESELECTLINE
+            };
+
             virtual void doClose( wxCloseEvent& event ) override;
             virtual void doUpdate( wxCommandEvent& event );
             virtual void doDeselect( wxGridEvent& event ) override;
             virtual void doLeftClick( wxGridEvent& event ) override;
             virtual void doResize( wxSizeEvent& event ) override;
+            virtual void doContextMenu( wxGridEvent& event ) override;
+            void onContextMenuClick(wxCommandEvent& event);
             bool mHasAutoSized{false};
             bool mHasUserSized{false};
 };
