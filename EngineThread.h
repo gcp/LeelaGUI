@@ -13,6 +13,7 @@ class TEngineThread : public wxThread {
         void limit_visits(int visits);
         void set_resigning(bool res);
         void set_analyzing(bool flag);
+        void set_pondering(bool flag);
         void set_nopass(bool flag);
         void set_quiet(bool flag);
         void set_nets(bool flag);
@@ -27,6 +28,7 @@ class TEngineThread : public wxThread {
         bool m_nets;
         bool m_resigning;
         bool m_analyseflag;
+        bool m_pondering;
         bool m_quiet;
         bool m_nopass;
         bool m_update_score;

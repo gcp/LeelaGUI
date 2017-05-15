@@ -197,6 +197,7 @@ void MainFrame::startEngine() {
             m_engineThread->limit_visits(m_visitLimit);
             m_engineThread->set_resigning(m_resignEnabled);
             m_engineThread->set_analyzing(m_analyzing | m_pondering);
+            m_engineThread->set_pondering(m_pondering);
             m_engineThread->set_quiet(!m_analyzing);
             m_engineThread->set_nets(m_netsEnabled);
             if (m_passEnabled) {

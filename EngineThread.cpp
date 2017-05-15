@@ -25,7 +25,11 @@ void * TEngineThread::Entry() {
         std::unique_ptr<UCTSearch> search(new UCTSearch(work_state));
 
         int who = m_state->get_to_move();
-        search->set_playout_limit(m_maxvisits);
+        if (m_analyseflag && !m_pondering) {
+            search->set_playout_limit(0);
+        } else {
+            search->set_playout_limit(m_maxvisits);
+        }
         search->set_runflag(&m_runflag);
         search->set_analyzing(m_analyseflag);
         search->set_quiet(m_quiet);
@@ -89,6 +93,10 @@ void TEngineThread::set_resigning(bool res) {
 
 void TEngineThread::set_analyzing(bool flag) {
     m_analyseflag = flag;
+}
+
+void TEngineThread::set_pondering(bool flag) {
+    m_pondering = flag;
 }
 
 void TEngineThread::set_nopass(bool flag) {
