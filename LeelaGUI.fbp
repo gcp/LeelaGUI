@@ -3,12 +3,12 @@
     <FileVersion major="1" minor="13" />
     <object class="Project" expanded="1">
         <property name="class_decoration"></property>
-        <property name="code_generation">C++|XRC</property>
+        <property name="code_generation">C++</property>
         <property name="disconnect_events">1</property>
         <property name="disconnect_mode">source_name</property>
         <property name="disconnect_php_events">0</property>
         <property name="disconnect_python_events">0</property>
-        <property name="embedded_files_path">res</property>
+        <property name="embedded_files_path">C:\Projects\LeelaGUI\res</property>
         <property name="encoding">ANSI</property>
         <property name="event_generation">table</property>
         <property name="file">GUI</property>
@@ -884,7 +884,7 @@
                 <event name="OnSize"></event>
                 <event name="OnUpdateUI"></event>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_NEWGAME</property>
+                    <property name="bitmap">Load From Embedded File; img/new.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_NEWGAME</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -905,7 +905,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_NEWRATED</property>
+                    <property name="bitmap">Load From Embedded File; img\newrated.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_NEWRATED</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -926,7 +926,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_OPEN</property>
+                    <property name="bitmap">Load From Embedded File; img\fileopen.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_OPEN</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -947,7 +947,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_SAVEAS</property>
+                    <property name="bitmap">Load From Embedded File; img\filesave.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_SAVE</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -971,7 +971,7 @@
                     <property name="permission">protected</property>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_BACKWARD</property>
+                    <property name="bitmap">Load From Embedded File; img\back.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_BACK10</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -992,7 +992,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_UNDO</property>
+                    <property name="bitmap">Load From Embedded File; img\undo.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_UNDO</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1013,7 +1013,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_REDO</property>
+                    <property name="bitmap">Load From Embedded File; img\redo.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_REDO</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1034,7 +1034,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_FORWARD</property>
+                    <property name="bitmap">Load From Embedded File; img\forward.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_FWD10</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1058,7 +1058,7 @@
                     <property name="permission">protected</property>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_FORCE</property>
+                    <property name="bitmap">Load From Embedded File; img\execute.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_FORCE</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1079,7 +1079,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="1">
-                    <property name="bitmap">Load From Resource; IDB_PLUS</property>
+                    <property name="bitmap">Load From Embedded File; img\plus.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_PUSHPOS</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1100,7 +1100,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="1">
-                    <property name="bitmap">Load From Resource; IDB_MINUS</property>
+                    <property name="bitmap">Load From Embedded File; img\minus.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_POPPOS</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1121,7 +1121,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="1">
-                    <property name="bitmap">Load From Resource; IDB_PARENT</property>
+                    <property name="bitmap">Load From Embedded File; img\goparent3.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_MAINLINE</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1142,7 +1142,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_ANALYZE</property>
+                    <property name="bitmap">Load From Embedded File; img\analyze.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_ANALYZE</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1166,7 +1166,7 @@
                     <property name="permission">protected</property>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_PASS</property>
+                    <property name="bitmap">Load From Embedded File; img\delete.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_PASS</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1187,7 +1187,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_SCORE</property>
+                    <property name="bitmap">Load From Embedded File; img\find.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_SCORE</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1208,7 +1208,7 @@
                     <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_RESIGN</property>
+                    <property name="bitmap">Load From Embedded File; img\resign.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_RESIGN</property>
                     <property name="kind">wxITEM_NORMAL</property>
@@ -1232,7 +1232,7 @@
                     <property name="permission">protected</property>
                 </object>
                 <object class="tool" expanded="0">
-                    <property name="bitmap">Load From Resource; IDB_QUIT</property>
+                    <property name="bitmap">Load From Embedded File; img\quit.png</property>
                     <property name="context_menu">0</property>
                     <property name="id">ID_EXIT</property>
                     <property name="kind">wxITEM_NORMAL</property>

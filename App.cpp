@@ -21,11 +21,7 @@ IMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
-#ifndef WIN32
     wxImage::AddHandler(new wxPNGHandler());
-    wxImage::AddHandler(new wxBMPHandler());
-    bin2c_init_IMAGES_HPP();
-#endif
 
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));
     wxConfig::Set(config);

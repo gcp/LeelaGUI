@@ -12,6 +12,24 @@
 
 #include "GUI.h"
 
+#include "res/analyze.png.h"
+#include "res/back.png.h"
+#include "res/delete.png.h"
+#include "res/execute.png.h"
+#include "res/fileopen.png.h"
+#include "res/filesave.png.h"
+#include "res/find.png.h"
+#include "res/forward.png.h"
+#include "res/goparent3.png.h"
+#include "res/minus.png.h"
+#include "res/new.png.h"
+#include "res/newrated.png.h"
+#include "res/plus.png.h"
+#include "res/quit.png.h"
+#include "res/redo.png.h"
+#include "res/resign.png.h"
+#include "res/undo.png.h"
+
 ///////////////////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
@@ -235,47 +253,47 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->SetMenuBar( m_menubar1 );
 	
 	m_toolBar = this->CreateToolBar( wxTB_FLAT|wxTB_HORIZONTAL, wxID_ANY ); 
-	m_tool1 = m_toolBar->AddTool( ID_NEWGAME, _("New Game"), wxBitmap( wxT("IDB_NEWGAME"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new game"), _("Start a new game"), NULL ); 
+	m_tool1 = m_toolBar->AddTool( ID_NEWGAME, _("New Game"), new_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Start a new game"), _("Start a new game"), NULL ); 
 	
-	m_tool12 = m_toolBar->AddTool( ID_NEWRATED, _("New Rated Game"), wxBitmap( wxT("IDB_NEWRATED"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start a new rated game"), _("Start a new rated game"), NULL ); 
+	m_tool12 = m_toolBar->AddTool( ID_NEWRATED, _("New Rated Game"), newrated_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Start a new rated game"), _("Start a new rated game"), NULL ); 
 	
-	m_tool4 = m_toolBar->AddTool( ID_OPEN, _("Load Game"), wxBitmap( wxT("IDB_OPEN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Load a game"), _("Load a game"), NULL ); 
+	m_tool4 = m_toolBar->AddTool( ID_OPEN, _("Load Game"), fileopen_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Load a game"), _("Load a game"), NULL ); 
 	
-	m_tool5 = m_toolBar->AddTool( ID_SAVE, _("Save"), wxBitmap( wxT("IDB_SAVEAS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Save the game"), _("Save the game"), NULL ); 
-	
-	m_toolBar->AddSeparator(); 
-	
-	m_tool10 = m_toolBar->AddTool( ID_BACK10, _("Go back 10 moves"), wxBitmap( wxT("IDB_BACKWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go back 10 moves"), _("Go back 10 moves"), NULL ); 
-	
-	m_tool13 = m_toolBar->AddTool( ID_UNDO, _("Undo"), wxBitmap( wxT("IDB_UNDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Take back one move"), _("Take back one move"), NULL ); 
-	
-	m_tool15 = m_toolBar->AddTool( ID_REDO, _("Forward"), wxBitmap( wxT("IDB_REDO"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward one move"), _("Go forward one move"), NULL ); 
-	
-	m_tool9 = m_toolBar->AddTool( ID_FWD10, _("Forward 10"), wxBitmap( wxT("IDB_FORWARD"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Go forward 10 moves"), _("Go forward 10 moves"), NULL ); 
+	m_tool5 = m_toolBar->AddTool( ID_SAVE, _("Save"), filesave_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Save the game"), _("Save the game"), NULL ); 
 	
 	m_toolBar->AddSeparator(); 
 	
-	m_toolForce = m_toolBar->AddTool( ID_FORCE, _("Force computer move"), wxBitmap( wxT("IDB_FORCE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move"), NULL ); 
+	m_tool10 = m_toolBar->AddTool( ID_BACK10, _("Go back 10 moves"), back_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Go back 10 moves"), _("Go back 10 moves"), NULL ); 
 	
-	m_toolPushPos = m_toolBar->AddTool( ID_PUSHPOS, _("Store Position"), wxBitmap( wxT("IDB_PLUS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Remember this position on the stack"), _("Remember this position on the stack"), NULL ); 
+	m_tool13 = m_toolBar->AddTool( ID_UNDO, _("Undo"), undo_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Take back one move"), _("Take back one move"), NULL ); 
 	
-	m_toolPopPos = m_toolBar->AddTool( ID_POPPOS, _("Remove Position"), wxBitmap( wxT("IDB_MINUS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Remove the top position from the stack"), _("Remove the top position from the stack"), NULL ); 
+	m_tool15 = m_toolBar->AddTool( ID_REDO, _("Forward"), redo_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Go forward one move"), _("Go forward one move"), NULL ); 
 	
-	m_toolMainline = m_toolBar->AddTool( ID_MAINLINE, _("Revert to mainline"), wxBitmap( wxT("IDB_PARENT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Revert to stored position"), _("Revert to stored position"), NULL ); 
-	
-	m_toolAnalyze = m_toolBar->AddTool( ID_ANALYZE, _("tool"), wxBitmap( wxT("IDB_ANALYZE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis"), NULL ); 
+	m_tool9 = m_toolBar->AddTool( ID_FWD10, _("Forward 10"), forward_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Go forward 10 moves"), _("Go forward 10 moves"), NULL ); 
 	
 	m_toolBar->AddSeparator(); 
 	
-	m_tool2 = m_toolBar->AddTool( ID_PASS, _("tool"), wxBitmap( wxT("IDB_PASS"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Pass"), _("Pass"), NULL ); 
+	m_toolForce = m_toolBar->AddTool( ID_FORCE, _("Force computer move"), execute_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Force computer move"), _("Force computer move"), NULL ); 
 	
-	m_tool3 = m_toolBar->AddTool( ID_SCORE, _("tool"), wxBitmap( wxT("IDB_SCORE"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game"), NULL ); 
+	m_toolPushPos = m_toolBar->AddTool( ID_PUSHPOS, _("Store Position"), plus_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Remember this position on the stack"), _("Remember this position on the stack"), NULL ); 
 	
-	m_tool131 = m_toolBar->AddTool( ID_RESIGN, _("tool"), wxBitmap( wxT("IDB_RESIGN"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Resign the game"), _("Resign the game"), NULL ); 
+	m_toolPopPos = m_toolBar->AddTool( ID_POPPOS, _("Remove Position"), minus_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Remove the top position from the stack"), _("Remove the top position from the stack"), NULL ); 
+	
+	m_toolMainline = m_toolBar->AddTool( ID_MAINLINE, _("Revert to mainline"), goparent3_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Revert to stored position"), _("Revert to stored position"), NULL ); 
+	
+	m_toolAnalyze = m_toolBar->AddTool( ID_ANALYZE, _("tool"), analyze_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Start/Stop analysis"), _("Start/Stop analysis"), NULL ); 
 	
 	m_toolBar->AddSeparator(); 
 	
-	m_tool11 = m_toolBar->AddTool( ID_EXIT, _("Exit"), wxBitmap( wxT("IDB_QUIT"), wxBITMAP_TYPE_RESOURCE ), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program"), NULL ); 
+	m_tool2 = m_toolBar->AddTool( ID_PASS, _("tool"), delete_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Pass"), _("Pass"), NULL ); 
+	
+	m_tool3 = m_toolBar->AddTool( ID_SCORE, _("tool"), find_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Score the game"), _("Score the game"), NULL ); 
+	
+	m_tool131 = m_toolBar->AddTool( ID_RESIGN, _("tool"), resign_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Resign the game"), _("Resign the game"), NULL ); 
+	
+	m_toolBar->AddSeparator(); 
+	
+	m_tool11 = m_toolBar->AddTool( ID_EXIT, _("Exit"), quit_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program"), NULL ); 
 	
 	m_toolBar->Realize(); 
 	
