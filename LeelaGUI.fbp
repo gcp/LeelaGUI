@@ -391,7 +391,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help">Exit the program</property>
-                        <property name="id">ID_EXIT</property>
+                        <property name="id">wxID_EXIT</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">E&amp;xit</property>
                         <property name="name">menuItemExit</property>
@@ -719,7 +719,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">ID_SETTINGS_MENU</property>
+                        <property name="id">wxID_PREFERENCES</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">S&amp;ettings...</property>
                         <property name="name">m_menuItem28</property>
@@ -749,7 +749,7 @@
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
-                <object class="wxMenu" expanded="0">
+                <object class="wxMenu" expanded="1">
                     <property name="label">&amp;Help</property>
                     <property name="name">m_menu3</property>
                     <property name="permission">protected</property>
@@ -792,7 +792,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help">Information about the program</property>
-                        <property name="id">ID_HELPABOUT</property>
+                        <property name="id">wxID_ABOUT</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">&amp;About...</property>
                         <property name="name">menuItem7</property>
@@ -1234,7 +1234,7 @@
                 <object class="tool" expanded="0">
                     <property name="bitmap">Load From Embedded File; img\quit.png</property>
                     <property name="context_menu">0</property>
-                    <property name="id">ID_EXIT</property>
+                    <property name="id">wxID_EXIT</property>
                     <property name="kind">wxITEM_NORMAL</property>
                     <property name="label">Exit</property>
                     <property name="name">m_tool11</property>

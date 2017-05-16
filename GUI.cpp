@@ -45,7 +45,7 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_SAVE, TMainFrame::_wxFB_doSaveSGF )
 	EVT_MENU( ID_COPYCLIPBOARD, TMainFrame::_wxFB_doCopyClipboard )
 	EVT_MENU( ID_PASTECLIPBOARD, TMainFrame::_wxFB_doPasteClipboard )
-	EVT_MENU( ID_EXIT, TMainFrame::_wxFB_doExit )
+	EVT_MENU( wxID_EXIT, TMainFrame::_wxFB_doExit )
 	EVT_MENU( ID_UNDO, TMainFrame::_wxFB_doUndo )
 	EVT_MENU( ID_REDO, TMainFrame::_wxFB_doForward )
 	EVT_MENU( ID_BACK10, TMainFrame::_wxFB_doBack10 )
@@ -64,11 +64,11 @@ BEGIN_EVENT_TABLE( TMainFrame, wxFrame )
 	EVT_MENU( ID_BEST_MOVES, TMainFrame::_wxFB_doToggleBestMoves )
 	EVT_MENU( ID_SHOWTERRITORY, TMainFrame::_wxFB_doToggleTerritory )
 	EVT_MENU( ID_SHOWMOYO, TMainFrame::_wxFB_doToggleMoyo )
-	EVT_MENU( ID_SETTINGS_MENU, TMainFrame::_wxFB_doSettingsDialog )
+	EVT_MENU( wxID_PREFERENCES, TMainFrame::_wxFB_doSettingsDialog )
 	EVT_MENU( ID_ADJUSTCLOCKS, TMainFrame::_wxFB_doAdjustClocks )
 	EVT_MENU( ID_HELPRULES, TMainFrame::_wxFB_doGoRules )
 	EVT_MENU( ID_HOMEPAGE, TMainFrame::_wxFB_doHomePage )
-	EVT_MENU( ID_HELPABOUT, TMainFrame::_wxFB_doHelpAbout )
+	EVT_MENU( wxID_ABOUT, TMainFrame::_wxFB_doHelpAbout )
 END_EVENT_TABLE()
 
 TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxFrame( parent, id, title, pos, size, style, name )
@@ -122,7 +122,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu1->AppendSeparator();
 	
 	wxMenuItem* menuItemExit;
-	menuItemExit = new wxMenuItem( m_menu1, ID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt-F4"), _("Exit the program"), wxITEM_NORMAL );
+	menuItemExit = new wxMenuItem( m_menu1, wxID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt-F4"), _("Exit the program"), wxITEM_NORMAL );
 	m_menu1->Append( menuItemExit );
 	
 	m_menubar1->Append( m_menu1, _("&File") ); 
@@ -222,7 +222,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuTools->AppendSeparator();
 	
 	wxMenuItem* m_menuItem28;
-	m_menuItem28 = new wxMenuItem( m_menuTools, ID_SETTINGS_MENU, wxString( _("S&ettings...") ) + wxT('\t') + wxT("Ctrl-E"), wxEmptyString, wxITEM_NORMAL );
+	m_menuItem28 = new wxMenuItem( m_menuTools, wxID_PREFERENCES, wxString( _("S&ettings...") ) + wxT('\t') + wxT("Ctrl-E"), wxEmptyString, wxITEM_NORMAL );
 	m_menuTools->Append( m_menuItem28 );
 	
 	m_menuTools->AppendSeparator();
@@ -245,7 +245,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu3->AppendSeparator();
 	
 	wxMenuItem* menuItem7;
-	menuItem7 = new wxMenuItem( m_menu3, ID_HELPABOUT, wxString( _("&About...") ) , _("Information about the program"), wxITEM_NORMAL );
+	menuItem7 = new wxMenuItem( m_menu3, wxID_ABOUT, wxString( _("&About...") ) , _("Information about the program"), wxITEM_NORMAL );
 	m_menu3->Append( menuItem7 );
 	
 	m_menubar1->Append( m_menu3, _("&Help") ); 
@@ -293,7 +293,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_toolBar->AddSeparator(); 
 	
-	m_tool11 = m_toolBar->AddTool( ID_EXIT, _("Exit"), quit_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program"), NULL ); 
+	m_tool11 = m_toolBar->AddTool( wxID_EXIT, _("Exit"), quit_png_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, _("Exit the program"), _("Exit the program"), NULL ); 
 	
 	m_toolBar->Realize(); 
 	

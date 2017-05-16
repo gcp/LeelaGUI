@@ -230,7 +230,11 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             if (m_State->board.starpoint(boardSize, x, y)) {
                 dc.SetPen(penEmpty);
                 dc.SetBrush(bbrush);
+#ifdef WIN32
+                dc.DrawCircle(xoff, yoff, std::max(1, (stoneSize/7)+1));
+#else
                 dc.DrawCircle(xoff - 1, yoff - 1, std::max(1, (stoneSize/7)+1));
+#endif
             }
         }
     }  

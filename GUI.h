@@ -100,7 +100,6 @@ class TMainFrame : public wxFrame
 			ID_SAVE,
 			ID_COPYCLIPBOARD,
 			ID_PASTECLIPBOARD,
-			ID_EXIT,
 			ID_UNDO,
 			ID_REDO,
 			ID_BACK10,
@@ -119,11 +118,9 @@ class TMainFrame : public wxFrame
 			ID_BEST_MOVES,
 			ID_SHOWTERRITORY,
 			ID_SHOWMOYO,
-			ID_SETTINGS_MENU,
 			ID_ADJUSTCLOCKS,
 			ID_HELPRULES,
-			ID_HOMEPAGE,
-			ID_HELPABOUT
+			ID_HOMEPAGE
 		};
 		
 		TBoardPanel* m_panelBoard;

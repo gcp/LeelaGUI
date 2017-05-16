@@ -13,11 +13,11 @@ TScoreDialog( parent )
 void ScoreDialog::doAccept( wxCommandEvent& event )
 {
     mAccepts = true;
-    Destroy();
+    EndModal(wxID_OK);
 }
 
 void ScoreDialog::doDispute( wxCommandEvent& event )
 {
     mAccepts = false;
-    Destroy();
+    EndModal(wxID_OK);
 }
