@@ -4,6 +4,11 @@
 #include "SGFTree.h"
 #include "MCOTable.h"
 #include "Network.h"
+#ifndef WIN32
+#include "img/blackstone.xpm"
+#include "img/whitestone.xpm"
+#include "img/wood.xpm"
+#endif
 
 wxDEFINE_EVENT(wxEVT_DISPLAY_MAINLINE, wxCommandEvent);
 
@@ -22,11 +27,11 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     Bind(wxEVT_BESTMOVES_UPDATE, &TBoardPanel::doBestMovesUpdate, this);
 
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-        
-    wxBitmap woodTile("IDB_BITMAPWOOD", wxBITMAP_TYPE_BMP_RESOURCE);
+
+    wxBitmap woodTile = wxBITMAP(IDB_BITMAPWOOD);
     int srcWidth = woodTile.GetWidth();
     int srcHeight = woodTile.GetHeight();
-	
+
     // generate all orientations
     wxImage tileNorm = woodTile.ConvertToImage();
     wxImage tileHoriz = tileNorm.Mirror(true);
@@ -37,12 +42,12 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     wxBitmap tileH(tileHoriz);
     wxBitmap tileV(tileVertic);
     wxBitmap tileI(tileInvert);   
-    
+
     // 2 x 2 tile
     m_tileFull.Create(srcWidth * 2, srcHeight * 2);
     wxMemoryDC dcTile;
     wxMemoryDC dcSrc;	
-    
+
     dcTile.SelectObject(m_tileFull);    
     dcSrc.SelectObject(tileN);    
     dcTile.Blit(0, 0, srcWidth, srcHeight, &dcSrc, 0, 0, wxCOPY, false);
@@ -52,22 +57,22 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     dcTile.Blit(0, srcHeight, srcWidth, srcHeight, &dcSrc, 0, 0, wxCOPY, false);
     dcSrc.SelectObject(tileI);
     dcTile.Blit(srcWidth, srcHeight, srcWidth, srcHeight, &dcSrc, 0, 0, wxCOPY, false);
-    
+
     dcTile.SelectObject(wxNullBitmap);
     dcSrc.SelectObject(wxNullBitmap);
-    
+
     // stones
-    wxBitmap wstone("IDB_WHITESTONE", wxBITMAP_TYPE_BMP_RESOURCE);      
-    wstone.SetMask(new wxMask(wstone, *wxRED));    
-    
-    wxBitmap bstone("IDB_BLACKSTONE", wxBITMAP_TYPE_BMP_RESOURCE);    
-    bstone.SetMask(new wxMask(bstone, *wxWHITE));    
-    
+    wxBitmap wstone = wxBITMAP(IDB_WHITESTONE);
+    wstone.SetMask(new wxMask(wstone, *wxRED));
+
+    wxBitmap bstone = wxBITMAP(IDB_BLACKSTONE);
+    bstone.SetMask(new wxMask(bstone, *wxWHITE));
+
     m_whiteStone = wstone.ConvertToImage();
-    m_blackStone = bstone.ConvertToImage();                
-    
-    m_cellDim = 0;    
-    
+    m_blackStone = bstone.ConvertToImage();
+
+    m_cellDim = 0;
+
     m_showMoyo = false;
     m_showOwner = false;
     m_showTerritory = false;
@@ -75,7 +80,7 @@ TBoardPanel::TBoardPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos,
     m_showBestMoves = false;
     m_stateLock = false;
     m_State = NULL;
-    m_playerColor = FastBoard::BLACK;    
+    m_playerColor = FastBoard::BLACK;
     m_Hatch.resize(FastBoard::MAXSQ);
     m_PV.resize(FastBoard::MAXSQ);
     m_Probabilities.resize(FastBoard::MAXSQ);
@@ -124,9 +129,9 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         return;
     }
 
-    wxPen penThick(*wxBLACK, 2, wxSOLID);
-    wxPen penThin(*wxBLACK, 1, wxSOLID);
-    wxPen penEmpty(*wxBLACK, 0, wxTRANSPARENT);
+    wxPen penThick(*wxBLACK, 2, wxPENSTYLE_SOLID);
+    wxPen penThin(*wxBLACK, 1, wxPENSTYLE_SOLID);
+    wxPen penEmpty(*wxBLACK, 0, wxPENSTYLE_TRANSPARENT);
 
     wxGraphicsContext *mgc = wxGraphicsContext::Create(dc);
 
@@ -197,8 +202,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     delete mgc;
 
     // stones
-    wxBrush bbrush(*wxBLACK, wxSOLID);
-    wxBrush rbrush(*wxRED, wxSOLID);
+    wxBrush bbrush(*wxBLACK, wxBRUSHSTYLE_SOLID);
+    wxBrush rbrush(*wxRED, wxBRUSHSTYLE_SOLID);
     int stoneSize = ((cellDim * 19)/ 40);
     int stoneDiam = std::max(1, ((cellDim * 19 * 2)/ 40));
 
@@ -207,7 +212,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     wxBitmap bstone = wxBitmap(m_blackStone.Scale(stoneDiam, stoneDiam, wxIMAGE_QUALITY_HIGH));
 
     // emtpy fill
-    wxBrush ebrush(*wxBLACK, wxTRANSPARENT);
+    wxBrush ebrush(*wxBLACK, wxBRUSHSTYLE_TRANSPARENT);
 
     // board outline
     dc.SetBrush(ebrush);
@@ -226,7 +231,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             if (m_State->board.starpoint(boardSize, x, y)) {
                 dc.SetPen(penEmpty);
                 dc.SetBrush(bbrush);
-                dc.DrawCircle(xoff, yoff, std::max(1, (stoneSize/7)+1));
+                dc.DrawCircle(xoff - 1, yoff - 1, std::max(1, (stoneSize/7)+1));
             }
         }
     }  
@@ -275,7 +280,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
             }
         }
         dc.DrawText(text, xoff, yoff);
-        dc.DrawText(text, xoff, yoff2);  
+        dc.DrawText(text, xoff, yoff2);
     }      
     
     // moyo/territory/influence
@@ -288,11 +293,11 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     }
 
     if (m_showMoyo || m_showTerritory) {
-        wxBrush bmbrush(*wxBLACK, wxCROSSDIAG_HATCH);
-        wxBrush wmbrush(*wxWHITE, wxCROSSDIAG_HATCH);          
-        
-        dc.SetPen(penEmpty);                
-        
+        wxBrush bmbrush(*wxBLACK, wxBRUSHSTYLE_CROSSDIAG_HATCH);
+        wxBrush wmbrush(*wxWHITE, wxBRUSHSTYLE_CROSSDIAG_HATCH);
+
+        dc.SetPen(penEmpty);
+
         for (int y = 0; y < boardSize; y++) {
             for (int x = 0; x < boardSize; x++) {           
                 // engine board is inverted vertically
@@ -317,8 +322,8 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
 
     // stones
     dc.SetBrush(rbrush);
-    wxPen wDeadPenThick(*wxBLACK, 2, wxSOLID);
-    wxPen bDeadPenThick(*wxWHITE, 2, wxSOLID);
+    wxPen wDeadPenThick(*wxBLACK, 2, wxPENSTYLE_SOLID);
+    wxPen bDeadPenThick(*wxWHITE, 2, wxPENSTYLE_SOLID);
     dc.SetFont(pvfont);
 
     // PV coloring
@@ -343,9 +348,9 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                    || (!btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 0))))) {
                 dc.DrawBitmap(bstone, xxoff, yyoff, true);
             } else if (cell == FastBoard::WHITE
-                       || cell == FastBoard::EMPTY
+                       || (cell == FastBoard::EMPTY
                        && ((!btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 1))
-                           || (btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 0)))) {
+                           || (btm && m_PV[vtx] > 0 && (m_PV[vtx] % 2 == 0))))) {
                 dc.DrawBitmap(wstone, xxoff, yyoff, true);
             }  else if (m_showOwner) {
                 float ratio = 2.0f * fabs(0.5f - m_Owner[vtx]);
@@ -530,7 +535,7 @@ void TBoardPanel::doMoyo() {
     m_Hatch.resize(FastBoard::MAXSQ);    
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
     
-    for (int i = 0; i < moyo.size(); i++) {
+    for (size_t i = 0; i < moyo.size(); i++) {
         if (moyo[i] > 0) {
             m_Hatch[i] = FastBoard::BLACK;
         } else if (moyo[i] < 0) {
@@ -564,7 +569,7 @@ void TBoardPanel::doTerritory() {
     m_Hatch.resize(FastBoard::MAXSQ);    
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
     
-    for (int i = 0; i < map.size(); i++) {
+    for (size_t i = 0; i < map.size(); i++) {
         if (map[i] == FastBoard::BLACK) {
             m_Hatch[i] = FastBoard::BLACK;
         } else if (map[i] == FastBoard::WHITE) {

@@ -19,12 +19,12 @@ clang:
 LIBS = -lboost_thread -lboost_system -lboost_program_options
 
 #DYNAMIC_LIBS += -lboost_filesystem -lcaffe -lprotobuf -lglog
-#LIBS += -lopenblas
+LIBS += -lopenblas
 DYNAMIC_LIBS += -lpthread
-DYNAMIC_LIBS += -lOpenCL
+#DYNAMIC_LIBS += -lOpenCL
 #LIBS += -framework Accelerate
 #LIBS += -framework OpenCL
-DYNAMIC_LIBS += -lmkl_rt
+#DYNAMIC_LIBS += -lmkl_rt
 
 CAFFE_BASE = /usr/local
 CAFFE_INC = $(CAFFE_BASE)/include
@@ -36,6 +36,7 @@ CXXFLAGS += -Iengine
 LDFLAGS  += -L$(CAFFE_LIB)
 LDFLAGS  += -L/opt/intel/mkl/lib/intel64/
 #LDFLAGS  += -L/opt/intel/mkl/lib/ia32/
+WX_HOME = ~/git/wxWidgets/gtk-build
 
 CXXFLAGS += -I.
 CPPFLAGS += -MD -MP
@@ -49,8 +50,7 @@ sources = engine/Network.cpp engine/AttribScores.cpp engine/FullBoard.cpp engine
 	  engine/NNValue.cpp engine/OpenCL.cpp \
 	  AboutDialog.cpp AnalysisWindow.cpp App.cpp CalculateDialog.cpp ClockAdjustDialog.cpp \
 	  EngineThread.cpp GUI.cpp MainFrame.cpp NewGameDialog.cpp RatedSizeDialog.cpp \
-	  ScoreDialog.cpp ScoreHistogram.cpp SettingsDialog.cpp TBoardPanel.cpp TScorePanel.cpp \
-	  images.cpp
+	  ScoreDialog.cpp ScoreHistogram.cpp SettingsDialog.cpp TBoardPanel.cpp TScorePanel.cpp
 
 objects = $(sources:.cpp=.o)
 deps = $(sources:%.cpp=%.d)
@@ -58,11 +58,11 @@ deps = $(sources:%.cpp=%.d)
 -include $(deps)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) `wx-config --cxxflags` -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) `$(WX_HOME)/wx-config --cxxflags` -c -o $@ $<
 
 leelagui: $(objects)
-#	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `wx-config --libs`
+	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+#	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
 
 clean:
 	-$(RM) leelagui $(objects) $(deps)

@@ -1,0 +1,37 @@
+/* XPM */
+static char *filesaveas[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 16 1 ",
+"  c black",
+". c #1B4467",
+"X c #5F666D",
+"o c yellow",
+"O c #305F81",
+"+ c #446A8C",
+"@ c #5D7C93",
+"# c #65839D",
+"$ c #7A90AC",
+"% c #A5B0BA",
+"& c #BCBDBE",
+"* c #C0C0C0",
+"= c #C2C6CC",
+"- c #D1D7DD",
+"; c #DCE2EA",
+": c white",
+/* pixels */
+"XXXXXXXXXo Xo**o",
+"X.#:::::::o o*o*",
+"X$#:&&&&&  ooo**",
+"X$#::::::ooooooo",
+"X$#:&&&&&  ooo**",
+"X$#:::::::o o o*",
+"X$$@@@@@@o @o Xo",
+"X$$$$$$$$$$$$$X*",
+"X$$$OOOOOOOO$$X*",
+"X$$O%%%&=-;:O$X*",
+"X$$O%.++=-;:O$X*",
+"X$$O%.++=-;:O$X*",
+"X$$O%.++=-;:O$X*",
+"X$$O==;:::::O$X*",
+"*XXXXXXXXXXXXX**"
+};

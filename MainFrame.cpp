@@ -24,6 +24,10 @@
 #include "ScoreDialog.h"
 #include "ScoreHistogram.h"
 #include "MCOTable.h"
+#ifndef WIN32
+#include "img/leela_mock.xpm"
+#include "snd/tock.h"
+#endif
 
 wxDEFINE_EVENT(wxEVT_NEW_MOVE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_BOARD_UPDATE, wxCommandEvent);
@@ -127,13 +131,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
                             wxEVT_ANALYSIS_UPDATE,
                             wxEVT_BESTMOVES_UPDATE);
 
-#ifdef WIN32
     SetIcon(wxICON(aaaa));
-#else
-    wxIcon aaaa;
-    aaaa.CopyFromBitmap(*bin2c_leela_mock_ico);
-    SetIcon(aaaa);
-#endif
 
     SetSize(530, 640);
     Center();
@@ -253,7 +251,7 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
         wxMenuItem * influence = m_menuTools->FindItem(ID_SHOWTERRITORY);
         influence->Check(false);
     }
-    
+
     m_panelBoard->setShowTerritory(false);
     
     m_panelBoard->Refresh();
@@ -307,7 +305,11 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
 
     if (m_State.get_last_move() != FastBoard::PASS) {
         if (m_soundEnabled) {
+#ifdef WIN32
             wxSound tock("IDW_TOCK", true);
+#else
+            wxSound tock(tock_data_length, tock_data);
+#endif
             tock.Play(wxSOUND_ASYNC);
         }
     } else {

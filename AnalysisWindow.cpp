@@ -65,11 +65,7 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
 
     wxFont base;
     if (rows > 0 && cols > 0) {
-#ifdef WIN32
          base = m_moveGrid->GetCellFont(0, 0).GetBaseFont();
-#else
-        base = m_moveGrid->GetCellFont(0, 0);
-#endif
     }
 
     for (size_t currrow = 0; currrow < data->size(); currrow++) {

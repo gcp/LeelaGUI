@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "App.h"
 #include "MainFrame.h"
-#ifndef WIN32
-#include "images.h"
-#endif
 
 #ifdef WIN32
 bool IsWindowsVistaOrHigher() {
