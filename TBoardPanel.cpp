@@ -146,7 +146,6 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         backgroundImg.SetAlpha(alphaBuff);
 
         wxGraphicsContext *gc = wxGraphicsContext::Create(backgroundImg);
-
         gc->SetPen(penEmpty);
         wxBrush brush(wxColour(255, 255, 255, wxALPHA_TRANSPARENT));
         gc->SetBrush(brush);
@@ -192,11 +191,11 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
         }
 
         gc->Flush();
-
-        wxGraphicsBitmap bg = gc->CreateBitmapFromImage(backgroundImg.Blur(cellDim / 2.5f));
+        delete gc;
+        wxImage blurMap = backgroundImg.Blur(cellDim / 2.5f);
+        wxGraphicsBitmap bg = mgc->CreateBitmapFromImage(blurMap);
         mgc->DrawBitmap(bg, -cellDim / 2, -cellDim / 2,
                         backgroundImg.GetWidth(), backgroundImg.GetHeight());
-        delete gc;
     }
 
     delete mgc;

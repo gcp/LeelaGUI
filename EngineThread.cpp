@@ -1,10 +1,12 @@
 #include "stdafx.h"
+#ifdef WIN32
+#include <boost/thread.hpp>
+#include <boost/thread/detail/tss_hooks.hpp>
+#endif
 
 #include "EngineThread.h"
 #include "UCTSearch.h"
 #include "MainFrame.h"
-#include <boost/thread.hpp>
-#include <boost/thread/detail/tss_hooks.hpp>
 
 TEngineThread::TEngineThread(GameState * state, MainFrame * frame)
     : wxThread(wxTHREAD_JOINABLE)

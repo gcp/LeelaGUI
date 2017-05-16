@@ -10,6 +10,12 @@ debug:
 		LDFLAGS='$(LDFLAGS) -g' \
 		leelagui
 
+macos:
+	$(MAKE) CC=gcc CXX=g++ \
+		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -pipe -O3 -g -ffast-math -mtune=generic -flto -std=c++14 -DNDEBUG'  \
+		LDFLAGS='$(LDFLAGS) -g' \
+		leelagui Leela.app
+
 clang:
 	$(MAKE) CC=clang CXX=clang++ \
 		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -O3 -ffast-math -g -mtune=generic -std=c++14 -DNDEBUG' \
@@ -35,6 +41,8 @@ CXXFLAGS += -I/opt/OpenBLAS/include
 CXXFLAGS += -Iengine
 #CXXFLAGS += -I/System/Library/Frameworks/Accelerate.framework/Versions/Current/Headers
 LDFLAGS  += -L$(CAFFE_LIB)
+CXXFLAGS += -stdlib=libc++
+LDFLAGS  += -stdlib=libc++
 #LDFLAGS  += -L/opt/intel/mkl/lib/intel64/
 #LDFLAGS  += -L/opt/intel/mkl/lib/ia32/
 LDFLAGS += -L/opt/OpenBLAS/lib
@@ -63,8 +71,20 @@ deps = $(sources:%.cpp=%.d)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) `$(WX_HOME)/wx-config --cxxflags` -c -o $@ $<
 
 leelagui: $(objects)
-	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
-#	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+#	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `wx-config --libs --static=yes`
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+
+Leela.app: Info.plist leelagui img/leela.icns
+	SetFile -t APPL leelagui
+	-mkdir Leela.app
+	-mkdir Leela.app/Contents
+	-mkdir Leela.app/Contents/MacOS
+	-mkdir Leela.app/Contents/Resources
+	-mkdir Leela.app/Contents/Resources/English.lproj
+	cp Info.plist Leela.app/Contents/
+	echo -n 'APPL????' > Leela.app/Contents/PkgInfo
+	cp leelagui Leela.app/Contents/MacOS/Leela
+	cp img/leela.icns Leela.app/Contents/Resources/
 
 clean:
 	-$(RM) leelagui $(objects) $(deps)
