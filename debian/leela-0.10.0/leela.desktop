@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=0.10.0
+Name=Leela
+Comment=Leela Go program
+Icon=leela 
+Exec=LeelaGUI
+Path=/usr/games
+Terminal=false
+Categories=Game;BoardGame;

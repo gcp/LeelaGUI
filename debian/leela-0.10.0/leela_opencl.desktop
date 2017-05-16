@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=0.10.0
+Name=Leela OpenCL
+Comment=Leela Go program (GPU Accelerated)
+Icon=leela
+Exec=LeelaGUI_OpenCL
+Path=/usr/games
+Categories=Game;BoardGame;

@@ -19,9 +19,9 @@ clang:
 LIBS = -lboost_thread -lboost_system -lboost_program_options
 
 #DYNAMIC_LIBS += -lboost_filesystem -lcaffe -lprotobuf -lglog
-LIBS += -lopenblas
+#LIBS += -lopenblas
 DYNAMIC_LIBS += -lpthread
-#DYNAMIC_LIBS += -lOpenCL
+DYNAMIC_LIBS += -lOpenCL
 #LIBS += -framework Accelerate
 #LIBS += -framework OpenCL
 #DYNAMIC_LIBS += -lmkl_rt
@@ -30,12 +30,14 @@ CAFFE_BASE = /usr/local
 CAFFE_INC = $(CAFFE_BASE)/include
 CAFFE_LIB = $(CAFFE_BASE)/lib
 CXXFLAGS += -I$(CAFFE_INC) -I/usr/local/cuda/include
-CXXFLAGS += -I/opt/intel/mkl/include
+#CXXFLAGS += -I/opt/intel/mkl/include
+CXXFLAGS += -I/opt/OpenBLAS/include
 CXXFLAGS += -Iengine
 #CXXFLAGS += -I/System/Library/Frameworks/Accelerate.framework/Versions/Current/Headers
 LDFLAGS  += -L$(CAFFE_LIB)
-LDFLAGS  += -L/opt/intel/mkl/lib/intel64/
+#LDFLAGS  += -L/opt/intel/mkl/lib/intel64/
 #LDFLAGS  += -L/opt/intel/mkl/lib/ia32/
+LDFLAGS += -L/opt/OpenBLAS/lib
 WX_HOME = ~/git/wxWidgets/gtk-build
 
 CXXFLAGS += -I.

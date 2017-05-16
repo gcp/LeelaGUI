@@ -1,0 +1,15 @@
+Source: leela
+Maintainer: Gian-Carlo Pascutto <gcp@sjeng.org>
+Section: non-free/games
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9)
+Homepage: https://sjeng.org/leela
+
+Package: leela
+Architecture: amd64
+Depends: libc6, libx11-6, libxxf86vm1, libsm6, libgtk2.0-0, libpangocairo-1.0-0, libcairo2, libpango-1.0-0, libgdk-pixbuf2.0-0, libglib2.0-0
+Suggests: libopencl1, opencl-icd
+Description: Go playing program
+ Leela is a strong computer program that plays 
+ Go/Baduk/Weiqi and includes a GUI.
