@@ -22,7 +22,7 @@ clang:
 		LDFLAGS='$(LDFLAGS)' \
 		leelagui
 
-LIBS = -lboost_thread -lboost_system -lboost_program_options
+BOOST_LIBS = /usr/local/lib/libboost_thread-mt.a /usr/local/lib/libboost_system-mt.a
 
 #DYNAMIC_LIBS += -lboost_filesystem -lcaffe -lprotobuf -lglog
 #LIBS += -lopenblas
@@ -72,7 +72,7 @@ deps = $(sources:%.cpp=%.d)
 
 leelagui: $(objects)
 #	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `wx-config --libs --static=yes`
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes` $(BOOST_LIBS) 
 
 Leela.app: Info.plist leelagui img/leela.icns
 	SetFile -t APPL leelagui
