@@ -496,7 +496,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	sbSizer4->Add( m_spinCtrlBlackSecs, 1, wxALL|wxEXPAND, 5 );
 	
 	
-	bSizer9->Add( sbSizer4, 0, wxALL|wxEXPAND, 5 );
+	bSizer9->Add( sbSizer4, 1, wxALL|wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("White clock (minutes:seconds)") ), wxHORIZONTAL );
@@ -508,7 +508,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	sbSizer6->Add( m_spinCtrlWhiteSecs, 1, wxALL|wxEXPAND, 5 );
 	
 	
-	bSizer9->Add( sbSizer6, 0, wxALL|wxEXPAND, 5 );
+	bSizer9->Add( sbSizer6, 1, wxALL|wxEXPAND, 5 );
 	
 	m_sdbSizer3 = new wxStdDialogButtonSizer();
 	m_sdbSizer3OK = new wxButton( this, wxID_OK );
@@ -517,7 +517,7 @@ TClockAdjustDialog::TClockAdjustDialog( wxWindow* parent, wxWindowID id, const w
 	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
 	m_sdbSizer3->Realize();
 	
-	bSizer9->Add( m_sdbSizer3, 0, wxALIGN_CENTER|wxALL, 5 );
+	bSizer9->Add( m_sdbSizer3, 0, wxALIGN_CENTER|wxALL|wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer9 );

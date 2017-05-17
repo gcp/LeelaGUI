@@ -11,13 +11,13 @@ TRatedSizeDialog( parent )
 void RatedSizeDialog::doSize9( wxCommandEvent& event )
 {
     m_sizeSelected = 9;
-    Destroy();
+    EndModal(wxID_OK);
 }
 
 void RatedSizeDialog::doSize19( wxCommandEvent& event )
 {
     m_sizeSelected = 19;
-    Destroy();
+    EndModal(wxID_OK);
 }
 
 int RatedSizeDialog::getSizeSelected(void) {
