@@ -133,7 +133,11 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
     SetIcon(wxICON(aaaa));
 
+#ifdef __WXGTK__
+    SetSize(550, 640);
+#else
     SetSize(530, 640);
+#endif
     Center();
 
     wxCommandEvent evt;
