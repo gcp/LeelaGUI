@@ -135,6 +135,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 
 #ifdef __WXGTK__
     SetSize(550, 640);
+#elif defined(__WXMAC__)
+    SetSize(570, 640);
 #else
     SetSize(530, 640);
 #endif
