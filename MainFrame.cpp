@@ -24,6 +24,7 @@
 #include "ScoreDialog.h"
 #include "ScoreHistogram.h"
 #include "MCOTable.h"
+#include "TTable.h"
 #ifndef WIN32
 #include "img/leela_mock.xpm"
 #include "snd/tock.h"
@@ -425,6 +426,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         wxLogDebug("OK clicked");
 
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
+        TTable::get_TT()->clear();
         ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
@@ -828,6 +830,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     {
         float komi = handicap ? 0.5f : 7.5f;
         m_State.init_game(m_ratedSize, komi);
+        TTable::get_TT()->clear();
         ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
