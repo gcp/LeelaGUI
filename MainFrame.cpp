@@ -80,6 +80,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     });
 
     GTP::setup_default_parameters();
+    thread_pool.initialize(cfg_num_threads);
 
     std::unique_ptr<Random> rng(new Random(5489UL));
     Zobrist::init_zobrist(*rng);

@@ -17,12 +17,12 @@ class ScoreDialog : public TScoreDialog
 		// Handlers for TScoreDialog events.
 		void doAccept( wxCommandEvent& event );
 		void doDispute( wxCommandEvent& event );
-                bool mAccepts{false};
+		bool mAccepts{false};
 	public:
 		/** Constructor */
 		ScoreDialog( wxWindow* parent, wxString message,
-                             wxString confidence );
-                bool Accepted() { return mAccepts; };
+                     wxString confidence );
+		bool Accepted() { return mAccepts; };
 	//// end generated class members
 };
 
