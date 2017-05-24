@@ -25,6 +25,14 @@ void SettingsDialog::doInit(wxInitDialogEvent& event) {
 
     bool dpiEnabled = wxConfig::Get()->Read(wxT("dpiscaleEnabled"), (long)0);
     m_checkBoxDPIScaling->SetValue(dpiEnabled);
+
+#ifdef __WXGTK__
+    m_checkBoxDPIScaling->Disable();
+#elif defined(__WXMAC__)
+    m_checkBoxDPIScaling->Disable();
+    m_checkBoxSound->Disable();
+#else
+#endif
 }
 
 void SettingsDialog::doCancel(wxCommandEvent& event) {
