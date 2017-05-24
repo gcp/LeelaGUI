@@ -468,6 +468,12 @@ class TScoreDialog : public wxDialog
 		
 	
 	protected:
+		enum
+		{
+			ID_SCORE_ACCEPT = 1000,
+			ID_SCORE_DISPUTE
+		};
+		
 		wxPanel* m_panel4;
 		wxStaticText* m_staticTextScore;
 		wxStaticText* m_staticTextMessage;

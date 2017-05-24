@@ -734,8 +734,8 @@ TSettingsDialog::~TSettingsDialog()
 }
 
 BEGIN_EVENT_TABLE( TScoreDialog, wxDialog )
-	EVT_BUTTON( wxID_ANY, TScoreDialog::_wxFB_doAccept )
-	EVT_BUTTON( wxID_ANY, TScoreDialog::_wxFB_doDispute )
+	EVT_BUTTON( ID_SCORE_ACCEPT, TScoreDialog::_wxFB_doAccept )
+	EVT_BUTTON( ID_SCORE_DISPUTE, TScoreDialog::_wxFB_doDispute )
 END_EVENT_TABLE()
 
 TScoreDialog::TScoreDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -767,11 +767,11 @@ TScoreDialog::TScoreDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	bSizer16->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_buttonOK = new wxButton( m_panel4, wxID_ANY, _("&Accept"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonOK = new wxButton( m_panel4, ID_SCORE_ACCEPT, _("&Accept"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_buttonOK->SetDefault(); 
 	bSizer16->Add( m_buttonOK, 0, wxALL|wxEXPAND, 5 );
 	
-	m_buttonDispute = new wxButton( m_panel4, wxID_ANY, _("&Play On"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonDispute = new wxButton( m_panel4, ID_SCORE_DISPUTE, _("&Play On"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer16->Add( m_buttonDispute, 0, wxALL|wxEXPAND, 5 );
 	
 	
