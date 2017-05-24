@@ -1,0 +1,5 @@
+leela (0.10.1-1) xenial; urgency=medium
+
+  * Initial release of 0.10.1.
+
+ -- Gian-Carlo Pascutto <gcp@sjeng.org>  Wed, 24 May 2017 13:07:27 +0200
