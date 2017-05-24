@@ -566,19 +566,19 @@ void TBoardPanel::doOwner() {
     }    
 }
 
-void TBoardPanel::doTerritory() {
-    std::vector<int> map = m_State->final_score_map();
-   
-    m_Hatch.resize(FastBoard::MAXSQ);    
+void TBoardPanel::doTerritory(bool disputing) {
+    std::vector<int> map = m_State->final_score_map(disputing ? false : true);
+
+    m_Hatch.resize(FastBoard::MAXSQ);
     std::fill(m_Hatch.begin(), m_Hatch.end(), FastBoard::EMPTY);
-    
+
     for (size_t i = 0; i < map.size(); i++) {
         if (map[i] == FastBoard::BLACK) {
             m_Hatch[i] = FastBoard::BLACK;
         } else if (map[i] == FastBoard::WHITE) {
             m_Hatch[i] = FastBoard::WHITE;
         }
-    }     
+    }
 }
 
 void TBoardPanel::lockState() {

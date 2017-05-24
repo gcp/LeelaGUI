@@ -919,7 +919,7 @@ bool MainFrame::scoreGame(float & komi, float & handicap,
         prekomi = score + komi + handicap;
     } else {
         komi = m_State.get_komi();
-        score = m_State.final_score();
+        score = m_State.final_score(nullptr, m_disputing ? false : true);
         handicap = m_State.get_handicap();
         prekomi = score + komi + handicap;
     }
@@ -927,7 +927,7 @@ bool MainFrame::scoreGame(float & komi, float & handicap,
     won = (score > 0.0f && m_playerColor == FastBoard::BLACK)
           || (score < 0.0f && m_playerColor == FastBoard::WHITE);
 
-    m_panelBoard->doTerritory();
+    m_panelBoard->doTerritory(m_disputing);
     m_panelBoard->setShowTerritory(true);
 
     return won;

@@ -16,8 +16,8 @@ public:
                const wxSize& size = wxDefaultSize,
                long style = wxNO_BORDER | wxWANTS_CHARS,
                const wxString& name = wxPanelNameStr);
-                   
-    void setState(GameState * brd);               
+
+    void setState(GameState * brd);
     void setPlayerColor(int color);
     void setShowOwner(bool val);
     void setShowMoyo(bool val);
@@ -28,11 +28,11 @@ public:
     bool getShowMoyo();
     bool getShowProbabilities();
     bool getShowBestMoves();
-    void doTerritory();     
+    void doTerritory(bool disputing);
     void lockState();
     void unlockState();
     void clearViz();
-                                      
+
 private:
     DECLARE_EVENT_TABLE()
     
