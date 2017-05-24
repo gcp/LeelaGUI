@@ -661,9 +661,11 @@ void TBoardPanel::doBestMovesUpdate(wxCommandEvent& event) {
         for (const auto& pair : *data) {
             std::string move = pair.first;
             int vertex = m_State->board.text_to_move(move);
-            m_Probabilities[vertex] = pair.second;
-            if (pair.second > m_MaxProbability) {
-                m_MaxProbability = pair.second;
+            if (vertex >= 0 && vertex < m_Probabilities.size()) {
+                m_Probabilities[vertex] = pair.second;
+                if (pair.second > m_MaxProbability) {
+                    m_MaxProbability = pair.second;
+                }
             }
         }
         m_DisplayedStateHash = m_State->board.get_hash();

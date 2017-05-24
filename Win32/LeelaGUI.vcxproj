@@ -205,6 +205,7 @@
     <ClInclude Include="..\..\Leela\SGFParser.h" />
     <ClInclude Include="..\..\Leela\SGFTree.h" />
     <ClInclude Include="..\..\Leela\SMP.h" />
+    <ClInclude Include="..\..\Leela\ThreadPool.h" />
     <ClInclude Include="..\..\Leela\TimeControl.h" />
     <ClInclude Include="..\..\Leela\Timing.h" />
     <ClInclude Include="..\..\Leela\TTable.h" />

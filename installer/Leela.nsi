@@ -1,6 +1,6 @@
-!define LEELABIN  "Leela0100.exe"
-!define LEELAOCL  "Leela0100_OpenCL.exe"
-!define VERSION   "0.10.0"
+!define LEELABIN  "Leela0101.exe"
+!define LEELAOCL  "Leela0101_OpenCL.exe"
+!define VERSION   "0.10.1"
 
 !if "${NSIS_PACKEDVERSION}" >= 0x3000000
 Unicode true
