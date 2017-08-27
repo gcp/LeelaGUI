@@ -76,7 +76,6 @@ class MainFrame : public TMainFrame {
         void broadcastCurrentMove();
 
 	void startEngine();
-	void startPonder();
 	bool stopEngine(bool update_score = true);
 	// true = user accepts score
 	bool scoreDialog(float komi, float handicap, float score, float prekomi);
