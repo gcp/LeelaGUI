@@ -42,7 +42,7 @@ wxDEFINE_EVENT(wxEVT_SET_MOVENUM, wxCommandEvent);
 #define MIN_RANK -30
 
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
-          :TMainFrame(frame, wxID_ANY, title) {
+          : TMainFrame(frame, wxID_ANY, title) {
 
     delete wxLog::SetActiveTarget(NULL);
 
@@ -143,10 +143,6 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     SetSize(530, 640);
 #endif
     Center();
-
-    wxCommandEvent evt;
-    doNewRatedGame(evt);
-
     setActiveMenus();
 }
 
@@ -238,22 +234,22 @@ bool MainFrame::stopEngine(bool update_score) {
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
     m_panelBoard->setShowOwner(!m_panelBoard->getShowOwner());
-    
+
     if (m_panelBoard->getShowOwner()) {
         m_panelBoard->setShowMoyo(false);
         wxMenuItem * moyo = m_menuTools->FindItem(ID_SHOWMOYO);
         moyo->Check(false);
         gameNoLongerCounts();
     }
-    
+
     m_panelBoard->setShowTerritory(false);
-    
+
     m_panelBoard->Refresh();
 }
 
 void MainFrame::doToggleMoyo(wxCommandEvent& event) {
     m_panelBoard->setShowMoyo(!m_panelBoard->getShowMoyo());
-    
+
     if (m_panelBoard->getShowMoyo()) {
         m_panelBoard->setShowOwner(false);
         wxMenuItem * influence = m_menuTools->FindItem(ID_SHOWTERRITORY);
@@ -1095,8 +1091,47 @@ void MainFrame::doHomePage(wxCommandEvent& event) {
 
 void MainFrame::doHelpAbout(wxCommandEvent& event) {
     AboutDialog myabout(this);
-    
-    myabout.ShowModal();    
+
+    myabout.ShowModal();
+}
+
+void MainFrame::loadSGFString(const wxString & SGF, int movenum) {
+    std::unique_ptr<SGFTree> tree(new SGFTree);
+    try {
+        const wxScopedCharBuffer sgfUtf8(SGF.ToUTF8());
+        std::string sgfstring(sgfUtf8);
+        std::istringstream strm(sgfstring);
+        auto games = SGFParser::chop_stream(strm);
+        if (games.size() < 1) {
+            return;
+        }
+        tree->load_from_string(games[0]);
+        int last_move = tree->count_mainline_moves();
+        movenum = std::min(last_move, movenum);
+        movenum = std::max(1, movenum);
+        wxLogDebug("Read %d moves", last_move);
+        m_State = tree->follow_mainline_state(movenum - 1);
+    } catch (...) {
+    }
+
+    m_StateStack.clear();
+    m_StateStack.push_back(m_State);
+    m_playerColor = m_State.get_to_move();
+    MCOwnerTable::clear();
+    m_panelBoard->setPlayerColor(m_playerColor);
+    m_panelBoard->setShowTerritory(false);
+    m_panelBoard->clearViz();
+    if (m_scoreHistogramWindow) {
+        m_scoreHistogramWindow->ClearHistogram();
+    }
+    gameNoLongerCounts();
+    setActiveMenus();
+
+    //signal board change
+    wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
+    myevent.SetEventObject(this);
+    ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
+    broadcastCurrentMove();
 }
 
 void MainFrame::doOpenSGF(wxCommandEvent& event) {
@@ -1109,35 +1144,17 @@ void MainFrame::doOpenSGF(wxCommandEvent& event) {
 
     if (dialog.ShowModal() == wxID_OK) {
         wxString path = dialog.GetPath();
-
         wxLogDebug("Opening: " + path);
 
-        std::unique_ptr<SGFTree> tree(new SGFTree);
-        try {
-            tree->load_from_file(path.ToStdString());
-             wxLogDebug("Read %d moves", tree->count_mainline_moves());
-            m_State = tree->follow_mainline_state();
-        } catch (...) {
-        }
+        // open the file
+        wxFile sgfFile;
+        if (sgfFile.Open(path)) {
+            wxString SGF;
 
-        m_StateStack.clear();
-        m_StateStack.push_back(m_State);
-        m_playerColor = m_State.get_to_move();
-        MCOwnerTable::clear();
-        m_panelBoard->setPlayerColor(m_playerColor);
-        m_panelBoard->setShowTerritory(false);
-        m_panelBoard->clearViz();
-        if (m_scoreHistogramWindow) {
-            m_scoreHistogramWindow->ClearHistogram();
+            if (sgfFile.ReadAll(&SGF)) {
+                loadSGFString(SGF);
+            }
         }
-        gameNoLongerCounts();
-        setActiveMenus();
-
-        //signal board change
-        wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
-        myevent.SetEventObject(this);
-        ::wxPostEvent(m_panelBoard->GetEventHandler(), myevent);
-        broadcastCurrentMove();
     }
 }
 
@@ -1378,5 +1395,16 @@ void MainFrame::doPasteClipboard(wxCommandEvent& event) {
             }
         }
         wxTheClipboard->Close();
+    }
+}
+
+void MainFrame::loadSGF(const wxString & filename, int movenum) {
+    // open the file
+    wxFile sgfFile;
+    if (sgfFile.Open(filename)) {
+        wxString SGF;
+        if (sgfFile.ReadAll(&SGF)) {
+            loadSGFString(SGF, movenum);
+        }
     }
 }

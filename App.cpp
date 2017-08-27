@@ -48,5 +48,18 @@ bool MyApp::OnInit()
     SetTopWindow(frame);
 #endif
 
+    if (argc > 1) {
+        long movenum = 999;
+        if (argc > 2) {
+            wxString moveNumString(argv[2]);
+            moveNumString.ToLong(&movenum);
+        }
+        wxString sgfString(argv[1]);
+        frame->loadSGF(sgfString, movenum);
+    } else {
+        wxCommandEvent evt;
+        frame->doNewRatedGame(evt);
+    }
+
     return true;
 }
