@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -14,18 +14,18 @@
     <ProjectGuid>{9302BF69-D79E-4267-A192-53452C07A84D}</ProjectGuid>
     <RootNamespace>LeelaGUI</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>5.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140_xp</PlatformToolset>
-    <WholeProgramOptimization>PGOptimize</WholeProgramOptimization>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -45,14 +45,14 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries\windows\mkl\include;C:\boost\boost_1_62_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries\windows\mkl\lib\ia32_win;C:\boost\boost_1_62_0\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\include;C:\boost\boost_1_65_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\lib\ia32_win;C:\boost\boost_1_65_0\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
-    <IncludePath>C:\Projects\OpenBLAS\dist\include;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.2.187\windows\mkl\include;C:\boost\boost_1_62_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Projects\OpenBLAS\dist\lib;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries\windows\mkl\lib\ia32_win;C:\boost\boost_1_62_0\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Projects\OpenBLAS\dist\include;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\include;C:\boost\boost_1_65_0;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Projects\OpenBLAS\dist\lib;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\lib\ia32_win;C:\boost\boost_1_65_0\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -117,12 +117,12 @@
     <ClCompile Include="..\..\Leela\FastState.cpp" />
     <ClCompile Include="..\..\Leela\FullBoard.cpp" />
     <ClCompile Include="..\..\Leela\GameState.cpp" />
-    <ClCompile Include="..\..\Leela\Genetic.cpp" />
     <ClCompile Include="..\..\Leela\GTP.cpp" />
     <ClCompile Include="..\..\Leela\KoState.cpp" />
     <ClCompile Include="..\..\Leela\Leela.cpp" />
     <ClCompile Include="..\..\Leela\Matcher.cpp" />
     <ClCompile Include="..\..\Leela\MCOTable.cpp" />
+    <ClCompile Include="..\..\Leela\MCPolicy.cpp" />
     <ClCompile Include="..\..\Leela\Network.cpp" />
     <ClCompile Include="..\..\Leela\NN.cpp" />
     <ClCompile Include="..\..\Leela\NNValue.cpp" />
@@ -198,6 +198,7 @@
     <ClInclude Include="..\..\Leela\MCOTable.h" />
     <ClInclude Include="..\..\Leela\Network.h" />
     <ClInclude Include="..\..\Leela\OpenCL.h" />
+    <ClInclude Include="..\..\Leela\PatHash.h" />
     <ClInclude Include="..\..\Leela\Playout.h" />
     <ClInclude Include="..\..\Leela\PNNode.h" />
     <ClInclude Include="..\..\Leela\PNSearch.h" />

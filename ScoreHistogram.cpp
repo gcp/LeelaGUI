@@ -17,7 +17,8 @@ TScoreHistogram( parent )
 void ScoreHistogram::doNewScore(wxCommandEvent& event) {
     if (!event.GetClientData()) return;
 
-    auto scores = reinterpret_cast<std::tuple<int, float, float, float>*>(event.GetClientData());
+    auto score_data = reinterpret_cast<std::tuple<int, float, float, float>*>(event.GetClientData());
+    std::unique_ptr<std::remove_pointer<decltype(score_data)>::type> scores(score_data);
     int movenum = std::get<0>(*scores);
 
     auto it = std::find_if(m_scores.begin(), m_scores.end(),
