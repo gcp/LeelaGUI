@@ -36,6 +36,7 @@ class AnalysisWindow : public TAnalysisWindow
             void onContextMenuClick(wxCommandEvent& event);
             bool mHasAutoSized{false};
             bool mHasUserSized{false};
+            int mSideToMove{0};
 };
 
 #endif // __AnalysisWindow__

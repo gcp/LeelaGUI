@@ -53,6 +53,7 @@ private:
     wxImage m_blackStone;      
     int m_cellDim;
     int m_playerColor;
+    int m_analysisColor;
     bool m_showTerritory;   // on game end
     bool m_showOwner;
     bool m_showMoyo;

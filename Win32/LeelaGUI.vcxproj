@@ -65,6 +65,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>wxUSE_NO_MANIFEST=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -191,7 +192,6 @@
     <ClInclude Include="..\..\Leela\FastState.h" />
     <ClInclude Include="..\..\Leela\FullBoard.h" />
     <ClInclude Include="..\..\Leela\GameState.h" />
-    <ClInclude Include="..\..\Leela\Genetic.h" />
     <ClInclude Include="..\..\Leela\GTP.h" />
     <ClInclude Include="..\..\Leela\KoState.h" />
     <ClInclude Include="..\..\Leela\Matcher.h" />
@@ -202,6 +202,8 @@
     <ClInclude Include="..\..\Leela\Playout.h" />
     <ClInclude Include="..\..\Leela\PNNode.h" />
     <ClInclude Include="..\..\Leela\PNSearch.h" />
+    <ClInclude Include="..\..\Leela\PolicyWeights.h" />
+    <ClInclude Include="..\..\Leela\PolicyWeightsSL.h" />
     <ClInclude Include="..\..\Leela\Random.h" />
     <ClInclude Include="..\..\Leela\SGFParser.h" />
     <ClInclude Include="..\..\Leela\SGFTree.h" />
@@ -214,7 +216,6 @@
     <ClInclude Include="..\..\Leela\UCTSearch.h" />
     <ClInclude Include="..\..\Leela\Utils.h" />
     <ClInclude Include="..\..\Leela\Weights.h" />
-    <ClInclude Include="..\..\Leela\WeightsMatcher.h" />
     <ClInclude Include="..\..\Leela\Zobrist.h" />
     <ClInclude Include="..\AboutDialog.h" />
     <ClInclude Include="..\AnalysisWindow.h" />

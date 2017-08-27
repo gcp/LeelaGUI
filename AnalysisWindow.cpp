@@ -44,16 +44,21 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
 
     using TRowVector = std::vector<std::pair<std::string, std::string>>;
     using TDataVector = std::vector<TRowVector>;
+    using TDataBundle = std::tuple<int, TDataVector>;
 
     // Take ownership of the data
-    std::unique_ptr<TDataVector> data(reinterpret_cast<TDataVector*>(rawdataptr));
+    std::unique_ptr<TDataBundle> bundle(reinterpret_cast<TDataBundle*>(rawdataptr));
 
-    size_t rows = data->size();
+    auto tomove = std::get<0>(*bundle);
+    auto data = std::get<1>(*bundle);
+
+    size_t rows = data.size();
     if (rows == 0) return;
 
-    size_t cols = data->at(0).size();
+    size_t cols = data.at(0).size();
     if (cols == 0) return;
 
+    mSideToMove = tomove;
     size_t oldrows = m_moveGrid->GetNumberRows();
     size_t oldcols = m_moveGrid->GetNumberCols();
 
@@ -68,8 +73,8 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
          base = m_moveGrid->GetCellFont(0, 0).GetBaseFont();
     }
 
-    for (size_t currrow = 0; currrow < data->size(); currrow++) {
-        const auto& cellPair = (*data)[currrow];
+    for (size_t currrow = 0; currrow < data.size(); currrow++) {
+        const auto& cellPair = data[currrow];
         for (size_t currcol = 0; currcol < cellPair.size(); currcol++) {
             const auto label = wxString(cellPair[currcol].first);
             const auto value = wxString(cellPair[currcol].second);
@@ -165,6 +170,7 @@ void AnalysisWindow::doLeftClick(wxGridEvent& event) {
 
         wxCommandEvent* cmd = new wxCommandEvent(wxEVT_DISPLAY_MAINLINE);
         cmd->SetString(pv);
+        cmd->SetInt(mSideToMove);
         GetParent()->GetEventHandler()->QueueEvent(cmd);
     }
 }

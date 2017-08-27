@@ -330,7 +330,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     dc.SetFont(pvfont);
 
     // PV coloring
-    bool btm = m_State->board.get_to_move() == FastBoard::BLACK;
+    bool btm = m_analysisColor == FastBoard::BLACK;
 
     for (int y = 0; y < boardSize; y++) {
         for (int x = 0; x < boardSize; x++) {
@@ -600,10 +600,12 @@ void TBoardPanel::doKeyDown(wxKeyEvent& event) {
 
 void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
     wxString pv = event.GetString();
+    int toMove = event.GetInt();
 
     // Clear past PV
     std::fill(m_PV.begin(), m_PV.end(), 0);
     int pv_move_counter = 0;
+    m_analysisColor = toMove;
 
     wxStringTokenizer tokenizer(pv);
     while (tokenizer.HasMoreTokens()) {
@@ -611,8 +613,10 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
 
         wxString move = tokenizer.GetNextToken();
         int vertex = m_State->board.text_to_move(move.ToStdString());
-        if (m_PV[vertex] == 0) {
-            m_PV[vertex] = pv_move_counter;
+        if (vertex != FastBoard::PASS) {
+            if (m_PV[vertex] == 0) {
+                m_PV[vertex] = pv_move_counter;
+            }
         }
     }
 
