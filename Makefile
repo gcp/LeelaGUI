@@ -17,9 +17,9 @@ macos:
 		leelagui Leela.app
 
 clang:
-	$(MAKE) CC=clang CXX=clang++ \
-		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -O3 -ffast-math -g -mtune=generic -std=c++14 -DNDEBUG' \
-		LDFLAGS='$(LDFLAGS)' \
+	$(MAKE) CC=clang-4.0 CXX=clang++-4.0 \
+		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -O3 -ffast-math -g -mtune=generic -flto -std=c++14 -DNDEBUG' \
+		LDFLAGS='$(LDFLAGS) -flto -fuse-linker-plugin' \
 		leelagui
 
 BOOST_LIBS = /usr/local/lib/libboost_thread-mt.a /usr/local/lib/libboost_system-mt.a
@@ -54,10 +54,10 @@ CPPFLAGS += -MD -MP
 sources = engine/Network.cpp engine/AttribScores.cpp engine/FullBoard.cpp engine/KoState.cpp engine/Playout.cpp \
 	  engine/TimeControl.cpp engine/UCTSearch.cpp engine/Attributes.cpp engine/Book.cpp \
 	  engine/GameState.cpp engine/PNNode.cpp engine/SGFParser.cpp engine/Timing.cpp \
-	  engine/Utils.cpp engine/FastBoard.cpp engine/Genetic.cpp engine/Matcher.cpp engine/PNSearch.cpp \
+	  engine/Utils.cpp engine/FastBoard.cpp engine/Matcher.cpp engine/PNSearch.cpp \
 	  engine/SGFTree.cpp engine/TTable.cpp engine/Zobrist.cpp engine/FastState.cpp engine/GTP.cpp \
 	  engine/MCOTable.cpp engine/Random.cpp engine/SMP.cpp engine/UCTNode.cpp engine/NN.cpp \
-	  engine/NNValue.cpp engine/OpenCL.cpp \
+	  engine/NNValue.cpp engine/OpenCL.cpp engine/MCPolicy.cpp \
 	  AboutDialog.cpp AnalysisWindow.cpp App.cpp CalculateDialog.cpp ClockAdjustDialog.cpp \
 	  EngineThread.cpp GUI.cpp MainFrame.cpp NewGameDialog.cpp RatedSizeDialog.cpp \
 	  ScoreDialog.cpp ScoreHistogram.cpp SettingsDialog.cpp TBoardPanel.cpp TScorePanel.cpp
