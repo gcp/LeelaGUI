@@ -198,7 +198,9 @@
     <ClInclude Include="..\..\Leela\MCOTable.h" />
     <ClInclude Include="..\..\Leela\Network.h" />
     <ClInclude Include="..\..\Leela\OpenCL.h" />
-    <ClInclude Include="..\..\Leela\PatHash.h" />
+    <ClInclude Include="..\..\Leela\PatternHash.h" />
+    <ClInclude Include="..\..\Leela\Patterns.h" />
+    <ClInclude Include="..\..\Leela\PatternsLive.h" />
     <ClInclude Include="..\..\Leela\Playout.h" />
     <ClInclude Include="..\..\Leela\PNNode.h" />
     <ClInclude Include="..\..\Leela\PNSearch.h" />

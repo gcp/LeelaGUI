@@ -50,6 +50,7 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
     std::unique_ptr<TDataBundle> bundle(reinterpret_cast<TDataBundle*>(rawdataptr));
 
     auto tomove = std::get<0>(*bundle);
+    assert(tomove == FastBoard::BLACK || tomove == FastBoard::WHITE);
     auto data = std::get<1>(*bundle);
 
     size_t rows = data.size();
