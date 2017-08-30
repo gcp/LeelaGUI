@@ -8,22 +8,22 @@ TSettingsDialog( parent )
 }
 
 void SettingsDialog::doInit(wxInitDialogEvent& event) {
-    bool passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), 1);
+    bool passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), true);
     m_checkBoxPasses->SetValue(passEnabled);
 
-    bool resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1);
+    bool resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), true);
     m_checkBoxResignations->SetValue(resignEnabled);
 
-    bool ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1);
+    bool ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), true);
     m_checkBoxPondering->SetValue(ponderEnabled);
 
-    bool netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), 1);
+    bool netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), true);
     m_checkBoxNeuralNet->SetValue(netsEnabled);
 
-    bool soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1);
+    bool soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), true);
     m_checkBoxSound->SetValue(soundEnabled);
 
-    bool dpiEnabled = wxConfig::Get()->Read(wxT("dpiscaleEnabled"), (long)0);
+    bool dpiEnabled = wxConfig::Get()->Read(wxT("dpiscaleEnabled"), false);
     m_checkBoxDPIScaling->SetValue(dpiEnabled);
 
 #ifdef __WXGTK__

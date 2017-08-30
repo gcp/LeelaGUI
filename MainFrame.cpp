@@ -38,8 +38,8 @@ wxDEFINE_EVENT(wxEVT_BESTMOVES_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_EVALUATION_UPDATE, wxCommandEvent);
 wxDEFINE_EVENT(wxEVT_SET_MOVENUM, wxCommandEvent);
 
-#define MAX_RANK  13
-#define MIN_RANK -30
+static constexpr long MAX_RANK = 13L;
+static constexpr long MIN_RANK = -30L;
 
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
           : TMainFrame(frame, wxID_ANY, title) {
@@ -97,12 +97,12 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_disputing = false;
     m_ponderedOnce = true;
 
-    m_netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), 1);
-    m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), 1);
-    m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), 1);
-    m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), 1);
-    m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), 1);
-    m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9);
+    m_netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), true);
+    m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), true);
+    m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), true);
+    m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), true);
+    m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), true);
+    m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9L);
 
     // This is a bug in 0.4.0, correct broken values.
     if (m_ratedSize != 9 && m_ratedSize != 19) {
@@ -500,9 +500,9 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
 
     int rank;
     if (m_ratedSize == 9) {
-        rank = wxConfig::Get()->Read(wxT("LastRank9"), (long)-30);
+        rank = wxConfig::Get()->ReadLong(wxT("userRank9"), (long)-30);
     } else if (m_ratedSize == 19) {
-        rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-10);
+        rank = wxConfig::Get()->ReadLong(wxT("userRank19"), (long)-10);
     }
 
     wxLogDebug("Last rank was: %d", rank);
@@ -855,46 +855,67 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
 }
 
 void MainFrame::ratedGameEnd(bool won) {
+    if (!m_ratedGame) {
+        return;
+    }
+
     //wxString mess;
     wxString rankstr;
-    
-    if (m_ratedGame) {
-        int rank;
-        if (m_ratedSize == 9) {
-            rank = wxConfig::Get()->Read(wxT("LastRank9"), (long)-30);
-        } else if (m_ratedSize == 19) {
-            rank = wxConfig::Get()->Read(wxT("LastRank19"), (long)-9);
-        }
-               
+    long rank;
+    long adjust;
+    bool hadWon;
+
+    if (m_ratedSize == 9) {
+        adjust = wxConfig::Get()->ReadLong(wxT("userRankAdjust9"), 10);
+    } else {
+        adjust = wxConfig::Get()->ReadLong(wxT("userRankAdjust19"), 10);
+    }
+
+    if (m_ratedSize == 9) {
+        rank = wxConfig::Get()->ReadLong(wxT("userRank9"), (long)-30);
+        hadWon = wxConfig::Get()->ReadBool(wxT("userLastWon9"), true);
         if (won) {
-            rank = rank + 1;
-            rank = std::min(MAX_RANK, rank);
-                                    
-            //mess += wxT("Promoting from") + wxString(" ") + rankToString(rank-1) + wxString("\n");
-            //mess += wxT("to") + wxString(" ") + rankToString(rank);
+            wxConfig::Get()->Write(wxT("userLastWon9"), true);
         } else {
-            rank = rank - 1;
-            rank = std::max(MIN_RANK, rank);
-                                    
-            //mess += wxT("Demoting from") + wxString(" ") + rankToString(rank+1) + wxString("\n");
-            //mess += wxT("to") + wxString(" ") + rankToString(rank);
-        }                   
-        
-//        ::wxMessageBox(mess, wxT("Rated game"), wxOK, this);
-        
-        if (m_ratedSize == 9) {
-            wxConfig::Get()->Write(wxT("LastRank9"), rank);                        
-        } else if (m_ratedSize == 19) {
-            wxConfig::Get()->Write(wxT("LastRank19"), rank);                        
+            wxConfig::Get()->Write(wxT("userLastWon9"), false);
         }
-                
-        wxString mess = wxString(_("Your rank: "));
-        mess += rankToString(rank);    
-        m_statusBar->SetStatusText(mess, 1);
-        
-        // don't adjust rank twice
-        m_ratedGame = false;
-    }               
+    } else if (m_ratedSize == 19) {
+        rank = wxConfig::Get()->ReadLong(wxT("userRank19"), (long)-15);
+        hadWon = wxConfig::Get()->ReadBool(wxT("userLastWon19"), true);
+        if (won) {
+            wxConfig::Get()->Write(wxT("userLastWon19"), true);
+        } else {
+            wxConfig::Get()->Write(wxT("userLastWon19"), false);
+        }
+    }
+
+    if (won != hadWon) {
+        adjust /= 2;
+    }
+    adjust = std::max(1L, adjust);
+
+    if (won) {
+        rank = rank + adjust;
+        rank = std::min(MAX_RANK, rank);
+    } else {
+        rank = rank - adjust;
+        rank = std::max(MIN_RANK, rank);
+    }
+
+    if (m_ratedSize == 9) {
+        wxConfig::Get()->Write(wxT("userRank9"), rank);
+        wxConfig::Get()->Write(wxT("userRankAdjust9"), adjust);
+    } else if (m_ratedSize == 19) {
+        wxConfig::Get()->Write(wxT("userRank19"), rank);
+        wxConfig::Get()->Write(wxT("userRankAdjust19"), adjust);
+    }
+
+    wxString mess = wxString(_("Your rank: "));
+    mess += rankToString(rank);
+    m_statusBar->SetStatusText(mess, 1);
+
+    // don't adjust rank twice
+    m_ratedGame = false;
 }
 
 bool MainFrame::scoreGame(float & komi, float & handicap,
