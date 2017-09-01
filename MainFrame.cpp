@@ -82,7 +82,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     GTP::setup_default_parameters();
     thread_pool.initialize(cfg_num_threads);
 
-    std::unique_ptr<Random> rng(new Random(5489UL));
+    auto rng = std::make_unique<Random>(5489UL);
     Zobrist::init_zobrist(*rng);
     AttribScores::get_attribscores();
     Matcher::get_Matcher();
@@ -194,7 +194,7 @@ void MainFrame::doExit(wxCommandEvent & event) {
 
 void MainFrame::startEngine() {
     if (!m_engineThread) {
-        m_engineThread.reset(new TEngineThread(&m_State, this));
+        m_engineThread = std::make_unique<TEngineThread>(&m_State, this);
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             wxLogDebug("Error starting engine");
         } else {
@@ -1121,7 +1121,7 @@ void MainFrame::doHelpAbout(wxCommandEvent& event) {
 }
 
 void MainFrame::loadSGFString(const wxString & SGF, int movenum) {
-    std::unique_ptr<SGFTree> tree(new SGFTree);
+    auto tree = std::make_unique<SGFTree>();
     try {
         const wxScopedCharBuffer sgfUtf8(SGF.ToUTF8());
         std::string sgfstring(sgfUtf8);
@@ -1379,8 +1379,8 @@ void MainFrame::doEvalUpdate(wxCommandEvent& event) {
 void MainFrame::doCopyClipboard(wxCommandEvent& event) {
     if (wxTheClipboard->Open()) {
         std::string sgfgame = SGFTree::state_to_string(&m_State, !m_playerColor);
-        auto data = new wxTextDataObject(wxString(sgfgame));
-        wxTheClipboard->SetData(data);
+        auto data = std::make_unique<wxTextDataObject>(wxString(sgfgame));
+        wxTheClipboard->SetData(data.release());
         wxTheClipboard->Flush();
         wxTheClipboard->Close();
     }
@@ -1393,7 +1393,7 @@ void MainFrame::doPasteClipboard(wxCommandEvent& event) {
             wxTheClipboard->GetData(data);
             std::string sgfstring = data.GetText().ToStdString();
             std::istringstream strm(sgfstring);
-            std::unique_ptr<SGFTree> sgftree(new SGFTree);
+            auto sgftree = std::make_unique<SGFTree>();
             auto games = SGFParser::chop_stream(strm);
             if (!games.empty()) {
                 sgftree->load_from_string(games[0]);
