@@ -24,7 +24,7 @@ class MainFrame : public TMainFrame {
     public:
         MainFrame(wxFrame *frame, const wxString& title);
         ~MainFrame();
-        void SetStatusBar(wxString mess, int pos);
+        void SetStatusBarText(wxString mess, int pos);
         void loadSGF(const wxString & filename, int movenum = 999);
         virtual void doNewRatedGame(wxCommandEvent& event);
 

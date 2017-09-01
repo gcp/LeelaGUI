@@ -97,12 +97,12 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     m_disputing = false;
     m_ponderedOnce = true;
 
-    m_netsEnabled = wxConfig::Get()->Read(wxT("netsEnabled"), true);
-    m_passEnabled = wxConfig::Get()->Read(wxT("passEnabled"), true);
-    m_soundEnabled = wxConfig::Get()->Read(wxT("soundEnabled"), true);
-    m_resignEnabled = wxConfig::Get()->Read(wxT("resignEnabled"), true);
-    m_ponderEnabled = wxConfig::Get()->Read(wxT("ponderEnabled"), true);
-    m_ratedSize     = wxConfig::Get()->Read(wxT("ratedSize"), 9L);
+    m_netsEnabled = wxConfig::Get()->ReadBool(wxT("netsEnabled"), true);
+    m_passEnabled = wxConfig::Get()->ReadBool(wxT("passEnabled"), true);
+    m_soundEnabled = wxConfig::Get()->ReadBool(wxT("soundEnabled"), true);
+    m_resignEnabled = wxConfig::Get()->ReadBool(wxT("resignEnabled"), true);
+    m_ponderEnabled = wxConfig::Get()->ReadBool(wxT("ponderEnabled"), true);
+    m_ratedSize     = wxConfig::Get()->ReadLong(wxT("ratedSize"), 9L);
 
     // This is a bug in 0.4.0, correct broken values.
     if (m_ratedSize != 9 && m_ratedSize != 19) {
@@ -167,7 +167,7 @@ void MainFrame::doStatusUpdate(wxCommandEvent& event) {
     m_statusBar->SetStatusText(event.GetString(), 1);
 }
 
-void MainFrame::SetStatusBar(wxString mess, int pos) {
+void MainFrame::SetStatusBarText(wxString mess, int pos) {
     m_statusBar->SetStatusText(mess, pos);
 }
 
@@ -216,7 +216,7 @@ void MainFrame::startEngine() {
                 m_engineThread->set_nopass(true);
             }
             m_engineThread->Run();
-            SetStatusBar(_("Engine thinking..."), 1);
+            SetStatusBarText(_("Engine thinking..."), 1);
         }
     } else {
         wxLogDebug("Engine already running");
@@ -1201,7 +1201,7 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
         wxFileOutputStream file(path);
 
         if (file.IsOk()) {
-            file.Write(sgfgame.c_str(), sgfgame.size());  
+            file.Write(sgfgame.c_str(), sgfgame.size());
         }
     }
 }
