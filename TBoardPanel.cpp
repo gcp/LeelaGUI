@@ -613,7 +613,7 @@ void TBoardPanel::doDisplayMainline(wxCommandEvent& event) {
 
         wxString move = tokenizer.GetNextToken();
         int vertex = m_State->board.text_to_move(move.ToStdString());
-        if (vertex >= 0 && vertex < m_PV.size()) {
+        if (vertex >= 0 && vertex < (int)m_PV.size()) {
             if (m_PV[vertex] == 0) {
                 m_PV[vertex] = pv_move_counter;
             }
@@ -665,7 +665,7 @@ void TBoardPanel::doBestMovesUpdate(wxCommandEvent& event) {
         for (const auto& pair : *data) {
             std::string move = pair.first;
             int vertex = m_State->board.text_to_move(move);
-            if (vertex >= 0 && vertex < m_Probabilities.size()) {
+            if (vertex >= 0 && vertex < (int)m_Probabilities.size()) {
                 m_Probabilities[vertex] = pair.second;
                 if (pair.second > m_MaxProbability) {
                     m_MaxProbability = pair.second;
