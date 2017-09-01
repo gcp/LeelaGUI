@@ -30,6 +30,8 @@ AnalysisWindow::AnalysisWindow( wxWindow* parent )
     } else {
         CentreOnParent();
     }
+
+    wxPersistentRegisterAndRestore(this, "AnalysisWindow");
 }
 
 void AnalysisWindow::doClose( wxCloseEvent& event ) {
@@ -185,7 +187,7 @@ void AnalysisWindow::doResize( wxSizeEvent& event ) {
 }
 
 void AnalysisWindow::doContextMenu(wxGridEvent& event) {
-    int row = event.GetRow();
+    size_t row = event.GetRow();
     wxMenu mnu;
     mnu.SetClientData((void*)row);
     mnu.Append(ID_COPYPV,   "Copy PV");
@@ -197,7 +199,7 @@ void AnalysisWindow::doContextMenu(wxGridEvent& event) {
 }
 
 void AnalysisWindow::onContextMenuClick(wxCommandEvent& event) {
-    void *data = static_cast<wxMenu *>(event.GetEventObject())->GetClientData();
+    void *data = static_cast<wxMenu*>(event.GetEventObject())->GetClientData();
     size_t row = reinterpret_cast<size_t>(data);
     switch(event.GetId()) {
     case ID_COPYPV:

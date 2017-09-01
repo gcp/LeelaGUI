@@ -144,6 +144,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
 #endif
     Center();
     setActiveMenus();
+
+    wxPersistentRegisterAndRestore(this, "MainFrame");
 }
 
 MainFrame::~MainFrame() {
@@ -879,7 +881,8 @@ void MainFrame::ratedGameEnd(bool won) {
         } else {
             wxConfig::Get()->Write(wxT("userLastWon9"), false);
         }
-    } else if (m_ratedSize == 19) {
+    } else {
+        assert(m_ratedSize == 19);
         rank = wxConfig::Get()->ReadLong(wxT("userRank19"), (long)-15);
         hadWon = wxConfig::Get()->ReadBool(wxT("userLastWon19"), true);
         if (won) {
@@ -905,7 +908,8 @@ void MainFrame::ratedGameEnd(bool won) {
     if (m_ratedSize == 9) {
         wxConfig::Get()->Write(wxT("userRank9"), rank);
         wxConfig::Get()->Write(wxT("userRankAdjust9"), adjust);
-    } else if (m_ratedSize == 19) {
+    } else {
+        assert(m_ratedSize == 19);
         wxConfig::Get()->Write(wxT("userRank19"), rank);
         wxConfig::Get()->Write(wxT("userRankAdjust19"), adjust);
     }

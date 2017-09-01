@@ -12,6 +12,8 @@ TScoreHistogram( parent )
     Bind(wxEVT_SET_MOVENUM, [=](wxCommandEvent& event) {
         m_DrawPanel->GetEventHandler()->AddPendingEvent(event);
     });
+
+    wxPersistentRegisterAndRestore(this, "ScoreHistogram");
 }
 
 void ScoreHistogram::doNewScore(wxCommandEvent& event) {

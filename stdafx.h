@@ -48,6 +48,8 @@
 #include <wx/tokenzr.h>
 #include <wx/graphics.h>
 #include <wx/clipbrd.h>
+#include <wx/persist.h>
+#include <wx/persist/toplevel.h>
 
 // STD headers
 #include <utility>
