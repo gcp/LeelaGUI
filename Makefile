@@ -18,7 +18,7 @@ macos:
 
 clang:
 	$(MAKE) CC=clang-4.0 CXX=clang++-4.0 \
-		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -O3 -ffast-math -g -mtune=generic -flto -std=c++14 -DNDEBUG' \
+		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -O3 -ffast-math -mtune=generic -flto -std=c++14 -DNDEBUG -Wno-inconsistent-missing-override -Wno-unused-parameter' \
 		LDFLAGS='$(LDFLAGS) -flto -fuse-linker-plugin' \
 		leelagui
 
@@ -57,7 +57,7 @@ sources = engine/Network.cpp engine/AttribScores.cpp engine/FullBoard.cpp engine
 	  engine/Utils.cpp engine/FastBoard.cpp engine/Matcher.cpp engine/PNSearch.cpp \
 	  engine/SGFTree.cpp engine/TTable.cpp engine/Zobrist.cpp engine/FastState.cpp engine/GTP.cpp \
 	  engine/MCOTable.cpp engine/Random.cpp engine/SMP.cpp engine/UCTNode.cpp engine/NN.cpp \
-	  engine/NNValue.cpp engine/OpenCL.cpp engine/MCPolicy.cpp \
+	  engine/NN128.cpp engine/NNValue.cpp engine/OpenCL.cpp engine/MCPolicy.cpp \
 	  AboutDialog.cpp AnalysisWindow.cpp App.cpp CalculateDialog.cpp ClockAdjustDialog.cpp \
 	  EngineThread.cpp GUI.cpp MainFrame.cpp NewGameDialog.cpp RatedSizeDialog.cpp \
 	  ScoreDialog.cpp ScoreHistogram.cpp SettingsDialog.cpp TBoardPanel.cpp TScorePanel.cpp
@@ -71,8 +71,8 @@ deps = $(sources:%.cpp=%.d)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) `$(WX_HOME)/wx-config --cxxflags` -c -o $@ $<
 
 leelagui: $(objects)
-#	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `wx-config --libs --static=yes`
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes` $(BOOST_LIBS) 
+	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) $(BOOST_LIBS) -Wl,-Bdynamic,--as-needed $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+#	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes` $(BOOST_LIBS)
 
 Leela.app: Info.plist leelagui img/leela.icns
 	SetFile -t APPL leelagui
