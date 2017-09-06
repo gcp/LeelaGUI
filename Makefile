@@ -22,13 +22,11 @@ clang:
 		LDFLAGS='$(LDFLAGS) -flto -fuse-linker-plugin' \
 		leelagui
 
-BOOST_LIBS = /usr/local/lib/libboost_thread-mt.a /usr/local/lib/libboost_system-mt.a
-
 #DYNAMIC_LIBS += -lboost_filesystem -lcaffe -lprotobuf -lglog
 #LIBS += -lopenblas
-DYNAMIC_LIBS += -lpthread
-DYNAMIC_LIBS += -lOpenCL
-#LIBS += -framework Accelerate
+#DYNAMIC_LIBS += -lpthread
+#DYNAMIC_LIBS += -lOpenCL
+LIBS += -framework Accelerate
 #LIBS += -framework OpenCL
 #DYNAMIC_LIBS += -lmkl_rt
 
@@ -37,7 +35,7 @@ CAFFE_INC = $(CAFFE_BASE)/include
 CAFFE_LIB = $(CAFFE_BASE)/lib
 CXXFLAGS += -I$(CAFFE_INC) -I/usr/local/cuda/include
 #CXXFLAGS += -I/opt/intel/mkl/include
-CXXFLAGS += -I/opt/OpenBLAS/include
+#CXXFLAGS += -I/opt/OpenBLAS/include
 CXXFLAGS += -Iengine
 #CXXFLAGS += -I/System/Library/Frameworks/Accelerate.framework/Versions/Current/Headers
 LDFLAGS  += -L$(CAFFE_LIB)
@@ -45,8 +43,8 @@ CXXFLAGS += -stdlib=libc++
 LDFLAGS  += -stdlib=libc++
 #LDFLAGS  += -L/opt/intel/mkl/lib/intel64/
 #LDFLAGS  += -L/opt/intel/mkl/lib/ia32/
-LDFLAGS += -L/opt/OpenBLAS/lib
-WX_HOME = ~/git/wxWidgets/gtk-build
+#LDFLAGS += -L/opt/OpenBLAS/lib
+WX_HOME = ~/git/wxWidgets/mac-build
 
 CXXFLAGS += -I.
 CPPFLAGS += -MD -MP
@@ -71,8 +69,8 @@ deps = $(sources:%.cpp=%.d)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) `$(WX_HOME)/wx-config --cxxflags` -c -o $@ $<
 
 leelagui: $(objects)
-	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) $(BOOST_LIBS) -Wl,-Bdynamic,--as-needed $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
-#	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes` $(BOOST_LIBS)
+#	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `wx-config --libs --static=yes`
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
 
 Leela.app: Info.plist leelagui img/leela.icns
 	SetFile -t APPL leelagui

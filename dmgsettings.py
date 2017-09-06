@@ -34,7 +34,7 @@ def icon_from_app(app_path):
 # .. Basics ....................................................................
 
 # Uncomment to override the output filename
-# filename = 'Leela_0.10.0.dmg'
+# filename = 'Leela_0.11.0.dmg'
 
 # Uncomment to override the output volume name
 # volume_name = 'Leela'

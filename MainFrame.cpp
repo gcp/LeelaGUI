@@ -69,13 +69,14 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         if (m_analysisWindow) {
             m_analysisWindow->GetEventHandler()->AddPendingEvent(event);
         } else {
-            // Need to free up the analysis data
-            if (!event.GetClientData()) return;
-
+            void* rawdataptr = event.GetClientData();
+            if (!rawdataptr) return;
             using TRowVector = std::vector<std::pair<std::string, std::string>>;
             using TDataVector = std::vector<TRowVector>;
+            using TDataBundle = std::tuple<int, TDataVector>;
 
-            delete reinterpret_cast<TDataVector*>(event.GetClientData());
+            // Take ownership of the data
+            delete reinterpret_cast<TDataBundle*>(rawdataptr);
         }
     });
 
@@ -115,6 +116,17 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         ::wxMessageBox(_("OpenCL self-test failed. Check your graphics drivers."),
                        _("Leela"), wxOK | wxICON_EXCLAMATION, this);
         Close();
+    } else {
+#ifdef __WXMAC__
+        bool hasWhinedDrivers =
+            wxConfig::Get()->ReadBool(wxT("hasWhinedDrivers"), false);
+        if (!hasWhinedDrivers) {
+            ::wxMessageBox(_("The GPU and OpenCL drivers on macOS are often outdated "
+                "and of poor quality. Try switching to the regular version if "
+                "you run into stability issues."), _("Leela"), wxOK, this);
+            wxConfig::Get()->Write(wxT("hasWhinedDrivers"), true);
+        }
+#endif
     }
 #endif
 
@@ -177,6 +189,7 @@ MainFrame::~MainFrame() {
     Unbind(wxEVT_BOARD_UPDATE, &MainFrame::doBoardUpdate, this);
     Unbind(wxEVT_STATUS_UPDATE, &MainFrame::doStatusUpdate, this);
     Unbind(wxEVT_DESTROY, &MainFrame::doCloseChild, this);
+    Unbind(wxEVT_SET_MOVENUM, &MainFrame::gotoMoveNum, this);
 
     Hide();
 }
