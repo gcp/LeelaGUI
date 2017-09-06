@@ -193,11 +193,11 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menuAnalyze->AppendSeparator();
 	
 	wxMenuItem* m_menuItemAnalysisWindow;
-	m_menuItemAnalysisWindow = new wxMenuItem( m_menuAnalyze, ID_ANALYSISWINDOWTOGGLE, wxString( _("Analysis &Window") ) + wxT('\t') + wxT("Ctrl-A"), wxEmptyString, wxITEM_CHECK );
+	m_menuItemAnalysisWindow = new wxMenuItem( m_menuAnalyze, ID_ANALYSISWINDOWTOGGLE, wxString( _("Analysis &Window") ) + wxT('\t') + wxT("F7"), wxEmptyString, wxITEM_CHECK );
 	m_menuAnalyze->Append( m_menuItemAnalysisWindow );
 	
 	wxMenuItem* m_menuItemHistogram;
-	m_menuItemHistogram = new wxMenuItem( m_menuAnalyze, ID_SCOREHISTOGRAMTOGGLE, wxString( _("Show &Histogram") ) + wxT('\t') + wxT("Ctrl-H"), wxEmptyString, wxITEM_CHECK );
+	m_menuItemHistogram = new wxMenuItem( m_menuAnalyze, ID_SCOREHISTOGRAMTOGGLE, wxString( _("Show &Histogram") ) + wxT('\t') + wxT("F8"), wxEmptyString, wxITEM_CHECK );
 	m_menuAnalyze->Append( m_menuItemHistogram );
 	
 	m_menubar1->Append( m_menuAnalyze, _("&Analyze") ); 
@@ -239,7 +239,7 @@ TMainFrame::TMainFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_menu3->Append( menuItem13 );
 	
 	wxMenuItem* menuItem10;
-	menuItem10 = new wxMenuItem( m_menu3, ID_HOMEPAGE, wxString( _("Leela Homepage") ) + wxT('\t') + wxT("Ctrl-H"), wxEmptyString, wxITEM_NORMAL );
+	menuItem10 = new wxMenuItem( m_menu3, ID_HOMEPAGE, wxString( _("Leela Homepage") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu3->Append( menuItem10 );
 	
 	m_menu3->AppendSeparator();

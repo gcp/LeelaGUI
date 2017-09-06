@@ -94,8 +94,8 @@ WXBITMAP_STD_COLOURS    BITMAP                  "wx/msw/colours.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,10,1,0
- PRODUCTVERSION 0,10,1,0
+ FILEVERSION 0,11,0,0
+ PRODUCTVERSION 0,11,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -111,12 +111,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "Leela - the Go program"
-            VALUE "FileVersion", "0.10.1.0"
+            VALUE "FileVersion", "0.11.0.0"
             VALUE "InternalName", "Leela"
             VALUE "LegalCopyright", "Copyright (C) 2017 Gian-Carlo Pascutto"
             VALUE "OriginalFilename", "LeelaGUI.exe"
             VALUE "ProductName", "Leela"
-            VALUE "ProductVersion", "0.10.1.0"
+            VALUE "ProductVersion", "0.11.0.0"
         END
     END
     BLOCK "VarFileInfo"

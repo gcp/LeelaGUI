@@ -625,7 +625,7 @@
                         <property name="label">Analysis &amp;Window</property>
                         <property name="name">m_menuItemAnalysisWindow</property>
                         <property name="permission">none</property>
-                        <property name="shortcut">Ctrl-A</property>
+                        <property name="shortcut">F7</property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doShowHideAnalysisWindow</event>
                         <event name="OnUpdateUI"></event>
@@ -640,7 +640,7 @@
                         <property name="label">Show &amp;Histogram</property>
                         <property name="name">m_menuItemHistogram</property>
                         <property name="permission">none</property>
-                        <property name="shortcut">Ctrl-H</property>
+                        <property name="shortcut">F8</property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doShowHideScoreHistogram</event>
                         <event name="OnUpdateUI"></event>
@@ -778,7 +778,7 @@
                         <property name="label">Leela Homepage</property>
                         <property name="name">menuItem10</property>
                         <property name="permission">none</property>
-                        <property name="shortcut">Ctrl-H</property>
+                        <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">doHomePage</event>
                         <event name="OnUpdateUI"></event>
