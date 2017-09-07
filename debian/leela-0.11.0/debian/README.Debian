@@ -9,14 +9,16 @@ Allowed options:
   -h [ --help ]                 Show commandline options.
   -g [ --gtp ]                  Enable GTP mode.
   -t [ --threads ] arg (=4)     Number of threads to use.
-  -p [ --playouts ] arg         Limit number of playouts.
+  -p [ --playouts ] arg         Weaken engine by limiting the number of
+                                playouts.
   -b [ --lagbuffer ] arg (=100) Safety margin for time usage in centiseconds.
   -l [ --logfile ] arg          File to log input/output to.
   -q [ --quiet ]                Disable all diagnostic output.
   -k [ --komiadjust ]           Adjust komi one point in my disadvantage
                                 (territory scoring).
-  --noponder                    Disable pondering.
+  --noponder                    Disable thinking on opponent's time.
   --nonets                      Disable use of neural networks.
+  --nobook                      Disable use of the fuseki library.
   --gpu arg                     ID of the OpenCL device(s) to use (disables
                                 autodetection).
 
@@ -39,11 +41,6 @@ supposed to be interchangeable).
 
 You can see the installed OpenCL drivers in /etc/OpenCL/vendors/
 
-macOS
------
-You need the boost libraries installed. The recommended way is to
-use Homebrew and do a "brew install boost".
-
 Benchmarking
 ------------
 Leela contains a number of internal benchmarks that can be used
@@ -51,14 +48,14 @@ to judge the speed (and resulting strength) of a system:
 
 - CPU, integer operations: type "benchmark".
 
-Reference score, Intel Core i5-6600 on Windows = ~16000 g/s (4000 g/s per thread)
+Reference score, Intel Core i5-6600 on Windows = ~12800 g/s (3200 g/s per thread)
 
 - CPU and GPU, floating point: type "netbench". The OpenCL version
 will run this computation on the GPU, but CPU speed and core count still
-matters for keeping feeding the GPU fed.
+matters for keeping the GPU fed.
 
-Reference score, Intel Core i5-6600 on Windows = ~105 p/s (first/predictions)
-Reference score, Intel Core i5-6600 on Windows = ~380 p/s (second/evaluations)
+Reference score, Intel Core i5-6600 on Windows = ~100 p/s (first/predictions)
+Reference score, Intel Core i5-6600 on Windows = ~265 p/s (second/evaluations)
 
-Reference score, NVIDIA GTX 1070 on Windows =    ~880 p/s (first/predictions)
-Reference score, NVIDIA GTX 1070 on Windows =   ~2000 p/s (second/evaluations)
+Reference score, NVIDIA GTX 1070 on Windows =    ~475 p/s (first/predictions)
+Reference score, NVIDIA GTX 1070 on Windows =   ~1850 p/s (second/evaluations)
