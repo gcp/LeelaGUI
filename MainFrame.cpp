@@ -123,7 +123,8 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         if (!hasWhinedDrivers) {
             ::wxMessageBox(_("The GPU and OpenCL drivers on macOS are often outdated "
                 "and of poor quality. Try switching to the regular version if "
-                "you run into stability issues."), _("Leela"), wxOK, this);
+                "you run into stability issues. If your GPU is slow, it may "
+                "even be faster."), _("Leela"), wxOK, this);
             wxConfig::Get()->Write(wxT("hasWhinedDrivers"), true);
         }
 #endif
