@@ -1,7 +1,7 @@
 default:
 	$(MAKE) CC=gcc CXX=g++ \
 		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -pipe -O3 -g -ffast-math -mtune=generic -flto -std=c++14 -DNDEBUG'  \
-		LDFLAGS='$(LDFLAGS) -g' \
+		LDFLAGS='$(LDFLAGS) -flto' \
 		leelagui
 
 debug:
@@ -69,8 +69,8 @@ deps = $(sources:%.cpp=%.d)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) `$(WX_HOME)/wx-config --cxxflags` -c -o $@ $<
 
 leelagui: $(objects)
-#	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,-Bdynamic $(DYNAMIC_LIBS) `wx-config --libs --static=yes`
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+	$(CXX) $(LDFLAGS) -o $@ $^ -static-libgcc -static-libstdc++ -Wl,-Bstatic $(LIBS) -Wl,--as-needed,-Bdynamic $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
+#	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
 
 Leela.app: Info.plist leelagui img/leela.icns
 	SetFile -t APPL leelagui
