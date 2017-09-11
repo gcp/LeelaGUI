@@ -50,14 +50,15 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
 
     using TRowVector = std::vector<std::pair<std::string, std::string>>;
     using TDataVector = std::vector<TRowVector>;
-    using TDataBundle = std::tuple<int, TDataVector>;
+    using TDataBundle = std::tuple<int, float, TDataVector>;
 
     // Take ownership of the data
     std::unique_ptr<TDataBundle> bundle(reinterpret_cast<TDataBundle*>(rawdataptr));
 
     auto tomove = std::get<0>(*bundle);
     assert(tomove == FastBoard::BLACK || tomove == FastBoard::WHITE);
-    auto data = std::get<1>(*bundle);
+    auto board_score = std::get<1>(*bundle);
+    auto data = std::get<2>(*bundle);
 
     size_t rows = data.size();
     if (rows == 0) return;
@@ -147,6 +148,16 @@ void AnalysisWindow::doUpdate(wxCommandEvent& event) {
         SetSize(bestSize);
         mHasAutoSized = true;
     }
+
+    wxString titleString(_("Analysis - Score Estimate "));
+    wxString scoreString;
+    if (board_score >= 0.0f) {
+        titleString += "B+";
+    } else {
+        titleString += "W+";
+    }
+    scoreString.Printf("%.1f", std::fabs(board_score));
+    SetTitle(titleString + scoreString);
 }
 
 void AnalysisWindow::doDeselect(wxGridEvent& event) {

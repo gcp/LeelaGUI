@@ -74,7 +74,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
             if (!rawdataptr) return;
             using TRowVector = std::vector<std::pair<std::string, std::string>>;
             using TDataVector = std::vector<TRowVector>;
-            using TDataBundle = std::tuple<int, TDataVector>;
+            using TDataBundle = std::tuple<int, float, TDataVector>;
 
             // Take ownership of the data
             delete reinterpret_cast<TDataBundle*>(rawdataptr);
