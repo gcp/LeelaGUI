@@ -44,8 +44,9 @@ static constexpr long MIN_RANK = -30L;
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
           : TMainFrame(frame, wxID_ANY, title) {
 
+#ifdef NDEBUG
     delete wxLog::SetActiveTarget(NULL);
-
+#endif
     wxLog::SetTimestamp("");
 
     Bind(wxEVT_NEW_MOVE, &MainFrame::doNewMove, this);
@@ -181,8 +182,9 @@ MainFrame::~MainFrame() {
         m_analysisWindow != nullptr);
     wxConfig::Get()->Write(wxT("scoreHistogramWindowOpen"),
         m_scoreHistogramWindow != nullptr);
-
+#ifdef NDEBUG
     delete wxLog::SetActiveTarget(new wxLogStderr(NULL));
+#endif
     m_panelBoard->setState(NULL);
 
     Unbind(wxEVT_EVALUATION_UPDATE, &MainFrame::doEvalUpdate, this);
@@ -457,7 +459,6 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         wxLogDebug("OK clicked");
 
         m_State.init_game(mydialog.getBoardsize(), mydialog.getKomi());
-        TTable::get_TT()->clear();
         ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
@@ -1163,11 +1164,14 @@ void MainFrame::loadSGFString(const wxString & SGF, int movenum) {
             return;
         }
         tree->load_from_string(games[0]);
+        m_State = tree->follow_mainline_state();
         int last_move = tree->count_mainline_moves();
-        movenum = std::min(last_move, movenum);
         movenum = std::max(1, movenum);
-        wxLogDebug("Read %d moves", last_move);
-        m_State = tree->follow_mainline_state(movenum - 1);
+        wxLogDebug("Read %d moves, going to move %d", last_move, movenum);
+        m_State.rewind();
+        for (int i = 1; i < movenum; ++i) {
+            m_State.forward_move();
+        }
     } catch (...) {
     }
 
