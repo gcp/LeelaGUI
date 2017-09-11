@@ -596,7 +596,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     if (m_ratedSize == 9) {
         rank = wxConfig::Get()->ReadLong(wxT("userRank9"), (long)-30);
     } else if (m_ratedSize == 19) {
-        rank = wxConfig::Get()->ReadLong(wxT("userRank19"), (long)-10);
+        rank = wxConfig::Get()->ReadLong(wxT("userRank19"), (long)-15);
     }
 
     wxLogDebug("Last rank was: %d", rank);
