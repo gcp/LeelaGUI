@@ -159,6 +159,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Center();
     setActiveMenus();
 
+    // Restore open windows
     bool restoreAnalysisWindow =
         wxConfig::Get()->ReadBool(wxT("analysisWindowOpen"), false);
     bool restoreScoreHistogramWindow =
@@ -169,6 +170,31 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     }
     if (restoreScoreHistogramWindow) {
         auto event = new wxCommandEvent(wxEVT_MENU, ID_SCOREHISTOGRAMTOGGLE);
+        GetEventHandler()->QueueEvent(event);
+    }
+    // Restore menu options
+    bool restoreShowOwner =
+        wxConfig::Get()->ReadBool("showOwnerEnabled", false);
+    bool restoreShowMoyo =
+        wxConfig::Get()->ReadBool("showMoyoEnabled", false);
+    bool restoreShowBestMoves =
+        wxConfig::Get()->ReadBool("showBestMovesEnabled", false);
+    bool restoreShowProbabilities =
+        wxConfig::Get()->ReadBool("showProbabilitiesEnabled", false);
+    if (restoreShowOwner) {
+        auto event = new wxCommandEvent(wxEVT_MENU, ID_SHOWTERRITORY);
+        GetEventHandler()->QueueEvent(event);
+    }
+    if (restoreShowMoyo) {
+        auto event = new wxCommandEvent(wxEVT_MENU, ID_SHOWMOYO);
+        GetEventHandler()->QueueEvent(event);
+    }
+    if (restoreShowBestMoves) {
+        auto event = new wxCommandEvent(wxEVT_MENU, ID_BEST_MOVES);
+        GetEventHandler()->QueueEvent(event);
+    }
+    if (restoreShowProbabilities) {
+        auto event = new wxCommandEvent(wxEVT_MENU, ID_MOVE_PROBABILITIES);
         GetEventHandler()->QueueEvent(event);
     }
 
@@ -269,13 +295,24 @@ bool MainFrame::stopEngine(bool update_score) {
 }
 
 void MainFrame::doToggleTerritory(wxCommandEvent& event) {
+    // This is really doToggleOwner but the option is named
+    // territory in the menu.
     m_panelBoard->setShowOwner(!m_panelBoard->getShowOwner());
 
     if (m_panelBoard->getShowOwner()) {
+        wxConfig::Get()->Write("showOwnerEnabled", true);
+        // Enforce this so we aree checked if we were sent an event externally
+        wxMenuItem * territory = m_menuTools->FindItem(ID_SHOWTERRITORY);
+        territory->Check(true);
+
         m_panelBoard->setShowMoyo(false);
         wxMenuItem * moyo = m_menuTools->FindItem(ID_SHOWMOYO);
         moyo->Check(false);
+        wxConfig::Get()->Write("showMoyoEnabled", false);
+
         gameNoLongerCounts();
+    } else {
+        wxConfig::Get()->Write("showOwnerEnabled", false);
     }
 
     m_panelBoard->setShowTerritory(false);
@@ -287,13 +324,22 @@ void MainFrame::doToggleMoyo(wxCommandEvent& event) {
     m_panelBoard->setShowMoyo(!m_panelBoard->getShowMoyo());
 
     if (m_panelBoard->getShowMoyo()) {
+        wxConfig::Get()->Write("showMoyoEnabled", true);
+        wxMenuItem * moyo = m_menuTools->FindItem(ID_SHOWMOYO);
+        moyo->Check(true);
+
         m_panelBoard->setShowOwner(false);
-        wxMenuItem * influence = m_menuTools->FindItem(ID_SHOWTERRITORY);
-        influence->Check(false);
+        wxMenuItem * territory = m_menuTools->FindItem(ID_SHOWTERRITORY);
+        territory->Check(false);
+        wxConfig::Get()->Write("showOwnerEnabled", false);
+
+        gameNoLongerCounts();
+    } else {
+        wxConfig::Get()->Write("showMoyoEnabled", false);
     }
 
     m_panelBoard->setShowTerritory(false);
-    
+
     m_panelBoard->Refresh();
 }
 
@@ -301,10 +347,16 @@ void MainFrame::doToggleProbabilities(wxCommandEvent& event) {
     m_panelBoard->setShowProbabilities(!m_panelBoard->getShowProbabilities());
 
     if (m_panelBoard->getShowProbabilities()) {
+        wxConfig::Get()->Write("showProbabilitiesEnabled", true);
+        wxMenuItem * prob = m_menuTools->FindItem(ID_MOVE_PROBABILITIES);
+        prob->Check(true);
         gameNoLongerCounts();
+    } else {
+        wxConfig::Get()->Write("showProbabilitiesEnabled", false);
     }
 
     if (m_panelBoard->getShowBestMoves()) {
+        wxConfig::Get()->Write("showBestMovesEnabled", false);
         m_panelBoard->setShowBestMoves(false);
         wxMenuItem * bm = m_menuTools->FindItem(ID_BEST_MOVES);
         bm->Check(false);
@@ -317,10 +369,16 @@ void MainFrame::doToggleBestMoves(wxCommandEvent& event) {
     m_panelBoard->setShowBestMoves(!m_panelBoard->getShowBestMoves());
 
     if (m_panelBoard->getShowBestMoves()) {
+        wxConfig::Get()->Write("showBestMovesEnabled", true);
+        wxMenuItem * bm = m_menuTools->FindItem(ID_BEST_MOVES);
+        bm->Check(true);
         gameNoLongerCounts();
+    } else {
+        wxConfig::Get()->Write("showBestMovesEnabled", false);
     }
 
     if (m_panelBoard->getShowProbabilities()) {
+        wxConfig::Get()->Write("showProbabilitiesEnabled", false);
         m_panelBoard->setShowProbabilities(false);
         wxMenuItem * prob = m_menuTools->FindItem(ID_MOVE_PROBABILITIES);
         prob->Check(false);
