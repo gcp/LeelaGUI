@@ -1380,6 +1380,7 @@ void MainFrame::doShowHideAnalysisWindow(wxCommandEvent& event) {
             m_analysisWindow->disableAutoSize();
         }
         m_analysisWindow->Show();
+        m_menuAnalyze->FindItem(ID_ANALYSISWINDOWTOGGLE)->Check(true);
         gameNoLongerCounts();
     } else {
         if (!m_analysisWindow->IsShown()) {
@@ -1394,6 +1395,8 @@ void MainFrame::doShowHideScoreHistogram( wxCommandEvent& event ) {
     if (!m_scoreHistogramWindow) {
         m_scoreHistogramWindow = new ScoreHistogram(this);
         m_scoreHistogramWindow->Show();
+        m_menuAnalyze->FindItem(ID_SCOREHISTOGRAMTOGGLE)->Check(true);
+        gameNoLongerCounts();
     } else {
         if (!m_scoreHistogramWindow->IsShown()) {
             m_scoreHistogramWindow->Show();
