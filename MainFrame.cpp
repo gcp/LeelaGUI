@@ -862,7 +862,6 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     {
         float komi = handicap ? 0.5f : 7.5f;
         m_State.init_game(m_ratedSize, komi);
-        TTable::get_TT()->clear();
         ::wxBeginBusyCursor();
         CalculateDialog calcdialog(this);
         calcdialog.Show();
