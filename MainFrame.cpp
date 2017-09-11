@@ -526,7 +526,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_State.place_free_handicap(mydialog.getHandicap());
         calcdialog.Hide();
         ::wxEndBusyCursor();
-        MCOwnerTable::clear();
+        MCOwnerTable::get_MCO()->clear();
         m_panelBoard->clearViz();
         if (m_scoreHistogramWindow) {
             m_scoreHistogramWindow->ClearHistogram();
@@ -932,7 +932,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         // max 60 minutes per game
         m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
         m_StateStack.clear();
-        MCOwnerTable::clear();
+        MCOwnerTable::get_MCO()->clear();
         m_visitLimit = simulations;
         m_playerColor = (handicap >= 0 ? FastBoard::BLACK : FastBoard::WHITE);
         m_panelBoard->setPlayerColor(m_playerColor);
@@ -1173,7 +1173,7 @@ void MainFrame::doRealForward(int count) {
 
 void MainFrame::doPostMoveChange(bool wasAnalyzing) {
     m_playerColor = m_State.get_to_move();
-    MCOwnerTable::clear();
+    MCOwnerTable::get_MCO()->clear();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
     m_panelBoard->clearViz();
@@ -1236,7 +1236,7 @@ void MainFrame::loadSGFString(const wxString & SGF, int movenum) {
     m_StateStack.clear();
     m_StateStack.push_back(m_State);
     m_playerColor = m_State.get_to_move();
-    MCOwnerTable::clear();
+    MCOwnerTable::get_MCO()->clear();
     m_panelBoard->setPlayerColor(m_playerColor);
     m_panelBoard->setShowTerritory(false);
     m_panelBoard->clearViz();
@@ -1499,7 +1499,7 @@ void MainFrame::doPasteClipboard(wxCommandEvent& event) {
                 m_StateStack.clear();
                 m_StateStack.push_back(m_State);
                 m_playerColor = m_State.get_to_move();
-                MCOwnerTable::clear();
+                MCOwnerTable::get_MCO()->clear();
                 m_panelBoard->setPlayerColor(m_playerColor);
                 m_panelBoard->setShowTerritory(false);
                 m_panelBoard->clearViz();
