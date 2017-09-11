@@ -40,6 +40,10 @@ void AnalysisWindow::doClose( wxCloseEvent& event ) {
     event.Skip();
 }
 
+void AnalysisWindow::disableAutoSize() {
+    mHasUserSized = true;
+}
+
 void AnalysisWindow::doUpdate(wxCommandEvent& event) {
     void* rawdataptr = event.GetClientData();
     if (!rawdataptr) return;

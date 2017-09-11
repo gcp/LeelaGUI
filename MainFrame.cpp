@@ -166,6 +166,7 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         wxConfig::Get()->ReadBool(wxT("scoreHistogramWindowOpen"), false);
     if (restoreAnalysisWindow) {
         auto event = new wxCommandEvent(wxEVT_MENU, ID_ANALYSISWINDOWTOGGLE);
+        event->SetInt(NO_WINDOW_AUTOSIZE);
         GetEventHandler()->QueueEvent(event);
     }
     if (restoreScoreHistogramWindow) {
@@ -1375,6 +1376,9 @@ void MainFrame::doKeyDown(wxKeyEvent& event) {
 void MainFrame::doShowHideAnalysisWindow(wxCommandEvent& event) {
     if (!m_analysisWindow) {
         m_analysisWindow = new AnalysisWindow(this);
+        if (event.GetInt() == NO_WINDOW_AUTOSIZE) {
+            m_analysisWindow->disableAutoSize();
+        }
         m_analysisWindow->Show();
         gameNoLongerCounts();
     } else {

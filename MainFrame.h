@@ -87,6 +87,8 @@ class MainFrame : public TMainFrame {
         void gameNoLongerCounts();
         void loadSGFString(const wxString & SGF, int movenum = 999);
 
+        static constexpr int NO_WINDOW_AUTOSIZE = 1;
+
 	GameState m_State;
         std::vector<GameState> m_StateStack;
 	int m_playerColor;

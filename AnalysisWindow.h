@@ -18,7 +18,9 @@ class AnalysisWindow : public TAnalysisWindow
 {
 	public:
 		/** Constructor */
-		AnalysisWindow( wxWindow* parent );
+        AnalysisWindow( wxWindow* parent );
+        void disableAutoSize();
+
 	//// end generated class members
         private:
             enum {
