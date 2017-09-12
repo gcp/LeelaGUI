@@ -206,9 +206,9 @@ MainFrame::~MainFrame() {
     stopEngine();
 
     wxConfig::Get()->Write(wxT("analysisWindowOpen"),
-        m_analysisWindow != nullptr);
+        m_analysisWindow != nullptr && m_analysisWindow->IsShown());
     wxConfig::Get()->Write(wxT("scoreHistogramWindowOpen"),
-        m_scoreHistogramWindow != nullptr);
+        m_scoreHistogramWindow != nullptr && m_scoreHistogramWindow->IsShown());
 #ifdef NDEBUG
     delete wxLog::SetActiveTarget(new wxLogStderr(NULL));
 #endif
