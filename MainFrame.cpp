@@ -1233,6 +1233,14 @@ void MainFrame::loadSGFString(const wxString & SGF, int movenum) {
     } catch (...) {
     }
 
+    // Reset to New Game dialog defaults
+    int minutes = wxConfig::Get()->ReadLong(wxT("DefaultMinutes"), (long)20);
+    m_State.set_timecontrol(minutes * 60 * 100, 0, 0, 0);
+    bool nets = wxConfig::Get()->ReadBool(wxT("netsEnabled"), true);
+    m_netsEnabled = (m_State.board.get_boardsize() == 19 ? nets : false);
+    int simulations = wxConfig::Get()->ReadLong(wxT("DefaultSimulations"), (long)6);
+    m_visitLimit = NewGameDialog::simulationsToVisitLimit(simulations);
+
     m_StateStack.clear();
     m_StateStack.push_back(m_State);
     m_playerColor = m_State.get_to_move();

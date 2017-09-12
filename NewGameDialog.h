@@ -32,6 +32,7 @@ public:
     int getPlayerColor();
     int getTimeControl();
     bool getNetsEnabled();
+    static int simulationsToVisitLimit(int visits);
 
     void checkNetsEnabled();
     void checkHandicapRange();

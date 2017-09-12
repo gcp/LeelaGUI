@@ -93,9 +93,7 @@ int NewGameDialog::getBoardsize() {
     throw std::runtime_error("Invalid board size selection");
 }
 
-int NewGameDialog::getSimulations() {
-    int simuls = m_radioBoxLevel->GetSelection();    
-    
+int NewGameDialog::simulationsToVisitLimit(int simuls) {
     if (simuls == 0) {
         return 100;
     } else if (simuls == 1) {
@@ -110,9 +108,14 @@ int NewGameDialog::getSimulations() {
         return 20000;
     } else if (simuls == 6) {
         return 0;
+    } else {
+        throw std::runtime_error("Invalid simulations level selection");
     }
-    
-    throw std::runtime_error("Invalid simulations level selection");
+}
+
+int NewGameDialog::getSimulations() {
+    int simuls = m_radioBoxLevel->GetSelection();
+    return simulationsToVisitLimit(simuls);
 }
 
 int NewGameDialog::getPlayerColor() {
