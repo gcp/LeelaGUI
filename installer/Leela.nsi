@@ -1,4 +1,4 @@
-!define LEELABIN  "Leela0110.exe"
+﻿!define LEELABIN  "Leela0110.exe"
 !define LEELAOCL  "Leela0110_OpenCL.exe"
 !define VERSION   "0.11.0"
 
@@ -60,7 +60,7 @@ Var install_for_all
   VIAddVersionKey "FileDescription" "Leela installer"
   VIAddVersionKey "ProductName" "Leela"
   VIAddVersionKey "CompanyName" "Sjeng.Org"
-  VIAddVersionKey "LegalCopyright" "� Gian-Carlo Pascutto. All rights reserved."
+  VIAddVersionKey "LegalCopyright" "© Gian-Carlo Pascutto. All rights reserved."
   VIAddVersionKey "FileVersion" "${VERSION}"
 
 ;Variables
