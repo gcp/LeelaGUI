@@ -107,7 +107,7 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
     int boardSize = m_State->board.get_boardsize();
 
     int minDim = std::min(sz.GetWidth(), sz.GetHeight());
-    int cellDim = minDim / ((boardSize - 1) + 2);
+    int cellDim = std::max(1, minDim / ((boardSize - 1) + 2));
     m_cellDim = cellDim;
 
     wxLogDebug("cell size: %d", cellDim);
@@ -162,7 +162,10 @@ void TBoardPanel::doPaint(wxPaintEvent& event) {
                 float val = m_Probabilities[vtx];
                 if (val > 0.005f) {
                     int red, green, blue;
-                    float frac = val / m_MaxProbability;
+                    float frac = 1.0f;
+                    if (m_MaxProbability > 0.0f) {
+                        frac = val / m_MaxProbability;
+                    }
                     frac = std::max(0.0f, std::min(1.0f, frac));
                     if (val > m_MaxProbability / 4.0f) {
                         red = 255;
