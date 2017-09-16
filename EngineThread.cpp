@@ -1,8 +1,4 @@
 #include "stdafx.h"
-#ifdef WIN32
-#include <boost/thread.hpp>
-#include <boost/thread/detail/tss_hooks.hpp>
-#endif
 
 #include "EngineThread.h"
 #include "UCTSearch.h"
@@ -78,9 +74,6 @@ void TEngineThread::OnExit() {
         wxQueueEvent(m_frame->GetEventHandler(),
                      new wxCommandEvent(wxEVT_NEW_MOVE));
     }
-#ifdef WIN32
-    boost::on_thread_exit();
-#endif
 }
 
 void TEngineThread::limit_visits(int visits) {
