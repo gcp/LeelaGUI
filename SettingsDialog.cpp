@@ -28,10 +28,11 @@ void SettingsDialog::doInit(wxInitDialogEvent& event) {
 
 #ifdef __WXGTK__
     m_checkBoxDPIScaling->Disable();
+    m_checkBoxDPIScaling->SetValue(false);
 #elif defined(__WXMAC__)
     m_checkBoxDPIScaling->Disable();
     m_checkBoxSound->Disable();
-#else
+    m_checkBoxSound->SetValue(false);
 #endif
 }
 
