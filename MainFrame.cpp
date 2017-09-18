@@ -289,9 +289,10 @@ bool MainFrame::stopEngine(bool update_score) {
     if (!update_score) {
         m_engineThread->kill_score_update();
     }
+    m_engineThread->SetPriority(wxPRIORITY_DEFAULT);
     m_engineThread->stop_engine();
     m_engineThread->Wait();
-    m_engineThread.reset(nullptr);
+    m_engineThread.reset();
     return true;
 }
 
