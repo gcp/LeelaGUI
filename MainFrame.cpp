@@ -255,7 +255,7 @@ void MainFrame::doExit(wxCommandEvent & event) {
 
 void MainFrame::startEngine() {
     if (!m_engineThread) {
-        m_engineThread = std::make_unique<TEngineThread>(&m_State, this);
+        m_engineThread = std::make_unique<TEngineThread>(m_State, this);
         if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
             wxLogDebug("Error starting engine");
         } else {
@@ -292,6 +292,16 @@ bool MainFrame::stopEngine(bool update_score) {
     m_engineThread->SetPriority(wxPRIORITY_DEFAULT);
     m_engineThread->stop_engine();
     m_engineThread->Wait();
+    // Copy back the state unless we were analyzing.
+    // It's important we are stopped before these flags
+    // are changed. Our state will be modified by panelBoard
+    // so this should match whether that is locked.
+    if (!m_analyzing && !m_pondering) {
+        assert(m_panelBoard->isLockedState());
+        m_State = m_engineThread->get_state();
+    } else {
+        assert(!m_panelBoard->isLockedState());
+    }
     m_engineThread.reset();
     return true;
 }

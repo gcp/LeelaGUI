@@ -31,6 +31,9 @@ public:
     void doTerritory(bool disputing);
     void lockState();
     void unlockState();
+    bool isLockedState() const {
+        return m_stateLock;
+    }
     void clearViz();
 
 private:

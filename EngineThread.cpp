@@ -4,10 +4,10 @@
 #include "UCTSearch.h"
 #include "MainFrame.h"
 
-TEngineThread::TEngineThread(GameState * state, MainFrame * frame)
+TEngineThread::TEngineThread(const GameState& state, MainFrame * frame)
     : wxThread(wxTHREAD_JOINABLE)
  {
-    m_state = state;
+    m_state = std::make_unique<GameState>(state);
     m_frame = frame;
     m_maxvisits = 0;
     m_runflag = true;
@@ -19,8 +19,7 @@ TEngineThread::TEngineThread(GameState * state, MainFrame * frame)
 
 void * TEngineThread::Entry() {
     {
-        GameState work_state(*m_state);
-        std::unique_ptr<UCTSearch> search(new UCTSearch(work_state));
+        auto search = std::make_unique<UCTSearch>(*m_state);
 
         int who = m_state->get_to_move();
         if (m_analyseflag && !m_pondering) {
@@ -47,15 +46,13 @@ void * TEngineThread::Entry() {
 
         if (!m_analyseflag) {
             m_state->play_move(who, move);
-            // Update clocks if not analyzing
-            m_state->set_timecontrol(work_state.get_timecontrol());
         }
 
         if (m_update_score) {
             // Broadcast result from search
             auto event = new wxCommandEvent(wxEVT_EVALUATION_UPDATE);
             auto scores = search->get_scores();
-            auto movenum = work_state.get_movenum();
+            auto movenum = m_state->get_movenum();
             auto scoretuple = std::make_tuple(movenum,
                                               std::get<0>(scores),
                                               std::get<1>(scores),
