@@ -73,6 +73,7 @@ leelagui: $(objects)
 #	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS) $(DYNAMIC_LIBS) `$(WX_HOME)/wx-config --libs --static=yes`
 
 Leela.app: Info.plist leelagui img/leela.icns
+	strip leelagui
 	SetFile -t APPL leelagui
 	-mkdir Leela.app
 	-mkdir Leela.app/Contents
