@@ -289,7 +289,11 @@ bool MainFrame::stopEngine(bool update_score) {
     if (!update_score) {
         m_engineThread->kill_score_update();
     }
-    m_engineThread->SetPriority(wxPRIORITY_DEFAULT);
+    // Priority setting and this check are racy. We don't care, it's mostly
+    // annoying in debug mode.
+    if (m_engineThread->IsAlive()) {
+        m_engineThread->SetPriority(wxPRIORITY_DEFAULT);
+    }
     m_engineThread->stop_engine();
     m_engineThread->Wait();
     // Copy back the state unless we were analyzing.
