@@ -1,6 +1,11 @@
 #include "stdafx.h"
+#include "config.h"
 #include "App.h"
 #include "MainFrame.h"
+#ifdef WIN32
+#include <DbgHelp.h>
+#include <Shlwapi.h>
+#endif
 
 #ifdef WIN32
 bool IsWindowsVistaOrHigher() {
@@ -16,8 +21,40 @@ typedef BOOL (WINAPI *SetProcDPICall)(void);
 
 IMPLEMENT_APP(MyApp);
 
+#if defined(WIN32) && defined(USE_MINIDUMPS)
+extern BOOL WriteMiniDumpHelper(HANDLE hDump, LPEXCEPTION_POINTERS param);
+static LONG __stdcall ExceptFilterProc(LPEXCEPTION_POINTERS param) {
+    if (IsDebuggerPresent()) {
+        return UnhandledExceptionFilter(param);
+    } else {
+        TCHAR lpTempPathBuffer[MAX_PATH];
+        TCHAR comboPathBuffer[MAX_PATH];
+        GetTempPath(MAX_PATH, lpTempPathBuffer);
+        PathCombine(comboPathBuffer, lpTempPathBuffer, L"leela.dmp");
+        HANDLE hFile = CreateFile(
+            comboPathBuffer,
+            GENERIC_WRITE,          // open for writing
+            0,                      // do not share
+            NULL,                   // default security
+            CREATE_ALWAYS,
+            FILE_ATTRIBUTE_NORMAL,  // normal file
+            NULL);                  // no attr. template
+        if (hFile != INVALID_HANDLE_VALUE) {
+            WriteMiniDumpHelper(hFile, param);
+            CloseHandle(hFile);
+        }
+        TerminateProcess(GetCurrentProcess(), 0);
+        return 0;// never reached
+    }
+}
+#endif
+
 bool MyApp::OnInit()
 {
+#if defined(WIN32) && defined(USE_MINIDUMPS)
+    SetUnhandledExceptionFilter(ExceptFilterProc);
+#endif
+
     wxImage::AddHandler(new wxPNGHandler());
 
     wxConfig * config = new wxConfig(wxT("Leela"), wxT("Sjeng.Org"));

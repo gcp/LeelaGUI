@@ -43,7 +43,6 @@ static constexpr long MIN_RANK = -30L;
 
 MainFrame::MainFrame(wxFrame *frame, const wxString& title)
           : TMainFrame(frame, wxID_ANY, title) {
-
 #ifdef NDEBUG
     delete wxLog::SetActiveTarget(NULL);
 #endif
