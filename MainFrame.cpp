@@ -99,10 +99,12 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
         errorString.Printf("Error initializing OpenCL: %s (error %d)",
             e.what(), e.err());
         ::wxMessageBox(errorString, _("Leela"), wxOK | wxICON_EXCLAMATION, this);
+        Close();
     } catch (const std::exception& e) {
         wxString errorString;
         errorString.Printf("Error initializing OpenCL: %s", e.what());
         ::wxMessageBox(errorString, _("Leela"), wxOK | wxICON_EXCLAMATION, this);
+        Close();
     }
 #else
     Network::get_Network();
