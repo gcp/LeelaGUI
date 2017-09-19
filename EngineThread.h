@@ -3,13 +3,17 @@
 
 #include "stdafx.h"
 #include "GameState.h"
+#include "Utils.h"
 #include <atomic>
 
 class MainFrame;
+using Utils::ThreadGroup;
 
-class TEngineThread : public wxThread {
+class TEngineThread {
     public:
         TEngineThread(const GameState& gamestate, MainFrame * frame);
+        void Wait();
+        void Run();
         void limit_visits(int visits);
         void set_resigning(bool res);
         void set_analyzing(bool flag);
@@ -22,8 +26,6 @@ class TEngineThread : public wxThread {
         GameState& get_state(void) {
             return *m_state;
         }
-        virtual void * Entry() override;
-        virtual void OnExit() override;
     private:
         std::unique_ptr<GameState> m_state;
         MainFrame * m_frame;
@@ -35,6 +37,7 @@ class TEngineThread : public wxThread {
         bool m_quiet;
         bool m_nopass;
         bool m_update_score;
+        ThreadGroup m_tg{thread_pool};
         std::atomic<bool> m_runflag;
 };
 

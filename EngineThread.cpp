@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
+#include <thread>
 #include "EngineThread.h"
 #include "UCTSearch.h"
 #include "MainFrame.h"
+#include "Utils.h"
 
-TEngineThread::TEngineThread(const GameState& state, MainFrame * frame)
-    : wxThread(wxTHREAD_JOINABLE)
- {
+TEngineThread::TEngineThread(const GameState& state, MainFrame * frame) {
     m_state = std::make_unique<GameState>(state);
     m_frame = frame;
     m_maxvisits = 0;
@@ -17,8 +17,8 @@ TEngineThread::TEngineThread(const GameState& state, MainFrame * frame)
     m_update_score = true;
 }
 
-void * TEngineThread::Entry() {
-    {
+void TEngineThread::Run() {
+    auto Func = [this] {
         auto search = std::make_unique<UCTSearch>(*m_state);
 
         int who = m_state->get_to_move();
@@ -61,16 +61,18 @@ void * TEngineThread::Entry() {
 
             wxQueueEvent(m_frame->GetEventHandler(), event);
         }
-    }
 
-    return NULL;
+        if (!m_analyseflag) {
+            wxQueueEvent(m_frame->GetEventHandler(),
+                new wxCommandEvent(wxEVT_NEW_MOVE));
+        }
+    };
+
+    m_tg.add_task(Func);
 }
 
-void TEngineThread::OnExit() {
-    if (!m_analyseflag) {
-        wxQueueEvent(m_frame->GetEventHandler(),
-                     new wxCommandEvent(wxEVT_NEW_MOVE));
-    }
+void TEngineThread::Wait() {
+    m_tg.wait_all();
 }
 
 void TEngineThread::limit_visits(int visits) {

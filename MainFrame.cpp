@@ -276,29 +276,24 @@ void MainFrame::doExit(wxCommandEvent & event) {
 void MainFrame::startEngine() {
     if (!m_engineThread) {
         m_engineThread = std::make_unique<TEngineThread>(m_State, this);
-        if (m_engineThread->Create(1024 * 1024) != wxTHREAD_NO_ERROR) {
-            wxLogDebug("Error starting engine");
-        } else {
-            m_engineThread->SetPriority(wxPRIORITY_MIN);
-            // lock the board
-            if (!m_pondering && !m_analyzing) {
-                m_panelBoard->lockState();
-            }
-
-            m_engineThread->limit_visits(m_visitLimit);
-            m_engineThread->set_resigning(m_resignEnabled);
-            m_engineThread->set_analyzing(m_analyzing | m_pondering);
-            m_engineThread->set_pondering(m_pondering);
-            m_engineThread->set_quiet(!m_analyzing);
-            m_engineThread->set_nets(m_netsEnabled);
-            if (m_passEnabled) {
-                m_engineThread->set_nopass(m_disputing);
-            } else {
-                m_engineThread->set_nopass(true);
-            }
-            m_engineThread->Run();
-            SetStatusBarText(_("Engine thinking..."), 1);
+        // lock the board
+        if (!m_pondering && !m_analyzing) {
+            m_panelBoard->lockState();
         }
+        m_engineThread->limit_visits(m_visitLimit);
+        m_engineThread->set_resigning(m_resignEnabled);
+        m_engineThread->set_analyzing(m_analyzing | m_pondering);
+        m_engineThread->set_pondering(m_pondering);
+        m_engineThread->set_quiet(!m_analyzing);
+        m_engineThread->set_nets(m_netsEnabled);
+        if (m_passEnabled) {
+            m_engineThread->set_nopass(m_disputing);
+        }
+        else {
+            m_engineThread->set_nopass(true);
+        }
+        m_engineThread->Run();
+        SetStatusBarText(_("Engine thinking..."), 1);
     } else {
         wxLogDebug("Engine already running");
     }
@@ -308,11 +303,6 @@ bool MainFrame::stopEngine(bool update_score) {
     if (!m_engineThread) return false;
     if (!update_score) {
         m_engineThread->kill_score_update();
-    }
-    // Priority setting and this check are racy. We don't care, it's mostly
-    // annoying in debug mode.
-    if (m_engineThread->IsAlive()) {
-        m_engineThread->SetPriority(wxPRIORITY_DEFAULT);
     }
     m_engineThread->stop_engine();
     m_engineThread->Wait();
