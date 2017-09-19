@@ -17,7 +17,7 @@ macos:
 		leelagui Leela.app
 
 clang:
-	$(MAKE) CC=clang-4.0 CXX=clang++-4.0 \
+	$(MAKE) CC=clang-5.0 CXX=clang++-5.0 \
 		CXXFLAGS='$(CXXFLAGS) -Wall -Wextra -O3 -ffast-math -mtune=generic -flto -std=c++14 -DNDEBUG -Wno-inconsistent-missing-override -Wno-unused-parameter' \
 		LDFLAGS='$(LDFLAGS) -flto -fuse-linker-plugin' \
 		leelagui
