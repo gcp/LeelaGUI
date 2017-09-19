@@ -25,6 +25,9 @@
 #include "ScoreHistogram.h"
 #include "MCOTable.h"
 #include "TTable.h"
+#ifdef USE_OPENCL
+#include "OpenCL.h"
+#endif
 #ifndef WIN32
 #include "img/leela_mock.xpm"
 #include "snd/tock.h"
@@ -87,7 +90,23 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Zobrist::init_zobrist(*rng);
     AttribScores::get_attribscores();
     Matcher::get_Matcher();
+
+#ifdef USE_OPENCL
+    try {
+        Network::get_Network();
+    } catch (const cl::Error &e) {
+        wxString errorString;
+        errorString.Printf("Error initializing OpenCL: %s (error %d)",
+            e.what(), e.err());
+        ::wxMessageBox(errorString, _("Leela"), wxOK | wxICON_EXCLAMATION, this);
+    } catch (const std::exception& e) {
+        wxString errorString;
+        errorString.Printf("Error initializing OpenCL: %s", e.what());
+        ::wxMessageBox(errorString, _("Leela"), wxOK | wxICON_EXCLAMATION, this);
+    }
+#else
     Network::get_Network();
+#endif
 
     // init game
     m_playerColor = FastBoard::BLACK;
