@@ -51,8 +51,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
-    <IncludePath>C:\Projects\OpenBLAS\dist\include;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\include;C:\boost\boost_1_65_1;C:\Projects\wxWidgets-3.1\include\msvc;C:\Projects\wxWidgets-3.1\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Projects\OpenBLAS\dist\lib;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\lib\ia32_win;C:\boost\boost_1_65_1\stage\lib32;C:\Projects\wxWidgets-3.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Projects\OpenBLAS\dist\include;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\include;C:\boost\boost_1_65_1;C:\Projects\wxWidgets\include\msvc;C:\Projects\wxWidgets\include;c:\projects\OpenCL-ICD-Loader\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Projects\OpenBLAS\dist\lib;C:\Program Files %28x86%29\IntelSWTools\compilers_and_libraries_2017.4.210\windows\mkl\lib\ia32_win;C:\boost\boost_1_65_1\stage\lib32;C:\Projects\wxWidgets\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,7 +71,7 @@
       <PreprocessorDefinitions>wxUSE_NO_MANIFEST=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31ud.lib;wxbase31ud_net.lib;wxbase31ud_xml.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxmsw31ud_html.lib;wxmsw31ud_qa.lib;wxmsw31ud_richtext.lib;wxmsw31ud_xrc.lib;wxpngd.lib;wxregexud.lib;wxtiffd.lib;wxzlibd.lib;OpenCL.lib;mkl_intel_c.lib;mkl_sequential.lib;mkl_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31ud.lib;wxbase31ud_net.lib;wxbase31ud_xml.lib;wxjpegd.lib;wxmsw31ud_adv.lib;wxmsw31ud_core.lib;wxmsw31ud_gl.lib;wxmsw31ud_html.lib;wxmsw31ud_qa.lib;wxmsw31ud_richtext.lib;wxmsw31ud_xrc.lib;wxpngd.lib;wxregexud.lib;wxtiffd.lib;wxzlibd.lib;OpenCL.lib;mkl_intel_c.lib;mkl_sequential.lib;mkl_core.lib;imagehlp.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -83,23 +83,21 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\..\Leela;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;WINVER=0x0501;wxUSE_GUI=1;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_core.lib;wxmsw31u_qa.lib;wxmsw31u_xrc.lib;wxpng.lib;wxregexu.lib;wxzlib.lib;OpenCL.lib;mkl_intel_c.lib;mkl_sequential.lib;mkl_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;winmm.lib;advapi32.lib;wsock32.lib;wxbase31u.lib;wxjpeg.lib;wxmsw31u_core.lib;wxmsw31u_qa.lib;wxmsw31u_xrc.lib;wxpng.lib;wxregexu.lib;wxzlib.lib;OpenCL.lib;mkl_intel_c.lib;mkl_sequential.lib;mkl_core.lib;imagehlp.lib;dbghelp.lib;libboost_program_options-vc141-mt-s-1_65_1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
