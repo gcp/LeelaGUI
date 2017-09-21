@@ -485,8 +485,8 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     }
 
     if (!m_ratedGame) {
-        this->SetTitle(_("Leela") +
-                       _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
+        SetTitle(_("Leela") +
+                 _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
     }
 
     // signal update of visible board
@@ -568,7 +568,7 @@ void MainFrame::doNewGame(wxCommandEvent& event) {
         m_panelBoard->setPlayerColor(m_playerColor);
         m_panelBoard->setShowTerritory(false);
         m_analyzing = false;
-	m_pondering = false;
+        m_pondering = false;
         m_disputing = false;
         gameNoLongerCounts();
 
@@ -630,7 +630,7 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
     mess += rankToString(rank);
     m_statusBar->SetStatusText(mess, 1);
 
-    this->SetTitle(_("Leela - ") + mess);
+    SetTitle(_("Leela - ") + mess);
     if (m_analysisWindow) {
         m_analysisWindow->Close();
     }
@@ -1136,7 +1136,7 @@ void MainFrame::doScore(wxCommandEvent& event) {
 
 wxString MainFrame::rankToString(int rank) {
     wxString res;
-    
+
     if (rank < 0) {
         res.Printf(_("%d kyu"), -rank);
     } else {
@@ -1146,12 +1146,12 @@ wxString MainFrame::rankToString(int rank) {
             res.Printf(_("%d pro"), rank - 6);
         }
     }
-    
+
     return res;
 }
 
 void MainFrame::doPass(wxCommandEvent& event) {
-    stopEngine();    
+    stopEngine();
 
     m_State.play_pass();
     //::wxLogMessage("User passes");
@@ -1163,11 +1163,9 @@ void MainFrame::doPass(wxCommandEvent& event) {
 }
 
 void MainFrame::gameNoLongerCounts() {
-    this->SetTitle(_("Leela") +
-                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
-    if (m_ratedGame) {
-        m_ratedGame = false;
-    }
+    SetTitle(_("Leela") +
+             _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
+    m_ratedGame = false;
 }
 
 void MainFrame::doRealUndo(int count) {
@@ -1203,8 +1201,7 @@ void MainFrame::doPostMoveChange(bool wasAnalyzing) {
     m_panelBoard->setShowTerritory(false);
     m_panelBoard->clearViz();
 
-    this->SetTitle(_("Leela") +
-                   _(" - move " + wxString::Format(wxT("%i"), m_State.get_movenum() + 1)));
+    gameNoLongerCounts();
 
     wxCommandEvent myevent(wxEVT_BOARD_UPDATE, GetId());
     myevent.SetEventObject(this);
@@ -1317,7 +1314,7 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 
     wxString caption = _("Choose a file");
     wxString wildcard = _("Go games (*.sgf)|*.sgf");
-    wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard, 
+    wxFileDialog dialog(this, caption, wxEmptyString, wxEmptyString, wildcard,
                         wxFD_SAVE | wxFD_CHANGE_DIR | wxFD_OVERWRITE_PROMPT);
 
     if (dialog.ShowModal() == wxID_OK) {
