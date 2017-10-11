@@ -179,6 +179,10 @@ MainFrame::MainFrame(wxFrame *frame, const wxString& title)
     Center();
     setActiveMenus();
 
+    // Create the window already, so we start saving move evaluations
+    m_scoreHistogramWindow = new ScoreHistogram(this);
+    m_scoreHistogramWindow->Hide();
+
     // Restore open windows
     bool restoreAnalysisWindow =
         wxConfig::Get()->ReadBool(wxT("analysisWindowOpen"), false);
@@ -635,7 +639,8 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         m_analysisWindow->Close();
     }
     if (m_scoreHistogramWindow) {
-        m_scoreHistogramWindow->Close();
+        m_scoreHistogramWindow->Hide();
+        m_menuAnalyze->FindItem(ID_SCOREHISTOGRAMTOGGLE)->Check(false);
     }
 
     int used_rank = rank;
@@ -955,6 +960,9 @@ void MainFrame::doNewRatedGame(wxCommandEvent& event) {
         calcdialog.Hide();
         ::wxEndBusyCursor();
         // max 60 minutes per game
+        if (m_scoreHistogramWindow) {
+            m_scoreHistogramWindow->ClearHistogram();
+        }
         m_State.set_timecontrol(2 * m_ratedSize * 60 * 100, 0, 0, 0);
         m_StateStack.clear();
         MCOwnerTable::get_MCO()->clear();
@@ -1430,7 +1438,10 @@ void MainFrame::doShowHideScoreHistogram( wxCommandEvent& event ) {
     } else {
         if (!m_scoreHistogramWindow->IsShown()) {
             m_scoreHistogramWindow->Show();
+            m_menuAnalyze->FindItem(ID_SCOREHISTOGRAMTOGGLE)->Check(true);
+            gameNoLongerCounts();
         } else {
+            m_menuAnalyze->FindItem(ID_SCOREHISTOGRAMTOGGLE)->Check(false);
             m_scoreHistogramWindow->Hide();
         }
     }
