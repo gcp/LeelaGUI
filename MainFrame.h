@@ -52,7 +52,7 @@ class MainFrame : public TMainFrame {
 	virtual void doToggleMoyo(wxCommandEvent& event);
 	virtual void doStatusUpdate(wxCommandEvent& event);
 	virtual void doResign(wxCommandEvent& event);
-	virtual void doAnalyze(wxCommandEvent& event);
+        virtual void doAnalyze(wxCommandEvent& event) override;
         virtual void doAdjustClocks(wxCommandEvent& event);
         virtual void doKeyDown( wxKeyEvent& event ) override;
         virtual void doUndo(wxCommandEvent& event) { doRealUndo(); };

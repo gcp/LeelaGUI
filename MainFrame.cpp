@@ -500,12 +500,11 @@ void MainFrame::doNewMove(wxCommandEvent & event) {
     broadcastCurrentMove();
 }
 
-void MainFrame::doPaint(wxPaintEvent& event) {    
-    //wxPaintDC tmp(this);        
-    event.Skip();           
+void MainFrame::doPaint(wxPaintEvent& event) {
+    event.Skip();
 }
 
-void MainFrame::doActivate(wxActivateEvent& event) {                       
+void MainFrame::doActivate(wxActivateEvent& event) {
     event.Skip();
 }
 
@@ -520,7 +519,7 @@ void MainFrame::doBoardResize(wxSizeEvent& event) {
 void MainFrame::doSettingsDialog(wxCommandEvent& event) {
     bool wasPondering = m_pondering;
     bool wasRunning = stopEngine();
-    bool wasAnalyzing = wasRunning && !wasPondering;    
+    bool wasAnalyzing = wasRunning && !wasPondering;
 
     SettingsDialog mydialog(this);
 
@@ -1178,28 +1177,28 @@ void MainFrame::gameNoLongerCounts() {
 
 void MainFrame::doRealUndo(int count) {
     bool wasPondering = m_pondering;
+    bool wasAnalyzing = m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
-    bool wasAnalyzing = wasRunning && !wasPondering;
 
     for (int i = 0; i < count; i++) {
         if (m_State.undo_move()) {
             wxLogDebug("Undoing one move");
         }
     }
-    doPostMoveChange(wasAnalyzing);
+    doPostMoveChange(wasAnalyzing && wasRunning);
 }
 
 void MainFrame::doRealForward(int count) {
     bool wasPondering = m_pondering;
+    bool wasAnalyzing = m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
-    bool wasAnalyzing = wasRunning && !wasPondering;
 
     for (int i = 0; i < count; i++) {
         if (m_State.forward_move()) {
             wxLogDebug("Forward one move");
         }
     }
-    doPostMoveChange(wasAnalyzing);
+    doPostMoveChange(wasAnalyzing && wasRunning);
 }
 
 void MainFrame::doPostMoveChange(bool wasAnalyzing) {
@@ -1341,7 +1340,7 @@ void MainFrame::doSaveSGF(wxCommandEvent& event) {
 void MainFrame::doForceMove(wxCommandEvent& event) {
     gameNoLongerCounts();
     m_ponderedOnce = true;
-    bool wasAnalyzing = m_analyzing;
+    bool wasAnalyzing = m_analyzing && !m_pondering;
     bool wasPondering = m_pondering;
     bool wasRunning = stopEngine();
     if (!wasRunning || wasAnalyzing || wasPondering) {
