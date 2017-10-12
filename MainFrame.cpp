@@ -1137,7 +1137,7 @@ bool MainFrame::scoreDialog(float komi, float handicap,
 void MainFrame::doScore(wxCommandEvent& event) {
     float komi, score, prekomi, handicap;
 
-    bool won = scoreGame(komi, handicap, score, prekomi);
+    scoreGame(komi, handicap, score, prekomi);
     scoreDialog(komi, handicap, score, prekomi);
 }
 
@@ -1176,7 +1176,6 @@ void MainFrame::gameNoLongerCounts() {
 }
 
 void MainFrame::doRealUndo(int count) {
-    bool wasPondering = m_pondering;
     bool wasAnalyzing = m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
 
@@ -1189,7 +1188,6 @@ void MainFrame::doRealUndo(int count) {
 }
 
 void MainFrame::doRealForward(int count) {
-    bool wasPondering = m_pondering;
     bool wasAnalyzing = m_analyzing && !m_pondering;
     bool wasRunning = stopEngine();
 

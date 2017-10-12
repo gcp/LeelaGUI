@@ -133,7 +133,6 @@ void TScorePanel::doErase(wxEraseEvent& event) {
 void TScorePanel::doMouse(wxMouseEvent& event) {
     if (event.LeftDown() || (event.Dragging() && event.LeftIsDown())) {
         int startX = event.GetX();
-        int startY = event.GetY();
 
         wxSize sz = GetClientSize();
 
