@@ -505,7 +505,7 @@ class TScoreHistogram : public wxFrame
 	
 	public:
 		
-		TScoreHistogram( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Score Histogram"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		TScoreHistogram( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Win Rate Histogram"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~TScoreHistogram();
 	

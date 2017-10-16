@@ -771,7 +771,7 @@ TScoreDialog::TScoreDialog( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_buttonOK->SetDefault(); 
 	bSizer16->Add( m_buttonOK, 0, wxALL|wxEXPAND, 5 );
 	
-	m_buttonDispute = new wxButton( m_panel4, ID_SCORE_DISPUTE, _("&Play On"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonDispute = new wxButton( m_panel4, ID_SCORE_DISPUTE, _("&Dispute Score"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer16->Add( m_buttonDispute, 0, wxALL|wxEXPAND, 5 );
 	
 	
